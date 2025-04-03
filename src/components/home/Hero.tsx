@@ -22,7 +22,7 @@ const Hero = () => {
       {/* Content */}
       <div className="container-custom section-padding flex flex-col items-center text-center relative z-10">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white max-w-4xl animate-fade-in">
-          We Build Technology to Transform Lives
+          We Build Businesses That Transform Lives
         </h1>
         
         <p className="text-xl md:text-2xl text-white/90 mt-6 max-w-2xl animate-fade-in">
