@@ -1,36 +1,23 @@
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const Hero = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    // Ensure video plays when component mounts
-    if (videoRef.current) {
-      videoRef.current.play().catch(err => {
-        console.error("Video playback failed:", err);
-      });
-    }
-  }, []);
-
   return (
     <section className="relative overflow-hidden min-h-[80vh] flex items-center">
-      {/* Video Background */}
+      {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
-        <video 
-          ref={videoRef}
-          autoPlay 
-          muted 
-          loop 
-          playsInline
-          className="w-full h-full object-cover"
+        <div 
+          className="w-full h-full bg-cover bg-center"
+          style={{ 
+            backgroundImage: "url('/lovable-uploads/fce26f5f-92cb-47f6-be3b-f711e17254a4.png')", 
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
+          }}
         >
-          <source src="https://assets.mixkit.co/videos/preview/mixkit-set-of-plateaus-seen-from-the-heights-in-a-sunset-32809-large.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        </div>
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/60"></div>
       </div>
