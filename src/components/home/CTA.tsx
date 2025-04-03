@@ -8,14 +8,12 @@ const CTA = () => {
   return (
     <section className="relative text-white bg-gray-900">
       {/* Background Image */}
-      <div className="absolute inset-0 w-full h-full">
-        <div 
-          className="absolute inset-0 w-full h-full bg-cover bg-center"
-          style={{ 
-            backgroundImage: "url('/lovable-uploads/33b66504-e667-4aa8-93ec-58dfdce579da.png')",
-            backgroundColor: "#172B4D" // Fallback color if image fails to load
-          }}
-        />
+      <div 
+        className="absolute inset-0 w-full h-full bg-cover bg-center"
+        style={{ 
+          backgroundImage: "url('/lovable-uploads/33b66504-e667-4aa8-93ec-58dfdce579da.png')"
+        }}
+      >
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/70"></div>
       </div>

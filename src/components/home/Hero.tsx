@@ -9,11 +9,15 @@ const Hero = () => {
     <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gray-900">
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
-        <div 
-          className="absolute inset-0 w-full h-full bg-cover bg-center"
-          style={{ 
-            backgroundImage: "url('/lovable-uploads/33b66504-e667-4aa8-93ec-58dfdce579da.png')",
-            backgroundColor: "#172B4D" // Fallback color if image fails to load
+        {/* Applying the image directly as an IMG element */}
+        <img 
+          src="/lovable-uploads/33b66504-e667-4aa8-93ec-58dfdce579da.png"
+          alt="Background" 
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          onError={(e) => {
+            console.error('Image failed to load:', e);
+            const target = e.target as HTMLImageElement;
+            target.style.display = 'none';
           }}
         />
         {/* Dark overlay */}
