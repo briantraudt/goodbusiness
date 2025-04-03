@@ -22,7 +22,7 @@ const Navbar = () => {
   return (
     <nav className="bg-white/90 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-100">
       <div className="container-custom py-4 flex justify-between items-center">
-        <Link to="/" className="font-serif text-2xl font-bold text-gb-dark">
+        <Link to="/" className="font-sans text-2xl font-bold text-gb-dark">
           Good Business
         </Link>
         
