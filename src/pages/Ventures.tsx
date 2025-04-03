@@ -36,13 +36,13 @@ const Ventures = () => {
   return (
     <PageLayout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-gb-light to-white">
+      <section className="bg-gb-dark text-white">
         <div className="container-custom py-20">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold text-gb-dark mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Our Ventures
             </h1>
-            <p className="text-xl text-gb-dark/80">
+            <p className="text-xl text-white/80">
               We're building businesses that solve meaningful problems and create lasting value.
             </p>
           </div>
