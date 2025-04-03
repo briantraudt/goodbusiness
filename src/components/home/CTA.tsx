@@ -6,15 +6,27 @@ import { Link } from 'react-router-dom';
 
 const CTA = () => {
   return (
-    <section className="relative text-white">
-      {/* Background Image */}
+    <section className="relative text-white bg-gray-900">
+      {/* Background Image with fallback */}
       <div className="absolute inset-0 w-full h-full">
         <div 
           className="absolute inset-0 w-full h-full bg-cover bg-center"
           style={{ 
-            backgroundImage: "url('/lovable-uploads/eeeed265-9ea6-4064-9bdf-0c9fd5baa768.png')"
+            backgroundImage: "url('/lovable-uploads/eeeed265-9ea6-4064-9bdf-0c9fd5baa768.png')",
+            backgroundColor: "#172B4D" // Fallback color if image fails to load
           }}
-        ></div>
+        >
+          {/* Image fallback */}
+          <img 
+            src="/lovable-uploads/eeeed265-9ea6-4064-9bdf-0c9fd5baa768.png" 
+            alt="Background" 
+            className="absolute inset-0 w-full h-full object-cover object-center opacity-70"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+            }}
+          />
+        </div>
         {/* Dark overlay - slightly darker than hero for contrast */}
         <div className="absolute inset-0 bg-black/70"></div>
       </div>
