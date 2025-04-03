@@ -45,14 +45,14 @@ const Contact = () => {
 
   return (
     <PageLayout>
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-gb-light to-white">
+      {/* Hero Section with colored background */}
+      <section className="bg-gb-blue">
         <div className="container-custom py-20">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold text-gb-dark mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Work With Us
             </h1>
-            <p className="text-xl text-gb-dark/80">
+            <p className="text-xl text-white/90">
               Let's build something that lasts.
             </p>
           </div>
