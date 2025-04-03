@@ -31,7 +31,7 @@ const Hero = () => {
         </h1>
         
         <p className="text-xl md:text-2xl text-white/90 mt-6 max-w-2xl animate-fade-in">
-          Good Business is a venture studio and consulting firm helping leaders scale, fix what's broken, and build companies that last.
+          Got a crazy idea for something that will make the world a better place? Let's build it!
         </p>
         
         <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in">
