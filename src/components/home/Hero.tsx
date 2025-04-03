@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -12,13 +11,12 @@ const Hero = () => {
         <div 
           className="absolute inset-0 w-full h-full bg-cover bg-center"
           style={{ 
-            backgroundImage: "url('/lovable-uploads/eeeed265-9ea6-4064-9bdf-0c9fd5baa768.png')",
-            backgroundColor: "#172B4D" // Fallback color if image fails to load
+            backgroundImage: "url('/placeholder.svg')",
+            backgroundColor: "#172B4D"
           }}
         >
-          {/* Image fallback */}
           <img 
-            src="/lovable-uploads/eeeed265-9ea6-4064-9bdf-0c9fd5baa768.png" 
+            src="/placeholder.svg"
             alt="Background" 
             className="absolute inset-0 w-full h-full object-cover object-center opacity-70"
             onError={(e) => {

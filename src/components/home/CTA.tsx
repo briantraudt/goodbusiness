@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,13 +11,12 @@ const CTA = () => {
         <div 
           className="absolute inset-0 w-full h-full bg-cover bg-center"
           style={{ 
-            backgroundImage: "url('/lovable-uploads/eeeed265-9ea6-4064-9bdf-0c9fd5baa768.png')",
-            backgroundColor: "#172B4D" // Fallback color if image fails to load
+            backgroundImage: "url('/placeholder.svg')",
+            backgroundColor: "#172B4D"
           }}
         >
-          {/* Image fallback */}
           <img 
-            src="/lovable-uploads/eeeed265-9ea6-4064-9bdf-0c9fd5baa768.png" 
+            src="/placeholder.svg"
             alt="Background" 
             className="absolute inset-0 w-full h-full object-cover object-center opacity-70"
             onError={(e) => {
@@ -27,7 +25,7 @@ const CTA = () => {
             }}
           />
         </div>
-        {/* Dark overlay - slightly darker than hero for contrast */}
+        {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/70"></div>
       </div>
       
