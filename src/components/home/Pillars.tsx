@@ -6,17 +6,17 @@ import { Card } from "@/components/ui/card";
 const Pillars = () => {
   const pillars = [
     {
-      title: "Purpose-Driven",
+      title: "Purpose",
       description: "Companies built to solve real problems stand the test of time. We help leaders clarify their purpose and align their business model accordingly.",
       icon: <Target className="h-10 w-10 text-gb-green" />,
     },
     {
-      title: "People-Centered",
+      title: "People",
       description: "Great businesses are built by great teams. We focus on building healthy cultures where people can thrive and do their best work.",
       icon: <Users className="h-10 w-10 text-gb-blue" />,
     },
     {
-      title: "Profit-Smart",
+      title: "Profit",
       description: "Sustainable impact requires sustainable economics. We create business models that generate healthy margins and responsible growth.",
       icon: <DollarSign className="h-10 w-10 text-gb-yellow" />,
     },
