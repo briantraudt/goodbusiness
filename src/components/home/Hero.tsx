@@ -45,7 +45,7 @@ const Hero = () => {
           
           <Button asChild variant="outline" className="border-white text-white hover:bg-white/10 hover:text-white py-6 px-8 text-lg font-semibold bg-black/40">
             <Link to="/ventures">
-              Our Ventures
+              Things We Are Building
             </Link>
           </Button>
         </div>
