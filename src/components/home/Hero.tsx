@@ -10,14 +10,11 @@ const Hero = () => {
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
         <div 
-          className="w-full h-full bg-cover bg-center"
+          className="absolute inset-0 w-full h-full bg-cover bg-center"
           style={{ 
-            backgroundImage: "url('/lovable-uploads/fce26f5f-92cb-47f6-be3b-f711e17254a4.png')", 
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
+            backgroundImage: "url('/lovable-uploads/fce26f5f-92cb-47f6-be3b-f711e17254a4.png')"
           }}
-        >
-        </div>
+        ></div>
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/60"></div>
       </div>
