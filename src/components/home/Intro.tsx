@@ -10,6 +10,9 @@ const Intro = () => {
           <p className="text-xl md:text-2xl text-gb-dark/80 leading-relaxed">
             We believe a <span className="text-gb-green font-medium">Good Business</span> should be two things:
           </p>
+          
+          <div className="h-4"></div>
+          
           <p className="text-xl md:text-2xl text-gb-dark/80 leading-relaxed">
             <span className="font-semibold">Be Transforming + Be Profitable</span>.
           </p>
