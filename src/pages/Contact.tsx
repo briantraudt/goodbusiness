@@ -8,13 +8,13 @@ const Contact = () => {
   return (
     <PageLayout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-gb-light to-white">
+      <section className="bg-gb-dark text-white">
         <div className="container-custom py-20">
           <div className="max-w-3xl">
-            <h1 className="text-4xl md:text-5xl font-bold text-gb-dark mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
               Work With Us
             </h1>
-            <p className="text-xl text-gb-dark/80">
+            <p className="text-xl text-white/80">
               Let's build something good together. We're always looking for opportunities to partner with mission-aligned organizations.
             </p>
           </div>
