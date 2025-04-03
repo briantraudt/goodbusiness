@@ -12,7 +12,7 @@ const CTA = () => {
         <div 
           className="absolute inset-0 w-full h-full bg-cover bg-center"
           style={{ 
-            backgroundImage: "url('/lovable-uploads/179dbc3c-2093-4d90-b408-22ae5a5aeaad.png')"
+            backgroundImage: "url('/lovable-uploads/eeeed265-9ea6-4064-9bdf-0c9fd5baa768.png')"
           }}
         ></div>
         {/* Dark overlay - slightly darker than hero for contrast */}
