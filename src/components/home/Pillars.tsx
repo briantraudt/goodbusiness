@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Target, Users, TrendingUp, DollarSign, Heart } from 'lucide-react';
+import { Target, Users, DollarSign } from 'lucide-react';
+import { Card } from "@/components/ui/card";
 
 const Pillars = () => {
   const pillars = [
@@ -15,19 +16,9 @@ const Pillars = () => {
       icon: <Users className="h-10 w-10 text-gb-blue" />,
     },
     {
-      title: "Built to Scale",
-      description: "Growth requires solid systems and processes. We design businesses with scalability in mind from day one.",
-      icon: <TrendingUp className="h-10 w-10 text-gb-purple" />,
-    },
-    {
       title: "Profit-Smart",
       description: "Sustainable impact requires sustainable economics. We create business models that generate healthy margins and responsible growth.",
       icon: <DollarSign className="h-10 w-10 text-gb-yellow" />,
-    },
-    {
-      title: "Kingdom-Impact",
-      description: "We believe business can be a force for good in the world. We build ventures that honor God and serve others with excellence.",
-      icon: <Heart className="h-10 w-10 text-gb-red" />,
     },
   ];
 
@@ -41,13 +32,15 @@ const Pillars = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {pillars.map((pillar, index) => (
-            <div key={index} className="pillar-card">
-              <div className="mb-6">{pillar.icon}</div>
-              <h3 className="text-xl font-bold text-gb-dark mb-3">{pillar.title}</h3>
-              <p className="text-gb-dark/70">{pillar.description}</p>
-            </div>
+            <Card key={index} className="p-8 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg">
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-6">{pillar.icon}</div>
+                <h3 className="text-xl font-bold text-gb-dark mb-3">{pillar.title}</h3>
+                <p className="text-gb-dark/70">{pillar.description}</p>
+              </div>
+            </Card>
           ))}
         </div>
       </div>
