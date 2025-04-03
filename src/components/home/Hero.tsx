@@ -35,14 +35,14 @@ const Hero = () => {
         </p>
         
         <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in">
-          <Button asChild className="btn-primary text-lg group">
+          <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-lg group">
             <Link to="/contact">
               Work With Us
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
           
-          <Button asChild variant="outline" className="text-lg border-white text-white hover:bg-white/10">
+          <Button asChild variant="outline" className="border-white text-white hover:bg-white/10 py-6 px-8 text-lg">
             <Link to="/ventures">
               Our Ventures
             </Link>
