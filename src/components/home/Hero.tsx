@@ -30,10 +30,6 @@ const Hero = () => {
           We Build Things That Transform Lives
         </h1>
         
-        <p className="text-xl md:text-2xl text-white/90 mt-6 max-w-2xl animate-fade-in">
-          Got a crazy idea for something that will make the world a better place? Let's build it!
-        </p>
-        
         <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in">
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-lg group">
             <Link to="/contact">
