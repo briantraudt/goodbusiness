@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const CTA = () => {
   return (
-    <section className="relative text-white bg-gray-900 mt-16">
+    <section className="relative text-white bg-gray-900 mt-32">
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
         {/* Using the newly uploaded image */}
@@ -24,7 +24,7 @@ const CTA = () => {
         <div className="absolute inset-0 bg-black/70"></div>
       </div>
       
-      <div className="container-custom py-24 md:py-32 relative z-10">
+      <div className="container-custom py-28 md:py-36 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to build something meaningful?</h2>
           <p className="text-xl text-white/80 mb-8">
