@@ -26,9 +26,11 @@ const Hero = () => {
       
       {/* Content */}
       <div className="container-custom section-padding flex flex-col items-center text-center relative z-10">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl animate-fade-in whitespace-nowrap">
-          We Build Things That Transform Lives
-        </h1>
+        <div className="-mt-16 mb-auto">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl animate-fade-in whitespace-nowrap">
+            We Build Things That Transform Lives
+          </h1>
+        </div>
         
         <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in">
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-lg group">
