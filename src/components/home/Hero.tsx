@@ -9,7 +9,7 @@ const Hero = () => {
     <section className="bg-gradient-to-r from-gb-light to-white">
       <div className="container-custom section-padding flex flex-col items-center text-center">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gb-dark max-w-4xl animate-fade-in">
-          We build businesses that transform lives.
+          Building exceptional businesses that make a difference.
         </h1>
         
         <p className="text-xl md:text-2xl text-gb-dark/80 mt-6 max-w-2xl animate-fade-in">
