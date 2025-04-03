@@ -15,7 +15,8 @@ const Navbar = () => {
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
     { name: "Consulting", path: "/consulting" },
-    { name: "Projects", path: "/ventures" },
+    { name: "Ventures", path: "/ventures" },
+    { name: "Contact", path: "/contact" },
   ];
 
   return (
@@ -40,7 +41,7 @@ const Navbar = () => {
             ))}
           </ul>
           <Button asChild className="btn-primary">
-            <Link to="/ventures#contact">Work With Us</Link>
+            <Link to="/contact">Work With Us</Link>
           </Button>
         </div>
 
@@ -72,7 +73,7 @@ const Navbar = () => {
               ))}
               <li>
                 <Button asChild className="btn-primary w-full mt-4">
-                  <Link to="/ventures#contact" onClick={() => setIsMenuOpen(false)}>
+                  <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
                     Work With Us
                   </Link>
                 </Button>
