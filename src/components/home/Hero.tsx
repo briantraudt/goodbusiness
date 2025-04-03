@@ -1,15 +1,27 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 const Hero = () => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    // Ensure video plays when component mounts
+    if (videoRef.current) {
+      videoRef.current.play().catch(err => {
+        console.error("Video playback failed:", err);
+      });
+    }
+  }, []);
+
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden min-h-[80vh] flex items-center">
       {/* Video Background */}
       <div className="absolute inset-0 w-full h-full">
         <video 
+          ref={videoRef}
           autoPlay 
           muted 
           loop 
@@ -20,7 +32,7 @@ const Hero = () => {
           Your browser does not support the video tag.
         </video>
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-gb-dark/70"></div>
+        <div className="absolute inset-0 bg-black/60"></div>
       </div>
       
       {/* Content */}
