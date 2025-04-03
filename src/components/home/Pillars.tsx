@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Target, Users, DollarSign } from 'lucide-react';
+import { Target, Users, DollarSign, Package } from 'lucide-react';
 import { Card } from "@/components/ui/card";
 
 const Pillars = () => {
@@ -9,6 +9,11 @@ const Pillars = () => {
       title: "Purpose",
       description: "Companies built to solve real problems stand the test of time. We help leaders clarify their purpose and align their business model accordingly.",
       icon: <Target className="h-10 w-10 text-gb-green" />,
+    },
+    {
+      title: "Product",
+      description: "Great products solve real problems elegantly. We build solutions that are intuitive, effective, and create lasting value for users.",
+      icon: <Package className="h-10 w-10 text-gb-purple" />,
     },
     {
       title: "People",
@@ -32,7 +37,7 @@ const Pillars = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {pillars.map((pillar, index) => (
             <Card key={index} className="p-8 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg">
               <div className="flex flex-col items-center text-center">
