@@ -9,9 +9,9 @@ import CTA from '@/components/home/CTA';
 
 const Index = () => {
   useEffect(() => {
-    // Check if the image exists
+    // Check if the new image exists
     const img = new Image();
-    img.src = '/lovable-uploads/33b66504-e667-4aa8-93ec-58dfdce579da.png';
+    img.src = '/lovable-uploads/b0ce17ae-914d-4c0a-807f-5fb035cd1a72.png';
     img.onload = () => console.log('Image loaded successfully');
     img.onerror = () => console.error('Image failed to load');
   }, []);

@@ -8,12 +8,18 @@ const CTA = () => {
   return (
     <section className="relative text-white bg-gray-900">
       {/* Background Image */}
-      <div 
-        className="absolute inset-0 w-full h-full bg-cover bg-center"
-        style={{ 
-          backgroundImage: "url('/lovable-uploads/33b66504-e667-4aa8-93ec-58dfdce579da.png')"
-        }}
-      >
+      <div className="absolute inset-0 w-full h-full">
+        {/* Using the newly uploaded image */}
+        <img 
+          src="/lovable-uploads/b0ce17ae-914d-4c0a-807f-5fb035cd1a72.png"
+          alt="Background" 
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          onError={(e) => {
+            console.error('Image failed to load:', e);
+            const target = e.target as HTMLImageElement;
+            target.style.display = 'none';
+          }}
+        />
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/70"></div>
       </div>
