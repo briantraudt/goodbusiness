@@ -1,7 +1,7 @@
 
 import React from 'react';
 import PageLayout from '@/components/layout/PageLayout';
-import { ArrowRight, ExternalLink } from 'lucide-react';
+import { ArrowRight, ExternalLink, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -154,7 +154,152 @@ const Ventures = () => {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Contact Form Section - Added from Contact page */}
+      <section id="contact" className="bg-white">
+        <div className="container-custom py-20">
+          <div className="max-w-3xl mx-auto text-center mb-16">
+            <h2 className="text-3xl font-bold text-gb-dark mb-6">Work With Us</h2>
+            <p className="text-lg text-gb-dark/80">
+              Let's build something good together. We're always looking for opportunities to partner with mission-aligned organizations.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+            <div>
+              <h3 className="text-2xl font-bold text-gb-dark mb-6">Get in Touch</h3>
+              <p className="text-lg text-gb-dark/80 mb-8">
+                Fill out the form and we'll get back to you within 24 hours.
+              </p>
+              
+              <div className="space-y-6">
+                <div className="flex items-start">
+                  <CheckCircle className="text-gb-green h-6 w-6 mr-4 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-xl font-medium text-gb-dark mb-2">Strategic Consulting</h4>
+                    <p className="text-gb-dark/70">
+                      Get expert guidance on your business challenges and growth opportunities.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <CheckCircle className="text-gb-green h-6 w-6 mr-4 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-xl font-medium text-gb-dark mb-2">Venture Partnership</h4>
+                    <p className="text-gb-dark/70">
+                      Explore opportunities to build or invest in purpose-driven ventures.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <CheckCircle className="text-gb-green h-6 w-6 mr-4 mt-1 flex-shrink-0" />
+                  <div>
+                    <h4 className="text-xl font-medium text-gb-dark mb-2">Speaking & Workshops</h4>
+                    <p className="text-gb-dark/70">
+                      Book our team for engaging talks and workshops on business with purpose.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <form className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label htmlFor="firstName" className="block text-sm font-medium text-gb-dark mb-2">
+                      First Name
+                    </label>
+                    <input
+                      type="text"
+                      id="firstName"
+                      name="firstName"
+                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gb-green"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="lastName" className="block text-sm font-medium text-gb-dark mb-2">
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      id="lastName"
+                      name="lastName"
+                      className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gb-green"
+                      required
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gb-dark mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gb-green"
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="company" className="block text-sm font-medium text-gb-dark mb-2">
+                    Company / Organization
+                  </label>
+                  <input
+                    type="text"
+                    id="company"
+                    name="company"
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gb-green"
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="interest" className="block text-sm font-medium text-gb-dark mb-2">
+                    I'm interested in:
+                  </label>
+                  <select
+                    id="interest"
+                    name="interest"
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gb-green"
+                    required
+                  >
+                    <option value="">Select an option</option>
+                    <option value="consulting">Strategic Consulting</option>
+                    <option value="venture">Venture Partnership</option>
+                    <option value="speaking">Speaking & Workshops</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gb-dark mb-2">
+                    How can we help?
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gb-green"
+                    required
+                  ></textarea>
+                </div>
+                
+                <Button type="submit" className="btn-primary text-lg group">
+                  Submit
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA - Modified to link to the contact form section on the same page */}
       <section className="bg-gb-dark text-white">
         <div className="container-custom py-20">
           <div className="max-w-3xl mx-auto text-center">
@@ -163,10 +308,10 @@ const Ventures = () => {
               We're always interested in connecting with mission-aligned founders and investors.
             </p>
             <Button asChild className="btn-primary text-lg group">
-              <Link to="/contact">
+              <a href="#contact">
                 Start a Conversation
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </a>
             </Button>
           </div>
         </div>

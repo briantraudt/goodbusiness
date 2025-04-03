@@ -31,7 +31,7 @@ const CTA = () => {
             Whether you're looking to scale your business, fix what's broken, or launch something new, we're here to help.
           </p>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-lg group">
-            <Link to="/contact">
+            <Link to="/ventures#contact">
               Start the Conversation
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
