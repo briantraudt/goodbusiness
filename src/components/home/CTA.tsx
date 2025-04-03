@@ -6,8 +6,20 @@ import { Link } from 'react-router-dom';
 
 const CTA = () => {
   return (
-    <section className="bg-gb-dark text-white">
-      <div className="container-custom section-padding">
+    <section className="relative text-white">
+      {/* Background Image */}
+      <div className="absolute inset-0 w-full h-full">
+        <div 
+          className="absolute inset-0 w-full h-full bg-cover bg-center"
+          style={{ 
+            backgroundImage: "url('/lovable-uploads/179dbc3c-2093-4d90-b408-22ae5a5aeaad.png')"
+          }}
+        ></div>
+        {/* Dark overlay - slightly darker than hero for contrast */}
+        <div className="absolute inset-0 bg-black/70"></div>
+      </div>
+      
+      <div className="container-custom section-padding relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to build something meaningful?</h2>
           <p className="text-xl text-white/80 mb-8">
