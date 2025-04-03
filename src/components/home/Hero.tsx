@@ -3,8 +3,11 @@ import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Hero = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gray-900">
       {/* Background Image */}
@@ -26,8 +29,8 @@ const Hero = () => {
       
       {/* Content */}
       <div className="container-custom section-padding flex flex-col items-center text-center relative z-10">
-        <div className="-mt-16 mb-auto">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl animate-fade-in whitespace-nowrap">
+        <div className={`${isMobile ? '-mt-10' : '-mt-16'} mb-auto`}>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl animate-fade-in">
             We Build Things That Transform Lives
           </h1>
         </div>
