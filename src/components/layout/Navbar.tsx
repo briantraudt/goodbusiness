@@ -40,9 +40,6 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-          <Button asChild className="btn-primary">
-            <Link to="/contact">Work With Us</Link>
-          </Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -71,13 +68,6 @@ const Navbar = () => {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Button asChild className="btn-primary w-full mt-4">
-                  <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
-                    Work With Us
-                  </Link>
-                </Button>
-              </li>
             </ul>
           </div>
         </div>
