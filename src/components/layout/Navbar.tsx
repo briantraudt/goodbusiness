@@ -16,7 +16,6 @@ const Navbar = () => {
     { name: "About", path: "/about" },
     { name: "Consulting", path: "/consulting" },
     { name: "Ventures", path: "/ventures" },
-    { name: "Contact", path: "/contact" },
   ];
 
   return (
@@ -40,6 +39,9 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
+          <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white">
+            <Link to="/contact">Work With Us</Link>
+          </Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -68,6 +70,13 @@ const Navbar = () => {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white w-full mt-2">
+                  <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
+                    Work With Us
+                  </Link>
+                </Button>
+              </li>
             </ul>
           </div>
         </div>
