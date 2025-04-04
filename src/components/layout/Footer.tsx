@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
@@ -109,20 +110,20 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <Mail className="mr-3 h-5 w-5 text-gb-green" />
-                <a href="mailto:hello@goodbusiness.com" className="text-gray-300 hover:text-gb-green transition-colors">
-                  hello@goodbusiness.com
+                <a href="mailto:hello@goodbusinesshq.com" className="text-gray-300 hover:text-gb-green transition-colors">
+                  hello@goodbusinesshq.com
                 </a>
               </li>
               <li className="flex items-start">
                 <Phone className="mr-3 h-5 w-5 text-gb-green" />
-                <a href="tel:+15551234567" className="text-gray-300 hover:text-gb-green transition-colors">
-                  (555) 123-4567
+                <a href="tel:+15127745010" className="text-gray-300 hover:text-gb-green transition-colors">
+                  (512) 774-5010
                 </a>
               </li>
               <li className="flex items-start">
                 <MapPin className="mr-3 h-5 w-5 text-gb-green" />
                 <span className="text-gray-300">
-                  Nashville, TN
+                  Austin, TX
                 </span>
               </li>
             </ul>
