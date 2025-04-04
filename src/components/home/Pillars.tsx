@@ -11,14 +11,14 @@ const Pillars = () => {
       icon: <Target className="h-10 w-10 text-gb-green" />,
     },
     {
-      title: "Product",
-      description: "Great products solve real problems elegantly. We build solutions that are intuitive, effective, and create lasting value for users.",
-      icon: <Package className="h-10 w-10 text-gb-purple" />,
-    },
-    {
       title: "People",
       description: "Great businesses are built by great teams. We focus on building healthy cultures where people can thrive and do their best work.",
       icon: <Users className="h-10 w-10 text-gb-blue" />,
+    },
+    {
+      title: "Product",
+      description: "Great products solve real problems elegantly. We build solutions that are intuitive, effective, and create lasting value for users.",
+      icon: <Package className="h-10 w-10 text-gb-purple" />,
     },
     {
       title: "Profit",
