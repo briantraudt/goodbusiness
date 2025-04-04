@@ -114,7 +114,8 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500">
-          <p>&copy; {currentYear} Good Business HQ, LLC. All rights reserved.</p>
+          <p className="md:inline">&copy; {currentYear} Good Business HQ, LLC.</p>
+          <p className="md:inline md:before:content-[' ']">All rights reserved.</p>
         </div>
       </div>
     </footer>
