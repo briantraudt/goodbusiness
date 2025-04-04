@@ -20,8 +20,8 @@ const CTA = () => {
             target.style.display = 'none';
           }}
         />
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/70"></div>
+        {/* Dark overlay with reduced opacity */}
+        <div className="absolute inset-0 bg-black/50"></div>
       </div>
       
       <div className="container-custom py-28 md:py-36 relative z-10">
