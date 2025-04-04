@@ -110,8 +110,8 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <Mail className="mr-3 h-5 w-5 text-gb-green" />
-                <a href="mailto:hello@goodbusinesshq.com" className="text-gray-300 hover:text-gb-green transition-colors">
-                  hello@goodbusinesshq.com
+                <a href="mailto:brian@goodbusinesshq.com" className="text-gray-300 hover:text-gb-green transition-colors">
+                  brian@goodbusinesshq.com
                 </a>
               </li>
               <li className="flex items-start">
