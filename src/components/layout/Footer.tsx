@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
@@ -13,7 +12,7 @@ const Footer = () => {
           <div>
             <h3 className="font-serif text-2xl font-bold mb-4">Good Business</h3>
             <p className="mb-6 text-gray-300 max-w-md">
-              A venture studio and consulting firm helping leaders scale, fix what's broken, and build companies that last.
+              We are a software development and consulting company that helps leaders build, scale, fix and sustain.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-white hover:text-gb-green transition-colors">
