@@ -25,7 +25,7 @@ const Navbar = () => {
           <img 
             src="/lovable-uploads/f8c6bbe6-80e6-4c98-a62b-f93fa39e886a.png" 
             alt="Good Business" 
-            className="h-8" 
+            className="h-12" 
           />
         </Link>
         
