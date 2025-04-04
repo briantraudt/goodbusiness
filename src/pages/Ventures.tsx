@@ -145,6 +145,10 @@ const Ventures = () => {
                   </li>
                   <li className="flex items-start">
                     <span className="text-gb-blue font-bold mr-2">•</span>
+                    <span>Software development services</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-gb-blue font-bold mr-2">•</span>
                     <span>Capital for sustainable growth</span>
                   </li>
                 </ul>
