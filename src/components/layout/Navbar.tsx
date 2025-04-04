@@ -3,9 +3,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -21,9 +23,11 @@ const Navbar = () => {
   return (
     <nav className="bg-white/90 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-100">
       <div className="container-custom py-4 flex justify-between items-center">
-        <Link to="/" className="flex items-center">
-          <span className="text-xl font-bold text-gb-dark">Good Business</span>
-        </Link>
+        <div className={`${isMobile ? 'flex-1 text-center' : ''}`}>
+          <Link to="/" className={`flex ${isMobile ? 'justify-center' : ''} items-center`}>
+            <span className="text-xl font-bold text-gb-dark">Good Business</span>
+          </Link>
+        </div>
         
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
