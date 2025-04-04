@@ -29,7 +29,7 @@ const Hero = () => {
       
       {/* Content */}
       <div className="container-custom section-padding flex flex-col items-center text-center relative z-10">
-        <div className={`${isMobile ? '-mt-20' : '-mt-32'} mb-auto`}>
+        <div className={`${isMobile ? '-mt-36' : '-mt-32'} mb-auto`}>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl animate-fade-in">
             We Build Things That Transform Lives
           </h1>
