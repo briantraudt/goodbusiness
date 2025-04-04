@@ -35,7 +35,7 @@ const Hero = () => {
           </h1>
         </div>
         
-        <div className="mt-10 flex flex-col sm:flex-row gap-4 animate-fade-in">
+        <div className="mt-16 sm:mt-20 flex flex-col sm:flex-row gap-4 animate-fade-in">
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-lg group">
             <Link to="/contact">
               Work With Us
