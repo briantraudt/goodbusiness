@@ -21,8 +21,12 @@ const Navbar = () => {
   return (
     <nav className="bg-white/90 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-100">
       <div className="container-custom py-4 flex justify-between items-center">
-        <Link to="/" className="font-sans text-2xl font-bold text-gb-dark">
-          Good Business
+        <Link to="/" className="flex items-center">
+          <img 
+            src="/lovable-uploads/f8c6bbe6-80e6-4c98-a62b-f93fa39e886a.png" 
+            alt="Good Business" 
+            className="h-8" 
+          />
         </Link>
         
         {/* Desktop Navigation */}
