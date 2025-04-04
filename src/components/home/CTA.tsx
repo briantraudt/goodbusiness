@@ -11,7 +11,7 @@ const CTA = () => {
       <div className="absolute inset-0 w-full h-full">
         {/* Using the newly uploaded image */}
         <img 
-          src="/lovable-uploads/b0ce17ae-914d-4c0a-807f-5fb035cd1a72.png"
+          src="/lovable-uploads/93e6cb06-ef46-496a-9bc6-57e655a4dc18.png"
           alt="Background" 
           className="absolute inset-0 w-full h-full object-cover object-center"
           onError={(e) => {
