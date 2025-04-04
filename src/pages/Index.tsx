@@ -9,7 +9,11 @@ import CTA from '@/components/home/CTA';
 
 const Index = () => {
   return (
-    <PageLayout>
+    <PageLayout 
+      title="Good Business | Building Businesses That Transform Lives"
+      description="Good Business is a venture studio and consulting firm helping leaders scale, fix what's broken, and build companies that last."
+      canonicalUrl="https://goodbusiness.com"
+    >
       <Hero />
       <Intro />
       <Pillars />
