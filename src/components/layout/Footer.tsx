@@ -36,23 +36,6 @@ const Footer = () => {
                 </svg>
               </a>
               <a href="#" className="text-white hover:text-gb-green transition-colors">
-                <span className="sr-only">Twitter</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-twitter"
-                >
-                  <path d="M22 4c-1 .5-2.2.8-3.4 1a6 6 0 0 0-10.6 5.4 17 17 0 0 1-12-6c-.5.8-.8 1.8-.8 2.8 0 2 1 3.8 2.5 4.8-.9 0-1.8-.3-2.5-.8v.1c0 2.9 2 5.2 4.7 5.8-.5.1-1 .2-1.5.2l-1-.1c.7 2.3 2.9 4 5.4 4a12 12 0 0 1-7.5 2.6h-1.5A17 17 0 0 0 17 16c0-.3 0-.5-.3-1-1.4-6.3-2-7-3.7-7.1l.1-.1c.4 1 1 1.8 1.7 2.4a5 5 0 0 1-2.3-.6"></path>
-                </svg>
-              </a>
-              <a href="#" className="text-white hover:text-gb-green transition-colors">
                 <span className="sr-only">Instagram</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
