@@ -2,10 +2,8 @@
 import React from 'react';
 import { Target, Users, DollarSign, Package } from 'lucide-react';
 import { Card } from "@/components/ui/card";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const Pillars = () => {
-  const isMobile = useIsMobile();
   const pillars = [
     {
       title: "Purpose",
@@ -34,9 +32,6 @@ const Pillars = () => {
       <div className="container-custom section-padding">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Pillars of a Good Business</h2>
-          {isMobile && (
-            <p className="mt-2 text-lg font-medium text-gb-green">Good Business</p>
-          )}
           <p className="mt-4 text-lg text-gb-dark/70 max-w-2xl mx-auto">
             These core principles guide everything we do, from consulting to building our own ventures.
           </p>
