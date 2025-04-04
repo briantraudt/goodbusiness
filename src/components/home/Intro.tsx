@@ -19,7 +19,7 @@ const Intro = () => {
           <Separator className="my-4 bg-gb-green/30 w-24 mx-auto h-[2px]" />
           <p className="text-xl md:text-2xl text-gb-dark/80 leading-relaxed">
             <span className="mt-4 block"></span>
-            We partner with purpose-driven leaders to build ventures that solve real world problems and create lasting value for all stakeholders.
+            We partner with purpose-driven leaders to build products that solve real world problems and create lasting value for all stakeholders.
           </p>
         </div>
       </div>
