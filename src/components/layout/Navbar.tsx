@@ -22,11 +22,7 @@ const Navbar = () => {
     <nav className="bg-white/90 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-100">
       <div className="container-custom py-4 flex justify-between items-center">
         <Link to="/" className="flex items-center">
-          <img 
-            src="/lovable-uploads/f8c6bbe6-80e6-4c98-a62b-f93fa39e886a.png" 
-            alt="Good Business" 
-            className="h-12 mix-blend-multiply" 
-          />
+          <span className="text-xl font-bold text-gb-dark">Good Business</span>
         </Link>
         
         {/* Desktop Navigation */}
