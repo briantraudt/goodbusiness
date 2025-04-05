@@ -7,7 +7,7 @@ const Pillars = () => {
   const pillars = [
     {
       title: "Purpose",
-      description: "The most enduring companies are built on purpose. We help leaders discover the 'why' behind their work and bring it to life through everything they do.",
+      description: "We believe the most enduring companies are built on purpose—when people understand why they do what they do, their work becomes more meaningful, their impact more lasting, and their business a true force for good.",
       icon: <Target className="h-10 w-10 text-gb-green" />,
     },
     {
