@@ -7,7 +7,7 @@ const Pillars = () => {
   const pillars = [
     {
       title: "Purpose",
-      description: "Companies built to solve real problems stand the test of time. We help leaders clarify their purpose and align their business model accordingly.",
+      description: "When purpose becomes the foundation, business becomes a force for real, lasting impact.",
       icon: <Target className="h-10 w-10 text-gb-green" />,
     },
     {
