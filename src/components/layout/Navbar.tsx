@@ -38,7 +38,7 @@ const Navbar = () => {
               <li key={item.name}>
                 <Link
                   to={item.path}
-                  className="text-gb-dark hover:text-gb-green transition-colors font-medium"
+                  className="text-gb-dark hover:text-gb-green transition-colors font-medium text-base"
                 >
                   {item.name}
                 </Link>
@@ -69,7 +69,7 @@ const Navbar = () => {
                 <li key={item.name}>
                   <Link
                     to={item.path}
-                    className="text-gb-dark hover:text-gb-green transition-colors font-medium block py-2"
+                    className="text-gb-dark hover:text-gb-green transition-colors font-medium text-base block py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.name}
