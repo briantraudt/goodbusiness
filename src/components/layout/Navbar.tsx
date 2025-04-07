@@ -38,14 +38,14 @@ const Navbar = () => {
               <li key={item.name}>
                 <Link
                   to={item.path}
-                  className="text-gb-dark hover:text-gb-green transition-colors font-medium text-base"
+                  className="text-gb-dark hover:text-gb-green transition-colors font-medium text-lg"
                 >
                   {item.name}
                 </Link>
               </li>
             ))}
           </ul>
-          <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white">
+          <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white text-lg">
             <Link to="/contact">Work With Us</Link>
           </Button>
         </div>
@@ -69,7 +69,7 @@ const Navbar = () => {
                 <li key={item.name}>
                   <Link
                     to={item.path}
-                    className="text-gb-dark hover:text-gb-green transition-colors font-medium text-base block py-2"
+                    className="text-gb-dark hover:text-gb-green transition-colors font-medium text-lg block py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.name}
@@ -77,7 +77,7 @@ const Navbar = () => {
                 </li>
               ))}
               <li>
-                <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white w-full mt-2">
+                <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white w-full mt-2 text-lg">
                   <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
                     Work With Us
                   </Link>
