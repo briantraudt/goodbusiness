@@ -25,11 +25,9 @@ const Navbar = () => {
       <div className="container-custom py-4 flex justify-between items-center">
         <div className={`${isMobile ? 'flex-1 text-center' : ''}`}>
           <Link to="/" className={`flex ${isMobile ? 'justify-center' : ''} items-center`}>
-            <img 
-              src="/lovable-uploads/5ac22f84-c0dc-419b-bd9f-d3bb0868390a.png" 
-              alt="Good Business Logo" 
-              className="h-10 md:h-14" 
-            />
+            <span className="font-serif text-2xl md:text-3xl font-bold">
+              G<span className="text-gb-blue">o</span>od Business
+            </span>
           </Link>
         </div>
         
