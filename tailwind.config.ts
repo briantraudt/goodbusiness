@@ -125,7 +125,7 @@ export default {
 				'fade-in-right': 'fade-in-right 0.5s ease-out'
 			},
 			fontFamily: {
-				'sans': ['Inter', 'sans-serif'],
+				'sans': ['League Spartan', 'Inter', 'sans-serif'],
 				'serif': ['Playfair Display', 'serif'],
 			},
 		}
