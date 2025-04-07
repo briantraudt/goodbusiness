@@ -25,7 +25,7 @@ const Navbar = () => {
       <div className="container-custom py-4 flex justify-between items-center">
         <div className={`${isMobile ? 'flex-1 text-center' : ''}`}>
           <Link to="/" className={`flex ${isMobile ? 'justify-center' : ''} items-center`}>
-            <span className="font-serif text-2xl md:text-3xl font-bold">
+            <span className="font-sans text-2xl md:text-3xl font-bold">
               Go<span className="text-gb-blue">o</span>d Business
             </span>
           </Link>
