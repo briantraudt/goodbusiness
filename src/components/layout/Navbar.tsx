@@ -26,7 +26,7 @@ const Navbar = () => {
         <div className={`${isMobile ? 'flex-1 text-center' : ''}`}>
           <Link to="/" className={`flex ${isMobile ? 'justify-center' : ''} items-center`}>
             <img 
-              src="/lovable-uploads/f893ee6f-a8a4-4000-83f3-921af0e677c5.png" 
+              src="/lovable-uploads/bb998cdc-de9a-47eb-acf2-03b9004a68d8.png" 
               alt="Good Business Logo" 
               className="h-10 md:h-14" 
             />
