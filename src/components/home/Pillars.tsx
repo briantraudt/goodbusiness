@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Target, Users, DollarSign, Package } from 'lucide-react';
+import { Goal, Users, DollarSign, Package } from 'lucide-react';
 import { Card } from "@/components/ui/card";
 import { useIsMobile } from '@/hooks/use-mobile';
 
@@ -11,7 +11,7 @@ const Pillars = () => {
     {
       title: "Purpose",
       description: 'The most enduring companies are built on purpose where the "why" is more important than the "how".',
-      icon: <Target className="h-10 w-10 text-gb-green" />,
+      icon: <Goal className="h-10 w-10 text-gb-green" />,
     },
     {
       title: "People",
