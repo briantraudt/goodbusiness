@@ -9,21 +9,21 @@ const Focus = () => {
     {
       title: "Consulting for leaders and founders",
       description: "We help executives and entrepreneurs solve their toughest challenges, from strategy to execution.",
-      icon: <Users className="h-12 w-12 text-gb-blue mb-4" />,
+      icon: <Users className="h-16 w-16 text-gb-blue mb-4" />,
       link: "/consulting",
       linkText: "Learn More"
     },
     {
       title: "Building SideStage, Pardners, and Rated JC",
       description: "We're developing our own ventures that solve meaningful problems in media, community, and faith.",
-      icon: <Building className="h-12 w-12 text-gb-green mb-4" />,
+      icon: <Building className="h-16 w-16 text-gb-green mb-4" />,
       link: "/ventures",
       linkText: "See Our Ventures"
     },
     {
       title: "Investing in meaningful, scalable businesses",
       description: "We partner with mission-aligned founders building businesses that create lasting value.",
-      icon: <LineChart className="h-12 w-12 text-gb-purple mb-4" />,
+      icon: <LineChart className="h-16 w-16 text-gb-purple mb-4" />,
       link: "/contact",
       linkText: "Connect With Us"
     },
@@ -43,7 +43,7 @@ const Focus = () => {
           {focusAreas.map((area, index) => (
             <div key={index} className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col h-full">
               {area.icon}
-              <h3 className="text-xl font-bold text-gb-dark mb-3">{area.title}</h3>
+              <h3 className="text-2xl font-bold text-gb-dark mb-3">{area.title}</h3>
               <p className="text-gb-dark/70 mb-6 text-base md:text-lg">{area.description}</p>
               <div className="mt-auto">
                 <Button asChild variant="outline" className="border-gb-blue text-gb-blue hover:bg-gb-blue/5">

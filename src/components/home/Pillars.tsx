@@ -8,22 +8,22 @@ const Pillars = () => {
     {
       title: "Purpose",
       description: "We believe the most enduring companies are built on purpose—when people understand why they do what they do, their work becomes more meaningful, their impact more lasting, and their business a true force for good.",
-      icon: <Target className="h-10 w-10 text-gb-green" />,
+      icon: <Target className="h-14 w-14 text-gb-green" />,
     },
     {
       title: "People",
       description: "Great businesses are built by great teams. We focus on building healthy cultures where people can thrive and do their best work.",
-      icon: <Users className="h-10 w-10 text-gb-blue" />,
+      icon: <Users className="h-14 w-14 text-gb-blue" />,
     },
     {
       title: "Product",
       description: "Great products solve real problems elegantly. We build solutions that are intuitive, effective, and create lasting value for users.",
-      icon: <Package className="h-10 w-10 text-gb-purple" />,
+      icon: <Package className="h-14 w-14 text-gb-purple" />,
     },
     {
       title: "Profit",
       description: "Sustainable impact requires sustainable economics. We create business models that generate healthy margins and responsible growth.",
-      icon: <DollarSign className="h-10 w-10 text-gb-yellow" />,
+      icon: <DollarSign className="h-14 w-14 text-gb-yellow" />,
     },
   ];
 
@@ -42,7 +42,7 @@ const Pillars = () => {
             <Card key={index} className="p-8 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg">
               <div className="flex flex-col items-center text-center">
                 <div className="mb-6">{pillar.icon}</div>
-                <h3 className="text-xl font-bold text-gb-dark mb-3">{pillar.title}</h3>
+                <h3 className="text-2xl font-bold text-gb-dark mb-3">{pillar.title}</h3>
                 <p className="text-gb-dark/70 text-base md:text-lg">{pillar.description}</p>
               </div>
             </Card>
