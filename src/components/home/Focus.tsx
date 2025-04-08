@@ -45,17 +45,10 @@ const Focus = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 max-w-5xl mx-auto">
           {focusAreas.map((area, index) => (
             <div key={index} className="bg-white p-4 md:p-5 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col">
-              {index === 0 || index === 1 ? (
-                <div className="flex items-center gap-3 mb-2 md:mb-3">
-                  {area.icon}
-                  <h3 className="text-xl md:text-lg font-bold text-gb-dark">{area.title}</h3>
-                </div>
-              ) : (
-                <>
-                  <div className="mb-2 md:mb-3">{area.icon}</div>
-                  <h3 className="text-xl md:text-lg font-bold text-gb-dark mb-2">{area.title}</h3>
-                </>
-              )}
+              <div className="flex items-center gap-3 mb-2 md:mb-3">
+                {area.icon}
+                <h3 className="text-xl md:text-lg font-bold text-gb-dark">{area.title}</h3>
+              </div>
               <p className="text-gb-dark/70 mb-4 text-base flex-grow">{area.description}</p>
               <div className="mt-auto">
                 <Button asChild variant="outline" className="border-gb-blue text-gb-blue hover:bg-gb-blue/5 flex items-center justify-center w-full">
