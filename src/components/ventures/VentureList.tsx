@@ -4,6 +4,21 @@ import VentureCard from './VentureCard';
 
 const ventures = [
   {
+    name: "Rated JC",
+    tagline: "A guide for faith-conscious families to find entertainment that honors Jesus.",
+    description: "Rated JC provides thoughtful, nuanced reviews of movies, TV shows, books, and games from a Christian perspective. We help families make informed decisions about media consumption while fostering meaningful conversations about faith and culture.",
+    color: "border-gb-green",
+    status: "Beta Launch",
+    link: "#",
+    services: [
+      "Website Design",
+      "Content Strategy",
+      "SEO Optimization",
+      "Brand Identity",
+      "User Engagement Metrics"
+    ]
+  },
+  {
     name: "SideStage",
     tagline: "A fan-powered video platform that lets you stay in the moment at concerts.",
     description: "SideStage helps music fans enjoy live shows without experiencing them through a phone screen. Through our platform, fans can access professional-quality videos of concerts they attended, share their favorite moments, and connect with other attendees.",
@@ -31,21 +46,6 @@ const ventures = [
       "User Testing",
       "Community Strategy",
       "Frontend Development"
-    ]
-  },
-  {
-    name: "Rated JC",
-    tagline: "A guide for faith-conscious families to find entertainment that honors Jesus.",
-    description: "Rated JC provides thoughtful, nuanced reviews of movies, TV shows, books, and games from a Christian perspective. We help families make informed decisions about media consumption while fostering meaningful conversations about faith and culture.",
-    color: "border-gb-purple",
-    status: "Beta Launch",
-    link: "#",
-    services: [
-      "Website Design",
-      "Content Strategy",
-      "SEO Optimization",
-      "Brand Identity",
-      "User Engagement Metrics"
     ]
   }
 ];
