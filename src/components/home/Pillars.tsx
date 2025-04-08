@@ -2,8 +2,11 @@
 import React from 'react';
 import { Target, Users, DollarSign, Package } from 'lucide-react';
 import { Card } from "@/components/ui/card";
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Pillars = () => {
+  const isMobile = useIsMobile();
+  
   const pillars = [
     {
       title: "Purpose",
@@ -39,8 +42,8 @@ const Pillars = () => {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {pillars.map((pillar, index) => (
-            <Card key={index} className="p-6 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg">
-              <div className="flex flex-col items-center text-center">
+            <Card key={index} className={`p-6 ${isMobile ? 'aspect-square' : ''} shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg`}>
+              <div className="flex flex-col items-center text-center h-full">
                 <div className="mb-5">{pillar.icon}</div>
                 <h3 className="text-xl font-bold text-gb-dark mb-2">{pillar.title}</h3>
                 <p className="text-gb-dark/70 text-sm md:text-base">{pillar.description}</p>
