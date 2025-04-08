@@ -17,18 +17,18 @@ const Focus = () => {
       linkText: "Learn More"
     },
     {
-      title: "GTM Strategy",
-      description: "We're developing our own ventures that solve meaningful problems in media, community, and faith.",
-      icon: <Target className="h-10 w-10 text-gb-green" />,
-      link: "/ventures",
-      linkText: "See Our Ventures"
-    },
-    {
       title: "MVP Development",
       description: "We partner with mission-aligned founders building businesses that create lasting value.",
       icon: <LineChart className="h-10 w-10 text-gb-purple" />,
       link: "/contact",
       linkText: "Connect With Us"
+    },
+    {
+      title: "GTM Strategy",
+      description: "We're developing our own ventures that solve meaningful problems in media, community, and faith.",
+      icon: <Target className="h-10 w-10 text-gb-green" />,
+      link: "/ventures",
+      linkText: "See Our Ventures"
     },
   ];
 
