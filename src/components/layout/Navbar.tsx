@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,7 +7,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const isMobile = useIsMobile();
+  
+  // Ensure proper loading
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -19,6 +25,28 @@ const Navbar = () => {
     { name: "Services", path: "/consulting" },
     { name: "Projects", path: "/projects" },
   ];
+
+  // Prevent FOUC (Flash Of Unstyled Content)
+  if (!isLoaded) {
+    return (
+      <div className="bg-white/90 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-100">
+        <div className="container-custom py-4 flex justify-between items-center">
+          <div className="font-sans text-2xl md:text-3xl font-bold text-[#333333]">
+            Good Business
+          </div>
+          <div className="hidden md:flex items-center space-x-8">
+            <ul className="flex space-x-8">
+              {menuItems.map((item) => (
+                <li key={item.name} className="text-gb-dark font-medium text-lg">
+                  {item.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <nav className="bg-white/90 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-100">
