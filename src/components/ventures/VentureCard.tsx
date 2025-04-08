@@ -68,7 +68,7 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
         </div>
       </div>
       <div className="flex justify-center">
-        {index === 0 ? (
+        {venture.name === "SideStage" ? (
           <Dialog>
             <DialogTrigger asChild>
               <img 
