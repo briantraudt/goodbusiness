@@ -85,14 +85,16 @@ const Ventures = () => {
                 </div>
                 <div className={`order-1 md:order-${index % 2 === 0 ? 1 : 2}`}>
                   {index === 0 ? (
-                    // SideStage App Preview
-                    <Card className="overflow-hidden border-0 shadow-lg rounded-lg">
+                    // SideStage App Preview with improved styling for the phone mockup
+                    <Card className="overflow-hidden border-0 shadow-lg rounded-xl max-w-xs mx-auto">
                       <CardContent className="p-0">
-                        <img 
-                          src="/lovable-uploads/571d6a60-0820-4bcc-9d71-2cf9afcc81e4.png" 
-                          alt="SideStage App Interface" 
-                          className="w-full h-auto object-cover"
-                        />
+                        <div className="bg-black rounded-xl p-3">
+                          <img 
+                            src="/lovable-uploads/bfce8a32-2197-4ff8-8885-398e26d048c6.png" 
+                            alt="SideStage App Interface" 
+                            className="w-full h-auto object-contain rounded-lg"
+                          />
+                        </div>
                       </CardContent>
                     </Card>
                   ) : (
