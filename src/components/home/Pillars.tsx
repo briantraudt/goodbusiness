@@ -11,22 +11,22 @@ const Pillars = () => {
     {
       title: "Purpose",
       description: 'The most enduring companies are built on purpose where the "why" is more important than the "how".',
-      icon: <Target className="h-12 w-12 text-gb-green" />,
+      icon: <Target className="h-10 w-10 text-gb-green" />,
     },
     {
       title: "People",
       description: "Great businesses are built by great teams who focus on building healthy cultures where people can thrive and do their best work.",
-      icon: <Users className="h-12 w-12 text-gb-blue" />,
+      icon: <Users className="h-10 w-10 text-gb-blue" />,
     },
     {
       title: "Product",
       description: "The best products solve real problems in a way that is intuitive, effective and create value for their users.",
-      icon: <Package className="h-12 w-12 text-gb-purple" />,
+      icon: <Package className="h-10 w-10 text-gb-purple" />,
     },
     {
       title: "Profit",
       description: "Sustainable impact is built on strong, profitable business models that support long-term growth.",
-      icon: <DollarSign className="h-12 w-12 text-gb-yellow" />,
+      icon: <DollarSign className="h-10 w-10 text-gb-yellow" />,
     },
   ];
 
