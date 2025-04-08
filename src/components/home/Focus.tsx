@@ -12,21 +12,21 @@ const Focus = () => {
     {
       title: "Business Launchpad",
       description: "We help executives and entrepreneurs solve their toughest challenges, from strategy to execution.",
-      icon: <Rocket className="h-10 w-10 text-gb-blue" />,
+      icon: <Rocket className="h-14 w-14 text-gb-blue" />,
       link: "/consulting",
       linkText: "Learn More"
     },
     {
       title: "MVP Development",
       description: "We partner with mission-aligned founders building businesses that create lasting value.",
-      icon: <LineChart className="h-10 w-10 text-gb-purple" />,
+      icon: <LineChart className="h-14 w-14 text-gb-purple" />,
       link: "/contact",
       linkText: "Connect With Us"
     },
     {
       title: "GTM Strategy",
       description: "We're developing our own ventures that solve meaningful problems in media, community, and faith.",
-      icon: <Target className="h-10 w-10 text-gb-green" />,
+      icon: <Target className="h-14 w-14 text-gb-green" />,
       link: "/ventures",
       linkText: "See Our Ventures"
     },
@@ -45,13 +45,13 @@ const Focus = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 max-w-5xl mx-auto">
           {focusAreas.map((area, index) => (
             <div key={index} className="bg-white p-6 md:p-8 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col">
-              <div className="flex items-center gap-3 mb-3 md:mb-4">
+              <div className="flex items-center gap-3 mb-4 md:mb-5">
                 {area.icon}
-                <h3 className="text-2xl font-bold text-gb-dark">{area.title}</h3>
+                <h3 className="text-2xl md:text-3xl font-bold text-gb-dark">{area.title}</h3>
               </div>
-              <p className="text-gb-dark/70 mb-5 text-sm flex-grow">{area.description}</p>
+              <p className="text-gb-dark/70 mb-5 text-base md:text-lg flex-grow">{area.description}</p>
               <div className="mt-auto">
-                <Button asChild variant="outline" className="border-gb-blue text-gb-blue hover:bg-gb-blue/5 flex items-center justify-center w-full text-sm">
+                <Button asChild variant="outline" className="border-gb-blue text-gb-blue hover:bg-gb-blue/5 flex items-center justify-center w-full text-base">
                   <Link to={area.link}>
                     {area.linkText}
                   </Link>
