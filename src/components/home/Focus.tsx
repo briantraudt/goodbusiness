@@ -12,21 +12,21 @@ const Focus = () => {
     {
       title: "Business Launchpad",
       description: "Bring your vision to life with expert support in concept development, business formation, branding, and more.",
-      icon: <Rocket className="h-10 w-10 text-gb-blue" />,
+      icon: <Rocket className="h-12 w-12 text-gb-blue" />,
       link: "/consulting",
       linkText: "Learn More"
     },
     {
       title: "Product Development",
       description: "Get to market quickly with a focused first version of your product to test ideas, gather feedback, and spark growth.",
-      icon: <Package className="h-10 w-10 text-gb-purple" />,
+      icon: <Package className="h-12 w-12 text-gb-purple" />,
       link: "/consulting",
       linkText: "Learn More"
     },
     {
       title: "Growth Strategy",
       description: "Launch with clarity using a tailored go-to-market strategy built to connect with your audience and scale effectively.",
-      icon: <Target className="h-10 w-10 text-gb-green" />,
+      icon: <Target className="h-12 w-12 text-gb-green" />,
       link: "/consulting",
       linkText: "Learn More"
     },
