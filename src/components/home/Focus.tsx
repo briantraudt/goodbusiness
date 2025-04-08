@@ -25,7 +25,7 @@ const Focus = () => {
     },
     {
       title: "GTM Strategy",
-      description: "We develop custom go-to-market strategies so you can launch with clarity, connect with your audience, and grow with confidence.",
+      description: "We develop custom go-to-market strategies so you can launch with clarity, connect with your audience, and scale.",
       icon: <Target className="h-14 w-14 text-gb-green" />,
       link: "/ventures",
       linkText: "See Our Ventures"
