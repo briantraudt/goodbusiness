@@ -149,7 +149,7 @@ const Contact = () => {
                   ></textarea>
                 </div>
                 
-                <Button type="submit" className="btn-primary text-lg group">
+                <Button type="submit" className="bg-gb-green hover:bg-gb-green/90 text-white text-lg flex items-center justify-center w-full sm:w-auto">
                   Submit
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>

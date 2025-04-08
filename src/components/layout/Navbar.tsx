@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -10,7 +9,6 @@ const Navbar = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const isMobile = useIsMobile();
   
-  // Ensure proper loading
   useEffect(() => {
     setIsLoaded(true);
   }, []);
@@ -26,7 +24,6 @@ const Navbar = () => {
     { name: "Projects", path: "/projects" },
   ];
 
-  // Prevent FOUC (Flash Of Unstyled Content)
   if (!isLoaded) {
     return (
       <div className="bg-white/90 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-100">
@@ -59,7 +56,6 @@ const Navbar = () => {
           </Link>
         </div>
         
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
           <ul className="flex space-x-8">
             {menuItems.map((item) => (
@@ -73,12 +69,11 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-          <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white text-lg">
+          <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white text-lg flex items-center justify-center">
             <Link to="/contact">Work With Us</Link>
           </Button>
         </div>
 
-        {/* Mobile Menu Button */}
         <button
           className="md:hidden text-gb-dark hover:text-gb-green"
           onClick={toggleMenu}
@@ -88,7 +83,6 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Navigation */}
       {isMenuOpen && (
         <div className="md:hidden bg-white py-4 border-t border-gray-100 absolute w-full z-50">
           <div className="container-custom">
@@ -105,7 +99,7 @@ const Navbar = () => {
                 </li>
               ))}
               <li>
-                <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white w-full mt-2 text-lg">
+                <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white w-full mt-2 text-lg flex items-center justify-center">
                   <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
                     Work With Us
                   </Link>

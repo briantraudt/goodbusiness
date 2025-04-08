@@ -46,7 +46,7 @@ const Focus = () => {
               <h3 className="text-2xl font-bold text-gb-dark mb-3">{area.title}</h3>
               <p className="text-gb-dark/70 mb-6 text-base md:text-lg">{area.description}</p>
               <div className="mt-auto">
-                <Button asChild variant="outline" className="border-gb-blue text-gb-blue hover:bg-gb-blue/5">
+                <Button asChild variant="outline" className="border-gb-blue text-gb-blue hover:bg-gb-blue/5 flex items-center justify-center w-full sm:w-auto">
                   <Link to={area.link}>
                     {area.linkText}
                   </Link>

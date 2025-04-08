@@ -52,14 +52,14 @@ const Hero = () => {
         </div>
         
         <div className="mt-8 flex flex-col sm:flex-row gap-4 animate-fade-in">
-          <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-xl group">
+          <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-xl flex items-center justify-center">
             <Link to="/contact">
               Work With Us
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
           
-          <Button asChild variant="outline" className="border-white text-white hover:bg-white/10 hover:text-white py-6 px-8 text-xl font-semibold bg-black/40">
+          <Button asChild variant="outline" className="border-white text-white hover:bg-white/10 hover:text-white py-6 px-8 text-xl font-semibold bg-black/40 flex items-center justify-center">
             <Link to="/ventures">
               Our Projects
             </Link>
