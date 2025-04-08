@@ -4,6 +4,7 @@ import PageLayout from '@/components/layout/PageLayout';
 import { ArrowRight, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Card, CardContent } from '@/components/ui/card';
 
 const Ventures = () => {
   const ventures = [
@@ -83,12 +84,25 @@ const Ventures = () => {
                   </div>
                 </div>
                 <div className={`order-1 md:order-${index % 2 === 0 ? 1 : 2}`}>
-                  <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                    {/* Placeholder for venture image */}
-                    <div className="w-full h-full flex items-center justify-center bg-gb-blue/10 text-gb-blue">
-                      {venture.name} Preview
+                  {index === 0 ? (
+                    // SideStage App Preview
+                    <Card className="overflow-hidden border-0 shadow-lg rounded-lg">
+                      <CardContent className="p-0">
+                        <img 
+                          src="/lovable-uploads/0efec4ca-95c3-4b94-96ab-43462716cebc.png" 
+                          alt="SideStage App Preview" 
+                          className="w-full h-auto object-cover"
+                        />
+                      </CardContent>
+                    </Card>
+                  ) : (
+                    <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+                      {/* Placeholder for other venture images */}
+                      <div className="w-full h-full flex items-center justify-center bg-gb-blue/10 text-gb-blue">
+                        {venture.name} Preview
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             ))}
