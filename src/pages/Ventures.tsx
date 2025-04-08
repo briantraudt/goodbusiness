@@ -1,3 +1,4 @@
+
 import React from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import { ArrowRight, ExternalLink } from 'lucide-react';
@@ -60,10 +61,10 @@ const Ventures = () => {
             </p>
           </div>
 
-          <div className="space-y-16">
+          <div className="space-y-16 max-w-5xl mx-auto">
             {ventures.map((venture, index) => (
               <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div className={`order-2 md:order-${index % 2 === 0 ? 2 : 1}`}>
+                <div>
                   <div className={`venture-card ${venture.color}`}>
                     <span className="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium mb-4">
                       {venture.status}
@@ -83,7 +84,7 @@ const Ventures = () => {
                     </Button>
                   </div>
                 </div>
-                <div className={`order-1 md:order-${index % 2 === 0 ? 1 : 2} flex ${index % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
+                <div className="flex justify-center">
                   {index === 0 ? (
                     <Dialog>
                       <DialogTrigger asChild>
