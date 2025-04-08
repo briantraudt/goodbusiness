@@ -33,7 +33,7 @@ const Pillars = () => {
   return (
     <section className="bg-gray-50">
       <div className="container-custom py-12 md:py-24">
-        <div className="text-center mb-10 md:mb-16">
+        <div className="text-center mb-8 md:mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Pillars of a Good Business</h2>
           <p className="mt-3 text-lg text-gb-dark/70 max-w-2xl mx-auto">
             These core principles guide everything we do, from consulting to building our own ventures.
@@ -42,11 +42,11 @@ const Pillars = () => {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
           {pillars.map((pillar, index) => (
-            <Card key={index} className={`p-4 md:p-6 ${isMobile ? 'aspect-square' : ''} shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg`}>
-              <div className="flex flex-col items-center text-center h-full">
-                <div className="mb-3 md:mb-5">{pillar.icon}</div>
+            <Card key={index} className="p-4 md:p-5 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg">
+              <div className="flex flex-col items-center text-center">
+                <div className="mb-2 md:mb-3">{pillar.icon}</div>
                 <h3 className="text-2xl font-bold text-gb-dark mb-1 md:mb-2">{pillar.title}</h3>
-                <p className="text-gb-dark/70 text-base md:text-base">{pillar.description}</p>
+                <p className="text-gb-dark/70 text-base">{pillar.description}</p>
               </div>
             </Card>
           ))}
