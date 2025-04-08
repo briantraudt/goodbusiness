@@ -24,7 +24,7 @@ const Focus = () => {
       linkText: "See Our Ventures"
     },
     {
-      title: "Investing in meaningful, scalable businesses",
+      title: "MVP Development",
       description: "We partner with mission-aligned founders building businesses that create lasting value.",
       icon: <LineChart className="h-10 w-10 text-gb-purple" />,
       link: "/contact",
