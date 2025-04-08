@@ -1,10 +1,10 @@
-
 import React from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import { ArrowRight, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 const Ventures = () => {
   const ventures = [
@@ -85,17 +85,24 @@ const Ventures = () => {
                 </div>
                 <div className={`order-1 md:order-${index % 2 === 0 ? 1 : 2} flex ${index % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
                   {index === 0 ? (
-                    // iPhone mockup for SideStage app - with rounded corners
-                    <div className="flex justify-end pr-0 md:pr-6">
-                      <img 
-                        src="/lovable-uploads/35487980-8600-4a91-a5a8-b226968d1e70.png" 
-                        alt="SideStage Mobile App" 
-                        className="h-auto w-auto max-h-[500px] rounded-2xl"
-                      />
-                    </div>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <img 
+                          src="/lovable-uploads/35487980-8600-4a91-a5a8-b226968d1e70.png" 
+                          alt="SideStage Mobile App" 
+                          className="h-auto w-auto max-h-[500px] rounded-2xl cursor-pointer transition-transform hover:scale-[1.02]" 
+                        />
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[80vw] max-h-[90vh] flex items-center justify-center p-0 overflow-hidden">
+                        <img 
+                          src="/lovable-uploads/35487980-8600-4a91-a5a8-b226968d1e70.png" 
+                          alt="SideStage Mobile App - Enlarged" 
+                          className="w-auto h-auto max-h-[90vh] max-w-[80vw] object-contain" 
+                        />
+                      </DialogContent>
+                    </Dialog>
                   ) : (
                     <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                      {/* Placeholder for other venture images */}
                       <div className="w-full h-full flex items-center justify-center bg-gb-blue/10 text-gb-blue">
                         {venture.name} Preview
                       </div>
