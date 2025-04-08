@@ -17,7 +17,7 @@ const Pillars = () => {
     },
     {
       title: "Product",
-      description: "Great products solve real problems elegantly. We build solutions that are intuitive, effective, and create lasting value for users.",
+      description: "The best products solve real problems elegantly. Build solutions that are intuitive, effective and create lasting value for users.",
       icon: <Package className="h-14 w-14 text-gb-purple" />,
     },
     {
