@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Target, Users, DollarSign, Package } from 'lucide-react';
 import { Card } from "@/components/ui/card";
@@ -17,7 +16,7 @@ const Pillars = () => {
     },
     {
       title: "Product",
-      description: "The best products solve real problems elegantly. Build solutions that are intuitive, effective and create lasting value for users.",
+      description: "The best products solve real problems in a way that is intuitive, effective and create value for their users.",
       icon: <Package className="h-14 w-14 text-gb-purple" />,
     },
     {
