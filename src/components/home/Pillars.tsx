@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Target, Users, DollarSign, Package } from 'lucide-react';
 import { Card } from "@/components/ui/card";
@@ -21,7 +22,7 @@ const Pillars = () => {
     },
     {
       title: "Profit",
-      description: "Sustainable impact requires sustainable economics. Create business models that generate healthy margins and responsible growth.",
+      description: "Sustainable impact is built on strong, profitable business models that support long-term growth.",
       icon: <DollarSign className="h-14 w-14 text-gb-yellow" />,
     },
   ];
