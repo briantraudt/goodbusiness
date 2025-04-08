@@ -17,7 +17,7 @@ const Focus = () => {
       linkText: "Learn More"
     },
     {
-      title: "Building SideStage, Pardners, and Rated JC",
+      title: "GTM Strategy",
       description: "We're developing our own ventures that solve meaningful problems in media, community, and faith.",
       icon: <Building className="h-10 w-10 text-gb-green" />,
       link: "/ventures",
