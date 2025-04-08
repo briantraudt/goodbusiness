@@ -37,7 +37,7 @@ const Pillars = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {pillars.map((pillar, index) => (
             <Card key={index} className="p-8 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg">
               <div className="flex flex-col items-center text-center">
