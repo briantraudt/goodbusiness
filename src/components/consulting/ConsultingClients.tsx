@@ -18,7 +18,7 @@ const ConsultingClients = () => {
   ];
 
   return (
-    <section className="bg-gray-50">
+    <section className="bg-[#F1F0FB]/30">
       <div className="container-custom py-20">
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-3xl font-bold text-gb-dark mb-6">Who We Help</h2>
