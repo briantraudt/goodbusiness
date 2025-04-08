@@ -1,19 +1,36 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const CTA = () => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  
+  // Preload image
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/lovable-uploads/93e6cb06-ef46-496a-9bc6-57e655a4dc18.png";
+    img.onload = () => setImageLoaded(true);
+    
+    return () => {
+      img.onload = null;
+    };
+  }, []);
+  
   return (
     <section className="relative text-white bg-gray-900 mt-32">
       {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
-        {/* Using the newly uploaded image */}
+        {!imageLoaded && (
+          <Skeleton className="w-full h-full bg-gray-800" />
+        )}
+        {/* Using the preloaded image */}
         <img 
           src="/lovable-uploads/93e6cb06-ef46-496a-9bc6-57e655a4dc18.png"
           alt="Background" 
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ease-in-out ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           onError={(e) => {
             console.error('Image failed to load:', e);
             const target = e.target as HTMLImageElement;

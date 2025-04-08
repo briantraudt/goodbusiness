@@ -4,30 +4,35 @@ import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const Hero = () => {
   const isMobile = useIsMobile();
   const [imageLoaded, setImageLoaded] = useState(false);
   
+  // Preload image before rendering
   useEffect(() => {
-    // Set image to loaded after a small delay to ensure animation is visible
-    const timer = setTimeout(() => {
-      setImageLoaded(true);
-    }, 100);
+    const img = new Image();
+    img.src = "/lovable-uploads/b0ce17ae-914d-4c0a-807f-5fb035cd1a72.png";
+    img.onload = () => setImageLoaded(true);
     
-    return () => clearTimeout(timer);
+    return () => {
+      img.onload = null;
+    };
   }, []);
   
   return (
     <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gray-900">
       {/* Background Image with fade-in effect */}
       <div className="absolute inset-0 w-full h-full">
-        {/* Using the newly uploaded image with fade-in animation */}
+        {!imageLoaded && (
+          <Skeleton className="w-full h-full bg-gray-800" />
+        )}
+        {/* Using the preloaded image with fade-in animation */}
         <img 
           src="/lovable-uploads/b0ce17ae-914d-4c0a-807f-5fb035cd1a72.png"
           alt="Background" 
-          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-1000 ease-in-out ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-          onLoad={() => setImageLoaded(true)}
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ease-in-out ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           onError={(e) => {
             console.error('Image failed to load:', e);
             const target = e.target as HTMLImageElement;
