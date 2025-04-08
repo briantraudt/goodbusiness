@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
-import { ExternalLink, X } from 'lucide-react';
+import { ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
 
 export interface VentureCardProps {
   venture: {
@@ -13,7 +14,7 @@ export interface VentureCardProps {
     color: string;
     status: string;
     link: string;
-    services: string[]; // Added services to the venture type
+    services: string[];
   };
   index: number;
 }
@@ -21,6 +22,26 @@ export interface VentureCardProps {
 const VentureCard = ({ venture, index }: VentureCardProps) => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const { toast } = useToast();
+
+  // Map color border classes to their hover background counterparts
+  const getHoverColorClass = () => {
+    switch (venture.color) {
+      case 'border-gb-blue':
+        return 'hover:bg-gb-blue hover:text-white';
+      case 'border-gb-green':
+        return 'hover:bg-gb-green hover:text-white';
+      case 'border-gb-purple':
+        return 'hover:bg-gb-purple hover:text-white';
+      case 'border-gb-yellow':
+        return 'hover:bg-gb-yellow hover:text-white';
+      case 'border-gb-red':
+        return 'hover:bg-gb-red hover:text-white';
+      case 'border-gb-orange':
+        return 'hover:bg-gb-orange hover:text-white';
+      default:
+        return 'hover:bg-accent hover:text-accent-foreground';
+    }
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
@@ -38,7 +59,7 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
           </p>
           <Button 
             variant="outline" 
-            className="mt-auto inline-flex items-center"
+            className={cn("mt-auto inline-flex items-center", getHoverColorClass())}
             onClick={() => setIsDetailsOpen(true)}
           >
             Learn More
