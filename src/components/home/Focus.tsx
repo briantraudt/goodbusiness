@@ -20,8 +20,8 @@ const Focus = () => {
       title: "Product Development",
       description: "We develop the first version of your product so you can get to market quickly, test ideas, and gain valuable customer feedback.",
       icon: <LineChart className="h-14 w-14 text-gb-purple" />,
-      link: "/contact",
-      linkText: "Connect With Us"
+      link: "/consulting",
+      linkText: "Learn More"
     },
     {
       title: "GTM Strategy",
