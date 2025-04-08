@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Rocket, Building, LineChart } from 'lucide-react';
+import { Rocket, Target, LineChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -19,7 +19,7 @@ const Focus = () => {
     {
       title: "GTM Strategy",
       description: "We're developing our own ventures that solve meaningful problems in media, community, and faith.",
-      icon: <Building className="h-10 w-10 text-gb-green" />,
+      icon: <Target className="h-10 w-10 text-gb-green" />,
       link: "/ventures",
       linkText: "See Our Ventures"
     },
