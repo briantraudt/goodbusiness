@@ -18,7 +18,7 @@ export interface VentureCardProps {
 
 const VentureCard = ({ venture, index }: VentureCardProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
       <div>
         <div className={`venture-card ${venture.color}`}>
           <span className="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium mb-4">
