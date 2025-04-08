@@ -15,8 +15,8 @@ const Index = () => {
     <PageLayout>
       <Hero />
       <Intro />
-      <Pillars />
       <Focus />
+      <Pillars />
       <CTA />
     </PageLayout>
   );
