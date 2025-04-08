@@ -8,31 +8,17 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const Hero = () => {
   const isMobile = useIsMobile();
-  const [imageLoaded, setImageLoaded] = useState(false);
-  
-  // Preload image before rendering
-  useEffect(() => {
-    const img = new Image();
-    img.src = "/lovable-uploads/b0ce17ae-914d-4c0a-807f-5fb035cd1a72.png";
-    img.onload = () => setImageLoaded(true);
-    
-    return () => {
-      img.onload = null;
-    };
-  }, []);
+  const [imageLoaded, setImageLoaded] = useState(true); // Changed to true to display content immediately
   
   return (
     <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gray-900">
-      {/* Background Image with fade-in effect */}
+      {/* Background Image */}
       <div className="absolute inset-0 w-full h-full">
-        {!imageLoaded && (
-          <Skeleton className="w-full h-full bg-gray-800" />
-        )}
-        {/* Using the preloaded image with fade-in animation */}
+        {/* Using the image directly */}
         <img 
           src="/lovable-uploads/b0ce17ae-914d-4c0a-807f-5fb035cd1a72.png"
           alt="Background" 
-          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ease-in-out ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+          className="absolute inset-0 w-full h-full object-cover object-center"
           onError={(e) => {
             console.error('Image failed to load:', e);
             const target = e.target as HTMLImageElement;
@@ -46,12 +32,12 @@ const Hero = () => {
       {/* Content */}
       <div className="container-custom section-padding flex flex-col items-center text-center relative z-10">
         <div className={`${isMobile ? '-mt-36' : '-mt-32'} mb-auto`}>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl animate-fade-in">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl">
             We Build Things That Transform Lives
           </h1>
         </div>
         
-        <div className="mt-8 flex flex-col sm:flex-row gap-4 animate-fade-in">
+        <div className="mt-8 flex flex-col sm:flex-row gap-4">
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-xl flex items-center justify-center">
             <Link to="/contact">
               Work With Us

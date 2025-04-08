@@ -9,30 +9,7 @@ import CTA from '@/components/home/CTA';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const Index = () => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Ensure all components have time to load properly
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 100);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading) {
-    return (
-      <PageLayout>
-        <div className="min-h-[80vh] bg-gray-900">
-          <Skeleton className="w-full h-[80vh] bg-gray-800" />
-        </div>
-        <div className="container-custom section-padding">
-          <Skeleton className="w-full h-72 mb-16 bg-gray-100" />
-          <Skeleton className="w-full h-96 bg-gray-100" />
-        </div>
-      </PageLayout>
-    );
-  }
+  const [isLoading, setIsLoading] = useState(false); // Changed to false for immediate content display
 
   return (
     <PageLayout>
