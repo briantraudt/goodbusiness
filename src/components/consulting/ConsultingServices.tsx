@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, LineChart, Users, Rocket } from 'lucide-react';
 
 const ConsultingServices = () => {
   const services = [
@@ -12,7 +12,8 @@ const ConsultingServices = () => {
         "Business model refinement",
         "Execution frameworks and accountability",
         "KPI development and performance tracking"
-      ]
+      ],
+      icon: <LineChart className="h-10 w-10 text-gb-blue mb-4" />
     },
     {
       title: "Leadership & Team Development",
@@ -22,7 +23,8 @@ const ConsultingServices = () => {
         "Team alignment workshops",
         "Culture building and reinforcement",
         "Conflict resolution and communication improvement"
-      ]
+      ],
+      icon: <Users className="h-10 w-10 text-gb-purple mb-4" />
     },
     {
       title: "Startup Growth & Turnaround",
@@ -32,7 +34,8 @@ const ConsultingServices = () => {
         "Growth strategy and scaling plans",
         "Financial modeling and fundraising support",
         "Turnaround and restructuring"
-      ]
+      ],
+      icon: <Rocket className="h-10 w-10 text-gb-green mb-4" />
     }
   ];
 
@@ -48,10 +51,11 @@ const ConsultingServices = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <div key={index} className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col h-full">
+            <div key={index} className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col h-full items-center text-center">
+              {service.icon}
               <h3 className="text-xl font-bold text-gb-dark mb-3">{service.title}</h3>
               <p className="text-gb-dark/70 mb-6">{service.description}</p>
-              <ul className="space-y-3 mb-6">
+              <ul className="space-y-3 mb-6 text-left w-full">
                 {service.points.map((point, i) => (
                   <li key={i} className="flex items-start">
                     <CheckCircle2 className="h-5 w-5 text-gb-green mr-2 flex-shrink-0 mt-0.5" />
