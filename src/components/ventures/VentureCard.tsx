@@ -1,9 +1,8 @@
 
 import React, { useState } from 'react';
-import { ExternalLink, Plus, X } from 'lucide-react';
+import { ExternalLink, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 
 export interface VentureCardProps {
@@ -14,40 +13,14 @@ export interface VentureCardProps {
     color: string;
     status: string;
     link: string;
+    services: string[]; // Added services to the venture type
   };
   index: number;
 }
 
 const VentureCard = ({ venture, index }: VentureCardProps) => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const [services, setServices] = useState<string[]>([]);
-  const [newService, setNewService] = useState('');
   const { toast } = useToast();
-
-  const handleAddService = () => {
-    if (newService.trim() !== '') {
-      setServices([...services, newService.trim()]);
-      setNewService('');
-      
-      toast({
-        title: "Service Added",
-        description: `${newService} has been added to ${venture.name}'s services.`,
-      });
-    }
-  }
-
-  const handleRemoveService = (index: number) => {
-    const updatedServices = [...services];
-    updatedServices.splice(index, 1);
-    setServices(updatedServices);
-  }
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleAddService();
-    }
-  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
@@ -100,7 +73,7 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
         )}
       </div>
 
-      {/* Services Dialog */}
+      {/* Services Dialog - Now only shows pre-populated services */}
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
         <DialogContent className="sm:max-w-[550px]">
           <DialogHeader>
@@ -113,38 +86,13 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
             <div className="mt-6">
               <h4 className="text-lg font-medium mb-2">Services Provided:</h4>
               
-              <div className="flex items-center gap-2 mb-4">
-                <Input
-                  placeholder="Add a service..."
-                  value={newService}
-                  onChange={(e) => setNewService(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  className="flex-1"
-                />
-                <Button 
-                  size="sm"
-                  onClick={handleAddService}
-                  disabled={!newService.trim()}
-                >
-                  <Plus className="h-4 w-4" />
-                  Add
-                </Button>
-              </div>
-              
               <div className="space-y-2 max-h-[200px] overflow-y-auto">
-                {services.length === 0 ? (
-                  <p className="text-sm text-muted-foreground italic">No services added yet. Add services that were provided for this project.</p>
+                {venture.services.length === 0 ? (
+                  <p className="text-sm text-muted-foreground italic">No services have been added yet.</p>
                 ) : (
-                  services.map((service, idx) => (
+                  venture.services.map((service, idx) => (
                     <div key={idx} className="flex items-center justify-between bg-secondary/50 p-2 rounded-md">
                       <span>{service}</span>
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        onClick={() => handleRemoveService(idx)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
                     </div>
                   ))
                 )}

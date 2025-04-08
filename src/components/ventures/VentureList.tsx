@@ -9,7 +9,14 @@ const ventures = [
     description: "SideStage helps music fans enjoy live shows without experiencing them through a phone screen. Through our platform, fans can access professional-quality videos of concerts they attended, share their favorite moments, and connect with other attendees.",
     color: "border-gb-blue",
     status: "In Development",
-    link: "#"
+    link: "#",
+    services: [
+      "Mobile App Design",
+      "UX Research",
+      "Branding Strategy",
+      "Technical Architecture",
+      "Product Strategy"
+    ]
   },
   {
     name: "Pardners",
@@ -17,7 +24,14 @@ const ventures = [
     description: "Pardners is a community platform that brings together like-minded individuals through shared interests, facilitating meaningful connections and in-person gatherings. We're building tools to help people move from online interaction to real-world relationships.",
     color: "border-gb-green",
     status: "Coming Soon",
-    link: "#"
+    link: "#",
+    services: [
+      "Product Vision",
+      "Wireframing",
+      "User Testing",
+      "Community Strategy",
+      "Frontend Development"
+    ]
   },
   {
     name: "Rated JC",
@@ -25,7 +39,14 @@ const ventures = [
     description: "Rated JC provides thoughtful, nuanced reviews of movies, TV shows, books, and games from a Christian perspective. We help families make informed decisions about media consumption while fostering meaningful conversations about faith and culture.",
     color: "border-gb-purple",
     status: "Beta Launch",
-    link: "#"
+    link: "#",
+    services: [
+      "Website Design",
+      "Content Strategy",
+      "SEO Optimization",
+      "Brand Identity",
+      "User Engagement Metrics"
+    ]
   }
 ];
 
