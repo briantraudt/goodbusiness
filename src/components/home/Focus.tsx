@@ -10,7 +10,7 @@ const Focus = () => {
   
   const focusAreas = [
     {
-      title: "Consulting for leaders and founders",
+      title: "Launch Services",
       description: "We help executives and entrepreneurs solve their toughest challenges, from strategy to execution.",
       icon: <Users className="h-10 w-10 text-gb-blue" />,
       link: "/consulting",
