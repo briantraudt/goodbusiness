@@ -43,7 +43,7 @@ const Pillars = () => {
               <div className="flex flex-col items-center text-center">
                 <div className="mb-6">{pillar.icon}</div>
                 <h3 className="text-xl font-bold text-gb-dark mb-3">{pillar.title}</h3>
-                <p className="text-gb-dark/70">{pillar.description}</p>
+                <p className="text-gb-dark/70 text-base md:text-lg">{pillar.description}</p>
               </div>
             </Card>
           ))}

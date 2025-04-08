@@ -44,7 +44,7 @@ const Focus = () => {
             <div key={index} className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col h-full">
               {area.icon}
               <h3 className="text-xl font-bold text-gb-dark mb-3">{area.title}</h3>
-              <p className="text-gb-dark/70 mb-6">{area.description}</p>
+              <p className="text-gb-dark/70 mb-6 text-base md:text-lg">{area.description}</p>
               <div className="mt-auto">
                 <Button asChild variant="outline" className="border-gb-blue text-gb-blue hover:bg-gb-blue/5">
                   <Link to={area.link}>
