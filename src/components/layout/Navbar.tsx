@@ -26,7 +26,7 @@ const Navbar = () => {
         <div className={`${isMobile ? 'flex-1 text-center' : ''}`}>
           <Link to="/" className={`flex ${isMobile ? 'justify-center' : ''} items-center`}>
             <span className="font-sans text-2xl md:text-3xl font-bold text-[#333333]">
-              Go<span className="text-gb-green">o</span>d Business
+              Business<span className="text-gb-green">Launchpad</span>
             </span>
           </Link>
         </div>
