@@ -34,20 +34,20 @@ const Focus = () => {
 
   return (
     <section className="bg-white">
-      <div className="container-custom section-padding">
-        <div className="text-center mb-12">
+      <div className="container-custom py-12 md:py-24">
+        <div className="text-center mb-8 md:mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Current Focus Areas</h2>
-          <p className="mt-4 text-lg text-gb-dark/70 max-w-2xl mx-auto">
+          <p className="mt-3 text-lg text-gb-dark/70 max-w-2xl mx-auto">
             How we're applying our principles to create impact today.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 max-w-5xl mx-auto">
           {focusAreas.map((area, index) => (
-            <div key={index} className={`bg-white p-6 ${isMobile ? 'aspect-square' : ''} rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col h-full`}>
-              <div className="mb-4">{area.icon}</div>
-              <h3 className="text-lg font-bold text-gb-dark mb-2">{area.title}</h3>
-              <p className="text-gb-dark/70 mb-5 text-sm flex-grow">{area.description}</p>
+            <div key={index} className={`bg-white p-4 md:p-6 ${isMobile ? 'aspect-square' : ''} rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col h-full`}>
+              <div className="mb-3 md:mb-4">{area.icon}</div>
+              <h3 className="text-xl md:text-lg font-bold text-gb-dark mb-2">{area.title}</h3>
+              <p className="text-gb-dark/70 mb-4 md:mb-5 text-base flex-grow">{area.description}</p>
               <div className="mt-auto">
                 <Button asChild variant="outline" className="border-gb-blue text-gb-blue hover:bg-gb-blue/5 flex items-center justify-center w-full">
                   <Link to={area.link}>
