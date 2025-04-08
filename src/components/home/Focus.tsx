@@ -17,7 +17,7 @@ const Focus = () => {
       linkText: "Learn More"
     },
     {
-      title: "MVP Development",
+      title: "Product Development",
       description: "We partner with mission-aligned founders building businesses that create lasting value.",
       icon: <LineChart className="h-14 w-14 text-gb-purple" />,
       link: "/contact",
