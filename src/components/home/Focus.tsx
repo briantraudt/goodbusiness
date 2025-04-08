@@ -11,7 +11,7 @@ const Focus = () => {
   const focusAreas = [
     {
       title: "Business Launchpad",
-      description: "We help entrepreneurs bring their vision to life with expert support in concept development, branding, and business launch.",
+      description: "We help entrepreneurs bring their vision to life with expert support in concept development, business formation, branding and more.",
       icon: <Rocket className="h-14 w-14 text-gb-blue" />,
       link: "/consulting",
       linkText: "Learn More"
