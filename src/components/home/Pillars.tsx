@@ -8,22 +8,22 @@ const Pillars = () => {
     {
       title: "Purpose",
       description: 'The most enduring companies are built on purpose where the "why" is more important than the "how".',
-      icon: <Target className="h-14 w-14 text-gb-green" />,
+      icon: <Target className="h-12 w-12 text-gb-green" />,
     },
     {
       title: "People",
       description: "Great businesses are built by great teams who focus on building healthy cultures where people can thrive and do their best work.",
-      icon: <Users className="h-14 w-14 text-gb-blue" />,
+      icon: <Users className="h-12 w-12 text-gb-blue" />,
     },
     {
       title: "Product",
       description: "The best products solve real problems in a way that is intuitive, effective and create value for their users.",
-      icon: <Package className="h-14 w-14 text-gb-purple" />,
+      icon: <Package className="h-12 w-12 text-gb-purple" />,
     },
     {
       title: "Profit",
       description: "Sustainable impact is built on strong, profitable business models that support long-term growth.",
-      icon: <DollarSign className="h-14 w-14 text-gb-yellow" />,
+      icon: <DollarSign className="h-12 w-12 text-gb-yellow" />,
     },
   ];
 
@@ -39,11 +39,11 @@ const Pillars = () => {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {pillars.map((pillar, index) => (
-            <Card key={index} className="p-8 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg">
+            <Card key={index} className="p-6 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg">
               <div className="flex flex-col items-center text-center">
-                <div className="mb-6">{pillar.icon}</div>
-                <h3 className="text-2xl font-bold text-gb-dark mb-3">{pillar.title}</h3>
-                <p className="text-gb-dark/70 text-base md:text-lg">{pillar.description}</p>
+                <div className="mb-5">{pillar.icon}</div>
+                <h3 className="text-xl font-bold text-gb-dark mb-2">{pillar.title}</h3>
+                <p className="text-gb-dark/70 text-sm md:text-base">{pillar.description}</p>
               </div>
             </Card>
           ))}
