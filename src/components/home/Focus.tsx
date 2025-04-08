@@ -33,7 +33,7 @@ const Focus = () => {
   ];
 
   return (
-    <section className="bg-[#F1F0FB]">
+    <section className="bg-[#D3E4FD]">
       <div className="container-custom py-10 md:py-16">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Current Focus Areas</h2>
