@@ -91,14 +91,14 @@ const Ventures = () => {
                         <img 
                           src="/lovable-uploads/35487980-8600-4a91-a5a8-b226968d1e70.png" 
                           alt="SideStage Mobile App" 
-                          className="h-auto w-auto max-h-[500px] rounded-2xl cursor-pointer transition-transform hover:scale-[1.02]" 
+                          className="h-auto w-auto max-h-[500px] rounded-3xl cursor-pointer transition-transform hover:scale-[1.02]" 
                         />
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-[80vw] max-h-[90vh] flex items-center justify-center p-0 overflow-hidden">
                         <img 
                           src="/lovable-uploads/35487980-8600-4a91-a5a8-b226968d1e70.png" 
                           alt="SideStage Mobile App - Enlarged" 
-                          className="w-auto h-auto max-h-[90vh] max-w-[80vw] object-contain" 
+                          className="w-auto h-auto max-h-[90vh] max-w-[80vw] object-contain rounded-3xl" 
                         />
                       </DialogContent>
                     </Dialog>
