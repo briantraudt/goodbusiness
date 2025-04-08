@@ -1,8 +1,10 @@
 
-import React from 'react';
-import { ExternalLink } from 'lucide-react';
+import React, { useState } from 'react';
+import { ExternalLink, Plus, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
 
 export interface VentureCardProps {
   venture: {
@@ -17,6 +19,36 @@ export interface VentureCardProps {
 }
 
 const VentureCard = ({ venture, index }: VentureCardProps) => {
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+  const [services, setServices] = useState<string[]>([]);
+  const [newService, setNewService] = useState('');
+  const { toast } = useToast();
+
+  const handleAddService = () => {
+    if (newService.trim() !== '') {
+      setServices([...services, newService.trim()]);
+      setNewService('');
+      
+      toast({
+        title: "Service Added",
+        description: `${newService} has been added to ${venture.name}'s services.`,
+      });
+    }
+  }
+
+  const handleRemoveService = (index: number) => {
+    const updatedServices = [...services];
+    updatedServices.splice(index, 1);
+    setServices(updatedServices);
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAddService();
+    }
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
       <div>
@@ -31,11 +63,13 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
           <p className="text-gb-dark/70 mb-6">
             {venture.description}
           </p>
-          <Button asChild variant="outline" className="mt-auto inline-flex items-center">
-            <a href={venture.link} target="_blank" rel="noopener noreferrer">
-              Learn More
-              <ExternalLink className="ml-2 h-4 w-4" />
-            </a>
+          <Button 
+            variant="outline" 
+            className="mt-auto inline-flex items-center"
+            onClick={() => setIsDetailsOpen(true)}
+          >
+            Learn More
+            <ExternalLink className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </div>
@@ -65,6 +99,72 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
           </div>
         )}
       </div>
+
+      {/* Services Dialog */}
+      <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+        <DialogContent className="sm:max-w-[550px]">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">{venture.name} Services</DialogTitle>
+          </DialogHeader>
+          
+          <div className="py-4">
+            <p className="mb-4 text-muted-foreground">{venture.description}</p>
+            
+            <div className="mt-6">
+              <h4 className="text-lg font-medium mb-2">Services Provided:</h4>
+              
+              <div className="flex items-center gap-2 mb-4">
+                <Input
+                  placeholder="Add a service..."
+                  value={newService}
+                  onChange={(e) => setNewService(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className="flex-1"
+                />
+                <Button 
+                  size="sm"
+                  onClick={handleAddService}
+                  disabled={!newService.trim()}
+                >
+                  <Plus className="h-4 w-4" />
+                  Add
+                </Button>
+              </div>
+              
+              <div className="space-y-2 max-h-[200px] overflow-y-auto">
+                {services.length === 0 ? (
+                  <p className="text-sm text-muted-foreground italic">No services added yet. Add services that were provided for this project.</p>
+                ) : (
+                  services.map((service, idx) => (
+                    <div key={idx} className="flex items-center justify-between bg-secondary/50 p-2 rounded-md">
+                      <span>{service}</span>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={() => handleRemoveService(idx)}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-between mt-4">
+            <Button variant="outline" onClick={() => setIsDetailsOpen(false)}>
+              Close
+            </Button>
+            <Button asChild>
+              <a href={venture.link} target="_blank" rel="noopener noreferrer">
+                Visit Project
+                <ExternalLink className="ml-2 h-4 w-4" />
+              </a>
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
