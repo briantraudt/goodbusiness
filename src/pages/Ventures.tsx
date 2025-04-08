@@ -85,21 +85,21 @@ const Ventures = () => {
                 </div>
                 <div className={`order-1 md:order-${index % 2 === 0 ? 1 : 2}`}>
                   {index === 0 ? (
-                    // iPhone mockup for SideStage app
+                    // iPhone mockup for SideStage app - made smaller
                     <div className="flex justify-center">
-                      <div className="relative max-w-[280px] w-full">
+                      <div className="relative max-w-[220px] w-full">
                         {/* iPhone frame */}
-                        <div className="relative rounded-[38px] overflow-hidden border-[10px] border-black bg-black shadow-xl" style={{ aspectRatio: '19/40' }}>
+                        <div className="relative rounded-[32px] overflow-hidden border-[8px] border-black bg-black shadow-xl" style={{ aspectRatio: '19/40' }}>
                           {/* iPhone notch */}
-                          <div className="absolute top-0 left-0 right-0 h-6 bg-black z-10 flex justify-center">
-                            <div className="w-1/3 h-6 bg-black rounded-b-xl"></div>
+                          <div className="absolute top-0 left-0 right-0 h-5 bg-black z-10 flex justify-center">
+                            <div className="w-1/3 h-5 bg-black rounded-b-xl"></div>
                           </div>
                           
                           {/* App screenshot */}
                           <img 
                             src="/lovable-uploads/a08f6011-f5e6-49bb-9800-07a822a27077.png" 
                             alt="SideStage App Interface" 
-                            className="w-full h-full object-cover rounded-3xl"
+                            className="w-full h-full object-cover rounded-2xl"
                           />
                         </div>
                       </div>
