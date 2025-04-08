@@ -10,7 +10,7 @@ const Focus = () => {
   
   const focusAreas = [
     {
-      title: "Launch Services",
+      title: "Business Launchpad",
       description: "We help executives and entrepreneurs solve their toughest challenges, from strategy to execution.",
       icon: <Rocket className="h-10 w-10 text-gb-blue" />,
       link: "/consulting",
