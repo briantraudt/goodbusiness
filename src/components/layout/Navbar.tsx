@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -51,7 +52,7 @@ const Navbar = () => {
         <div className={`${isMobile ? 'flex-1 text-center' : ''}`}>
           <Link to="/" className={`flex ${isMobile ? 'justify-center' : ''} items-center`}>
             <span className="font-sans text-2xl md:text-3xl font-bold text-[#333333]">
-              Go<span className="text-[#4285F4]">o</span>d Business
+              Go<span className="text-[#6554C0]">o</span>d Business
             </span>
           </Link>
         </div>
