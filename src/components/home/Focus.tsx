@@ -18,7 +18,7 @@ const Focus = () => {
     },
     {
       title: "Product Development",
-      description: "Get to market quickly with a focused first version of your product—designed to test ideas, gather feedback, and spark growth.",
+      description: "Get to market quickly with a focused first version of your product to test ideas, gather feedback, and spark growth.",
       icon: <Package className="h-14 w-14 text-gb-purple" />,
       link: "/consulting",
       linkText: "Learn More"
