@@ -3,27 +3,30 @@ import React from 'react';
 import { Users, Building, LineChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Focus = () => {
+  const isMobile = useIsMobile();
+  
   const focusAreas = [
     {
       title: "Consulting for leaders and founders",
       description: "We help executives and entrepreneurs solve their toughest challenges, from strategy to execution.",
-      icon: <Users className="h-12 w-12 text-gb-blue" />,
+      icon: <Users className="h-10 w-10 text-gb-blue" />,
       link: "/consulting",
       linkText: "Learn More"
     },
     {
       title: "Building SideStage, Pardners, and Rated JC",
       description: "We're developing our own ventures that solve meaningful problems in media, community, and faith.",
-      icon: <Building className="h-12 w-12 text-gb-green" />,
+      icon: <Building className="h-10 w-10 text-gb-green" />,
       link: "/ventures",
       linkText: "See Our Ventures"
     },
     {
       title: "Investing in meaningful, scalable businesses",
       description: "We partner with mission-aligned founders building businesses that create lasting value.",
-      icon: <LineChart className="h-12 w-12 text-gb-purple" />,
+      icon: <LineChart className="h-10 w-10 text-gb-purple" />,
       link: "/contact",
       linkText: "Connect With Us"
     },
@@ -32,7 +35,7 @@ const Focus = () => {
   return (
     <section className="bg-white">
       <div className="container-custom section-padding">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Current Focus Areas</h2>
           <p className="mt-4 text-lg text-gb-dark/70 max-w-2xl mx-auto">
             How we're applying our principles to create impact today.
@@ -41,12 +44,12 @@ const Focus = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {focusAreas.map((area, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col h-full">
-              <div className="mb-5">{area.icon}</div>
-              <h3 className="text-xl font-bold text-gb-dark mb-3">{area.title}</h3>
-              <p className="text-gb-dark/70 mb-6 text-sm md:text-base">{area.description}</p>
+            <div key={index} className={`bg-white p-6 ${isMobile ? 'aspect-square' : ''} rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col h-full`}>
+              <div className="mb-4">{area.icon}</div>
+              <h3 className="text-lg font-bold text-gb-dark mb-2">{area.title}</h3>
+              <p className="text-gb-dark/70 mb-5 text-sm flex-grow">{area.description}</p>
               <div className="mt-auto">
-                <Button asChild variant="outline" className="border-gb-blue text-gb-blue hover:bg-gb-blue/5 flex items-center justify-center w-full sm:w-auto">
+                <Button asChild variant="outline" className="border-gb-blue text-gb-blue hover:bg-gb-blue/5 flex items-center justify-center w-full">
                   <Link to={area.link}>
                     {area.linkText}
                   </Link>
