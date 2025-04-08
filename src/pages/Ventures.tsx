@@ -89,8 +89,8 @@ const Ventures = () => {
                     <Card className="overflow-hidden border-0 shadow-lg rounded-lg">
                       <CardContent className="p-0">
                         <img 
-                          src="/lovable-uploads/0efec4ca-95c3-4b94-96ab-43462716cebc.png" 
-                          alt="SideStage App Preview" 
+                          src="/lovable-uploads/571d6a60-0820-4bcc-9d71-2cf9afcc81e4.png" 
+                          alt="SideStage App Interface" 
                           className="w-full h-auto object-cover"
                         />
                       </CardContent>
