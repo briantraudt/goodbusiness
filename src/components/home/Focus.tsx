@@ -11,21 +11,21 @@ const Focus = () => {
   const focusAreas = [
     {
       title: "Business Launchpad",
-      description: "We help entrepreneurs bring their vision to life with expert support in concept development, business formation, branding and more.",
+      description: "Bring your vision to life with expert support in concept development, business formation, branding, and more.",
       icon: <Rocket className="h-14 w-14 text-gb-blue" />,
       link: "/consulting",
       linkText: "Learn More"
     },
     {
       title: "Product Development",
-      description: "We develop the first version of your product so you can get to market quickly, test ideas, and gain valuable customer feedback.",
+      description: "Get to market quickly with a focused first version of your product—designed to test ideas, gather feedback, and spark growth.",
       icon: <Package className="h-14 w-14 text-gb-purple" />,
       link: "/consulting",
       linkText: "Learn More"
     },
     {
       title: "GTM Strategy",
-      description: "We develop custom go-to-market strategies so you can launch with clarity, connect with your audience, and scale effectively.",
+      description: "Launch with clarity using a tailored go-to-market strategy built to connect with your audience and scale effectively.",
       icon: <Target className="h-14 w-14 text-gb-green" />,
       link: "/consulting",
       linkText: "Learn More"
