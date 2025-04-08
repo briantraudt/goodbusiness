@@ -22,8 +22,8 @@ const ventures = [
     name: "Pardners",
     tagline: "Helping people connect through shared affinities and real-life events.",
     description: "Pardners is a community platform that brings together like-minded individuals through shared interests, facilitating meaningful connections and in-person gatherings. We're building tools to help people move from online interaction to real-world relationships.",
-    color: "border-gb-green",
-    status: "Coming Soon",
+    color: "border-gb-blue",
+    status: "In Development",
     link: "#",
     services: [
       "Product Vision",
