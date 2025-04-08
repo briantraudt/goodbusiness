@@ -32,7 +32,7 @@ const Pillars = () => {
 
   return (
     <section className="bg-gray-50">
-      <div className="container-custom py-12 md:py-24">
+      <div className="container-custom py-10 md:py-16">
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Pillars of a Good Business</h2>
           <p className="mt-3 text-lg text-gb-dark/70 max-w-2xl mx-auto">
