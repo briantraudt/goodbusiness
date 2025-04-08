@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Rocket, Target, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -24,7 +25,7 @@ const Focus = () => {
     },
     {
       title: "GTM Strategy",
-      description: "We're developing our own ventures that solve meaningful problems in media, community, and faith.",
+      description: "We develop custom go-to-market strategies so you can launch with clarity, connect with your audience, and grow with confidence.",
       icon: <Target className="h-14 w-14 text-gb-green" />,
       link: "/ventures",
       linkText: "See Our Ventures"
