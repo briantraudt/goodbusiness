@@ -12,7 +12,7 @@ const Pillars = () => {
     },
     {
       title: "People",
-      description: "Great businesses are built by great teams. Focus on building healthy cultures where people can thrive and do their best work.",
+      description: "Great businesses are built by great teams who focus on building healthy cultures where people can thrive and do their best work.",
       icon: <Users className="h-14 w-14 text-gb-blue" />,
     },
     {
