@@ -76,7 +76,7 @@ const Consulting = () => {
           <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl font-bold text-gb-dark mb-6">Services We Offer</h2>
             <p className="text-lg text-gb-dark/80">
-              Our consulting approach is hands-on and results-focused. We work closely with leaders to solve real problems and create lasting change.
+              Our consulting approach is hands-on and results-focused.
             </p>
           </div>
 
