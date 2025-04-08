@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Rocket, Target, LineChart } from 'lucide-react';
+import { Rocket, Target, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -19,7 +18,7 @@ const Focus = () => {
     {
       title: "Product Development",
       description: "We develop the first version of your product so you can get to market quickly, test ideas, and gain valuable customer feedback.",
-      icon: <LineChart className="h-14 w-14 text-gb-purple" />,
+      icon: <Package className="h-14 w-14 text-gb-purple" />,
       link: "/consulting",
       linkText: "Learn More"
     },
