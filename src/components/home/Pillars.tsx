@@ -22,7 +22,7 @@ const Pillars = () => {
     },
     {
       title: "Profit",
-      description: "Sustainable impact requires sustainable economics. We create business models that generate healthy margins and responsible growth.",
+      description: "Sustainable impact requires sustainable economics. Create business models that generate healthy margins and responsible growth.",
       icon: <DollarSign className="h-14 w-14 text-gb-yellow" />,
     },
   ];
