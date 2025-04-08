@@ -85,12 +85,12 @@ const Ventures = () => {
                 </div>
                 <div className={`order-1 md:order-${index % 2 === 0 ? 1 : 2} flex ${index % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
                   {index === 0 ? (
-                    // iPhone mockup for SideStage app - using the new image
+                    // iPhone mockup for SideStage app - with rounded corners
                     <div className="flex justify-end pr-0 md:pr-6">
                       <img 
                         src="/lovable-uploads/35487980-8600-4a91-a5a8-b226968d1e70.png" 
                         alt="SideStage Mobile App" 
-                        className="h-auto w-auto max-h-[500px]"
+                        className="h-auto w-auto max-h-[500px] rounded-2xl"
                       />
                     </div>
                   ) : (
