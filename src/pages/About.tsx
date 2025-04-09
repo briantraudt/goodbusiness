@@ -30,7 +30,7 @@ const About = () => {
               <img 
                 src="/lovable-uploads/498e129d-9256-4a33-8c97-44d8418ea502.png" 
                 alt="Founder of Good Business" 
-                className="rounded-lg shadow-md w-full max-w-md h-auto"
+                className="rounded-lg shadow-md w-full max-w-xs h-auto"
               />
             </div>
             <div>
