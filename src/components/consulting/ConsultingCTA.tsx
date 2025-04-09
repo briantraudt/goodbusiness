@@ -9,7 +9,7 @@ const ConsultingCTA = () => {
     <section className="bg-gb-dark text-white">
       <div className="container-custom py-20">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to start building a better business?</h2>
+          <h2 className="text-3xl font-bold mb-6">Ready to start building a Good Business?</h2>
           <p className="text-xl text-white/80 mb-8">
             Let's discuss how we can help you achieve your business goals and create lasting impact.
           </p>
