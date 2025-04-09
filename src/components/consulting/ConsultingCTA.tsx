@@ -10,7 +10,7 @@ const ConsultingCTA = () => {
       <div className="container-custom py-20">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-6">
-            Ready to start building a G<span className="text-gb-green">o</span>od Business?
+            Ready to start building a Go<span className="text-gb-green">o</span>d Business?
           </h2>
           <p className="text-xl text-white/80 mb-8">
             Let's discuss how we can help you achieve your business goals and create lasting impact.
