@@ -26,13 +26,12 @@ const About = () => {
       <section className="bg-white">
         <div className="container-custom py-20">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="aspect-square bg-gray-200 rounded-md overflow-hidden">
-                {/* Placeholder for founder image */}
-                <div className="w-full h-full flex items-center justify-center bg-gb-blue/10 text-gb-blue">
-                  Founder Photo
-                </div>
-              </div>
+            <div className="flex justify-center">
+              <img 
+                src="/lovable-uploads/498e129d-9256-4a33-8c97-44d8418ea502.png" 
+                alt="Founder of Good Business" 
+                className="rounded-lg shadow-md w-full max-w-md h-auto"
+              />
             </div>
             <div>
               <h2 className="text-3xl font-bold text-gb-dark mb-6">Our Founder</h2>
