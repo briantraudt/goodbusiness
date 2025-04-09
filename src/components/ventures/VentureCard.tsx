@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -104,8 +104,9 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
           </Dialog>
         ) : (
           <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-            <div className="w-full h-full flex items-center justify-center bg-gb-blue/10 text-gb-blue">
-              {venture.name} Preview
+            <div className="w-full h-full flex flex-col items-center justify-center bg-gb-green/10 text-gb-green">
+              <Clock size={64} strokeWidth={1.5} className="mb-3" />
+              <p className="text-lg font-medium">Coming Soon</p>
             </div>
           </div>
         )}
