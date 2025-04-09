@@ -38,7 +38,7 @@ const ventures = [
     tagline: "Comprehensive database of movies, shows and books that use the name Jesus Christ dishonorably.",
     description: "In a world where entertainment often disrespects the sacred, we're making it easy to filter what you watch. Search thousands of titles by name, genre, or rating. Instantly see if a show takes the Lord's name in vain—so you and your family can watch with peace of mind.",
     color: "border-gb-green",
-    status: "Active",
+    status: "Beta Launch May 2025",
     link: "#",
     services: [
       "Web Development",
