@@ -36,7 +36,7 @@ const ventures = [
   {
     name: "Rated JC",
     tagline: "Comprehensive database of movies, shows and books that use the name Jesus Christ dishonorably.",
-    description: "Rated JC is a local review platform that helps Jersey City residents find the best places to eat, drink, and shop based on authentic community feedback. We're building a trusted resource that promotes transparency and supports local businesses.",
+    description: "In a world where entertainment often disrespects the sacred, we're making it easy to filter what you watch. Search thousands of titles by name, genre, or rating. Instantly see if a show takes the Lord's name in vain—so you and your family can watch with peace of mind.",
     color: "border-gb-green",
     status: "Active",
     link: "#",
