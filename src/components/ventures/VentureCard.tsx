@@ -138,15 +138,9 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
             </div>
           </div>
 
-          <div className="flex justify-between mt-4">
+          <div className="flex justify-end mt-4">
             <Button variant="outline" onClick={() => setIsDetailsOpen(false)}>
               Close
-            </Button>
-            <Button asChild>
-              <a href={venture.link} target="_blank" rel="noopener noreferrer">
-                Visit Project
-                <ExternalLink className="ml-2 h-4 w-4" />
-              </a>
             </Button>
           </div>
         </DialogContent>
