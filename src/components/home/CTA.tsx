@@ -1,18 +1,30 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 const CTA = () => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  
+  // Preload the CTA background image
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/lovable-uploads/93e6cb06-ef46-496a-9bc6-57e655a4dc18.png";
+    img.onload = () => setImageLoaded(true);
+  }, []);
+
   return (
     <section className="relative text-white bg-gray-900 mt-16">
-      {/* Background Image */}
+      {/* Background Image with loading state */}
       <div className="absolute inset-0 w-full h-full">
+        {!imageLoaded && (
+          <div className="absolute inset-0 bg-gray-800 animate-pulse"></div>
+        )}
         <img 
           src="/lovable-uploads/93e6cb06-ef46-496a-9bc6-57e655a4dc18.png"
           alt="Background" 
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           onError={(e) => {
             console.error('Image failed to load:', e);
             const target = e.target as HTMLImageElement;

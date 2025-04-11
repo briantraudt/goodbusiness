@@ -8,17 +8,26 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const Hero = () => {
   const isMobile = useIsMobile();
-  const [imageLoaded, setImageLoaded] = useState(true); // Changed to true to display content immediately
+  const [imageLoaded, setImageLoaded] = useState(false);
+  
+  // Preload the hero image
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/lovable-uploads/b0ce17ae-914d-4c0a-807f-5fb035cd1a72.png";
+    img.onload = () => setImageLoaded(true);
+  }, []);
   
   return (
     <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gray-900">
-      {/* Background Image */}
+      {/* Background Image with loading state */}
       <div className="absolute inset-0 w-full h-full">
-        {/* Using the image directly */}
+        {!imageLoaded && (
+          <div className="absolute inset-0 bg-gray-800 animate-pulse"></div>
+        )}
         <img 
           src="/lovable-uploads/b0ce17ae-914d-4c0a-807f-5fb035cd1a72.png"
           alt="Background" 
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           onError={(e) => {
             console.error('Image failed to load:', e);
             const target = e.target as HTMLImageElement;
