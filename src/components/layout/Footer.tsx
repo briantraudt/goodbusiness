@@ -1,10 +1,17 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  
+  // Handle smooth scrolling to sections
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
   
   return (
     <footer className="bg-gb-dark text-white">
@@ -61,29 +68,44 @@ const Footer = () => {
             <h4 className="font-serif text-xl font-bold mb-4">Navigation</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-gray-300 hover:text-gb-green transition-colors">
+                <button 
+                  onClick={() => scrollToSection('home')} 
+                  className="text-gray-300 hover:text-gb-green transition-colors"
+                >
                   Home
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/about" className="text-gray-300 hover:text-gb-green transition-colors">
+                <button 
+                  onClick={() => scrollToSection('about')} 
+                  className="text-gray-300 hover:text-gb-green transition-colors"
+                >
                   About
-                </Link>
+                </button>
               </li>
               <li>
-                <Link to="/consulting" className="text-gray-300 hover:text-gb-green transition-colors">
-                  Consulting
-                </Link>
+                <button 
+                  onClick={() => scrollToSection('services')} 
+                  className="text-gray-300 hover:text-gb-green transition-colors"
+                >
+                  Services
+                </button>
               </li>
               <li>
-                <Link to="/ventures" className="text-gray-300 hover:text-gb-green transition-colors">
-                  Ventures
-                </Link>
+                <button 
+                  onClick={() => scrollToSection('projects')} 
+                  className="text-gray-300 hover:text-gb-green transition-colors"
+                >
+                  Projects
+                </button>
               </li>
               <li>
-                <Link to="/contact" className="text-gray-300 hover:text-gb-green transition-colors">
+                <button 
+                  onClick={() => scrollToSection('contact')} 
+                  className="text-gray-300 hover:text-gb-green transition-colors"
+                >
                   Contact
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
