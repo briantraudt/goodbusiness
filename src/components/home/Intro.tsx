@@ -8,10 +8,10 @@ const Intro = () => {
       <div className="container-custom section-padding">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-xl md:text-2xl text-gb-dark/80 leading-relaxed">
-            "THE TWO MOST IMPORTANT DAYS IN YOUR LIFE ARE THE DAY YOU ARE BORN AND THE DAY YOU FIND OUT WHY."
+            "THE BEST WAY TO PREDICT THE FUTURE IS TO BUILD IT - FAST."
           </p>
           <p className="text-lg text-gb-dark/70 mt-4">
-            — Mark Twain
+            — Our guiding principle
           </p>
         </div>
       </div>

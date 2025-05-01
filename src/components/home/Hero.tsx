@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Rocket } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -42,21 +42,25 @@ const Hero = () => {
       <div className="container-custom section-padding flex flex-col items-center text-center relative z-10">
         <div className={`${isMobile ? '-mt-36' : '-mt-32'} mb-auto`}>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl">
-            We Build Things That Transform Lives
+            From Idea to App in Record Time
           </h1>
+          <p className="mt-6 text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
+            Rapid prototyping and development services that turn your vision into reality 
+            without the long wait. Build better software, faster.
+          </p>
         </div>
         
         <div className="mt-8 flex flex-col sm:flex-row gap-4">
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-xl flex items-center justify-center">
             <Link to="/contact">
-              Work With Us
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              Start Your Project
+              <Rocket className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
           
           <Button asChild variant="outline" className="border-white text-white hover:bg-white/10 hover:text-white py-6 px-8 text-xl font-semibold bg-black/40 flex items-center justify-center">
             <Link to="/ventures">
-              Our Projects
+              See Our Work
             </Link>
           </Button>
         </div>

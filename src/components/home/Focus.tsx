@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Rocket, Target, Package } from 'lucide-react';
+import { Rocket, Component, Database } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -10,23 +10,23 @@ const Focus = () => {
   
   const focusAreas = [
     {
-      title: "Business Launchpad",
-      description: "Bring your vision to life with expert support in concept development, business formation, branding, and more.",
+      title: "Rapid Prototyping",
+      description: "Turn ideas into interactive prototypes in days, not months. Test concepts quickly and iterate based on real feedback.",
       icon: <Rocket className="h-12 w-12 text-gb-blue" />,
       link: "/consulting",
       linkText: "Learn More"
     },
     {
-      title: "Product Development",
-      description: "Get to market quickly with a focused first version of your product to test ideas, gather feedback, and spark growth.",
-      icon: <Package className="h-12 w-12 text-gb-purple" />,
+      title: "MVP Development",
+      description: "Build lean, focused products that deliver value immediately. Launch faster and validate your market with minimal investment.",
+      icon: <Component className="h-12 w-12 text-gb-purple" />,
       link: "/consulting",
       linkText: "Learn More"
     },
     {
-      title: "Growth Strategy",
-      description: "Launch with clarity using a tailored go-to-market strategy built to connect with your audience and scale effectively.",
-      icon: <Target className="h-12 w-12 text-gb-green" />,
+      title: "Scaling Solutions",
+      description: "Expand your successful prototype into a full-featured application ready for growth, without sacrificing speed or quality.",
+      icon: <Database className="h-12 w-12 text-gb-green" />,
       link: "/consulting",
       linkText: "Learn More"
     },
@@ -36,9 +36,9 @@ const Focus = () => {
     <section className="bg-[#F1F0FB]/30">
       <div className="container-custom py-10 md:py-16">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Areas of Expertise</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Development at Speed</h2>
           <p className="mt-3 text-lg text-gb-dark/70 max-w-2xl mx-auto">
-            A good start is the beginning of a great mission.
+            Skip the lengthy development cycles and get to market faster
           </p>
         </div>
         
