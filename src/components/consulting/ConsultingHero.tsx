@@ -7,10 +7,10 @@ const ConsultingHero = () => {
       <div className="container-custom py-20">
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Consulting Services
+            Rapid Software Development
           </h1>
           <p className="text-xl text-white/80">
-            We don't just consult—we build. We come alongside leaders and help them execute.
+            We take your ideas from concept to market in days, not months. Skip the bureaucracy and build what matters.
           </p>
         </div>
       </div>
