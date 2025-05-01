@@ -8,25 +8,6 @@ import Focus from '@/components/home/Focus';
 import CTA from '@/components/home/CTA';
 import Benefits from '@/components/home/Benefits';
 
-// Import content from About page
-import { AboutHero, AboutMission, AboutValues, AboutTeam } from '@/pages/About';
-
-// Import content from Consulting page
-import ConsultingHero from '@/components/consulting/ConsultingHero';
-import ConsultingServices from '@/components/consulting/ConsultingServices';
-import ConsultingProcess from '@/components/consulting/ConsultingProcess';
-import ConsultingClients from '@/components/consulting/ConsultingClients';
-import ConsultingCTA from '@/components/consulting/ConsultingCTA';
-
-// Import content from Ventures page
-import VentureHero from '@/components/ventures/VentureHero';
-import VentureList from '@/components/ventures/VentureList';
-import InvestmentPhilosophy from '@/components/ventures/InvestmentPhilosophy';
-import VenturesCTA from '@/components/ventures/VenturesCTA';
-
-// Import Contact page content
-import { ContactForm, ContactInfo } from '@/pages/Contact';
-
 const Index = () => {
   // Preload critical images when the component mounts
   useEffect(() => {
@@ -45,47 +26,11 @@ const Index = () => {
 
   return (
     <PageLayout>
-      {/* Home Section */}
-      <section id="home">
-        <Hero />
-        <Intro />
-        <Focus />
-        <Benefits />
-      </section>
-
-      {/* About Section */}
-      <section id="about" className="scroll-mt-20">
-        <AboutHero />
-        <AboutMission />
-        <AboutValues />
-        <AboutTeam />
-        <Pillars />
-      </section>
-
-      {/* Services Section */}
-      <section id="services" className="scroll-mt-20">
-        <ConsultingHero />
-        <ConsultingServices />
-        <ConsultingProcess />
-        <ConsultingClients />
-        <ConsultingCTA />
-      </section>
-
-      {/* Projects Section */}
-      <section id="projects" className="scroll-mt-20">
-        <VentureHero />
-        <VentureList />
-        <InvestmentPhilosophy />
-        <VenturesCTA />
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="scroll-mt-20">
-        <ContactInfo />
-        <ContactForm />
-      </section>
-
-      {/* Final CTA */}
+      <Hero />
+      <Intro />
+      <Focus />
+      <Benefits />
+      <Pillars />
       <CTA />
     </PageLayout>
   );

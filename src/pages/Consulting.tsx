@@ -12,8 +12,8 @@ const Consulting = () => {
     <PageLayout>
       <ConsultingHero />
       <ConsultingServices />
-      <ConsultingProcess />
       <ConsultingClients />
+      <ConsultingProcess />
       <ConsultingCTA />
     </PageLayout>
   );
