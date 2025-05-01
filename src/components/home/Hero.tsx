@@ -42,7 +42,7 @@ const Hero = () => {
       <div className="container-custom section-padding flex flex-col items-center text-center relative z-10">
         <div className={`${isMobile ? '-mt-36' : '-mt-32'} mb-auto`}>
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl">
-            From Idea to APP in 7 Days
+            Idea to Product in 7 Days
           </h1>
           <p className="mt-6 text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
             Rapid prototyping and development services that turn your vision into reality 
