@@ -1,93 +1,51 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
   const isMobile = useIsMobile();
-
-  // Handle smooth scrolling to sections
-  const scrollToSection = (sectionId: string) => {
-    setIsMenuOpen(false);
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
-  // Update active section based on scroll position
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ["home", "about", "services", "projects", "contact"];
-      const scrollPosition = window.scrollY + 100;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const offsetTop = element.offsetTop;
-          const offsetHeight = element.offsetHeight;
-          
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const menuItems = [
-    { name: "Home", id: "home" },
-    { name: "About", id: "about" },
-    { name: "Services", id: "services" },
-    { name: "Projects", id: "projects" },
-    { name: "Contact", id: "contact" },
-  ];
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const menuItems = [
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about" },
+    { name: "Services", path: "/consulting" },
+    { name: "Projects", path: "/projects" },
+  ];
+
   return (
     <nav className="bg-white/90 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-100">
       <div className="container-custom py-4 flex justify-between items-center">
         <div className={`${isMobile ? 'flex-1 text-center' : ''}`}>
-          <button 
-            onClick={() => scrollToSection('home')}
-            className={`flex ${isMobile ? 'justify-center' : ''} items-center`}
-          >
+          <Link to="/" className={`flex ${isMobile ? 'justify-center' : ''} items-center`}>
             <span className="font-sans text-2xl md:text-3xl font-bold text-[#333333]">
               Go<span className="text-gb-green">o</span>d Business
             </span>
-          </button>
+          </Link>
         </div>
         
         <div className="hidden md:flex items-center space-x-8">
           <ul className="flex space-x-8">
             {menuItems.map((item) => (
               <li key={item.name}>
-                <button
-                  onClick={() => scrollToSection(item.id)}
-                  className={`text-gb-dark hover:text-gb-green transition-colors font-medium text-lg ${
-                    activeSection === item.id ? 'text-gb-green' : ''
-                  }`}
+                <Link
+                  to={item.path}
+                  className="text-gb-dark hover:text-gb-green transition-colors font-medium text-lg"
                 >
                   {item.name}
-                </button>
+                </Link>
               </li>
             ))}
           </ul>
-          <Button 
-            className="bg-gb-green hover:bg-gb-green/90 text-white text-lg flex items-center justify-center"
-            onClick={() => scrollToSection('contact')}
-          >
-            Work With Us
+          <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white text-lg flex items-center justify-center">
+            <Link to="/contact">Work With Us</Link>
           </Button>
         </div>
 
@@ -106,22 +64,20 @@ const Navbar = () => {
             <ul className="flex flex-col space-y-4">
               {menuItems.map((item) => (
                 <li key={item.name}>
-                  <button
-                    className={`text-gb-dark hover:text-gb-green transition-colors font-medium text-lg block py-2 w-full text-left ${
-                      activeSection === item.id ? 'text-gb-green' : ''
-                    }`}
-                    onClick={() => scrollToSection(item.id)}
+                  <Link
+                    to={item.path}
+                    className="text-gb-dark hover:text-gb-green transition-colors font-medium text-lg block py-2"
+                    onClick={() => setIsMenuOpen(false)}
                   >
                     {item.name}
-                  </button>
+                  </Link>
                 </li>
               ))}
               <li>
-                <Button 
-                  className="bg-gb-green hover:bg-gb-green/90 text-white w-full mt-2 text-lg flex items-center justify-center"
-                  onClick={() => scrollToSection('contact')}
-                >
-                  Work With Us
+                <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white w-full mt-2 text-lg flex items-center justify-center">
+                  <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
+                    Work With Us
+                  </Link>
                 </Button>
               </li>
             </ul>
