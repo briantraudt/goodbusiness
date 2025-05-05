@@ -1,5 +1,8 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const ConsultingProcess = () => {
   return (
@@ -15,10 +18,15 @@ const ConsultingProcess = () => {
                 <div className="hidden md:block w-px h-full bg-gray-200 mx-auto mt-2"></div>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gb-dark mb-2">Discovery & Diagnosis</h3>
+                <h3 className="text-xl font-bold text-gb-dark mb-2">Contact Us</h3>
                 <p className="text-gb-dark/80 mb-4">
-                  We start by understanding your business, challenges, and goals through in-depth conversations and analysis.
+                  Share your idea with us through our simple submission form. Tell us about the problem you're solving and your vision for the solution.
                 </p>
+                <Link to="/contact">
+                  <Button variant="outline" className="group">
+                    Submit your idea <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
               </div>
             </div>
             
@@ -28,9 +36,9 @@ const ConsultingProcess = () => {
                 <div className="hidden md:block w-px h-full bg-gray-200 mx-auto mt-2"></div>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gb-dark mb-2">Strategy Development</h3>
+                <h3 className="text-xl font-bold text-gb-dark mb-2">Evaluation</h3>
                 <p className="text-gb-dark/80 mb-4">
-                  We collaborate with you to create a tailored plan that addresses your specific needs and opportunities.
+                  We evaluate your idea for uniqueness, scalability, and revenue potential. Our team assesses market fit and technical feasibility to determine the best path forward.
                 </p>
               </div>
             </div>
@@ -41,9 +49,9 @@ const ConsultingProcess = () => {
                 <div className="hidden md:block w-px h-full bg-gray-200 mx-auto mt-2"></div>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gb-dark mb-2">Implementation Support</h3>
+                <h3 className="text-xl font-bold text-gb-dark mb-2">7-Day Prototype</h3>
                 <p className="text-gb-dark/80 mb-4">
-                  Unlike traditional consultants, we roll up our sleeves and help you execute the plan, making adjustments as needed.
+                  We build a working prototype in just 7 days, giving you something tangible to test and evaluate. Together, we'll discuss if the idea has merit and determine next steps.
                 </p>
               </div>
             </div>
@@ -53,9 +61,9 @@ const ConsultingProcess = () => {
                 <div className="bg-gb-yellow text-white h-10 w-10 rounded-full flex items-center justify-center font-bold text-lg">4</div>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gb-dark mb-2">Ongoing Partnership</h3>
+                <h3 className="text-xl font-bold text-gb-dark mb-2">Market-Ready Product</h3>
                 <p className="text-gb-dark/80 mb-4">
-                  We provide regular check-ins, accountability, and guidance to ensure lasting results and continued growth.
+                  For ideas with proven potential, we complete development of a market-ready product with all the features and polish needed for a successful launch.
                 </p>
               </div>
             </div>
