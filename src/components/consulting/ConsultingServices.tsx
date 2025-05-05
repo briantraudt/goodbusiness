@@ -9,7 +9,7 @@ const ConsultingServices = () => {
       description: "We develop memorable brand identities that resonate with your audience and stand out in the market.",
       points: [
         "Brand strategy and positioning",
-        "Name generation and validation",
+        "Name generation",
         "Visual identity development",
         "Brand guidelines and assets"
       ],
