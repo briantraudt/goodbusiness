@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,11 +13,18 @@ import { useNavigate } from 'react-router-dom';
 import { formSchema, FormValues, defaultValues } from './ContactFormSchema';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
+import emailjs from '@emailjs/browser';
+
+// EmailJS configuration (replace these with your actual values from EmailJS)
+const EMAILJS_SERVICE_ID = 'service_id'; // Replace with your EmailJS service ID
+const EMAILJS_TEMPLATE_ID = 'template_id'; // Replace with your EmailJS template ID
+const EMAILJS_PUBLIC_KEY = 'public_key'; // Replace with your EmailJS public key
 
 const ContactForm = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -53,66 +59,56 @@ const ContactForm = () => {
         undefined: "Not sure yet"
       };
       
-      // Build the email subject and body content
-      const subject = `New Idea Submission: ${data.projectTitle}`;
+      // Prepare template parameters for EmailJS
+      const templateParams = {
+        from_name: `${data.firstName} ${data.lastName}`,
+        from_email: data.email,
+        company: data.company || "Not provided",
+        project_title: data.projectTitle,
+        problem_statement: data.problemStatement,
+        target_market: data.targetMarket,
+        market_size: marketSizeMap[data.marketSize],
+        timeframe: timeframeMap[data.timeframe],
+        budget_range: budgetMap[data.budgetRange],
+        additional_info: data.additionalInfo || "Not provided",
+        to_name: "Brian",  // Recipient's name
+        message: `New idea submission: ${data.projectTitle}`,
+        reply_to: data.email
+      };
       
-      // Create a formatted email body
-      const body = `
-New Idea Submission from Good Business HQ Website
-
-Contact Details:
-- Name: ${data.firstName} ${data.lastName}
-- Email: ${data.email}
-- Company: ${data.company || "Not provided"}
-
-Project Details:
-- Project Title: ${data.projectTitle}
-
-Problem Statement:
-${data.problemStatement}
-
-Target Market:
-${data.targetMarket}
-
-Project Parameters:
-- Market Size: ${marketSizeMap[data.marketSize]}
-- Timeframe: ${timeframeMap[data.timeframe]}
-- Budget Range: ${budgetMap[data.budgetRange]}
-
-Additional Information:
-${data.additionalInfo || "Not provided"}
-
-Submitted on: ${new Date().toLocaleString()}
-`.trim();
-
-      // Create the mailto link
-      const mailToLink = `mailto:brian@goodbusinesshq.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      // Send email using EmailJS
+      const response = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      );
       
-      // Open the user's default email client
-      window.open(mailToLink, '_blank');
-      
-      // Show success message
-      toast({
-        title: "Form prepared for sending!",
-        description: "Your default email client has been opened with the form details. Please review and send the email.",
-      });
-      
-      // Reset the form
-      form.reset();
-      
-      // Redirect to the homepage after a short delay to allow the toast to be seen
-      setTimeout(() => {
-        navigate('/');
-      }, 3000);
-      
+      if (response.status === 200) {
+        // Show success message
+        toast({
+          title: "Idea submitted successfully!",
+          description: "We'll get back to you within 24 hours.",
+        });
+        
+        // Reset the form
+        form.reset();
+        
+        // Redirect to the homepage after a short delay to allow the toast to be seen
+        setTimeout(() => {
+          navigate('/');
+        }, 2000);
+      } else {
+        throw new Error("Failed to submit idea. Please try again.");
+      }
     } catch (error) {
       console.error("Form submission error:", error);
       
-      setFormError("There was an error processing your submission. Please try again.");
+      setFormError("There was an error submitting your idea. Please try again or contact us directly.");
       
       toast({
         title: "Submission error",
-        description: "There was an error preparing your email. Please try again.",
+        description: "There was an error submitting your idea. Please try again.",
         variant: "destructive",
       });
     } finally {
