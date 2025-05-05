@@ -1,23 +1,23 @@
 
 import React from 'react';
-import { Briefcase, Users, Compass } from 'lucide-react';
+import { Lightbulb, Users, Code } from 'lucide-react';
 
 const ConsultingClients = () => {
   const clientTypes = [
     {
-      title: "Small to mid-sized business owners",
-      description: "Established businesses looking to break through growth plateaus or prepare for the next stage of expansion.",
-      icon: <Briefcase className="h-10 w-10 text-gb-blue mb-4" />
+      title: "Individuals with software ideas",
+      description: "Entrepreneurs and visionaries with ideas that need technical expertise to bring their software concepts to life and reach their target market.",
+      icon: <Lightbulb className="h-10 w-10 text-gb-blue mb-4" />
     },
     {
-      title: "Purpose-driven entrepreneurs",
-      description: "Founders who want to build businesses that honor their values while creating exceptional value for customers and stakeholders.",
+      title: "Teams needing execution support",
+      description: "Product teams that need additional technical expertise to accelerate development, overcome challenges, or introduce new technologies.",
       icon: <Users className="h-10 w-10 text-gb-purple mb-4" />
     },
     {
-      title: "Struggling teams or plateaued companies",
-      description: "Organizations facing dysfunction, misalignment, or stalled growth that need help getting back on track.",
-      icon: <Compass className="h-10 w-10 text-gb-green mb-4" />
+      title: "Companies scaling software products",
+      description: "Organizations looking to improve existing products, build new digital offerings, or transform legacy systems into modern applications.",
+      icon: <Code className="h-10 w-10 text-gb-green mb-4" />
     }
   ];
 
@@ -27,7 +27,7 @@ const ConsultingClients = () => {
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-3xl font-bold text-gb-dark mb-6">Who We Work With</h2>
           <p className="text-lg text-gb-dark/80">
-            We work best with leaders who are committed to building businesses with purpose and are ready to execute on their vision.
+            We partner with innovators at every stage to transform software ideas into reality, providing the technical expertise to build, launch, and scale digital products.
           </p>
         </div>
 
