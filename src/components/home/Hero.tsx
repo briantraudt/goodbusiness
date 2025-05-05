@@ -13,7 +13,7 @@ const Hero = () => {
   // Preload the hero image
   useEffect(() => {
     const img = new Image();
-    img.src = "/lovable-uploads/b0ce17ae-914d-4c0a-807f-5fb035cd1a72.png";
+    img.src = "/lovable-uploads/498e129d-9256-4a33-8c97-44d8418ea502.png";
     img.onload = () => setImageLoaded(true);
   }, []);
   
@@ -25,8 +25,8 @@ const Hero = () => {
           <div className="absolute inset-0 bg-gray-800 animate-pulse"></div>
         )}
         <img 
-          src="/lovable-uploads/b0ce17ae-914d-4c0a-807f-5fb035cd1a72.png"
-          alt="Background" 
+          src="/lovable-uploads/498e129d-9256-4a33-8c97-44d8418ea502.png"
+          alt="Software Development" 
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           onError={(e) => {
             console.error('Image failed to load:', e);
