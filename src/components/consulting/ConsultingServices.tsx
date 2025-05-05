@@ -59,13 +59,13 @@ const ConsultingServices = () => {
               key={index} 
               className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col h-full"
             >
-              <div className="flex flex-col items-center text-center mb-6">
+              <div className="flex flex-col items-center text-center mb-3">
                 {service.icon}
                 <h3 className="text-xl font-bold text-gb-dark mb-2">{service.title}</h3>
                 <p className="text-gb-dark/70">{service.description}</p>
               </div>
               
-              <ul className="space-y-3 text-left w-full mt-auto">
+              <ul className="space-y-2 text-left w-full mt-2">
                 {service.points.map((point, i) => (
                   <li key={i} className="flex items-start">
                     <CheckCircle2 className="h-5 w-5 text-gb-green mr-2 flex-shrink-0 mt-0.5" />
