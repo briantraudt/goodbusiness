@@ -10,8 +10,8 @@ const ConsultingClients = () => {
       icon: <Briefcase className="h-10 w-10 text-gb-blue mb-4" />
     },
     {
-      title: "Faith-driven entrepreneurs",
-      description: "Founders who want to build businesses that honor their faith while creating exceptional value for customers and stakeholders.",
+      title: "Purpose-driven entrepreneurs",
+      description: "Founders who want to build businesses that honor their values while creating exceptional value for customers and stakeholders.",
       icon: <Users className="h-10 w-10 text-gb-purple mb-4" />
     },
     {
