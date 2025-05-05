@@ -39,8 +39,11 @@ const Hero = () => {
       </div>
       
       {/* Content */}
-      <div className="container-custom section-padding flex flex-col justify-center h-[80vh] relative z-10">
-        <div className={`text-center mx-auto`}>
+      <div className="container-custom section-padding flex flex-col h-[80vh] relative z-10">
+        {/* Added empty div to push content down */}
+        <div className="flex-grow"></div>
+        
+        <div className="text-center mx-auto">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl mx-auto">
             Idea to APP in 7 Days
           </h1>
