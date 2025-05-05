@@ -12,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { toast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 // Define form validation schema
 const formSchema = z.object({
@@ -37,6 +38,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const Contact = () => {
+  const navigate = useNavigate();
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -61,6 +63,11 @@ const Contact = () => {
       description: "We'll get back to you within 24 hours.",
     });
     form.reset();
+    
+    // Redirect to the homepage after a short delay to allow the toast to be seen
+    setTimeout(() => {
+      navigate('/');
+    }, 2000);
   };
 
   return (
