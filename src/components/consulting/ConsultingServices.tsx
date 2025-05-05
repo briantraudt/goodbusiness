@@ -39,7 +39,7 @@ const ConsultingServices = () => {
     },
     {
       title: "Build & Launch",
-      description: "Our engineers build scalable, maintainable solutions using modern technologies and best practices.",
+      description: "Our engineers build scalable solutions using modern technologies and best practices.",
       points: [
         "Full-stack web development",
         "Mobile app development",
