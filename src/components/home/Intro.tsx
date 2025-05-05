@@ -8,7 +8,9 @@ const Intro = () => {
       <div className="container-custom section-padding">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-xl md:text-2xl text-gb-dark/80 leading-relaxed">
-            "GOOD, FAST AND CHEAP - CHOOSE 3. -US"
+            "GOOD, FAST AND CHEAP - CHOOSE 3."
+            <br />
+            <span className="text-right block mt-2">-US</span>
           </p>
         </div>
       </div>
