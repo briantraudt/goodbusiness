@@ -1,39 +1,39 @@
 
 import React from 'react';
-import { CheckCircle2, LineChart, Users, Rocket } from 'lucide-react';
+import { CheckCircle2, Code, Palette, Rocket } from 'lucide-react';
 
 const ConsultingServices = () => {
   const services = [
     {
-      title: "Strategy & Execution",
-      description: "We help leaders align vision with action and implement the right systems and processes to achieve their goals.",
+      title: "UI/UX Design",
+      description: "We create intuitive, beautiful interfaces that elevate your product and delight your users.",
       points: [
-        "Strategic planning and roadmapping",
-        "Business model refinement",
-        "Execution frameworks and accountability",
-        "KPI development and performance tracking"
+        "User research and journey mapping",
+        "Wireframing and prototyping",
+        "Visual design and brand integration",
+        "Usability testing and refinement"
       ],
-      icon: <LineChart className="h-10 w-10 text-gb-blue mb-4" />
+      icon: <Palette className="h-10 w-10 text-gb-blue mb-4" />
     },
     {
-      title: "Leadership & Team Development",
-      description: "We work with executives and teams to build healthy cultures, improve communication, and resolve dysfunction.",
+      title: "Software Development",
+      description: "Our engineers build scalable, maintainable solutions using modern technologies and best practices.",
       points: [
-        "Leadership coaching and development",
-        "Team alignment workshops",
-        "Culture building and reinforcement",
-        "Conflict resolution and communication improvement"
+        "Full-stack web development",
+        "Mobile app development",
+        "API design and integration",
+        "Cloud architecture and deployment"
       ],
-      icon: <Users className="h-10 w-10 text-gb-purple mb-4" />
+      icon: <Code className="h-10 w-10 text-gb-purple mb-4" />
     },
     {
-      title: "Startup Growth & Turnaround",
-      description: "We help entrepreneurs launch new ventures, navigate pivots, or fix underperforming businesses.",
+      title: "Rapid Prototyping",
+      description: "Turn ideas into interactive products in days, not months, and validate concepts with real users quickly.",
       points: [
-        "Market validation and positioning",
-        "Growth strategy and scaling plans",
-        "Financial modeling and fundraising support",
-        "Turnaround and restructuring"
+        "Concept validation workshops",
+        "MVP development and iteration",
+        "User testing and feedback collection",
+        "Scalable architecture planning"
       ],
       icon: <Rocket className="h-10 w-10 text-gb-green mb-4" />
     }
@@ -43,9 +43,9 @@ const ConsultingServices = () => {
     <section className="bg-white">
       <div className="container-custom py-20">
         <div className="max-w-3xl mx-auto text-center mb-16">
-          <h2 className="text-3xl font-bold text-gb-dark mb-6">Services We Offer</h2>
+          <h2 className="text-3xl font-bold text-gb-dark mb-6">Development Services</h2>
           <p className="text-lg text-gb-dark/80">
-            Our consulting approach is hands-on and results-focused.
+            We build software that delivers value from day one, with a focus on speed and quality.
           </p>
         </div>
 
