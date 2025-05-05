@@ -8,32 +8,32 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const Hero = () => {
   const isMobile = useIsMobile();
-  const [imageLoaded, setImageLoaded] = useState(false);
-  
-  // Preload the hero image
-  useEffect(() => {
-    const img = new Image();
-    img.src = "https://images.unsplash.com/photo-1498050108023-c5249f4df085";
-    img.onload = () => setImageLoaded(true);
-  }, []);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   
   return (
     <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gray-900">
-      {/* Background Image with loading state */}
+      {/* Video Background with loading state */}
       <div className="absolute inset-0 w-full h-full">
-        {!imageLoaded && (
+        {!videoLoaded && (
           <div className="absolute inset-0 bg-gray-800 animate-pulse"></div>
         )}
-        <img 
-          src="https://images.unsplash.com/photo-1498050108023-c5249f4df085"
-          alt="Developer working on code with laptop" 
-          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+          onLoadedData={() => setVideoLoaded(true)}
           onError={(e) => {
-            console.error('Image failed to load:', e);
-            const target = e.target as HTMLImageElement;
+            console.error('Video failed to load:', e);
+            const target = e.target as HTMLVideoElement;
             target.style.display = 'none';
           }}
-        />
+        >
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-light-trails-on-a-highway-at-night-10661-large.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        
         {/* Dark overlay - increased opacity from 60% to 75% */}
         <div className="absolute inset-0 bg-black/75"></div>
       </div>
