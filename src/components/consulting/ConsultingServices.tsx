@@ -19,7 +19,7 @@ const ConsultingServices = () => {
       title: "UI/UX Design",
       description: "We create intuitive, beautiful interfaces that elevate your product and delight your users.",
       points: [
-        "User research and journey mapping",
+        "User Journey Mapping",
         "Wireframing and prototyping",
         "Visual design and brand integration",
         "Usability testing and refinement"
