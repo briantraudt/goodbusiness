@@ -49,6 +49,7 @@ const Hero = () => {
             without the long wait.
             <br />
             Build better software, faster.
+            <br />
           </p>
         </div>
         
