@@ -1,9 +1,20 @@
 
 import React from 'react';
-import { CheckCircle2, Code, Palette, Rocket } from 'lucide-react';
+import { CheckCircle2, Code, Palette, Rocket, Type } from 'lucide-react';
 
 const ConsultingServices = () => {
   const services = [
+    {
+      title: "Naming/Branding",
+      description: "We develop memorable brand identities that resonate with your audience and stand out in the market.",
+      points: [
+        "Brand strategy and positioning",
+        "Name generation and validation",
+        "Visual identity development",
+        "Brand guidelines and assets"
+      ],
+      icon: <Type className="h-10 w-10 text-gb-purple mb-4" />
+    },
     {
       title: "UI/UX Design",
       description: "We create intuitive, beautiful interfaces that elevate your product and delight your users.",
@@ -16,17 +27,6 @@ const ConsultingServices = () => {
       icon: <Palette className="h-10 w-10 text-gb-blue mb-4" />
     },
     {
-      title: "Software Development",
-      description: "Our engineers build scalable, maintainable solutions using modern technologies and best practices.",
-      points: [
-        "Full-stack web development",
-        "Mobile app development",
-        "API design and integration",
-        "Cloud architecture and deployment"
-      ],
-      icon: <Code className="h-10 w-10 text-gb-purple mb-4" />
-    },
-    {
       title: "Rapid Prototyping",
       description: "Turn ideas into interactive products in days, not months, and validate concepts with real users quickly.",
       points: [
@@ -36,13 +36,24 @@ const ConsultingServices = () => {
         "Scalable architecture planning"
       ],
       icon: <Rocket className="h-10 w-10 text-gb-green mb-4" />
+    },
+    {
+      title: "Build & Launch",
+      description: "Our engineers build scalable, maintainable solutions using modern technologies and best practices.",
+      points: [
+        "Full-stack web development",
+        "Mobile app development",
+        "API design and integration",
+        "Cloud architecture and deployment"
+      ],
+      icon: <Code className="h-10 w-10 text-gb-orange mb-4" />
     }
   ];
 
   return (
     <section className="bg-white">
       <div className="container-custom py-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
             <div key={index} className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col h-full items-center text-center">
               {service.icon}
