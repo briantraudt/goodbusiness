@@ -46,7 +46,9 @@ const Hero = () => {
           </h1>
           <p className="mt-6 text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
             Rapid prototyping and development services that turn your vision into reality 
-            without the long wait. Build better software, faster.
+            without the long wait.
+            <br />
+            Build better software, faster.
           </p>
         </div>
         
