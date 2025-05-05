@@ -57,12 +57,15 @@ const ConsultingServices = () => {
           {services.map((service, index) => (
             <div 
               key={index} 
-              className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col aspect-square lg:aspect-auto lg:h-[500px] items-center text-center"
+              className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col h-full"
             >
-              {service.icon}
-              <h3 className="text-xl font-bold text-gb-dark mb-2">{service.title}</h3>
-              <p className="text-gb-dark/70 mb-3">{service.description}</p>
-              <ul className="space-y-1 text-left w-full mt-auto">
+              <div className="flex flex-col items-center text-center mb-6">
+                {service.icon}
+                <h3 className="text-xl font-bold text-gb-dark mb-2">{service.title}</h3>
+                <p className="text-gb-dark/70">{service.description}</p>
+              </div>
+              
+              <ul className="space-y-3 text-left w-full mt-auto">
                 {service.points.map((point, i) => (
                   <li key={i} className="flex items-start">
                     <CheckCircle2 className="h-5 w-5 text-gb-green mr-2 flex-shrink-0 mt-0.5" />
