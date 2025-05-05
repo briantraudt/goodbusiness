@@ -1,30 +1,28 @@
-import React, { useState, useRef } from 'react';
-import { ArrowRight, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { toast } from '@/hooks/use-toast';
-import { useNavigate } from 'react-router-dom';
-import { formSchema, FormValues, defaultValues } from './ContactFormSchema';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Skeleton } from '@/components/ui/skeleton';
-import emailjs from '@emailjs/browser';
 
-// EmailJS configuration (replace these with your actual values from EmailJS)
-const EMAILJS_SERVICE_ID = 'service_id'; // Replace with your EmailJS service ID
-const EMAILJS_TEMPLATE_ID = 'template_id'; // Replace with your EmailJS template ID
-const EMAILJS_PUBLIC_KEY = 'public_key'; // Replace with your EmailJS public key
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigate } from 'react-router-dom';
+import { toast } from '@/hooks/use-toast';
+import { Form } from '@/components/ui/form';
+import { Skeleton } from '@/components/ui/skeleton';
+import { formSchema, FormValues, defaultValues } from './ContactFormSchema';
+import { sendEmail } from './EmailService';
+
+// Import Form Section Components
+import PersonalInfoSection from './FormSections/PersonalInfoSection';
+import ProjectDetailsSection from './FormSections/ProjectDetailsSection';
+import MarketSizeSection from './FormSections/MarketSizeSection';
+import TimeframeSection from './FormSections/TimeframeSection';
+import BudgetSection from './FormSections/BudgetSection';
+import AdditionalInfoSection from './FormSections/AdditionalInfoSection';
+import SubmitButton from './FormSections/SubmitButton';
+import ErrorAlert from './FormSections/ErrorAlert';
 
 const ContactForm = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
-  const formRef = useRef<HTMLFormElement>(null);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -37,52 +35,7 @@ const ContactForm = () => {
     setFormError(null);
     
     try {
-      // Format the data for the email
-      const marketSizeMap = {
-        small: "Small (niche market)",
-        medium: "Medium (specific industry)",
-        large: "Large (broad appeal)"
-      };
-      
-      const timeframeMap = {
-        immediate: "Immediate (ASAP)",
-        "3months": "Within 3 months",
-        "6months": "Within 6 months",
-        flexible: "Flexible"
-      };
-      
-      const budgetMap = {
-        under10k: "Under $10,000",
-        "10to25k": "$10,000 - $25,000",
-        "25to50k": "$25,000 - $50,000",
-        over50k: "Over $50,000",
-        undefined: "Not sure yet"
-      };
-      
-      // Prepare template parameters for EmailJS
-      const templateParams = {
-        from_name: `${data.firstName} ${data.lastName}`,
-        from_email: data.email,
-        company: data.company || "Not provided",
-        project_title: data.projectTitle,
-        problem_statement: data.problemStatement,
-        target_market: data.targetMarket,
-        market_size: marketSizeMap[data.marketSize],
-        timeframe: timeframeMap[data.timeframe],
-        budget_range: budgetMap[data.budgetRange],
-        additional_info: data.additionalInfo || "Not provided",
-        to_name: "Brian",  // Recipient's name
-        message: `New idea submission: ${data.projectTitle}`,
-        reply_to: data.email
-      };
-      
-      // Send email using EmailJS
-      const response = await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_PUBLIC_KEY
-      );
+      const response = await sendEmail(data);
       
       if (response.status === 200) {
         // Show success message
@@ -136,290 +89,29 @@ const ContactForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {formError && (
-          <Alert variant="destructive">
-            <AlertDescription>{formError}</AlertDescription>
-          </Alert>
-        )}
+        <ErrorAlert error={formError} />
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            control={form.control}
-            name="firstName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>First Name</FormLabel>
-                <FormControl>
-                  <Input 
-                    placeholder="Your first name" 
-                    {...field} 
-                    onBlur={() => handleFieldBlur('firstName')}
-                    disabled={isSubmitting}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="lastName"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Last Name</FormLabel>
-                <FormControl>
-                  <Input 
-                    placeholder="Your last name" 
-                    {...field} 
-                    onBlur={() => handleFieldBlur('lastName')}
-                    disabled={isSubmitting}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email Address</FormLabel>
-              <FormControl>
-                <Input 
-                  type="email" 
-                  placeholder="Your email" 
-                  {...field} 
-                  onBlur={() => handleFieldBlur('email')}
-                  disabled={isSubmitting}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+        <PersonalInfoSection 
+          form={form} 
+          isSubmitting={isSubmitting} 
+          handleFieldBlur={handleFieldBlur} 
         />
         
-        <FormField
-          control={form.control}
-          name="company"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Company / Organization</FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="Your company (optional)" 
-                  {...field} 
-                  disabled={isSubmitting}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+        <ProjectDetailsSection 
+          form={form} 
+          isSubmitting={isSubmitting} 
+          handleFieldBlur={handleFieldBlur} 
         />
         
-        <FormField
-          control={form.control}
-          name="projectTitle"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Project Title</FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="A brief title for your software idea" 
-                  {...field} 
-                  onBlur={() => handleFieldBlur('projectTitle')}
-                  disabled={isSubmitting}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <MarketSizeSection form={form} isSubmitting={isSubmitting} />
         
-        <FormField
-          control={form.control}
-          name="problemStatement"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Problem Statement</FormLabel>
-              <FormControl>
-                <Textarea 
-                  placeholder="What problem does your idea solve? Why is it needed?"
-                  className="min-h-[100px]"
-                  {...field} 
-                  onBlur={() => handleFieldBlur('problemStatement')}
-                  disabled={isSubmitting}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <TimeframeSection form={form} isSubmitting={isSubmitting} />
         
-        <FormField
-          control={form.control}
-          name="targetMarket"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Target Market</FormLabel>
-              <FormControl>
-                <Input 
-                  placeholder="Who will use this software? Be as specific as possible."
-                  {...field} 
-                  onBlur={() => handleFieldBlur('targetMarket')}
-                  disabled={isSubmitting}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <BudgetSection form={form} isSubmitting={isSubmitting} />
         
-        <FormField
-          control={form.control}
-          name="marketSize"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>Estimated Market Size</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
-                  disabled={isSubmitting}
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="small" id="market-small" disabled={isSubmitting} />
-                    <Label htmlFor="market-small">Small (niche market)</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="medium" id="market-medium" disabled={isSubmitting} />
-                    <Label htmlFor="market-medium">Medium (specific industry)</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="large" id="market-large" disabled={isSubmitting} />
-                    <Label htmlFor="market-large">Large (broad appeal)</Label>
-                  </div>
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <AdditionalInfoSection form={form} isSubmitting={isSubmitting} />
         
-        <FormField
-          control={form.control}
-          name="timeframe"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>Development Timeframe</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
-                  disabled={isSubmitting}
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="immediate" id="time-immediate" disabled={isSubmitting} />
-                    <Label htmlFor="time-immediate">Immediate (ASAP)</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="3months" id="time-3months" disabled={isSubmitting} />
-                    <Label htmlFor="time-3months">Within 3 months</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="6months" id="time-6months" disabled={isSubmitting} />
-                    <Label htmlFor="time-6months">Within 6 months</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="flexible" id="time-flexible" disabled={isSubmitting} />
-                    <Label htmlFor="time-flexible">Flexible</Label>
-                  </div>
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="budgetRange"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>Budget Range</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
-                  disabled={isSubmitting}
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="under10k" id="budget-under10k" disabled={isSubmitting} />
-                    <Label htmlFor="budget-under10k">Under $10,000</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="10to25k" id="budget-10to25k" disabled={isSubmitting} />
-                    <Label htmlFor="budget-10to25k">$10,000 - $25,000</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="25to50k" id="budget-25to50k" disabled={isSubmitting} />
-                    <Label htmlFor="budget-25to50k">$25,000 - $50,000</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="over50k" id="budget-over50k" disabled={isSubmitting} />
-                    <Label htmlFor="budget-over50k">Over $50,000</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="undefined" id="budget-undefined" disabled={isSubmitting} />
-                    <Label htmlFor="budget-undefined">Not sure yet</Label>
-                  </div>
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <FormField
-          control={form.control}
-          name="additionalInfo"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Additional Information</FormLabel>
-              <FormControl>
-                <Textarea 
-                  placeholder="Any other details about your idea that would help us understand it better?"
-                  className="min-h-[100px]"
-                  {...field} 
-                  disabled={isSubmitting}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        
-        <Button 
-          type="submit" 
-          className="bg-gb-green hover:bg-gb-green/90 text-white text-lg flex items-center justify-center w-full sm:w-auto"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Preparing Email...
-            </>
-          ) : (
-            <>
-              Submit Idea
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </>
-          )}
-        </Button>
+        <SubmitButton isSubmitting={isSubmitting} />
       </form>
     </Form>
   );
