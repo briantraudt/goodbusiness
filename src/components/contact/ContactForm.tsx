@@ -11,10 +11,16 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/integrations/supabase/client';
 import { formSchema, FormValues, defaultValues } from './ContactFormSchema';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
+import emailjs from '@emailjs/browser';
+
+// EmailJS configuration
+// These would typically come from your EmailJS account
+const EMAILJS_SERVICE_ID = 'service_contact';
+const EMAILJS_TEMPLATE_ID = 'template_contact';
+const EMAILJS_PUBLIC_KEY = 'YOUR_EMAILJS_PUBLIC_KEY';
 
 const ContactForm = () => {
   const navigate = useNavigate();
@@ -32,16 +38,53 @@ const ContactForm = () => {
     setFormError(null);
     
     try {
-      // Send the form data to our Supabase Edge Function
-      const { data: responseData, error } = await supabase.functions.invoke('send-contact-email', {
-        body: data
-      });
+      // Format the data for the email
+      const marketSizeMap = {
+        small: "Small (niche market)",
+        medium: "Medium (specific industry)",
+        large: "Large (broad appeal)"
+      };
       
-      if (error) {
-        throw new Error(error.message);
-      }
+      const timeframeMap = {
+        immediate: "Immediate (ASAP)",
+        "3months": "Within 3 months",
+        "6months": "Within 6 months",
+        flexible: "Flexible"
+      };
       
-      if (responseData && responseData.success) {
+      const budgetMap = {
+        under10k: "Under $10,000",
+        "10to25k": "$10,000 - $25,000",
+        "25to50k": "$25,000 - $50,000",
+        over50k: "Over $50,000",
+        undefined: "Not sure yet"
+      };
+      
+      // Prepare the email template parameters
+      const templateParams = {
+        from_name: `${data.firstName} ${data.lastName}`,
+        from_email: data.email,
+        company: data.company || "Not provided",
+        project_title: data.projectTitle,
+        problem_statement: data.problemStatement,
+        target_market: data.targetMarket,
+        market_size: marketSizeMap[data.marketSize],
+        timeframe: timeframeMap[data.timeframe],
+        budget_range: budgetMap[data.budgetRange],
+        additional_info: data.additionalInfo || "Not provided",
+        to_email: "brian@goodbusinesshq.com", // The recipient's email
+        reply_to: data.email,
+      };
+      
+      // Send the email using EmailJS
+      const response = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_PUBLIC_KEY
+      );
+      
+      if (response.status === 200) {
         // Show success message
         toast({
           title: "Idea submitted successfully!",
