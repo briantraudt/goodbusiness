@@ -8,7 +8,7 @@ const Intro = () => {
       <div className="container-custom section-padding">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-xl md:text-2xl text-gb-dark/80 leading-relaxed">
-            "THE BEST WAY TO PREDICT THE FUTURE IS TO BUILD IT - FAST."
+            "GOOD, FAST AND CHEAP - CHOOSE 3."
           </p>
           <p className="text-lg text-gb-dark/70 mt-4">
             — Our guiding principle
