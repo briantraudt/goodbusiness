@@ -13,7 +13,7 @@ const Hero = () => {
   // Preload the hero image
   useEffect(() => {
     const img = new Image();
-    img.src = "https://images.unsplash.com/photo-1605810230434-7631ac76ec81";
+    img.src = "https://images.unsplash.com/photo-1498050108023-c5249f4df085";
     img.onload = () => setImageLoaded(true);
   }, []);
   
@@ -25,8 +25,8 @@ const Hero = () => {
           <div className="absolute inset-0 bg-gray-800 animate-pulse"></div>
         )}
         <img 
-          src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81"
-          alt="Team collaborating on software projects" 
+          src="https://images.unsplash.com/photo-1498050108023-c5249f4df085"
+          alt="Developer working on code with laptop" 
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           onError={(e) => {
             console.error('Image failed to load:', e);
