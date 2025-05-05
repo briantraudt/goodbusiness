@@ -12,10 +12,10 @@ const Contact = () => {
         <div className="container-custom py-20">
           <div className="max-w-3xl">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Work With Us
+              Rapid Software Prototyping
             </h1>
             <p className="text-xl text-white/80">
-              Let's build something good together. We're always looking for opportunities to partner with mission-aligned organizations.
+              Turn your ideas into working software in days, not months. Our rapid prototyping service helps you validate concepts quickly and accelerate your development timeline.
             </p>
           </div>
         </div>
@@ -26,18 +26,18 @@ const Contact = () => {
         <div className="container-custom py-20">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             <div>
-              <h3 className="text-2xl font-bold text-gb-dark mb-6">Get in Touch</h3>
+              <h3 className="text-2xl font-bold text-gb-dark mb-6">Start Building Fast</h3>
               <p className="text-lg text-gb-dark/80 mb-8">
-                Fill out the form and we'll get back to you within 24 hours.
+                Fill out the form and we'll get back to you within 24 hours with a plan to prototype your software.
               </p>
               
               <div className="space-y-6">
                 <div className="flex items-start">
                   <CheckCircle className="text-gb-green h-6 w-6 mr-4 mt-1 flex-shrink-0" />
                   <div>
-                    <h4 className="text-xl font-medium text-gb-dark mb-2">Strategic Consulting</h4>
+                    <h4 className="text-xl font-medium text-gb-dark mb-2">MVP Development</h4>
                     <p className="text-gb-dark/70">
-                      Get expert guidance on your business challenges and growth opportunities.
+                      Get a working minimum viable product in days to validate your concept with real users.
                     </p>
                   </div>
                 </div>
@@ -45,9 +45,9 @@ const Contact = () => {
                 <div className="flex items-start">
                   <CheckCircle className="text-gb-green h-6 w-6 mr-4 mt-1 flex-shrink-0" />
                   <div>
-                    <h4 className="text-xl font-medium text-gb-dark mb-2">Venture Partnership</h4>
+                    <h4 className="text-xl font-medium text-gb-dark mb-2">Rapid Iteration</h4>
                     <p className="text-gb-dark/70">
-                      Explore opportunities to build or invest in purpose-driven ventures.
+                      Quickly test, refine, and improve your software based on real feedback and data.
                     </p>
                   </div>
                 </div>
@@ -55,9 +55,9 @@ const Contact = () => {
                 <div className="flex items-start">
                   <CheckCircle className="text-gb-green h-6 w-6 mr-4 mt-1 flex-shrink-0" />
                   <div>
-                    <h4 className="text-xl font-medium text-gb-dark mb-2">Speaking & Workshops</h4>
+                    <h4 className="text-xl font-medium text-gb-dark mb-2">From Concept to Launch</h4>
                     <p className="text-gb-dark/70">
-                      Book our team for engaging talks and workshops on business with purpose.
+                      Transform your idea into a market-ready product with our end-to-end development process.
                     </p>
                   </div>
                 </div>
