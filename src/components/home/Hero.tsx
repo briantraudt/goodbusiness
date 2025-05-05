@@ -34,8 +34,8 @@ const Hero = () => {
             target.style.display = 'none';
           }}
         />
-        {/* Dark overlay */}
-        <div className="absolute inset-0 bg-black/60"></div>
+        {/* Dark overlay - increased opacity from 60% to 75% */}
+        <div className="absolute inset-0 bg-black/75"></div>
       </div>
       
       {/* Content */}
