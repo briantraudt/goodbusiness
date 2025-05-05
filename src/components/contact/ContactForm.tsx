@@ -14,13 +14,6 @@ import { useNavigate } from 'react-router-dom';
 import { formSchema, FormValues, defaultValues } from './ContactFormSchema';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
-import emailjs from '@emailjs/browser';
-
-// EmailJS configuration
-// These would typically come from your EmailJS account
-const EMAILJS_SERVICE_ID = 'service_contact';
-const EMAILJS_TEMPLATE_ID = 'template_contact';
-const EMAILJS_PUBLIC_KEY = 'YOUR_EMAILJS_PUBLIC_KEY';
 
 const ContactForm = () => {
   const navigate = useNavigate();
@@ -60,55 +53,66 @@ const ContactForm = () => {
         undefined: "Not sure yet"
       };
       
-      // Prepare the email template parameters
-      const templateParams = {
-        from_name: `${data.firstName} ${data.lastName}`,
-        from_email: data.email,
-        company: data.company || "Not provided",
-        project_title: data.projectTitle,
-        problem_statement: data.problemStatement,
-        target_market: data.targetMarket,
-        market_size: marketSizeMap[data.marketSize],
-        timeframe: timeframeMap[data.timeframe],
-        budget_range: budgetMap[data.budgetRange],
-        additional_info: data.additionalInfo || "Not provided",
-        to_email: "brian@goodbusinesshq.com", // The recipient's email
-        reply_to: data.email,
-      };
+      // Build the email subject and body content
+      const subject = `New Idea Submission: ${data.projectTitle}`;
       
-      // Send the email using EmailJS
-      const response = await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_PUBLIC_KEY
-      );
+      // Create a formatted email body
+      const body = `
+New Idea Submission from Good Business HQ Website
+
+Contact Details:
+- Name: ${data.firstName} ${data.lastName}
+- Email: ${data.email}
+- Company: ${data.company || "Not provided"}
+
+Project Details:
+- Project Title: ${data.projectTitle}
+
+Problem Statement:
+${data.problemStatement}
+
+Target Market:
+${data.targetMarket}
+
+Project Parameters:
+- Market Size: ${marketSizeMap[data.marketSize]}
+- Timeframe: ${timeframeMap[data.timeframe]}
+- Budget Range: ${budgetMap[data.budgetRange]}
+
+Additional Information:
+${data.additionalInfo || "Not provided"}
+
+Submitted on: ${new Date().toLocaleString()}
+`.trim();
+
+      // Create the mailto link
+      const mailToLink = `mailto:brian@goodbusinesshq.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       
-      if (response.status === 200) {
-        // Show success message
-        toast({
-          title: "Idea submitted successfully!",
-          description: "We'll get back to you within 24 hours.",
-        });
-        
-        // Reset the form
-        form.reset();
-        
-        // Redirect to the homepage after a short delay to allow the toast to be seen
-        setTimeout(() => {
-          navigate('/');
-        }, 2000);
-      } else {
-        throw new Error("Failed to submit idea. Please try again.");
-      }
+      // Open the user's default email client
+      window.open(mailToLink, '_blank');
+      
+      // Show success message
+      toast({
+        title: "Form prepared for sending!",
+        description: "Your default email client has been opened with the form details. Please review and send the email.",
+      });
+      
+      // Reset the form
+      form.reset();
+      
+      // Redirect to the homepage after a short delay to allow the toast to be seen
+      setTimeout(() => {
+        navigate('/');
+      }, 3000);
+      
     } catch (error) {
       console.error("Form submission error:", error);
       
-      setFormError("There was an error submitting your idea. Please try again or contact us directly.");
+      setFormError("There was an error processing your submission. Please try again.");
       
       toast({
         title: "Submission error",
-        description: "There was an error submitting your idea. Please try again.",
+        description: "There was an error preparing your email. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -411,7 +415,7 @@ const ContactForm = () => {
         >
           {isSubmitting ? (
             <>
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Submitting...
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" /> Preparing Email...
             </>
           ) : (
             <>
