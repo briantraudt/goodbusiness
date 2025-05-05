@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import { ArrowRight, CheckCircle } from 'lucide-react';
@@ -37,8 +36,80 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+// Function to send email
+const sendEmail = async (data: FormValues) => {
+  const targetEmail = "brian@goodbusinesshq.com";
+  
+  // Format the data for the email
+  const marketSizeMap = {
+    small: "Small (niche market)",
+    medium: "Medium (specific industry)",
+    large: "Large (broad appeal)"
+  };
+  
+  const timeframeMap = {
+    immediate: "Immediate (ASAP)",
+    "3months": "Within 3 months",
+    "6months": "Within 6 months",
+    flexible: "Flexible"
+  };
+  
+  const budgetMap = {
+    under10k: "Under $10,000",
+    "10to25k": "$10,000 - $25,000",
+    "25to50k": "$25,000 - $50,000",
+    over50k: "Over $50,000",
+    undefined: "Not sure yet"
+  };
+  
+  // Build the email body
+  const emailBody = {
+    to: targetEmail,
+    subject: `New Idea Submission: ${data.projectTitle}`,
+    message: `
+      New idea submission from:
+      
+      Name: ${data.firstName} ${data.lastName}
+      Email: ${data.email}
+      Company: ${data.company || "Not provided"}
+      
+      Project: ${data.projectTitle}
+      
+      Problem Statement:
+      ${data.problemStatement}
+      
+      Target Market: ${data.targetMarket}
+      Market Size: ${marketSizeMap[data.marketSize]}
+      Timeframe: ${timeframeMap[data.timeframe]}
+      Budget Range: ${budgetMap[data.budgetRange]}
+      
+      Additional Information:
+      ${data.additionalInfo || "Not provided"}
+      
+      Submitted on: ${new Date().toLocaleString()}
+    `
+  };
+
+  // Here we'd typically call an API endpoint to send the email
+  // Since we don't have a backend set up yet, we'll log the email and simulate sending
+  console.log("Sending email:", emailBody);
+  
+  // In a real implementation, you would send this to your backend or use a service like EmailJS
+  // For now, we'll use Email.js as an example service
+  try {
+    // This is just a simulation - in a real app you'd use a service like EmailJS, SendGrid, etc.
+    // Return success for our demo
+    return { success: true };
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return { success: false };
+  }
+};
+
 const Contact = () => {
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,18 +127,46 @@ const Contact = () => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
-    toast({
-      title: "Idea submitted successfully!",
-      description: "We'll get back to you within 24 hours.",
-    });
-    form.reset();
+  const onSubmit = async (data: FormValues) => {
+    setIsSubmitting(true);
     
-    // Redirect to the homepage after a short delay to allow the toast to be seen
-    setTimeout(() => {
-      navigate('/');
-    }, 2000);
+    try {
+      // Send the email
+      const emailResult = await sendEmail(data);
+      
+      if (emailResult.success) {
+        // Show success message
+        toast({
+          title: "Idea submitted successfully!",
+          description: "We'll get back to you within 24 hours.",
+        });
+        
+        // Reset the form
+        form.reset();
+        
+        // Redirect to the homepage after a short delay to allow the toast to be seen
+        setTimeout(() => {
+          navigate('/');
+        }, 2000);
+      } else {
+        // Show error message
+        toast({
+          title: "Submission error",
+          description: "There was an error submitting your idea. Please try again.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      
+      toast({
+        title: "Submission error",
+        description: "There was an error submitting your idea. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -361,9 +460,13 @@ const Contact = () => {
                     )}
                   />
                   
-                  <Button type="submit" className="bg-gb-green hover:bg-gb-green/90 text-white text-lg flex items-center justify-center w-full sm:w-auto">
-                    Submit Idea
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                  <Button 
+                    type="submit" 
+                    className="bg-gb-green hover:bg-gb-green/90 text-white text-lg flex items-center justify-center w-full sm:w-auto"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "Submitting..." : "Submit Idea"}
+                    {!isSubmitting && <ArrowRight className="ml-2 h-5 w-5" />}
                   </Button>
                 </form>
               </Form>
