@@ -9,30 +9,18 @@ import CTA from '@/components/home/CTA';
 import Benefits from '@/components/home/Benefits';
 
 const Index = () => {
-  // Preload critical assets when the component mounts
+  // Preload critical images when the component mounts
   useEffect(() => {
-    // Array of assets to preload
-    const assetsToPreload = [
-      "/lovable-uploads/93e6cb06-ef46-496a-9bc6-57e655a4dc18.png",  // CTA background
-      "/video-background.mp4"  // Hero video
+    // Array of image URLs to preload
+    const imagesToPreload = [
+      "https://images.unsplash.com/photo-1498050108023-c5249f4df085", // Hero background
+      "/lovable-uploads/93e6cb06-ef46-496a-9bc6-57e655a4dc18.png"  // CTA background
     ];
     
-    // Create objects to trigger browser caching
-    assetsToPreload.forEach(src => {
-      if (src.endsWith('.mp4')) {
-        const video = document.createElement('video');
-        video.src = src;
-        video.preload = 'auto';
-        video.style.display = 'none';
-        document.body.appendChild(video);
-        // Remove after preload attempt
-        setTimeout(() => {
-          document.body.removeChild(video);
-        }, 5000);
-      } else {
-        const img = new Image();
-        img.src = src;
-      }
+    // Create image objects to trigger browser caching
+    imagesToPreload.forEach(src => {
+      const img = new Image();
+      img.src = src;
     });
   }, []);
 

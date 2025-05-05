@@ -8,52 +8,34 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const Hero = () => {
   const isMobile = useIsMobile();
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   
-  // Try multiple video sources
-  const videoSources = [
-    "/video-background.mp4",
-    "https://cdn.coverr.co/videos/coverr-night-traffic-time-lapse-328/1080p.mp4",
-    "https://cdn.coverr.co/videos/coverr-night-traffic-time-lapse-328/720p.mp4"
-  ];
+  // Preload the hero image
+  useEffect(() => {
+    const img = new Image();
+    img.src = "https://images.unsplash.com/photo-1498050108023-c5249f4df085";
+    img.onload = () => setImageLoaded(true);
+  }, []);
   
   return (
     <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gray-900">
-      {/* Video Background with loading state */}
+      {/* Background Image with loading state */}
       <div className="absolute inset-0 w-full h-full">
-        {!videoLoaded && !videoError && (
+        {!imageLoaded && (
           <div className="absolute inset-0 bg-gray-800 animate-pulse"></div>
         )}
-        
-        {/* Fallback background gradient if video fails */}
-        {videoError && (
-          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800"></div>
-        )}
-        
-        {!videoError && (
-          <video 
-            autoPlay 
-            muted 
-            loop 
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-            onLoadedData={() => setVideoLoaded(true)}
-            onError={(e) => {
-              console.error('Video failed to load, showing fallback background');
-              setVideoError(true);
-            }}
-          >
-            {/* Multiple fallback sources */}
-            {videoSources.map((src, index) => (
-              <source key={index} src={src} type="video/mp4" />
-            ))}
-            Your browser does not support the video tag.
-          </video>
-        )}
-        
-        {/* Dark overlay - increased opacity from 75% to 80% for better text visibility */}
-        <div className="absolute inset-0 bg-black/80"></div>
+        <img 
+          src="https://images.unsplash.com/photo-1498050108023-c5249f4df085"
+          alt="Developer working on code with laptop" 
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+          onError={(e) => {
+            console.error('Image failed to load:', e);
+            const target = e.target as HTMLImageElement;
+            target.style.display = 'none';
+          }}
+        />
+        {/* Dark overlay - increased opacity from 60% to 75% */}
+        <div className="absolute inset-0 bg-black/75"></div>
       </div>
       
       {/* Content */}
