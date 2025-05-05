@@ -42,7 +42,7 @@ const CTA = () => {
             Don't let slow development cycles hold you back. Launch your product in weeks, not months.
           </p>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-lg group">
-            <Link to="/contact">
+            <Link to="/contact#top">
               Accelerate Your Project
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
