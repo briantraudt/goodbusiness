@@ -10,9 +10,6 @@ const Intro = () => {
           <p className="text-xl md:text-2xl text-gb-dark/80 leading-relaxed">
             "GOOD, FAST AND CHEAP - CHOOSE 3."
           </p>
-          <p className="text-lg text-gb-dark/70 mt-4">
-            — Our guiding principle
-          </p>
         </div>
       </div>
     </section>
