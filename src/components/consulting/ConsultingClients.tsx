@@ -5,17 +5,17 @@ import { Lightbulb, Users, Code } from 'lucide-react';
 const ConsultingClients = () => {
   const clientTypes = [
     {
-      title: "Individuals with software ideas",
+      title: "Individuals with Software Ideas",
       description: "Entrepreneurs and visionaries with ideas that need technical expertise to bring their software concepts to life and reach their target market.",
       icon: <Lightbulb className="h-10 w-10 text-gb-blue mb-4" />
     },
     {
-      title: "Teams needing execution support",
+      title: "Teams Needing Execution Support",
       description: "Product teams that need additional technical expertise to accelerate development, overcome challenges, or introduce new technologies.",
       icon: <Users className="h-10 w-10 text-gb-purple mb-4" />
     },
     {
-      title: "Companies scaling software products",
+      title: "Companies Scaling Products",
       description: "Organizations looking to improve existing products, build new digital offerings, or transform legacy systems into modern applications.",
       icon: <Code className="h-10 w-10 text-gb-green mb-4" />
     }
