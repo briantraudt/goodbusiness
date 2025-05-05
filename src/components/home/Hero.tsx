@@ -9,30 +9,40 @@ import { Skeleton } from '@/components/ui/skeleton';
 const Hero = () => {
   const isMobile = useIsMobile();
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   
   return (
     <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gray-900">
       {/* Video Background with loading state */}
       <div className="absolute inset-0 w-full h-full">
-        {!videoLoaded && (
+        {!videoLoaded && !videoError && (
           <div className="absolute inset-0 bg-gray-800 animate-pulse"></div>
         )}
-        <video 
-          autoPlay 
-          muted 
-          loop 
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          onLoadedData={() => setVideoLoaded(true)}
-          onError={(e) => {
-            console.error('Video failed to load:', e);
-            const target = e.target as HTMLVideoElement;
-            target.style.display = 'none';
-          }}
-        >
-          <source src="https://assets.mixkit.co/videos/preview/mixkit-light-trails-on-a-highway-at-night-10661-large.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        
+        {/* Fallback background gradient if video fails */}
+        {videoError && (
+          <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-gray-800"></div>
+        )}
+        
+        {!videoError && (
+          <video 
+            autoPlay 
+            muted 
+            loop 
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            onLoadedData={() => setVideoLoaded(true)}
+            onError={(e) => {
+              console.error('Video failed to load, showing fallback background');
+              setVideoError(true);
+            }}
+          >
+            {/* Using a more reliable video source */}
+            <source src="https://cdn.coverr.co/videos/coverr-night-traffic-time-lapse-328/1080p.mp4" type="video/mp4" />
+            <source src="https://cdn.coverr.co/videos/coverr-night-traffic-time-lapse-328/720p.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
         
         {/* Dark overlay - increased opacity from 60% to 75% */}
         <div className="absolute inset-0 bg-black/75"></div>
