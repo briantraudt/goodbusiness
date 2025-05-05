@@ -11,6 +11,13 @@ const Hero = () => {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
   
+  // Try multiple video sources
+  const videoSources = [
+    "/video-background.mp4",
+    "https://cdn.coverr.co/videos/coverr-night-traffic-time-lapse-328/1080p.mp4",
+    "https://cdn.coverr.co/videos/coverr-night-traffic-time-lapse-328/720p.mp4"
+  ];
+  
   return (
     <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gray-900">
       {/* Video Background with loading state */}
@@ -37,15 +44,16 @@ const Hero = () => {
               setVideoError(true);
             }}
           >
-            {/* Using a more reliable video source */}
-            <source src="https://cdn.coverr.co/videos/coverr-night-traffic-time-lapse-328/1080p.mp4" type="video/mp4" />
-            <source src="https://cdn.coverr.co/videos/coverr-night-traffic-time-lapse-328/720p.mp4" type="video/mp4" />
+            {/* Multiple fallback sources */}
+            {videoSources.map((src, index) => (
+              <source key={index} src={src} type="video/mp4" />
+            ))}
             Your browser does not support the video tag.
           </video>
         )}
         
-        {/* Dark overlay - increased opacity from 60% to 75% */}
-        <div className="absolute inset-0 bg-black/75"></div>
+        {/* Dark overlay - increased opacity from 75% to 80% for better text visibility */}
+        <div className="absolute inset-0 bg-black/80"></div>
       </div>
       
       {/* Content */}
