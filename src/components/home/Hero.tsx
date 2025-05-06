@@ -53,6 +53,7 @@ const Hero = () => {
             <br />
             <br />
             <span className="text-xl md:text-2xl font-bold text-white">Build better software, faster.</span>
+            <br />
           </p>
         </div>
         
