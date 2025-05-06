@@ -56,8 +56,8 @@ const Hero = () => {
           </p>
         </div>
         
-        {/* Added more space between text and buttons with mb-20 mt-auto (previously mb-16) */}
-        <div className="mb-20 mt-auto flex flex-col sm:flex-row gap-4 justify-center">
+        {/* Added more spacing below the text with mb-28 mt-auto (previously mb-20) */}
+        <div className="mb-28 mt-auto flex flex-col sm:flex-row gap-4 justify-center">
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-xl flex items-center justify-center">
             <Link to="/contact">
               Start Your Project
