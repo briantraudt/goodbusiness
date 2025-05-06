@@ -3,7 +3,7 @@ import React from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import VentureHero from '@/components/ventures/VentureHero';
 import VentureList from '@/components/ventures/VentureList';
-import InvestmentPhilosophy from '@/components/ventures/InvestmentPhilosophy';
+import VenturePillars from '@/components/ventures/VenturePillars';
 import VenturesCTA from '@/components/ventures/VenturesCTA';
 
 const Ventures = () => {
@@ -11,7 +11,7 @@ const Ventures = () => {
     <PageLayout>
       <VentureHero />
       <VentureList />
-      <InvestmentPhilosophy />
+      <VenturePillars />
       <VenturesCTA />
     </PageLayout>
   );
