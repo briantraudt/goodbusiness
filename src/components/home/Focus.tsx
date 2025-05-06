@@ -24,7 +24,7 @@ const Focus = () => {
       linkText: "Learn More"
     },
     {
-      title: "Scaling Solutions",
+      title: "Launch",
       description: "Expand your successful prototype into a full-featured application ready for growth, without sacrificing speed or quality.",
       icon: <Database className="h-12 w-12 text-gb-green" />,
       link: "/consulting",
