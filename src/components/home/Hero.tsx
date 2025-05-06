@@ -48,14 +48,9 @@ const Hero = () => {
             Idea to APP in 7 Days
           </h1>
           <p className="mt-6 text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
-            Rapid prototyping and development services that turn your vision into reality 
-            without the wait.
-            <br />
-            <br />
-            <span className="text-xl md:text-2xl font-bold text-white">Build better software, faster.</span>
-            <br />
-            <br className="mb-8" /> {/* Added extra break with margin for more space */}
+            Rapid prototyping and development services that turn your vision into reality without the wait. <span className="text-xl md:text-2xl font-bold text-white">Build better software, faster.</span>
           </p>
+          <div className="mb-8"></div> {/* Added space between text and buttons */}
         </div>
         
         {/* Added more spacing below the text with mb-28 mt-auto (previously mb-20) */}
