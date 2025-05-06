@@ -10,7 +10,7 @@ const Focus = () => {
   
   const focusAreas = [
     {
-      title: "Idea Definition",
+      title: "Idea",
       description: "Turn ideas into interactive prototypes in days, not months. Test concepts quickly and iterate based on real feedback.",
       icon: <Rocket className="h-12 w-12 text-gb-blue" />,
       link: "/consulting",
