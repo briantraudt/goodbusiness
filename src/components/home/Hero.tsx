@@ -40,8 +40,8 @@ const Hero = () => {
       
       {/* Content */}
       <div className="container-custom section-padding flex flex-col h-[80vh] relative z-10">
-        {/* Adjusted div to push content down more */}
-        <div className="flex-grow-0 pt-32"></div>
+        {/* Increased padding to push content up more */}
+        <div className="flex-grow-0 pt-24"></div>
         
         <div className="text-center mx-auto">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl mx-auto">
@@ -53,11 +53,11 @@ const Hero = () => {
             <br />
             <br />
             <span className="text-xl md:text-2xl font-bold text-white">Build better software, faster.</span>
-            <br />
           </p>
         </div>
         
-        <div className="mb-16 mt-auto flex flex-col sm:flex-row gap-4 justify-center">
+        {/* Added more space between text and buttons with mb-20 mt-auto (previously mb-16) */}
+        <div className="mb-20 mt-auto flex flex-col sm:flex-row gap-4 justify-center">
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-xl flex items-center justify-center">
             <Link to="/contact">
               Start Your Project
