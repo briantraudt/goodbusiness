@@ -40,8 +40,8 @@ const Hero = () => {
       
       {/* Content */}
       <div className="container-custom section-padding flex flex-col h-[80vh] relative z-10">
-        {/* Increased padding to push content up more */}
-        <div className="flex-grow-0 pt-24"></div>
+        {/* Decreased padding to push content up by 2 spaces */}
+        <div className="flex-grow-0 pt-16"></div>
         
         <div className="text-center mx-auto">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl mx-auto">
