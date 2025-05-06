@@ -10,7 +10,7 @@ const ContactHero = () => {
             Tell Us Your Idea
           </h1>
           <p className="text-xl text-white/80">
-            Turn your ideas into working software in days, not months. Our rapid prototyping service helps you validate concepts quickly and accelerate your development timeline.
+            We don't care if you have an idea on a cocktail napkin, a dusty business plan or it's all in your head. If you think it's good then we want to know about it.
           </p>
         </div>
       </div>
