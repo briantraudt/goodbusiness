@@ -17,7 +17,7 @@ const Focus = () => {
       linkText: "Learn More"
     },
     {
-      title: "MVP Development",
+      title: "Prototype",
       description: "Build lean, focused products that deliver value immediately. Launch faster and validate your market with minimal investment.",
       icon: <Component className="h-12 w-12 text-gb-purple" />,
       link: "/consulting",
