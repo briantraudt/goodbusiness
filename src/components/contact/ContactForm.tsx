@@ -47,9 +47,13 @@ const ContactForm = () => {
       // Reset the form
       form.reset();
       
-      // Redirect to the homepage after a short delay to allow the toast to be seen
+      // Navigate to homepage and scroll to top
       setTimeout(() => {
         navigate('/');
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       }, 2000);
     } catch (error) {
       console.error("Form submission error:", error);
