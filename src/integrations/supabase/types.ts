@@ -9,7 +9,105 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      user_categories: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          userid: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          userid: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          userid?: string
+        }
+        Relationships: []
+      }
+      user_preferences: {
+        Row: {
+          created_at: string
+          enableaisuggestions: boolean
+          name: string | null
+          timezone: string
+          updated_at: string
+          user_id: string
+          workinghourend: string
+          workinghourstart: string
+          workstyle: string
+        }
+        Insert: {
+          created_at?: string
+          enableaisuggestions?: boolean
+          name?: string | null
+          timezone?: string
+          updated_at?: string
+          user_id: string
+          workinghourend?: string
+          workinghourstart?: string
+          workstyle?: string
+        }
+        Update: {
+          created_at?: string
+          enableaisuggestions?: boolean
+          name?: string | null
+          timezone?: string
+          updated_at?: string
+          user_id?: string
+          workinghourend?: string
+          workinghourstart?: string
+          workstyle?: string
+        }
+        Relationships: []
+      }
+      user_tasks: {
+        Row: {
+          category: string | null
+          completed: boolean
+          created_at: string
+          description: string | null
+          duedate: string | null
+          id: string
+          priority: string
+          timeestimate: number | null
+          title: string
+          updated_at: string
+          userid: string
+        }
+        Insert: {
+          category?: string | null
+          completed?: boolean
+          created_at?: string
+          description?: string | null
+          duedate?: string | null
+          id?: string
+          priority?: string
+          timeestimate?: number | null
+          title: string
+          updated_at?: string
+          userid: string
+        }
+        Update: {
+          category?: string | null
+          completed?: boolean
+          created_at?: string
+          description?: string | null
+          duedate?: string | null
+          id?: string
+          priority?: string
+          timeestimate?: number | null
+          title?: string
+          updated_at?: string
+          userid?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

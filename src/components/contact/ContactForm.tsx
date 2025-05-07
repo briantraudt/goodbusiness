@@ -35,25 +35,21 @@ const ContactForm = () => {
     setFormError(null);
     
     try {
-      const response = await sendEmail(data);
+      await sendEmail(data);
       
-      if (response.status === 200) {
-        // Show success message
-        toast({
-          title: "Idea submitted successfully!",
-          description: "We'll get back to you within 24 hours.",
-        });
-        
-        // Reset the form
-        form.reset();
-        
-        // Redirect to the homepage after a short delay to allow the toast to be seen
-        setTimeout(() => {
-          navigate('/');
-        }, 2000);
-      } else {
-        throw new Error("Failed to submit idea. Please try again.");
-      }
+      // Show success message
+      toast({
+        title: "Idea submitted successfully!",
+        description: "We'll get back to you within 24 hours.",
+      });
+      
+      // Reset the form
+      form.reset();
+      
+      // Redirect to the homepage after a short delay to allow the toast to be seen
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
     } catch (error) {
       console.error("Form submission error:", error);
       
