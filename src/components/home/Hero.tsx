@@ -51,8 +51,8 @@ const Hero = () => {
           </p>
         </div>
         
-        {/* Buttons - Added margin top to separate from text */}
-        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+        {/* Buttons - Added conditional margin top for mobile */}
+        <div className={`${isMobile ? 'mt-24' : 'mt-10'} flex flex-col sm:flex-row gap-4 justify-center`}>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-xl flex items-center justify-center">
             <Link to="/contact">
               Start Your Project
