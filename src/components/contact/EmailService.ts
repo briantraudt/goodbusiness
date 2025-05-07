@@ -1,11 +1,6 @@
 
 import { FormValues } from './ContactFormSchema';
-import { createClient } from '@supabase/supabase-js';
-
-// Supabase client initialization
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from '@/integrations/supabase/client';
 
 export const sendEmail = async (data: FormValues) => {
   try {
