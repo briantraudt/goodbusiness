@@ -38,11 +38,8 @@ const Hero = () => {
         <div className="absolute inset-0 bg-black/75"></div>
       </div>
       
-      {/* Content */}
-      <div className="container-custom section-padding flex flex-col h-[80vh] relative z-10">
-        {/* Decreased padding to push content up by 2 spaces */}
-        <div className="flex-grow-0 pt-10"></div>
-        
+      {/* Content - Modified to center content vertically */}
+      <div className="container-custom section-padding flex flex-col items-center justify-center h-full relative z-10">
         <div className="text-center mx-auto">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl mx-auto">
             Idea to APP in 7 Days
@@ -54,8 +51,8 @@ const Hero = () => {
           </p>
         </div>
         
-        {/* Reduced margin bottom from mb-28 to mb-10 and margin top from mt-auto to mt-10 */}
-        <div className="mb-10 mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+        {/* Buttons - Added margin top to separate from text */}
+        <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-xl flex items-center justify-center">
             <Link to="/contact">
               Start Your Project
