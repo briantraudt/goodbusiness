@@ -40,6 +40,8 @@ export const sendEmail = async (data: FormValues) => {
       additionalInfo: data.additionalInfo || "Not provided",
     };
     
+    console.log("Sending email with data:", emailData);
+    
     // Call the Supabase Edge Function that will use Resend
     const { data: responseData, error } = await supabase.functions.invoke('send-contact-email', {
       body: emailData
@@ -47,6 +49,7 @@ export const sendEmail = async (data: FormValues) => {
     
     if (error) throw new Error(error.message || 'Failed to send email');
     
+    console.log("Email sent successfully:", responseData);
     return responseData;
   } catch (error) {
     console.error('Error sending email:', error);

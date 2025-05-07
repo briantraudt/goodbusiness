@@ -35,6 +35,7 @@ const ContactForm = () => {
     setFormError(null);
     
     try {
+      console.log("Form submitted with data:", data);
       await sendEmail(data);
       
       // Show success message
