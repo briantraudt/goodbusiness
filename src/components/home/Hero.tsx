@@ -41,7 +41,7 @@ const Hero = () => {
       {/* Content */}
       <div className="container-custom section-padding flex flex-col h-[80vh] relative z-10">
         {/* Decreased padding to push content up by 2 spaces */}
-        <div className="flex-grow-0 pt-16"></div>
+        <div className="flex-grow-0 pt-10"></div>
         
         <div className="text-center mx-auto">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl mx-auto">
@@ -50,17 +50,12 @@ const Hero = () => {
           <p className="mt-6 text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
             Rapid prototyping and development services that turn your vision into reality.
             <br />
-            <br />
             <span className="text-xl md:text-2xl font-bold text-white">Build Better Software, Faster.</span>
-            <br />
-            <br />
-            <br />
-            <br className="mb-8" /> {/* Added extra break with margin for more space */}
           </p>
         </div>
         
-        {/* Added more spacing below the text with mb-28 mt-auto (previously mb-20) */}
-        <div className="mb-28 mt-auto flex flex-col sm:flex-row gap-4 justify-center">
+        {/* Reduced margin bottom from mb-28 to mb-10 and margin top from mt-auto to mt-10 */}
+        <div className="mb-10 mt-10 flex flex-col sm:flex-row gap-4 justify-center">
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-xl flex items-center justify-center">
             <Link to="/contact">
               Start Your Project
