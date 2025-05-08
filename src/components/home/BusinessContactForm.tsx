@@ -33,7 +33,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
         
         {/* Descriptive text below score and above the form */}
         <p className="text-gb-dark text-lg mb-8 max-w-3xl mx-auto font-medium">
-          Based on the information you have provided, we think you have a really good idea and invite you to tell us more on the form below and we will get back to you ASAP.
+          Great news! Based on what you've shared, this looks like a strong idea. We'd love to learn more—please fill out the form below, and someone from our team will be in touch shortly.
         </p>
       </div>
       
