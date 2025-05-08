@@ -9,7 +9,6 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Briefcase, User, Mail, Phone, MessageSquare, HelpCircle, Users, Info, Compass, DollarSign, Heart, Check, Bulb } from 'lucide-react';
 
 interface BusinessContactFormProps {
   score: number | null;
@@ -189,7 +188,6 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
   return (
     <div ref={contactFormRef} className="mt-12 p-6 bg-green-50 border border-green-200 rounded-lg shadow-sm animate-fade-in">
       <div className="text-center mb-6">
-        <Bulb className="inline-block text-gb-green mb-3 h-8 w-8" />
         <h3 className="text-2xl font-bold mb-2">Share Your Business Idea</h3>
         <p className="text-gray-600">
           At Good Business, we help launch and grow businesses that transform lives. 
@@ -205,10 +203,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
           <form onSubmit={handleSubmit} className="space-y-8">
             {/* Contact Info Section */}
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <User className="h-5 w-5 text-gb-green" />
-                <h4 className="text-lg font-semibold">Contact Info</h4>
-              </div>
+              <h4 className="text-lg font-semibold mb-4">Contact Info</h4>
               
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
@@ -224,54 +219,42 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
                 
                 <div className="space-y-2">
                   <Label htmlFor="email">Email Address <span className="text-red-500">*</span></Label>
-                  <div className="flex">
-                    <Mail className="mr-2 h-4 w-4 opacity-50 self-center" />
-                    <Input 
-                      id="email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="your.email@example.com"
-                    />
-                  </div>
+                  <Input 
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="your.email@example.com"
+                  />
                   {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                 </div>
                 
                 <div className="space-y-2">
                   <Label htmlFor="phone">Phone Number (optional)</Label>
-                  <div className="flex">
-                    <Phone className="mr-2 h-4 w-4 opacity-50 self-center" />
-                    <Input 
-                      id="phone"
-                      type="tel"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      placeholder="(123) 456-7890"
-                    />
-                  </div>
+                  <Input 
+                    id="phone"
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="(123) 456-7890"
+                  />
                 </div>
                 
                 <div className="space-y-2">
                   <Label htmlFor="companyName">Company Name / Idea Name (optional)</Label>
-                  <div className="flex">
-                    <Briefcase className="mr-2 h-4 w-4 opacity-50 self-center" />
-                    <Input 
-                      id="companyName"
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      placeholder="Your company or idea name"
-                    />
-                  </div>
+                  <Input 
+                    id="companyName"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    placeholder="Your company or idea name"
+                  />
                 </div>
               </div>
             </div>
             
             {/* Your Idea Section */}
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <MessageSquare className="h-5 w-5 text-gb-green" />
-                <h4 className="text-lg font-semibold">Your Idea</h4>
-              </div>
+              <h4 className="text-lg font-semibold mb-4">Your Idea</h4>
               
               <div className="space-y-4">
                 <div className="space-y-2">
@@ -288,10 +271,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
                 
                 <div className="space-y-2">
                   <Label htmlFor="problemSolution">
-                    <div className="flex items-center gap-2">
-                      <HelpCircle className="h-4 w-4" />
-                      <span>What problem does it solve, and for whom? <span className="text-red-500">*</span></span>
-                    </div>
+                    What problem does it solve, and for whom? <span className="text-red-500">*</span>
                   </Label>
                   <Textarea 
                     id="problemSolution"
@@ -305,10 +285,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
                 
                 <div className="space-y-2">
                   <Label htmlFor="customers">
-                    <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4" />
-                      <span>Who are your customers? (optional)</span>
-                    </div>
+                    Who are your customers? (optional)
                   </Label>
                   <Textarea 
                     id="customers"
@@ -321,10 +298,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
                 
                 <div className="space-y-2">
                   <Label className="mb-2">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Info className="h-4 w-4" />
-                      <span>Is this idea for profit, nonprofit, or both? <span className="text-red-500">*</span></span>
-                    </div>
+                    Is this idea for profit, nonprofit, or both? <span className="text-red-500">*</span>
                   </Label>
                   <RadioGroup value={profitType} onValueChange={setProfitType} className="flex flex-col space-y-2">
                     <div className="flex items-center space-x-2">
@@ -347,10 +321,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
             
             {/* Readiness & Budget Section */}
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Compass className="h-5 w-5 text-gb-green" />
-                <h4 className="text-lg font-semibold">Readiness & Budget</h4>
-              </div>
+              <h4 className="text-lg font-semibold mb-4">Readiness & Budget</h4>
               
               <div className="grid gap-6 sm:grid-cols-2">
                 <div className="space-y-3">
@@ -378,10 +349,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
                 
                 <div className="space-y-3">
                   <Label className="mb-2">
-                    <div className="flex items-center gap-2">
-                      <DollarSign className="h-4 w-4" />
-                      <span>Do you have a budget for this project? <span className="text-red-500">*</span></span>
-                    </div>
+                    Do you have a budget for this project? <span className="text-red-500">*</span>
                   </Label>
                   <RadioGroup value={budget} onValueChange={setBudget} className="flex flex-col space-y-2">
                     <div className="flex items-center space-x-2">
@@ -408,10 +376,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
             
             {/* Support Needed Section */}
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <HelpCircle className="h-5 w-5 text-gb-green" />
-                <h4 className="text-lg font-semibold">Support Needed</h4>
-              </div>
+              <h4 className="text-lg font-semibold mb-4">Support Needed</h4>
               
               <Label className="mb-3 block">What type of help are you looking for? (select any)</Label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2">
@@ -488,10 +453,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
             
             {/* Impact & Values Section */}
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <Heart className="h-5 w-5 text-gb-green" />
-                <h4 className="text-lg font-semibold">Impact & Values</h4>
-              </div>
+              <h4 className="text-lg font-semibold mb-4">Impact & Values</h4>
               
               <div className="space-y-2">
                 <Label htmlFor="socialImpact">Do you want your business to have a social or spiritual impact? (optional)</Label>
@@ -523,7 +485,6 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
               type="submit" 
               className="w-full bg-gb-green hover:bg-gb-green/90 text-white font-medium py-6 h-auto text-lg"
             >
-              <Check className="h-5 w-5 mr-2" />
               Submit My Idea
             </Button>
           </form>
