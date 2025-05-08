@@ -45,9 +45,9 @@ const Focus = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 max-w-5xl mx-auto">
           {focusAreas.map((area, index) => (
             <div key={index} className="bg-white p-6 md:p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all flex flex-col">
-              <div className="flex items-center gap-3 mb-4 md:mb-5">
+              <div className="flex items-center gap-3 mb-4 md:mb-5 min-h-[4rem]">
                 {area.icon}
-                <h3 className="text-2xl md:text-3xl font-bold text-gb-dark">{area.title}</h3>
+                <h3 className="text-2xl font-bold text-gb-dark whitespace-nowrap">{area.title}</h3>
               </div>
               <p className="text-gb-dark/70 mb-5 text-base md:text-lg flex-grow">{area.description}</p>
               <div className="mt-auto">
