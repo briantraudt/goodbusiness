@@ -1,1 +1,5 @@
+
 project_id = "qiyjzukzhwklkmpdxmfl"
+
+[functions.evaluate-business-idea]
+verify_jwt = false
