@@ -63,10 +63,22 @@ const BusinessEvaluator = () => {
   return (
     <section className="bg-white py-16">
       <div className="container-custom max-w-3xl mx-auto">
-        <div className="mb-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Is Your Idea a Good Business?</h2>
+        <div className="mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">Is Your Idea a Good Business?</h2>
+          <p className="text-lg text-gray-600 mb-6">
+            Have an idea and wondering if it's worth pursuing? Our Business Evaluator will give you instant feedback based on the following five key criteria that we think are most important:
+          </p>
+          
+          <ol className="list-decimal pl-6 space-y-3 mb-6 text-gray-700">
+            <li><strong>Purpose & Values Driven Impact</strong> – Does your idea aim to make a meaningful difference in the lives of others or the communities it touches?</li>
+            <li><strong>Problem-Solution Fit</strong> – Is it solving a real, specific problem for a real audience?</li>
+            <li><strong>Viability</strong> – Can it generate income sustainably?</li>
+            <li><strong>Feasibility</strong> – Can it be built quickly and realistically within your set budget?</li>
+            <li><strong>Scalability</strong> – Can it grow beyond your local area to create greater impact?</li>
+          </ol>
+          
           <p className="text-lg text-gray-600">
-            Describe your idea in 1–2 paragraphs and get an instant AI-powered evaluation.
+            Type your idea in 1–2 paragraphs below, and we'll give you a personalized score and feedback in seconds.
           </p>
         </div>
 
