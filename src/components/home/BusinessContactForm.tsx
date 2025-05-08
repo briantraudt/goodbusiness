@@ -1,6 +1,7 @@
 
 import React from 'react';
 import BusinessContactFormManager from './business-form/BusinessContactFormManager';
+import PrivateInvitationHeader from './PrivateInvitationHeader';
 
 interface BusinessContactFormProps {
   score: number | null;
@@ -31,7 +32,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
         <PrivateInvitationHeader score={score} />
         
         {/* Descriptive text below score and above the form */}
-        <p className="text-white/80 text-lg mb-8 max-w-3xl mx-auto">
+        <p className="text-gb-dark text-lg mb-8 max-w-3xl mx-auto font-medium">
           Based on the information you have provided, we think you have a really good idea and invite you to tell us more on the form below and we will get back to you ASAP.
         </p>
       </div>
@@ -45,8 +46,5 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
     </div>
   );
 };
-
-// Add the missing import
-import PrivateInvitationHeader from './PrivateInvitationHeader';
 
 export default BusinessContactForm;
