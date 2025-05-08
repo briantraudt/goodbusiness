@@ -16,7 +16,7 @@ const Benefits = () => {
       icon: <DollarSign className="h-6 w-6 text-gb-green" />
     },
     {
-      title: "De-Risk Your Concept",
+      title: "De-Risk Your Concept With Real Feedback",
       description: "Validate your app idea with real users before committing significant resources. Pivot early if needed, not after major investment.",
       icon: <ShieldCheck className="h-6 w-6 text-gb-purple" />
     },
