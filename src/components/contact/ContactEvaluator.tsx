@@ -95,7 +95,7 @@ const ContactEvaluator: React.FC<{ onEvaluationComplete: (result: EvaluationResu
   };
 
   return (
-    <section className="bg-gradient-to-br from-gb-light to-white py-16">
+    <section className="bg-gradient-to-br from-gb-light to-white py-16 evaluator-section">
       <div className="container-custom max-w-3xl mx-auto">
         <div className="mb-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Evaluate Your Idea First</h2>
