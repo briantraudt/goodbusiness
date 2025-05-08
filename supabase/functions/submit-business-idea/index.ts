@@ -14,6 +14,10 @@ console.log('- Supabase URL available:', !!supabaseUrl);
 console.log('- Supabase Service Key available:', !!supabaseServiceKey);
 console.log('- Resend API Key available:', !!resendApiKey);
 
+if (!resendApiKey) {
+  console.error('⚠️ CRITICAL ERROR: Resend API key is not configured. Emails cannot be sent.');
+}
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
@@ -70,20 +74,16 @@ serve(async (req) => {
     
     console.log(`[${requestId}] Database storage successful. Row ID:`, data?.[0]?.id);
 
-    // Send email notification with comprehensive error handling and logging
+    // Debug information for email setup
+    if (!resendApiKey) {
+      console.error(`[${requestId}] ⚠️ CRITICAL: Cannot send emails - Resend API key is missing`);
+    }
+
+    // Prepare email content
     try {
       const scoreText = formData.ideaScore ? `${formData.ideaScore}/100` : 'Not evaluated';
       
-      console.log(`[${requestId}] Preparing to send email notification...`);
-      
-      if (!resendApiKey) {
-        throw new Error('Resend API key is not configured');
-      }
-      
-      console.log(`[${requestId}] Using Resend API key (first few chars):`, resendApiKey.substring(0, 3) + '*****');
-      
-      // Primary notification to brian@goodbusinesshq.com
-      console.log(`[${requestId}] Attempting to send primary notification email to brian@goodbusinesshq.com...`);
+      console.log(`[${requestId}] Preparing email notification content with score: ${scoreText}`);
       
       const emailHtml = `
         <h1>New Business Idea Submission</h1>
@@ -143,28 +143,45 @@ Social Impact: ${formData.socialImpact || 'Not provided'}
 Additional Info: ${formData.additionalInfo || 'Not provided'}
       `;
       
-      // Testing multiple from addresses to see which one works best
+      // Testing multiple configurations to improve email delivery
+      // 1. Try multiple from addresses
       const fromAddresses = [
-        'Good Business HQ <onboarding@resend.dev>',
-        'Good Business HQ <no-reply@resend.dev>',
-        'Notifications <notifications@resend.dev>'
+        'Good Business HQ <notifications@goodbusinesshq.com>',
+        'Good Business HQ <noreply@goodbusinesshq.com>',
+        'Good Business HQ <hello@goodbusinesshq.com>',
+        'Good Business HQ via Resend <onboarding@resend.dev>'
       ];
+      
+      // 2. Try multiple recipients configurations
+      const toRecipients = ['brian@goodbusinesshq.com'];
+      const ccRecipients = []; 
+      const bccRecipients = ['hq@goodbusinesshq.com'];
       
       // Try each from address until one works
       let primaryEmailSent = false;
       let emailResponse;
       let lastError;
       
+      console.log(`[${requestId}] Will attempt email sending with ${fromAddresses.length} different from addresses`);
+      
       for (const fromAddress of fromAddresses) {
         try {
-          console.log(`[${requestId}] Attempting to send with from address: ${fromAddress}`);
+          console.log(`[${requestId}] Attempting to send email with "${fromAddress}" as the sender`);
           
+          // Debug logging for Resend API key
+          console.log(`[${requestId}] Resend API key present:`, !!resendApiKey);
+          if (resendApiKey) {
+            console.log(`[${requestId}] Resend API key starts with:`, resendApiKey.substring(0, 3) + '[REDACTED]');
+          }
+          
+          // Attempt to send with this configuration
           emailResponse = await resend.emails.send({
             from: fromAddress,
-            to: 'brian@goodbusinesshq.com',
-            bcc: 'hq@goodbusinesshq.com', // Send a BCC as a backup
+            to: toRecipients,
+            cc: ccRecipients,
+            bcc: bccRecipients,
             reply_to: formData.email,
-            subject: `New Business Idea Submission: ${formData.fullName} (Score: ${scoreText})`,
+            subject: `[URGENT] New Business Idea: ${formData.fullName} (Score: ${scoreText})`,
             html: emailHtml,
             text: plainText,
           });
@@ -174,15 +191,33 @@ Additional Info: ${formData.additionalInfo || 'Not provided'}
           break;
         } catch (err) {
           console.error(`[${requestId}] Failed to send with ${fromAddress}:`, err);
+          console.error(`[${requestId}] Error details:`, JSON.stringify(err));
           lastError = err;
         }
       }
       
       if (!primaryEmailSent) {
-        throw new Error(`Failed to send primary email with all from addresses. Last error: ${lastError}`);
+        console.error(`[${requestId}] ⚠️ CRITICAL: Failed to send primary notification email with all configurations`);
+        console.error(`[${requestId}] Last error:`, lastError);
+        
+        // Try a last-resort email with minimal configuration
+        try {
+          console.log(`[${requestId}] Attempting last-resort email delivery with simplified configuration`);
+          
+          const lastResortResponse = await resend.emails.send({
+            from: 'Resend <onboarding@resend.dev>',
+            to: 'brian@goodbusinesshq.com',
+            subject: 'URGENT: Business Idea Submission (Simplified Email)',
+            text: `New business idea submission from ${formData.fullName} (${formData.email}). Score: ${scoreText}.\n\nPlease check your Supabase database for full details.`,
+          });
+          
+          console.log(`[${requestId}] Last resort email sent:`, lastResortResponse);
+        } catch (finalErr) {
+          console.error(`[${requestId}] Even last resort email failed:`, finalErr);
+        }
       }
       
-      // Send confirmation email to submitter
+      // Always try to send a confirmation to the submitter
       try {
         console.log(`[${requestId}] Sending confirmation email to submitter: ${formData.email}`);
         
@@ -205,10 +240,10 @@ Additional Info: ${formData.additionalInfo || 'Not provided'}
         console.error(`[${requestId}] Error sending confirmation email:`, confirmationError);
         console.error(`[${requestId}] Error details:`, JSON.stringify(confirmationError));
       }
-    } catch (emailError) {
-      console.error(`[${requestId}] Error sending email notification:`, emailError);
-      console.error(`[${requestId}] Error details:`, JSON.stringify(emailError));
-      // We don't want to fail the submission if just the email fails
+    } catch (emailSetupError) {
+      console.error(`[${requestId}] Error preparing or sending emails:`, emailSetupError);
+      console.error(`[${requestId}] Error stack:`, emailSetupError.stack);
+      // Don't fail the submission if just the email fails
     }
     
     console.log(`[${requestId}] Request completed successfully`);
@@ -219,6 +254,7 @@ Additional Info: ${formData.additionalInfo || 'Not provided'}
     
   } catch (error) {
     console.error(`[${requestId}] Error in submit-business-idea function:`, error);
+    console.error(`[${requestId}] Error stack:`, error.stack);
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
