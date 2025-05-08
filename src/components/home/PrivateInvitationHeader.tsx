@@ -14,9 +14,6 @@ const PrivateInvitationHeader: React.FC<PrivateInvitationHeaderProps> = ({ score
       <h3 className="text-2xl font-bold mb-2 text-white">
         Go<span className="text-gb-green">o</span>d Work!
       </h3>
-      <p className="text-white/80">
-        Based on the information you have provided, we think you have a really good idea and invite you to tell us more on the form below and we will get back to you ASAP.
-      </p>
     </div>
   );
 };

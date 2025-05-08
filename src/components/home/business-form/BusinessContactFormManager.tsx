@@ -77,18 +77,7 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
   }
   
   return (
-    <div 
-      id="contact-form-section"
-      className="mt-12 p-6 bg-gb-dark text-white rounded-lg shadow-sm animate-fade-in"
-    >
-      {/* Score display above the header */}
-      <p className="text-white text-4xl font-bold mb-6 text-center">
-        Good Idea Score: {score}/100
-      </p>
-      
-      {/* Private Invitation Header without the score */}
-      <PrivateInvitationHeader score={score} />
-      
+    <div className="mt-12 p-6 bg-gb-dark text-white rounded-lg shadow-sm animate-fade-in">
       <Card>
         <CardContent className="pt-6">
           <form onSubmit={handleSubmit} className="space-y-8">
