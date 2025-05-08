@@ -4,7 +4,6 @@ import React from 'react';
 const BusinessEvaluatorIntro: React.FC = () => {
   return (
     <div className="mb-8">
-      <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">Is Your Idea a Good Business?</h2>
       <p className="text-lg text-gray-600 mb-6">
         Have an idea and wondering if it's worth pursuing? Our Business Evaluator will give you instant feedback based on the following five key criteria that we think are most important:
       </p>
