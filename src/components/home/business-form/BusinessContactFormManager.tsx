@@ -72,13 +72,20 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
     // Making sure it triggers only for score >= 85
     if (shouldDisplayForm && contactFormRef.current) {
       console.log('Scrolling to contact form, score:', score);
+      
       // Increase timeout to ensure DOM is fully rendered
       setTimeout(() => {
-        contactFormRef.current?.scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'start'
-        });
-      }, 500);
+        // Get the element's position
+        const rect = contactFormRef.current?.getBoundingClientRect();
+        if (rect) {
+          // Calculate position with offset (80px to account for header/navigation)
+          const scrollPosition = window.pageYOffset + rect.top - 80;
+          window.scrollTo({
+            top: scrollPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 800); // Longer timeout to ensure everything is rendered
     }
   }, [score, shouldDisplayForm]);
 
