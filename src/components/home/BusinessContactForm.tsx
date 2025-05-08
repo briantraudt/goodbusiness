@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -142,7 +141,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
   console.log('Rendering contact form with score:', score);
   
   return (
-    <div ref={contactFormRef} className="mt-12 p-6 bg-green-50 border border-green-200 rounded-lg shadow-sm animate-fade-in">
+    <div ref={contactFormRef} className="mt-12 p-6 bg-gb-blue text-white rounded-lg shadow-sm animate-fade-in">
       <BusinessContactHeader score={score || 0} />
       
       <Card>
