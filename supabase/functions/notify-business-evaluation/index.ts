@@ -20,7 +20,7 @@ const fromAddresses = [
 ];
 
 const toRecipients = ['brian@goodbusinesshq.com'];
-const bccRecipients = ['hq@goodbusinesshq.com'];
+// Removed BCC recipients
 
 serve(async (req) => {
   // Add request tracking for debugging
@@ -77,7 +77,6 @@ ${result || 'No evaluation result available'}
     // Log the exact configuration being used
     console.log(`[${requestId}] Using Resend API key: ${resendApiKey ? 'API key is set' : 'API key is missing'}`);
     console.log(`[${requestId}] Sending to: ${toRecipients.join(', ')}`);
-    console.log(`[${requestId}] BCCing to: ${bccRecipients.join(', ')}`);
     
     // Try to send email with multiple from addresses if needed
     let emailSent = false;
@@ -91,7 +90,7 @@ ${result || 'No evaluation result available'}
         emailResponse = await resend.emails.send({
           from: fromAddress,
           to: toRecipients,
-          bcc: bccRecipients,
+          // Removed BCC
           subject: `[NEW EVALUATION] Business Idea (Score: ${score !== null ? score : 'N/A'})`,
           html: emailHtml,
           text: plainText,

@@ -21,7 +21,7 @@ export const fromAddresses = [
 
 export const toRecipients = ['brian@goodbusinesshq.com'];
 export const ccRecipients: string[] = []; 
-export const bccRecipients = ['hq@goodbusinesshq.com'];
+// Removed BCC recipients
 
 // Generate email content
 export function generateEmailContent(formData: any) {
@@ -106,7 +106,7 @@ export async function sendNotificationEmail(formData: any, requestId: string) {
         from: fromAddress,
         to: toRecipients,
         cc: ccRecipients,
-        bcc: bccRecipients,
+        // Removed BCC
         reply_to: formData.email,
         subject: `[URGENT] New Business Idea: ${formData.fullName} (Score: ${scoreText})`,
         html,
