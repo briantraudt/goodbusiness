@@ -101,13 +101,11 @@ export const useBusinessEvaluation = () => {
           
           // If score is 75 or higher, show only the contact form after a short delay
           if (extractedScore >= 75) {
-            setTimeout(() => {
-              setShowContactFormOnly(true);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-              
-              // Force a page reload to show the Private Invitation screen
-              window.location.reload();
-            }, 1500);
+            // Set showContactFormOnly immediately to update the UI
+            setShowContactFormOnly(true);
+            
+            // Force a complete page reload which will show the Private Invitation screen
+            window.location.href = '/evaluator';
           }
         } else {
           console.warn('Could not extract score from result', data.result);
@@ -120,13 +118,10 @@ export const useBusinessEvaluation = () => {
           setNotificationSent(notificationSuccess);
           
           // Show only the contact form after a short delay for default score as well
-          setTimeout(() => {
-            setShowContactFormOnly(true);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            
-            // Force a page reload to show the Private Invitation screen
-            window.location.reload();
-          }, 1500);
+          setShowContactFormOnly(true);
+          
+          // Force a complete page reload which will show the Private Invitation screen
+          window.location.href = '/evaluator';
         }
         
         toast.success('Idea evaluated successfully!');
