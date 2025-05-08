@@ -36,19 +36,19 @@ serve(async (req) => {
     const prompt = `
 You are an AI business advisor trained by Good Business. Evaluate the following idea based on its alignment with faith-based impact, business viability, and scalability. Score the idea from 0 to 100, and explain your reasoning across 5 key areas:
 
-1. Purpose Driven – Does it align with Christian values or mission?
-2. Problem-Solution Fit – Does it solve a real need clearly and effectively?
-3. Revenue Potential – Can it generate sustainable income?
-4. Feasibility – Can it be launched quickly with limited resources?
-5. Scalability – Can it grow or be replicated in other communities or countries?
+1. Purpose & Values Driven Impact – Does your idea aim to make a meaningful difference in the lives of others or the communities it touches?
+2. Problem-Solution Fit – Is it solving a real, specific problem for a real audience?
+3. Viability – Can it generate income sustainably?
+4. Feasibility – Can it be built quickly and realistically within your set budget?
+5. Scalability – Can it grow beyond your local area to create greater impact?
 
 Format your response like this:
 
 🧪 Good Idea Score: XX/100
 
-✅ Purpose Driven: 
+✅ Purpose & Values Driven Impact: 
 ✅ Problem-Solution Fit: 
-✅ Revenue Potential: 
+✅ Viability: 
 ✅ Feasibility: 
 ✅ Scalability: 
 
@@ -68,12 +68,14 @@ Business Idea:
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: 'gpt-4o-mini',  // Changed from gpt-4o to gpt-4o-mini (cheaper model)
+          model: 'gpt-4o-mini',  // Using gpt-4o-mini for efficiency
           messages: [
             { role: 'system', content: 'You are a business advisor who evaluates business ideas.' },
             { role: 'user', content: prompt }
           ],
-          temperature: 0.7,
+          temperature: 0.5,  // Reduced from 0.7 for more consistent evaluations
+          max_tokens: 1000,  // Added max_tokens parameter for response length control
+          top_p: 0.9,        // Added top_p parameter for response diversity control
         }),
       });
 
