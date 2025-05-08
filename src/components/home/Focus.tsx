@@ -36,7 +36,7 @@ const Focus = () => {
     <section className="bg-[#F1F0FB]/30">
       <div className="container-custom py-10 md:py-16">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">From Idea to Reality</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">From Idea to Business</h2>
           <p className="mt-3 text-lg text-gb-dark/70 max-w-2xl mx-auto">
             We turn your app ideas into working products in record time
           </p>
