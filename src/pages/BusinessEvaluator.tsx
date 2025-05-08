@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import BusinessEvaluator from '@/components/home/BusinessEvaluator';
 import { useSearchParams } from 'react-router-dom';
@@ -7,6 +7,12 @@ import { useSearchParams } from 'react-router-dom';
 const BusinessEvaluatorPage = () => {
   const [searchParams] = useSearchParams();
   const scoreParam = searchParams.get('score');
+  
+  // Effect to scroll to top when the page loads or URL parameters change
+  useEffect(() => {
+    // Force scroll to top immediately
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [scoreParam]);
   
   // Only show the header if we're not in the private invitation mode
   // (score param in URL indicates private invitation mode)

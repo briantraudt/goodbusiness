@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useBusinessEvaluation } from '@/hooks/useBusinessEvaluation';
 import PrivateInvitationScreen from './PrivateInvitationScreen';
 import EvaluationScreen from './EvaluationScreen';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 const BusinessEvaluator = () => {
   const {
@@ -20,6 +20,12 @@ const BusinessEvaluator = () => {
   const [contactSubmitted, setContactSubmitted] = useState(false);
   const [searchParams] = useSearchParams();
   const scoreParam = searchParams.get('score');
+  
+  // Effect to scroll to top when the component mounts or URL parameters change
+  useEffect(() => {
+    // Scroll to top immediately when component mounts or URL changes
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [scoreParam]);
   
   // If there's a score parameter in the URL, we should show the Private Invitation screen
   const shouldShowPrivateInvitation = scoreParam && parseInt(scoreParam, 10) >= 75;

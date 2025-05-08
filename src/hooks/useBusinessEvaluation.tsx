@@ -73,8 +73,7 @@ export const useBusinessEvaluation = () => {
       }
       
       if (data?.result) {
-        setResult(data.result);
-        
+        // For high scores, we'll handle everything before showing any UI
         // Extract score from the result with improved parsing
         let extractedScore = null;
         
@@ -93,35 +92,36 @@ export const useBusinessEvaluation = () => {
           }
         }
         
-        if (extractedScore !== null) {
-          console.log('Setting score to:', extractedScore);
-          setScore(extractedScore);
+        // If high score, we'll navigate immediately without setting state
+        if (extractedScore !== null && extractedScore >= 75) {
+          console.log('High score detected, preparing to navigate...');
           
-          // Send notification email about the evaluation
-          const notificationSuccess = await sendEvaluationNotification(idea, extractedScore, data.result);
-          setNotificationSent(notificationSuccess);
+          // Send notification before navigation
+          await sendEvaluationNotification(idea, extractedScore, data.result);
           
-          // If score is 75 or higher, handle the high score case
-          if (extractedScore >= 75) {
-            // Use React Router for smoother navigation instead of window.location
-            navigate(`/evaluator?score=${extractedScore}`, { replace: true });
-            return; // End execution here to prevent further state updates
-          }
-        } else {
-          console.warn('Could not extract score from result', data.result);
-          
+          // Navigate without updating any local state first
+          // This prevents any flashing of UI
+          navigate(`/evaluator?score=${extractedScore}`, { replace: true });
+          return; // End execution here to prevent further state changes
+        } else if (extractedScore === null) {
           // If we can't extract a score but have a result, default to showing form
-          console.log('Setting default score of 85 to show form');
-          setScore(85);
+          console.log('Could not extract score, using default score of 85');
           
-          // Send notification email about the evaluation even with default score
-          const notificationSuccess = await sendEvaluationNotification(idea, 85, data.result);
-          setNotificationSent(notificationSuccess);
+          // Send notification before navigation
+          await sendEvaluationNotification(idea, 85, data.result);
           
-          // Use React Router for navigation
+          // Navigate without updating any local state first
           navigate('/evaluator?score=85', { replace: true });
           return; // End execution here
         }
+        
+        // Only for non-qualifying scores do we update the local state
+        setResult(data.result);
+        setScore(extractedScore);
+        
+        // Send notification email about the evaluation
+        const notificationSuccess = await sendEvaluationNotification(idea, extractedScore, data.result);
+        setNotificationSent(notificationSuccess);
         
         toast.success('Idea evaluated successfully!');
       } else {
