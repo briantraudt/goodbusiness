@@ -15,6 +15,7 @@ const BusinessEvaluator = () => {
   const [score, setScore] = useState<number | null>(null);
   const [contactSubmitted, setContactSubmitted] = useState(false);
   const [notificationSent, setNotificationSent] = useState(false);
+  const [showContactFormOnly, setShowContactFormOnly] = useState(false);
 
   // Send notification about the evaluation
   const sendEvaluationNotification = async (idea: string, score: number | null, result: string | null) => {
@@ -51,6 +52,7 @@ const BusinessEvaluator = () => {
     setResult(null);
     setScore(null);
     setNotificationSent(false);
+    setShowContactFormOnly(false);
 
     try {
       const { data, error: supabaseError } = await supabase.functions.invoke('evaluate-business-idea', {
@@ -103,6 +105,14 @@ const BusinessEvaluator = () => {
           // Send notification email about the evaluation
           const notificationSuccess = await sendEvaluationNotification(idea, extractedScore, data.result);
           setNotificationSent(notificationSuccess);
+          
+          // If score is 75 or higher, show only the contact form after a short delay
+          if (extractedScore >= 75) {
+            setTimeout(() => {
+              setShowContactFormOnly(true);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 1500);
+          }
         } else {
           console.warn('Could not extract score from result', data.result);
           // If we can't extract a score but have a result, default to showing form
@@ -113,6 +123,12 @@ const BusinessEvaluator = () => {
           // Send notification email about the evaluation even with default score
           const notificationSuccess = await sendEvaluationNotification(idea, 85, data.result);
           setNotificationSent(notificationSuccess);
+          
+          // Show only the contact form after a short delay for default score as well
+          setTimeout(() => {
+            setShowContactFormOnly(true);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }, 1500);
         }
         
         toast.success('Idea evaluated successfully!');
@@ -131,10 +147,44 @@ const BusinessEvaluator = () => {
   // Debug logging
   useEffect(() => {
     console.log('Score updated:', score);
-    console.log('Should show contact form:', score !== null && score >= 85);
+    console.log('Should show contact form:', score !== null && score >= 75);
+    console.log('Show contact form only:', showContactFormOnly);
     console.log('Notification sent:', notificationSent);
-  }, [score, notificationSent]);
+  }, [score, notificationSent, showContactFormOnly]);
 
+  // If showing contact form only for high scores
+  if (showContactFormOnly && score !== null && score >= 75) {
+    return (
+      <section className="bg-white">
+        <div className="bg-gb-dark text-white py-16">
+          <div className="container-custom">
+            <div className="flex items-center gap-4">
+              <div className="bg-gb-green text-white h-12 w-12 rounded-full flex items-center justify-center font-bold text-2xl flex-shrink-0">
+                2
+              </div>
+              <div>
+                <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                  Private Invitation
+                </h1>
+                <p className="text-xl text-white/80">
+                  Tell us more about your Go<span className="text-gb-green">o</span>d Business idea.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="container-custom max-w-3xl mx-auto py-16">
+          <BusinessContactForm 
+            score={score}
+            contactSubmitted={contactSubmitted}
+            setContactSubmitted={setContactSubmitted}
+          />
+        </div>
+      </section>
+    );
+  }
+
+  // Normal view for evaluation or low scores
   return (
     <section className="bg-white py-16">
       <div className="container-custom max-w-3xl mx-auto">
@@ -150,7 +200,7 @@ const BusinessEvaluator = () => {
           error={error}
           score={score}
         />
-        {score !== null && (
+        {score !== null && score >= 75 && !showContactFormOnly && (
           <BusinessContactForm 
             score={score}
             contactSubmitted={contactSubmitted}
