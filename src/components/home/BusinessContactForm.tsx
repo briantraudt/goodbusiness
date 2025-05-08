@@ -31,6 +31,11 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
         
         <PrivateInvitationHeader score={score} />
         
+        {/* Congratulations message above the descriptive text */}
+        <p className="text-gb-green text-lg font-medium mb-2">
+          Congratulations!
+        </p>
+        
         {/* Descriptive text below score and above the form */}
         <p className="text-gb-dark text-lg mb-8 max-w-3xl mx-auto font-medium">
           Based on the information you have provided, we think you have a really good idea and invite you to tell us more on the form below and we will get back to you ASAP.
