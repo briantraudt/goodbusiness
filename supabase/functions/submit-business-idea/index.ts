@@ -4,7 +4,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { handleSubmission } from "./handlers.ts";
 import { corsHeaders } from "./cors.ts";
 
-console.log('Function initialized');
+console.log('Submit business idea function initialized');
 
 serve(async (req) => {
   // Add request tracking for debugging

@@ -1,6 +1,6 @@
 
 // Email functionality
-import { Resend } from "https://esm.sh/resend@1.0.0";
+import { createClient } from "https://esm.sh/@resend/resend@1.2.0";
 import { corsHeaders } from "./cors.ts";
 
 const resendApiKey = Deno.env.get('RESEND_API_KEY') || '';
@@ -9,7 +9,7 @@ if (!resendApiKey) {
   console.error('⚠️ CRITICAL ERROR: Resend API key is not configured. Emails cannot be sent.');
 }
 
-export const resend = new Resend(resendApiKey);
+export const resend = createClient({ apiKey: resendApiKey });
 
 // Configuration for email sending attempts
 export const fromAddresses = [
@@ -106,7 +106,6 @@ export async function sendNotificationEmail(formData: any, requestId: string) {
         from: fromAddress,
         to: toRecipients,
         cc: ccRecipients,
-        // Removed BCC
         reply_to: formData.email,
         subject: `[URGENT] New Business Idea: ${formData.fullName} (Score: ${scoreText})`,
         html,
