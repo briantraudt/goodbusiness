@@ -31,8 +31,8 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
   // Check if score meets the minimum threshold to display the form
   const shouldDisplayForm = score !== null && score >= 75;
   
-  // Check if score is high enough for "Private Invitation"
-  const isHighScore = score !== null && score >= 90;
+  // Everyone who scores 75+ should see the Private Invitation header
+  // Removed the separate isHighScore check since we want everyone with a qualifying score to see it
   
   // Use our custom hook to manage all form state
   const {
@@ -106,11 +106,8 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
       id="contact-form-section"
       className="mt-12 p-6 bg-gb-dark text-white rounded-lg shadow-sm animate-fade-in"
     >
-      {isHighScore ? (
-        <PrivateInvitationHeader score={score} />
-      ) : (
-        <BusinessContactHeader score={score} />
-      )}
+      {/* Show PrivateInvitationHeader for everyone with score >= 75 */}
+      <PrivateInvitationHeader score={score} />
       
       <Card>
         <CardContent className="pt-6">
