@@ -6,6 +6,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useToast } from '@/hooks/use-toast';
+import { Card } from '@/components/ui/card';
 
 // Define a scoring result type
 interface EvaluationResult {
@@ -94,7 +95,7 @@ const ContactEvaluator: React.FC<{ onEvaluationComplete: (result: EvaluationResu
   };
 
   return (
-    <section className="bg-white py-16">
+    <section className="bg-gradient-to-br from-gb-light to-white py-16">
       <div className="container-custom max-w-3xl mx-auto">
         <div className="mb-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Evaluate Your Idea First</h2>
@@ -104,41 +105,47 @@ const ContactEvaluator: React.FC<{ onEvaluationComplete: (result: EvaluationResu
           </p>
         </div>
 
-        <div className="space-y-4">
-          <Textarea 
-            id="ideaInput"
-            value={idea}
-            onChange={(e) => setIdea(e.target.value)}
-            placeholder="Describe your business or mission idea..."
-            className="w-full p-4 min-h-[160px] text-base"
-            rows={8}
-          />
-          
-          <Button 
-            onClick={evaluateIdea}
-            disabled={isLoading}
-            className="w-full bg-gb-green hover:bg-gb-green/90 text-white font-medium py-6 h-auto text-lg"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Evaluating...
-              </>
-            ) : 'Evaluate My Idea'}
-          </Button>
-        </div>
-
-        {error && (
-          <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-md text-red-600">
-            {error}
+        <Card className="border border-gray-200 shadow-md bg-white rounded-xl overflow-hidden">
+          <div className="p-6 space-y-4">
+            <Textarea 
+              id="ideaInput"
+              value={idea}
+              onChange={(e) => setIdea(e.target.value)}
+              placeholder="Describe your business or mission idea..."
+              className="w-full p-4 min-h-[160px] text-base"
+              rows={8}
+            />
+            
+            <Button 
+              onClick={evaluateIdea}
+              disabled={isLoading}
+              className="w-full bg-gb-green hover:bg-gb-green/90 text-white font-medium py-6 h-auto text-lg"
+            >
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Evaluating...
+                </>
+              ) : 'Evaluate My Idea'}
+            </Button>
           </div>
-        )}
 
-        {result && (
-          <div className="mt-8 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-            <pre className="whitespace-pre-wrap font-sans text-base">{result}</pre>
-          </div>
-        )}
+          {error && (
+            <div className="px-6 pb-6">
+              <div className="p-4 bg-red-50 border border-red-200 rounded-md text-red-600">
+                {error}
+              </div>
+            </div>
+          )}
+
+          {result && (
+            <div className="px-6 pb-6">
+              <div className="p-6 bg-gray-50 border border-gray-200 rounded-lg">
+                <pre className="whitespace-pre-wrap font-sans text-base">{result}</pre>
+              </div>
+            </div>
+          )}
+        </Card>
       </div>
     </section>
   );
