@@ -61,9 +61,13 @@ serve(async (req) => {
     try {
       const scoreText = formData.ideaScore ? `${formData.ideaScore}/100` : 'Not evaluated';
       
-      await resend.emails.send({
+      console.log('Attempting to send email notification...');
+      console.log('Using Resend API key (first few chars):', resendApiKey ? resendApiKey.substring(0, 5) + '...' : 'Not set');
+      
+      const emailResponse = await resend.emails.send({
         from: 'Good Business HQ <onboarding@resend.dev>',
         to: 'brian@goodbusinesshq.com',
+        reply_to: formData.email,
         subject: `New Business Idea Submission: ${formData.fullName}`,
         html: `
           <h1>New Business Idea Submission</h1>
@@ -95,9 +99,10 @@ serve(async (req) => {
         `
       });
 
-      console.log('Notification email sent successfully');
+      console.log('Email notification sent successfully:', emailResponse);
     } catch (emailError) {
       console.error('Error sending email notification:', emailError);
+      console.error('Error details:', JSON.stringify(emailError));
       // We don't want to fail the submission if just the email fails
     }
     
