@@ -2,6 +2,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Loader2 } from 'lucide-react';
 import BusinessContactHeader from '../BusinessContactHeader';
 import BusinessContactThankYou from '../BusinessContactThankYou';
 import { useBusinessContactForm } from '@/hooks/useBusinessContactForm';
@@ -60,6 +61,7 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
     additionalInfo,
     setAdditionalInfo,
     errors,
+    isSubmitting,
     handleSubmit
   } = useBusinessContactForm({
     score,
@@ -142,8 +144,16 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
             <Button 
               type="submit" 
               className="w-full bg-gb-green hover:bg-gb-green/90 text-white font-medium py-6 h-auto text-lg"
+              disabled={isSubmitting}
             >
-              Submit My Idea
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                "Submit My Idea"
+              )}
             </Button>
           </form>
         </CardContent>

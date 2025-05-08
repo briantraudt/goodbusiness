@@ -9,6 +9,66 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      business_submissions: {
+        Row: {
+          additional_info: string | null
+          budget: string
+          business_idea: string
+          business_stage: string
+          company_name: string | null
+          created_at: string
+          customers: string | null
+          email: string
+          full_name: string
+          help_types: string[] | null
+          id: string
+          idea_score: number | null
+          other_help_explanation: string | null
+          phone: string | null
+          problem_solution: string
+          profit_type: string
+          social_impact: string | null
+        }
+        Insert: {
+          additional_info?: string | null
+          budget: string
+          business_idea: string
+          business_stage: string
+          company_name?: string | null
+          created_at?: string
+          customers?: string | null
+          email: string
+          full_name: string
+          help_types?: string[] | null
+          id?: string
+          idea_score?: number | null
+          other_help_explanation?: string | null
+          phone?: string | null
+          problem_solution: string
+          profit_type: string
+          social_impact?: string | null
+        }
+        Update: {
+          additional_info?: string | null
+          budget?: string
+          business_idea?: string
+          business_stage?: string
+          company_name?: string | null
+          created_at?: string
+          customers?: string | null
+          email?: string
+          full_name?: string
+          help_types?: string[] | null
+          id?: string
+          idea_score?: number | null
+          other_help_explanation?: string | null
+          phone?: string | null
+          problem_solution?: string
+          profit_type?: string
+          social_impact?: string | null
+        }
+        Relationships: []
+      }
       user_categories: {
         Row: {
           created_at: string

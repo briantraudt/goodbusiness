@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { validateBusinessForm, FormErrors } from '@/components/home/business-form-validation';
+import { supabase } from "@/integrations/supabase/client";
 
 interface UseBusinessContactFormProps {
   score: number | null;
@@ -33,8 +34,9 @@ export const useBusinessContactForm = ({ score, setContactSubmitted }: UseBusine
   const [socialImpact, setSocialImpact] = useState('');
   const [additionalInfo, setAdditionalInfo] = useState('');
   
-  // Form validation
+  // Form validation and submission state
   const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const handleHelpTypeChange = (type: string) => {
     if (helpTypes.includes(type)) {
@@ -59,6 +61,8 @@ export const useBusinessContactForm = ({ score, setContactSubmitted }: UseBusine
     
     if (validation.isValid) {
       try {
+        setIsSubmitting(true);
+        
         // Prepare form data
         const formData = {
           fullName,
@@ -80,16 +84,22 @@ export const useBusinessContactForm = ({ score, setContactSubmitted }: UseBusine
         
         console.log('Contact form submitted:', formData);
         
-        // Here you would typically send this data to your backend
-        // await supabase.functions.invoke('submit-contact', {
-        //   body: formData
-        // });
+        // Send data to the Supabase function
+        const { data, error } = await supabase.functions.invoke('submit-business-idea', {
+          body: formData
+        });
+        
+        if (error) {
+          throw new Error(error.message);
+        }
         
         setContactSubmitted(true);
         toast.success('Thank you for your interest! We will be in touch soon.');
       } catch (err) {
         console.error('Error submitting contact form:', err);
         toast.error('Failed to submit form. Please try again.');
+      } finally {
+        setIsSubmitting(false);
       }
     } else {
       setErrors(validation.errors);
@@ -138,6 +148,7 @@ export const useBusinessContactForm = ({ score, setContactSubmitted }: UseBusine
     
     // Form validation and submission
     errors,
+    isSubmitting,
     handleSubmit
   };
 };
