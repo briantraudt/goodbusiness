@@ -31,12 +31,12 @@ const BusinessEvaluatorForm: React.FC<BusinessEvaluatorFormProps> = ({
       <Button 
         onClick={evaluateIdea}
         disabled={isLoading}
-        className="w-full bg-gb-green hover:bg-gb-green/90 text-white font-medium py-6 h-auto text-lg"
+        className="w-full bg-gb-green hover:bg-gb-green/90 text-white font-medium py-6 h-auto text-lg relative"
       >
         {isLoading ? (
           <>
-            <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-            Evaluating...
+            <Loader2 className="mr-2 h-6 w-6 animate-spin text-white" />
+            <span className="animate-pulse">Evaluating your idea...</span>
           </>
         ) : 'Evaluate My Idea'}
       </Button>
