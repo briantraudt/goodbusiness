@@ -8,7 +8,7 @@ interface PrivateInvitationHeaderProps {
 const PrivateInvitationHeader: React.FC<PrivateInvitationHeaderProps> = ({ score }) => {
   return (
     <div className="text-center mb-6">
-      <div className="inline-block bg-gb-yellow text-gb-dark text-sm font-bold px-3 py-1 rounded-full mb-2">
+      <div className="inline-block bg-gb-blue text-white text-sm font-bold px-3 py-1 rounded-full mb-2">
         Private Invitation
       </div>
       <p className="text-white text-3xl font-bold mb-2">
