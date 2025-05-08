@@ -8,7 +8,7 @@ interface BusinessContactHeaderProps {
 const BusinessContactHeader: React.FC<BusinessContactHeaderProps> = ({ score }) => {
   return (
     <div className="text-center mb-6">
-      <h3 className="text-2xl font-bold mb-2 text-white inline-block">
+      <h3 className="text-2xl font-bold mb-2 text-white">
         Go<span className="text-gb-green">o</span>d Work!
       </h3>
       <p className="text-white/80">
