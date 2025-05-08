@@ -54,7 +54,7 @@ const Hero = () => {
         {/* Buttons - Added conditional margin top for mobile */}
         <div className={`${isMobile ? 'mt-24' : 'mt-10'} flex flex-col sm:flex-row gap-4 justify-center`}>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-xl flex items-center justify-center">
-            <Link to="/contact">
+            <Link to="/evaluator">
               Start Your Project
               <Rocket className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
