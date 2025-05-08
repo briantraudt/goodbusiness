@@ -25,7 +25,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
     <div id="contact-form-section">
       {/* Score display outside and above everything */}
       <div className="text-center mb-8">
-        <p className="text-white text-4xl font-bold mb-6">
+        <p className="text-gb-dark text-4xl font-bold mb-6">
           Good Idea Score: {score}/100
         </p>
         
