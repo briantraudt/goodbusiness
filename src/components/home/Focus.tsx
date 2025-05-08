@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Rocket, Component, Database } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,21 +12,21 @@ const Focus = () => {
       title: "Validate Your Idea",
       description: "Turn your app concept into an interactive prototype in days. Test your idea quickly and get real user feedback before major investment.",
       icon: <Rocket className="h-12 w-12 text-gb-blue" />,
-      link: "/consulting",
+      link: "/evaluator",
       linkText: "Get Started"
     },
     {
       title: "Build MVP",
       description: "Transform your validated idea into a working minimum viable product. Focus on core features that solve your users' problems effectively.",
       icon: <Component className="h-12 w-12 text-gb-purple" />,
-      link: "/consulting",
+      link: "/evaluator",
       linkText: "Learn More"
     },
     {
       title: "Scale Your App",
       description: "Ready to grow? We'll help evolve your successful MVP into a fully-featured application while maintaining the speed and quality that got you here.",
       icon: <Database className="h-12 w-12 text-gb-green" />,
-      link: "/consulting",
+      link: "/evaluator",
       linkText: "Scale Now"
     },
   ];
