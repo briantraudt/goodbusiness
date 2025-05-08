@@ -53,7 +53,8 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
   const contactFormRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    if (score && score >= 85 && contactFormRef.current) {
+    // Making sure it triggers for score === 85 as well
+    if (score !== null && score >= 85 && contactFormRef.current) {
       setTimeout(() => {
         contactFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 500);
@@ -120,6 +121,9 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
       toast.error('Please fill in all required fields');
     }
   };
+  
+  // Debug log to check if score meets threshold
+  console.log('Current score:', score, 'Should display form:', score !== null && score >= 85);
   
   if (score === null || score < 85) return null;
   
