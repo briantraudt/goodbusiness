@@ -18,13 +18,13 @@ const ConsultingProcess = () => {
                 <div className="hidden md:block w-px h-full bg-gray-200 mx-auto mt-2"></div>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gb-dark mb-2">Contact Us</h3>
+                <h3 className="text-xl font-bold text-gb-dark mb-2">Business Evaluator</h3>
                 <p className="text-gb-dark/80 mb-4">
-                  Share your idea with us through our simple submission form. Tell us about the problem you're solving and your vision for the solution.
+                  Use our streamlined Business Evaluator tool to share your idea with us. We'll help you analyze its potential and determine if it's a good fit for development.
                 </p>
                 <Link to="/contact">
                   <Button variant="outline" className="group">
-                    Submit your idea <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                    Start evaluation <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
               </div>
@@ -36,9 +36,9 @@ const ConsultingProcess = () => {
                 <div className="hidden md:block w-px h-full bg-gray-200 mx-auto mt-2"></div>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gb-dark mb-2">Evaluation</h3>
+                <h3 className="text-xl font-bold text-gb-dark mb-2">Private Invitation</h3>
                 <p className="text-gb-dark/80 mb-4">
-                  We evaluate your idea for uniqueness, scalability, and revenue potential. Our team assesses market fit and technical feasibility to determine the best path forward.
+                  After reviewing your evaluation, we'll send a private invitation to discuss your idea further. This allows us to explore potential solutions and determine the best path forward.
                 </p>
               </div>
             </div>
