@@ -25,6 +25,11 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
     <div id="contact-form-section">
       {/* Score display outside and above everything */}
       <div className="text-center mb-8">
+        {/* Private Invitation pill button at the top */}
+        <div className="inline-block bg-gb-blue text-white font-bold px-8 py-3 rounded-full mb-6 text-xl">
+          Private Invitation
+        </div>
+        
         <p className="text-gb-dark text-4xl font-bold mb-6">
           Good Idea Score: {score}/100
         </p>
