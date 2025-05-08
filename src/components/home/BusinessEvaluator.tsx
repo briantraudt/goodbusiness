@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
@@ -11,6 +11,19 @@ const BusinessEvaluator = () => {
   const [result, setResult] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Create a ref for the result section
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  // Effect to scroll to results when they appear
+  useEffect(() => {
+    if (result && resultRef.current) {
+      // Wait a tiny bit for the DOM to update
+      setTimeout(() => {
+        resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [result]);
 
   const evaluateIdea = async () => {
     if (!idea.trim()) {
@@ -113,7 +126,7 @@ const BusinessEvaluator = () => {
         )}
 
         {result && (
-          <div className="mt-8 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+          <div ref={resultRef} className="mt-8 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
             <pre className="whitespace-pre-wrap font-sans text-base">{result}</pre>
           </div>
         )}

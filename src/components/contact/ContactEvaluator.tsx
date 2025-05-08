@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
@@ -20,6 +20,16 @@ const ContactEvaluator: React.FC<{ onEvaluationComplete: (result: EvaluationResu
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { toast: uiToast } = useToast();
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  // Effect to scroll to results when they appear
+  useEffect(() => {
+    if (result && resultRef.current) {
+      setTimeout(() => {
+        resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [result]);
 
   // Function to extract score from evaluation result
   const extractScore = (evaluationText: string): number => {
@@ -139,7 +149,7 @@ const ContactEvaluator: React.FC<{ onEvaluationComplete: (result: EvaluationResu
           )}
 
           {result && (
-            <div className="px-6 pb-6">
+            <div className="px-6 pb-6" ref={resultRef}>
               <div className="p-6 bg-gray-50 border border-gray-200 rounded-lg">
                 <pre className="whitespace-pre-wrap font-sans text-base">{result}</pre>
               </div>
