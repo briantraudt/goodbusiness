@@ -36,7 +36,7 @@ serve(async (req) => {
     const prompt = `
 You are an AI business advisor trained by Good Business. Evaluate the following idea based on its alignment with faith-based impact, business viability, and scalability. Score the idea from 0 to 100, and explain your reasoning across 5 key areas:
 
-1. Kingdom Impact – Does it align with Christian values or mission?
+1. Purpose Driven – Does it align with Christian values or mission?
 2. Problem-Solution Fit – Does it solve a real need clearly and effectively?
 3. Revenue Potential – Can it generate sustainable income?
 4. Feasibility – Can it be launched quickly with limited resources?
@@ -46,7 +46,7 @@ Format your response like this:
 
 🧪 Good Idea Score: XX/100
 
-✅ Kingdom Impact: 
+✅ Purpose Driven: 
 ✅ Problem-Solution Fit: 
 ✅ Revenue Potential: 
 ✅ Feasibility: 
