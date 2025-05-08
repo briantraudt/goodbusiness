@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Rocket, Component, Database } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -23,7 +24,7 @@ const Focus = () => {
       linkText: "Learn More"
     },
     {
-      title: "Scale Your App",
+      title: "Scale Your Product",
       description: "Ready to grow? We'll help evolve your successful MVP into a fully-featured application while maintaining the speed and quality that got you here.",
       icon: <Database className="h-12 w-12 text-gb-green" />,
       link: "/evaluator",
