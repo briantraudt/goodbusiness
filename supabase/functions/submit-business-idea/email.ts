@@ -1,6 +1,5 @@
 
 // Email functionality
-import { createClient } from "https://esm.sh/@supabase/ssr@0.1.0/dist/esm/createClient";
 import { corsHeaders } from "./cors.ts";
 
 const resendApiKey = Deno.env.get('RESEND_API_KEY') || '';
