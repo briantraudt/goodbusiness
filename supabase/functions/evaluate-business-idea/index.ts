@@ -89,6 +89,19 @@ We're looking for business ideas that demonstrate purpose-driven impact, clear p
 
 Please revisit your concept focusing on these areas to create a stronger business proposal."
 
+IMPORTANT FOR SCORES BELOW 85/100:
+- For scores between 50/100 and 84/100, make sure the "Verdict" section includes SPECIFIC, actionable improvement suggestions based on the weak areas identified in the evaluation.
+- The verdict should explicitly mention what improvements would be needed to potentially receive a higher score, focusing on the weakest areas first.
+- Be constructive and encouraging, providing at least 3-4 specific actions the person could take to strengthen their idea.
+- Format this section as:
+"Verdict: Here's what could make this idea stronger:
+1. [Specific improvement suggestion related to weakest area]
+2. [Another specific improvement suggestion]
+3. [Another specific improvement suggestion]
+4. [Final improvement suggestion]
+
+With these improvements, your concept could become a more viable Good Business and potentially receive a higher score in future evaluations."
+
 Business Idea:
 """${idea}"""
     `;
@@ -105,7 +118,7 @@ Business Idea:
         body: JSON.stringify({
           model: 'gpt-4o-mini',  // Using gpt-4o-mini for efficiency
           messages: [
-            { role: 'system', content: 'You are a business advisor who evaluates business ideas. Be strict with low-effort submissions and rate them as 0/100. When faith elements are mentioned in the idea, acknowledge and celebrate them positively.' },
+            { role: 'system', content: 'You are a business advisor who evaluates business ideas. Be strict with low-effort submissions and rate them as 0/100. When faith elements are mentioned in the idea, acknowledge and celebrate them positively. For scores below 85/100, always provide specific, actionable improvement suggestions.' },
             { role: 'user', content: prompt }
           ],
           temperature: 0.5,  // Reduced from 0.7 for more consistent evaluations
