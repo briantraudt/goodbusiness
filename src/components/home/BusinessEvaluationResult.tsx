@@ -4,11 +4,13 @@ import React, { useRef, useEffect } from 'react';
 interface BusinessEvaluationResultProps {
   result: string | null;
   error: string | null;
+  score: number | null;
 }
 
 const BusinessEvaluationResult: React.FC<BusinessEvaluationResultProps> = ({
   result,
-  error
+  error,
+  score
 }) => {
   const resultRef = useRef<HTMLDivElement>(null);
   
@@ -21,22 +23,42 @@ const BusinessEvaluationResult: React.FC<BusinessEvaluationResultProps> = ({
     }
   }, [result]);
   
+  // If no result or error, don't render anything
   if (!result && !error) return null;
   
-  return (
-    <>
-      {error && (
-        <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-md text-red-600">
-          {error}
-        </div>
-      )}
+  // For error messages, always show them
+  if (error) {
+    return (
+      <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-md text-red-600">
+        {error}
+      </div>
+    );
+  }
 
-      {result && (
+  // For high scores (85+), hide the detailed evaluation
+  // The contact form will be shown separately
+  if (score !== null && score >= 85) {
+    // Extract only the score line from the result
+    const scoreLineMatch = result?.match(/🧪 Good Idea Score: \d+\/100/);
+    const scoreLine = scoreLineMatch ? scoreLineMatch[0] : null;
+    
+    if (scoreLine) {
+      return (
         <div ref={resultRef} className="mt-8 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
-          <pre className="whitespace-pre-wrap font-sans text-base">{result}</pre>
+          <p className="text-2xl font-bold text-green-600">{scoreLine}</p>
         </div>
-      )}
-    </>
+      );
+    }
+    
+    // If we can't extract the score line for some reason, return nothing
+    return null;
+  }
+  
+  // For lower scores (<85), show the full evaluation
+  return (
+    <div ref={resultRef} className="mt-8 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
+      <pre className="whitespace-pre-wrap font-sans text-base">{result}</pre>
+    </div>
   );
 };
 

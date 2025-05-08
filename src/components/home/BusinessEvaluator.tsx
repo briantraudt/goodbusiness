@@ -148,6 +148,7 @@ const BusinessEvaluator = () => {
         <BusinessEvaluationResult 
           result={result}
           error={error}
+          score={score}
         />
         {score !== null && (
           <BusinessContactForm 
