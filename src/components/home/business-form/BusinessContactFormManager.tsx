@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import BusinessContactHeader from '../BusinessContactHeader';
+import PrivateInvitationHeader from '../PrivateInvitationHeader';
 import BusinessContactThankYou from '../BusinessContactThankYou';
 import { useBusinessContactForm } from '@/hooks/useBusinessContactForm';
 
@@ -28,7 +29,10 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
   const contactFormRef = useRef<HTMLDivElement>(null);
   
   // Check if score meets the minimum threshold to display the form
-  const shouldDisplayForm = score !== null && score >= 85;
+  const shouldDisplayForm = score !== null && score >= 75;
+  
+  // Check if score is high enough for "Private Invitation"
+  const isHighScore = score !== null && score >= 90;
   
   // Use our custom hook to manage all form state
   const {
@@ -69,23 +73,20 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
   });
   
   useEffect(() => {
-    // Making sure it triggers only for score >= 85
+    // Making sure it triggers only for score >= 75
     if (shouldDisplayForm && contactFormRef.current) {
       console.log('Scrolling to contact form, score:', score);
       
-      // Increase timeout to ensure DOM is fully rendered
       setTimeout(() => {
-        // Get the element's position
         const rect = contactFormRef.current?.getBoundingClientRect();
         if (rect) {
-          // Calculate position with offset (80px to account for header/navigation)
           const scrollPosition = window.pageYOffset + rect.top - 80;
           window.scrollTo({
             top: scrollPosition,
             behavior: 'smooth'
           });
         }
-      }, 800); // Longer timeout to ensure everything is rendered
+      }, 800);
     }
   }, [score, shouldDisplayForm]);
 
@@ -105,7 +106,11 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
       id="contact-form-section"
       className="mt-12 p-6 bg-gb-dark text-white rounded-lg shadow-sm animate-fade-in"
     >
-      <BusinessContactHeader score={score} />
+      {isHighScore ? (
+        <PrivateInvitationHeader score={score} />
+      ) : (
+        <BusinessContactHeader score={score} />
+      )}
       
       <Card>
         <CardContent className="pt-6">
