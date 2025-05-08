@@ -31,7 +31,7 @@ const Benefits = () => {
     <section className="bg-white py-12 md:py-24">
       <div className="container-custom">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Innovators Choose Us</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Innovators Work With Us</h2>
           <p className="mt-3 text-lg text-gb-dark/70 max-w-2xl mx-auto">
             Turn your app idea into reality faster and smarter
           </p>
