@@ -159,7 +159,7 @@ const BusinessEvaluator = () => {
         <div className="bg-gb-dark text-white py-16">
           <div className="container-custom">
             <div className="flex items-center gap-4">
-              <div className="bg-gb-green text-white h-12 w-12 rounded-full flex items-center justify-center font-bold text-2xl flex-shrink-0">
+              <div className="bg-gb-blue text-white h-12 w-12 rounded-full flex items-center justify-center font-bold text-2xl flex-shrink-0">
                 2
               </div>
               <div>
