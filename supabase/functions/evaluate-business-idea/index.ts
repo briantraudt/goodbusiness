@@ -16,6 +16,14 @@ serve(async (req) => {
   }
 
   try {
+    // Log that the function is being called and check for API key
+    console.log('Evaluate business idea function called');
+    
+    if (!openAIApiKey) {
+      console.error('OpenAI API key is not set in environment variables');
+      throw new Error('OpenAI API key is not configured');
+    }
+
     const { idea } = await req.json();
 
     if (!idea) {
@@ -50,6 +58,8 @@ Business Idea:
 """${idea}"""
     `;
 
+    console.log('Sending request to OpenAI API');
+    
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -66,13 +76,15 @@ Business Idea:
       }),
     });
 
-    const data = await response.json();
-    
     if (!response.ok) {
-      console.error('OpenAI API error:', data);
-      throw new Error(data.error?.message || 'Failed to evaluate idea');
+      const errorData = await response.json();
+      console.error('OpenAI API error:', errorData);
+      throw new Error(errorData.error?.message || 'Failed to evaluate idea');
     }
 
+    const data = await response.json();
+    console.log('Received response from OpenAI API');
+    
     const result = data.choices[0].message.content;
 
     return new Response(

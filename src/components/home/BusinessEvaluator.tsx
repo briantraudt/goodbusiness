@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const BusinessEvaluator = () => {
   const [idea, setIdea] = useState('');
@@ -22,19 +23,30 @@ const BusinessEvaluator = () => {
     setResult(null);
 
     try {
-      const { data, error } = await supabase.functions.invoke('evaluate-business-idea', {
+      const { data, error: supabaseError } = await supabase.functions.invoke('evaluate-business-idea', {
         body: { idea }
       });
 
-      if (error) throw new Error(error.message);
+      if (supabaseError) {
+        console.error('Supabase function error:', supabaseError);
+        throw new Error(supabaseError.message);
+      }
+      
+      if (data?.error) {
+        console.error('Function returned error:', data.error);
+        throw new Error(data.error);
+      }
+      
       if (data?.result) {
         setResult(data.result);
+        toast.success('Idea evaluated successfully!');
       } else {
         throw new Error('No result returned from the evaluation.');
       }
     } catch (err) {
       console.error('Error evaluating business idea:', err);
-      setError('Failed to evaluate business idea. Please try again later.');
+      setError(`Failed to evaluate business idea. ${err instanceof Error ? err.message : 'Please try again later.'}`);
+      toast.error('Failed to evaluate idea');
     } finally {
       setIsLoading(false);
     }
