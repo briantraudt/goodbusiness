@@ -1,11 +1,10 @@
 
-import React, { useState, useRef, useEffect } from 'react';
-import { toast } from 'sonner';
+import React, { useRef, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import BusinessContactHeader from '../BusinessContactHeader';
 import BusinessContactThankYou from '../BusinessContactThankYou';
-import { validateBusinessForm, FormErrors } from '../business-form-validation';
+import { useBusinessContactForm } from '@/hooks/useBusinessContactForm';
 
 // Form section components
 import ContactInfoSection from '../form-sections/ContactInfoSection';
@@ -25,34 +24,44 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
   contactSubmitted,
   setContactSubmitted
 }) => {
-  // Contact form fields
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [companyName, setCompanyName] = useState('');
-  
-  // Idea fields
-  const [businessIdea, setBusinessIdea] = useState('');
-  const [problemSolution, setProblemSolution] = useState('');
-  const [customers, setCustomers] = useState('');
-  const [profitType, setProfitType] = useState('');
-  
-  // Readiness & Budget
-  const [businessStage, setBusinessStage] = useState('');
-  const [budget, setBudget] = useState('');
-  
-  // Support Needed
-  const [helpTypes, setHelpTypes] = useState<string[]>([]);
-  const [otherHelpExplanation, setOtherHelpExplanation] = useState('');
-  
-  // Impact & Final
-  const [socialImpact, setSocialImpact] = useState('');
-  const [additionalInfo, setAdditionalInfo] = useState('');
-  
-  // Form validation
-  const [errors, setErrors] = useState<FormErrors>({});
-  
   const contactFormRef = useRef<HTMLDivElement>(null);
+  
+  // Use our custom hook to manage all form state
+  const {
+    fullName,
+    setFullName,
+    email,
+    setEmail,
+    phone,
+    setPhone,
+    companyName,
+    setCompanyName,
+    businessIdea,
+    setBusinessIdea,
+    problemSolution,
+    setProblemSolution,
+    customers,
+    setCustomers,
+    profitType,
+    setProfitType,
+    businessStage,
+    setBusinessStage,
+    budget,
+    setBudget,
+    helpTypes,
+    handleHelpTypeChange,
+    otherHelpExplanation,
+    setOtherHelpExplanation,
+    socialImpact,
+    setSocialImpact,
+    additionalInfo,
+    setAdditionalInfo,
+    errors,
+    handleSubmit
+  } = useBusinessContactForm({
+    score,
+    setContactSubmitted
+  });
   
   useEffect(() => {
     // Making sure it triggers for score >= 85
@@ -63,67 +72,6 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
       }, 500);
     }
   }, [score]);
-  
-  const handleHelpTypeChange = (type: string) => {
-    if (helpTypes.includes(type)) {
-      setHelpTypes(helpTypes.filter(item => item !== type));
-    } else {
-      setHelpTypes([...helpTypes, type]);
-    }
-  };
-  
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    const validation = validateBusinessForm(
-      fullName,
-      email,
-      businessIdea,
-      problemSolution,
-      profitType,
-      businessStage,
-      budget
-    );
-    
-    if (validation.isValid) {
-      try {
-        // Prepare form data
-        const formData = {
-          fullName,
-          email,
-          phone,
-          companyName,
-          businessIdea,
-          problemSolution,
-          customers,
-          profitType,
-          businessStage,
-          budget,
-          helpTypes,
-          otherHelpExplanation,
-          socialImpact,
-          additionalInfo,
-          ideaScore: score
-        };
-        
-        console.log('Contact form submitted:', formData);
-        
-        // Here you would typically send this data to your backend
-        // await supabase.functions.invoke('submit-contact', {
-        //   body: formData
-        // });
-        
-        setContactSubmitted(true);
-        toast.success('Thank you for your interest! We will be in touch soon.');
-      } catch (err) {
-        console.error('Error submitting contact form:', err);
-        toast.error('Failed to submit form. Please try again.');
-      }
-    } else {
-      setErrors(validation.errors);
-      toast.error('Please fill in all required fields');
-    }
-  };
 
   // If the user has already submitted the contact form, show thank you message
   if (contactSubmitted) {
