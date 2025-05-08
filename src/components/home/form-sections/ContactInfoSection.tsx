@@ -34,7 +34,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
     <div>
       {/* Private Invitation pill at the very top of the contact form */}
       <div className="text-center mb-6">
-        <div className="inline-block bg-gb-blue text-white font-bold px-8 py-3 rounded-full text-xl">
+        <div className="inline-block bg-gb-blue text-white font-medium px-6 py-2 rounded-full text-base">
           Private Invitation
         </div>
       </div>
