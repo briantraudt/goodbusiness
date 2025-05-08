@@ -6,23 +6,23 @@ import { Timer, DollarSign, ShieldCheck, Users } from 'lucide-react';
 const Benefits = () => {
   const benefits = [
     {
-      title: "Faster Time to Market",
-      description: "Launch your product in weeks instead of months or years. Get to market before your competition.",
+      title: "From Idea to App in Days",
+      description: "Don't wait months to see your idea come to life. Our rapid development process gets your concept into a working prototype in just days.",
       icon: <Timer className="h-6 w-6 text-gb-blue" />
     },
     {
-      title: "Lower Development Costs",
-      description: "Rapid development means less time spent, resulting in lower overall project costs.",
+      title: "Budget-Friendly Innovation",
+      description: "Test your app idea without breaking the bank. Our focused approach means you invest only in what works.",
       icon: <DollarSign className="h-6 w-6 text-gb-green" />
     },
     {
-      title: "Reduced Risk",
-      description: "Test ideas quickly with minimal investment before committing to full-scale development.",
+      title: "De-Risk Your Concept",
+      description: "Validate your app idea with real users before committing significant resources. Pivot early if needed, not after major investment.",
       icon: <ShieldCheck className="h-6 w-6 text-gb-purple" />
     },
     {
-      title: "Real User Feedback",
-      description: "Get your product in front of users early to gather valuable insights and iterate quickly.",
+      title: "Early User Adoption",
+      description: "Get your app in front of users quickly and start building a community of early adopters who provide invaluable feedback.",
       icon: <Users className="h-6 w-6 text-gb-orange" />
     }
   ];
@@ -31,9 +31,9 @@ const Benefits = () => {
     <section className="bg-white py-12 md:py-24">
       <div className="container-custom">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Build Fast?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Innovators Choose Us</h2>
           <p className="mt-3 text-lg text-gb-dark/70 max-w-2xl mx-auto">
-            The advantages of rapid development in today's competitive market
+            Turn your app idea into reality faster and smarter
           </p>
         </div>
         

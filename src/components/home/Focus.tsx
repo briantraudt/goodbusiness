@@ -10,25 +10,25 @@ const Focus = () => {
   
   const focusAreas = [
     {
-      title: "Idea",
-      description: "Turn ideas into interactive prototypes in days, not months. Test concepts quickly and iterate based on real feedback.",
+      title: "Validate Your Idea",
+      description: "Turn your app concept into an interactive prototype in days. Test your idea quickly and get real user feedback before major investment.",
       icon: <Rocket className="h-12 w-12 text-gb-blue" />,
       link: "/consulting",
-      linkText: "Learn More"
+      linkText: "Get Started"
     },
     {
-      title: "Prototype",
-      description: "Build lean, focused products that deliver value immediately. Launch faster and validate your market with minimal investment.",
+      title: "Build MVP",
+      description: "Transform your validated idea into a working minimum viable product. Focus on core features that solve your users' problems effectively.",
       icon: <Component className="h-12 w-12 text-gb-purple" />,
       link: "/consulting",
       linkText: "Learn More"
     },
     {
-      title: "Launch",
-      description: "Expand your successful prototype into a full-featured application ready for growth, without sacrificing speed or quality.",
+      title: "Scale Your App",
+      description: "Ready to grow? We'll help evolve your successful MVP into a fully-featured application while maintaining the speed and quality that got you here.",
       icon: <Database className="h-12 w-12 text-gb-green" />,
       link: "/consulting",
-      linkText: "Learn More"
+      linkText: "Scale Now"
     },
   ];
 
@@ -36,9 +36,9 @@ const Focus = () => {
     <section className="bg-[#F1F0FB]/30">
       <div className="container-custom py-10 md:py-16">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Development at Speed</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">From Idea to Reality</h2>
           <p className="mt-3 text-lg text-gb-dark/70 max-w-2xl mx-auto">
-            Skip the lengthy development cycles and get to market faster
+            We turn your app ideas into working products in record time
           </p>
         </div>
         

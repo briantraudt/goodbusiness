@@ -8,9 +8,9 @@ const Intro = () => {
       <div className="container-custom py-12">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-xl md:text-2xl text-white leading-relaxed flex flex-col items-center justify-center">
-            "GOOD, FAST AND CHEAP - CHOOSE 3."
+            "YOUR APP IDEA DESERVES TO BECOME REALITY."
             <br />
-            <span className="text-right block mt-2 text-sm md:text-base text-white/80">-US</span>
+            <span className="text-right block mt-2 text-sm md:text-base text-white/80">-Our Promise To Innovators</span>
           </p>
         </div>
       </div>
