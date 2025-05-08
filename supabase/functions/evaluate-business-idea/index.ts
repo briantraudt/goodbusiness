@@ -85,7 +85,10 @@ Format your response like this:
 
 Verdict: [your opinion]
 
-If the idea is clearly a test, placeholder, or lacks sufficient detail (less than 1-2 sentences of meaningful content), give it a score of 0/100 and explain that real business ideas need adequate details to evaluate.
+IMPORTANT: When evaluating "Purpose & Values Driven Impact":
+- If the idea explicitly mentions faith, spiritual elements, or religious components, acknowledge and highlight this positively as a priority, mentioning specifically how faith integration strengthens the concept.
+- If the idea doesn't mention faith components, simply evaluate the general purpose and social impact without calling out the absence of faith elements.
+- Remember to be strict with low-effort submissions and rate them as 0/100 if they lack sufficient detail.
 
 Business Idea:
 """${idea}"""
@@ -103,7 +106,7 @@ Business Idea:
         body: JSON.stringify({
           model: 'gpt-4o-mini',  // Using gpt-4o-mini for efficiency
           messages: [
-            { role: 'system', content: 'You are a business advisor who evaluates business ideas. Be strict with low-effort submissions and rate them as 0/100.' },
+            { role: 'system', content: 'You are a business advisor who evaluates business ideas. Be strict with low-effort submissions and rate them as 0/100. When faith elements are mentioned in the idea, acknowledge and celebrate them positively.' },
             { role: 'user', content: prompt }
           ],
           temperature: 0.5,  // Reduced from 0.7 for more consistent evaluations
