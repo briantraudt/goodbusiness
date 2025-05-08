@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import BusinessEvaluator from '@/components/home/BusinessEvaluator';
 import { useLocation } from 'react-router-dom';
@@ -12,10 +12,6 @@ const BusinessEvaluatorPage = () => {
   // Only show the header if we're not in the private invitation mode
   // (score param in URL indicates private invitation mode)
   const showBusinessEvaluatorHeader = !(scoreParam && parseInt(scoreParam, 10) >= 75);
-  
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   
   return (
     <PageLayout>

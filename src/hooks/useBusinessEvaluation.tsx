@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -99,17 +98,15 @@ export const useBusinessEvaluation = () => {
           const notificationSuccess = await sendEvaluationNotification(idea, extractedScore, data.result);
           setNotificationSent(notificationSuccess);
           
-          // If score is 75 or higher, show only the contact form after a short delay
+          // If score is 75 or higher, handle the high score case
           if (extractedScore >= 75) {
-            // Set showContactFormOnly immediately to update the UI
-            setShowContactFormOnly(true);
-            
-            // Force a complete page reload which will show the Private Invitation screen
-            // Add the score as a URL parameter to ensure we show the right view
-            window.location.href = `/evaluator?score=${extractedScore}`;
+            // Hard redirect with the score parameter
+            window.location.replace(`/evaluator?score=${extractedScore}`);
+            return; // End execution here to prevent further state updates
           }
         } else {
           console.warn('Could not extract score from result', data.result);
+          
           // If we can't extract a score but have a result, default to showing form
           console.log('Setting default score of 85 to show form');
           setScore(85);
@@ -118,11 +115,9 @@ export const useBusinessEvaluation = () => {
           const notificationSuccess = await sendEvaluationNotification(idea, 85, data.result);
           setNotificationSent(notificationSuccess);
           
-          // Show only the contact form after a short delay for default score as well
-          setShowContactFormOnly(true);
-          
-          // Force a complete page reload which will show the Private Invitation screen
-          window.location.href = '/evaluator?score=85';
+          // Hard redirect with default score
+          window.location.replace('/evaluator?score=85');
+          return; // End execution here
         }
         
         toast.success('Idea evaluated successfully!');

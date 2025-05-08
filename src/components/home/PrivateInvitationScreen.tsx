@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import BusinessContactForm from './BusinessContactForm';
 
@@ -20,11 +20,6 @@ const PrivateInvitationScreen: React.FC<PrivateInvitationScreenProps> = ({
   
   // Use score from URL if available, otherwise use prop score
   const score = urlScore ? parseInt(urlScore, 10) : propScore;
-  
-  useEffect(() => {
-    // Scroll to top when component mounts
-    window.scrollTo(0, 0);
-  }, []);
 
   return (
     <>
