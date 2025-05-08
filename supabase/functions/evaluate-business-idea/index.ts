@@ -33,6 +33,37 @@ serve(async (req) => {
       );
     }
 
+    // Check if the idea is too short or generic
+    if (idea.trim().length < 15 || /^(test|hello|hi|example|asdf|qwerty|trying this out|sample|placeholder)$/i.test(idea.trim())) {
+      console.log('Received low-effort submission:', idea);
+      
+      const lowEffortResponse = `
+🧪 Good Idea Score: 0/100
+
+✅ Purpose & Values Driven Impact: 0/20
+Your submission appears to be too brief or generic to evaluate. We need details about how your idea aims to create positive impact.
+
+✅ Problem-Solution Fit: 0/20
+Without specific information about what problem you're solving and for whom, we cannot evaluate this aspect.
+
+✅ Viability: 0/20
+A real business idea requires details about how it will generate sustainable income.
+
+✅ Feasibility: 0/20
+Cannot assess feasibility without specifics about implementation requirements.
+
+✅ Scalability: 0/20
+Cannot evaluate growth potential without understanding the core business model.
+
+Verdict: Please submit an actual business idea with sufficient detail. Your submission appears to be a test or placeholder rather than a genuine business concept.
+      `;
+      
+      return new Response(
+        JSON.stringify({ result: lowEffortResponse }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     const prompt = `
 You are an AI business advisor trained by Good Business. Evaluate the following idea based on its alignment with faith-based impact, business viability, and scalability. Score the idea from 0 to 100, and explain your reasoning across 5 key areas:
 
@@ -54,6 +85,8 @@ Format your response like this:
 
 Verdict: [your opinion]
 
+If the idea is clearly a test, placeholder, or lacks sufficient detail (less than 1-2 sentences of meaningful content), give it a score of 0/100 and explain that real business ideas need adequate details to evaluate.
+
 Business Idea:
 """${idea}"""
     `;
@@ -70,7 +103,7 @@ Business Idea:
         body: JSON.stringify({
           model: 'gpt-4o-mini',  // Using gpt-4o-mini for efficiency
           messages: [
-            { role: 'system', content: 'You are a business advisor who evaluates business ideas.' },
+            { role: 'system', content: 'You are a business advisor who evaluates business ideas. Be strict with low-effort submissions and rate them as 0/100.' },
             { role: 'user', content: prompt }
           ],
           temperature: 0.5,  // Reduced from 0.7 for more consistent evaluations
