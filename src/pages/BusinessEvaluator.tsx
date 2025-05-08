@@ -1,9 +1,13 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import BusinessEvaluator from '@/components/home/BusinessEvaluator';
 
 const BusinessEvaluatorPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   return (
     <PageLayout>
       <div className="py-16 bg-gb-dark text-white">
