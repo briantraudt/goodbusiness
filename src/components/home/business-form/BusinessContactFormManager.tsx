@@ -1,9 +1,8 @@
 
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
-import BusinessContactHeader from '../BusinessContactHeader';
 import PrivateInvitationHeader from '../PrivateInvitationHeader';
 import BusinessContactThankYou from '../BusinessContactThankYou';
 import { useBusinessContactForm } from '@/hooks/useBusinessContactForm';
@@ -26,13 +25,8 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
   contactSubmitted,
   setContactSubmitted
 }) => {
-  const contactFormRef = useRef<HTMLDivElement>(null);
-  
   // Check if score meets the minimum threshold to display the form
   const shouldDisplayForm = score !== null && score >= 75;
-  
-  // Everyone who scores 75+ should see the Private Invitation header
-  // Removed the separate isHighScore check since we want everyone with a qualifying score to see it
   
   // Use our custom hook to manage all form state
   const {
@@ -71,24 +65,6 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
     score,
     setContactSubmitted
   });
-  
-  useEffect(() => {
-    // Making sure it triggers only for score >= 75
-    if (shouldDisplayForm && contactFormRef.current) {
-      console.log('Scrolling to contact form, score:', score);
-      
-      setTimeout(() => {
-        const rect = contactFormRef.current?.getBoundingClientRect();
-        if (rect) {
-          const scrollPosition = window.pageYOffset + rect.top - 80;
-          window.scrollTo({
-            top: scrollPosition,
-            behavior: 'smooth'
-          });
-        }
-      }, 800);
-    }
-  }, [score, shouldDisplayForm]);
 
   // If the score doesn't meet the minimum threshold, don't render anything
   if (!shouldDisplayForm) {
@@ -102,7 +78,6 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
   
   return (
     <div 
-      ref={contactFormRef} 
       id="contact-form-section"
       className="mt-12 p-6 bg-gb-dark text-white rounded-lg shadow-sm animate-fade-in"
     >

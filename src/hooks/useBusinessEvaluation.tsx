@@ -104,6 +104,9 @@ export const useBusinessEvaluation = () => {
             setTimeout(() => {
               setShowContactFormOnly(true);
               window.scrollTo({ top: 0, behavior: 'smooth' });
+              
+              // Force a page reload to show the Private Invitation screen
+              window.location.reload();
             }, 1500);
           }
         } else {
@@ -120,6 +123,9 @@ export const useBusinessEvaluation = () => {
           setTimeout(() => {
             setShowContactFormOnly(true);
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            // Force a page reload to show the Private Invitation screen
+            window.location.reload();
           }, 1500);
         }
         

@@ -14,7 +14,7 @@ const PrivateInvitationScreen: React.FC<PrivateInvitationScreenProps> = ({
   setContactSubmitted
 }) => {
   return (
-    <section className="bg-white">
+    <>
       <div className="bg-gb-dark text-white py-16">
         <div className="container-custom">
           <div className="flex items-center gap-4">
@@ -39,7 +39,7 @@ const PrivateInvitationScreen: React.FC<PrivateInvitationScreenProps> = ({
           setContactSubmitted={setContactSubmitted}
         />
       </div>
-    </section>
+    </>
   );
 };
 

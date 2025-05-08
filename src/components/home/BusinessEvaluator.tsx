@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useBusinessEvaluation } from '@/hooks/useBusinessEvaluation';
 import PrivateInvitationScreen from './PrivateInvitationScreen';
 import EvaluationScreen from './EvaluationScreen';
@@ -17,13 +17,6 @@ const BusinessEvaluator = () => {
   } = useBusinessEvaluation();
   
   const [contactSubmitted, setContactSubmitted] = useState(false);
-
-  // Debug logging
-  useEffect(() => {
-    console.log('Score updated:', score);
-    console.log('Should show contact form:', score !== null && score >= 75);
-    console.log('Show contact form only:', showContactFormOnly);
-  }, [score, showContactFormOnly]);
 
   // If showing contact form only for high scores
   if (showContactFormOnly && score !== null && score >= 75) {
