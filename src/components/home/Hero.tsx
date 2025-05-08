@@ -47,9 +47,8 @@ const Hero = () => {
           <p className="mt-6 text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
             Rapid prototyping and development that turns your vision into reality.
           </p>
-          <p className="mt-4 text-xl md:text-2xl font-bold text-white">
-            From Concept to Reality, Without The Wait
-          </p>
+          {/* Second tagline removed, spacing maintained */}
+          <div className="mt-4"></div>
         </div>
         
         {/* Buttons - Added conditional margin top for mobile */}
