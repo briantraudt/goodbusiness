@@ -6,22 +6,22 @@ import { Timer, DollarSign, ShieldCheck, Users } from 'lucide-react';
 const Benefits = () => {
   const benefits = [
     {
-      title: "Speed",
+      title: "Speed & Efficiency",
       description: "Don't wait months to see your idea come to life. Our rapid development process gets your concept into a working prototype in just days.",
       icon: <Timer className="h-6 w-6 text-gb-blue" />
     },
     {
-      title: "Cost",
+      title: "Cost & Value",
       description: "Test your app idea without breaking the bank. Our focused approach means you invest only in what works.",
       icon: <DollarSign className="h-6 w-6 text-gb-green" />
     },
     {
-      title: "Feedback",
+      title: "Feedback & Validation",
       description: "Validate your app idea with real users before committing significant resources. Pivot early if needed, not after major investment.",
       icon: <ShieldCheck className="h-6 w-6 text-gb-purple" />
     },
     {
-      title: "Scale",
+      title: "Scale & Growth",
       description: "Get your app in front of users quickly and start building a community of early adopters who provide invaluable feedback.",
       icon: <Users className="h-6 w-6 text-gb-orange" />
     }
