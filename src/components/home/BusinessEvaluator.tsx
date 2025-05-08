@@ -57,7 +57,10 @@ const BusinessEvaluator = () => {
         const match = data.result.match(scoreRegex);
         if (match && match[1]) {
           const parsedScore = parseInt(match[1], 10);
+          console.log('Extracted score from result:', parsedScore);
           setScore(parsedScore);
+        } else {
+          console.warn('Could not extract score from result', data.result);
         }
         
         toast.success('Idea evaluated successfully!');
@@ -72,6 +75,13 @@ const BusinessEvaluator = () => {
       setIsLoading(false);
     }
   };
+
+  // Enhanced debug logging
+  console.log('BusinessEvaluator state:', { 
+    score, 
+    hasResult: !!result, 
+    shouldShowForm: score !== null && score >= 85 
+  });
 
   return (
     <section className="bg-white py-16">

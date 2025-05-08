@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -55,6 +54,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
   useEffect(() => {
     // Making sure it triggers for score === 85 as well
     if (score !== null && score >= 85 && contactFormRef.current) {
+      console.log('Scrolling to contact form, score:', score);
       setTimeout(() => {
         contactFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 500);
@@ -122,14 +122,25 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
     }
   };
   
-  // Debug log to check if score meets threshold
-  console.log('Current score:', score, 'Should display form:', score !== null && score >= 85);
+  // Enhanced debug logging
+  console.log('BusinessContactForm props:', { 
+    score, 
+    shouldDisplay: score !== null && score >= 85,
+    contactSubmitted
+  });
   
-  if (score === null || score < 85) return null;
+  // This conditional prevents rendering if score is below threshold
+  if (score === null || score < 85) {
+    console.log('Not displaying contact form - score is', score);
+    return null;
+  }
   
   if (contactSubmitted) {
     return <BusinessContactThankYou />;
   }
+  
+  // If we get here, we should display the form
+  console.log('Rendering contact form with score:', score);
   
   return (
     <div ref={contactFormRef} className="mt-12 p-6 bg-green-50 border border-green-200 rounded-lg shadow-sm animate-fade-in">
