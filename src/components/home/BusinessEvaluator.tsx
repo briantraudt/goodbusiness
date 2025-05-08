@@ -14,6 +14,31 @@ const BusinessEvaluator = () => {
   const [error, setError] = useState<string | null>(null);
   const [score, setScore] = useState<number | null>(null);
   const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [notificationSent, setNotificationSent] = useState(false);
+
+  // Send notification about the evaluation
+  const sendEvaluationNotification = async (idea: string, score: number | null, result: string | null) => {
+    try {
+      console.log('Sending evaluation notification...');
+      
+      const { data, error: notifyError } = await supabase.functions.invoke('notify-business-evaluation', {
+        body: { idea, score, result }
+      });
+      
+      if (notifyError) {
+        console.error('Notification error:', notifyError);
+        // Don't show an error toast to the user, just log it
+        return false;
+      }
+      
+      console.log('Notification sent successfully:', data);
+      return true;
+    } catch (err) {
+      console.error('Error sending notification:', err);
+      // Don't show an error toast to the user, just log it
+      return false;
+    }
+  };
 
   const evaluateIdea = async () => {
     if (!idea.trim()) {
@@ -25,6 +50,7 @@ const BusinessEvaluator = () => {
     setError(null);
     setResult(null);
     setScore(null);
+    setNotificationSent(false);
 
     try {
       const { data, error: supabaseError } = await supabase.functions.invoke('evaluate-business-idea', {
@@ -73,12 +99,20 @@ const BusinessEvaluator = () => {
         if (extractedScore !== null) {
           console.log('Setting score to:', extractedScore);
           setScore(extractedScore);
+          
+          // Send notification email about the evaluation
+          const notificationSuccess = await sendEvaluationNotification(idea, extractedScore, data.result);
+          setNotificationSent(notificationSuccess);
         } else {
           console.warn('Could not extract score from result', data.result);
           // If we can't extract a score but have a result, default to showing form
           // This ensures users can still access the contact form
           console.log('Setting default score of 85 to show form');
           setScore(85);
+          
+          // Send notification email about the evaluation even with default score
+          const notificationSuccess = await sendEvaluationNotification(idea, 85, data.result);
+          setNotificationSent(notificationSuccess);
         }
         
         toast.success('Idea evaluated successfully!');
@@ -98,7 +132,8 @@ const BusinessEvaluator = () => {
   useEffect(() => {
     console.log('Score updated:', score);
     console.log('Should show contact form:', score !== null && score >= 85);
-  }, [score]);
+    console.log('Notification sent:', notificationSent);
+  }, [score, notificationSent]);
 
   return (
     <section className="bg-white py-16">

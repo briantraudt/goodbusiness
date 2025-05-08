@@ -1,8 +1,11 @@
 
 project_id = "qiyjzukzhwklkmpdxmfl"
 
+[functions.submit-business-idea]
+verify_jwt = false
+
 [functions.evaluate-business-idea]
 verify_jwt = false
 
-[functions.submit-business-idea]
+[functions.notify-business-evaluation]
 verify_jwt = false
