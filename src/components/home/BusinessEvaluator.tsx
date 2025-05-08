@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useBusinessEvaluation } from '@/hooks/useBusinessEvaluation';
 import PrivateInvitationScreen from './PrivateInvitationScreen';
 import EvaluationScreen from './EvaluationScreen';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 const BusinessEvaluator = () => {
   const {
@@ -18,9 +18,8 @@ const BusinessEvaluator = () => {
   } = useBusinessEvaluation();
   
   const [contactSubmitted, setContactSubmitted] = useState(false);
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const scoreParam = params.get('score');
+  const [searchParams] = useSearchParams();
+  const scoreParam = searchParams.get('score');
   
   // If there's a score parameter in the URL, we should show the Private Invitation screen
   const shouldShowPrivateInvitation = scoreParam && parseInt(scoreParam, 10) >= 75;

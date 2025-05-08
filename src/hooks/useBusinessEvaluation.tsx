@@ -1,8 +1,11 @@
+
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 export const useBusinessEvaluation = () => {
+  const navigate = useNavigate();
   const [idea, setIdea] = useState('');
   const [result, setResult] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -100,8 +103,8 @@ export const useBusinessEvaluation = () => {
           
           // If score is 75 or higher, handle the high score case
           if (extractedScore >= 75) {
-            // Hard redirect with the score parameter
-            window.location.replace(`/evaluator?score=${extractedScore}`);
+            // Use React Router for smoother navigation instead of window.location
+            navigate(`/evaluator?score=${extractedScore}`, { replace: true });
             return; // End execution here to prevent further state updates
           }
         } else {
@@ -115,8 +118,8 @@ export const useBusinessEvaluation = () => {
           const notificationSuccess = await sendEvaluationNotification(idea, 85, data.result);
           setNotificationSent(notificationSuccess);
           
-          // Hard redirect with default score
-          window.location.replace('/evaluator?score=85');
+          // Use React Router for navigation
+          navigate('/evaluator?score=85', { replace: true });
           return; // End execution here
         }
         

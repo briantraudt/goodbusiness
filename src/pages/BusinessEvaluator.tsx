@@ -2,12 +2,11 @@
 import React from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import BusinessEvaluator from '@/components/home/BusinessEvaluator';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 const BusinessEvaluatorPage = () => {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const scoreParam = params.get('score');
+  const [searchParams] = useSearchParams();
+  const scoreParam = searchParams.get('score');
   
   // Only show the header if we're not in the private invitation mode
   // (score param in URL indicates private invitation mode)

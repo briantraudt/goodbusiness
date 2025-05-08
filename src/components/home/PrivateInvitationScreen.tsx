@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import BusinessContactForm from './BusinessContactForm';
 
 interface PrivateInvitationScreenProps {
@@ -14,9 +14,8 @@ const PrivateInvitationScreen: React.FC<PrivateInvitationScreenProps> = ({
   contactSubmitted,
   setContactSubmitted
 }) => {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const urlScore = params.get('score');
+  const [searchParams] = useSearchParams();
+  const urlScore = searchParams.get('score');
   
   // Use score from URL if available, otherwise use prop score
   const score = urlScore ? parseInt(urlScore, 10) : propScore;
