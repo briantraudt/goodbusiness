@@ -45,7 +45,7 @@ const Hero = () => {
             Idea to APP in 7 Days
           </h1>
           <p className="mt-6 text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
-            Rapid prototyping and development that turns your vision into reality.
+            Rapid prototyping and software development that turns your vision into a reality.
           </p>
           {/* Second tagline removed, spacing maintained */}
           <div className="mt-4"></div>
