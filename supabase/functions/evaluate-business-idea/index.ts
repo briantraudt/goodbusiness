@@ -40,22 +40,11 @@ serve(async (req) => {
       const lowEffortResponse = `
 🧪 Good Idea Score: 0/100
 
-✅ Purpose & Values Driven Impact: 0/20
-Your submission appears to be too brief or generic to evaluate. We need details about how your idea aims to create positive impact.
+Your submission appears to be too brief or generic. This idea doesn't meet our minimum threshold for being a "Good Business". 
 
-✅ Problem-Solution Fit: 0/20
-Without specific information about what problem you're solving and for whom, we cannot evaluate this aspect.
+We're looking for detailed business ideas that demonstrate purpose-driven impact, clear problem-solution fit, viability, feasibility, and scalability potential.
 
-✅ Viability: 0/20
-A real business idea requires details about how it will generate sustainable income.
-
-✅ Feasibility: 0/20
-Cannot assess feasibility without specifics about implementation requirements.
-
-✅ Scalability: 0/20
-Cannot evaluate growth potential without understanding the core business model.
-
-Verdict: Please submit an actual business idea with sufficient detail. Your submission appears to be a test or placeholder rather than a genuine business concept.
+Please submit a more developed business concept with sufficient detail for a meaningful evaluation.
       `;
       
       return new Response(
@@ -89,6 +78,16 @@ IMPORTANT: When evaluating "Purpose & Values Driven Impact":
 - If the idea explicitly mentions faith, spiritual elements, or religious components, acknowledge and highlight this positively as a priority, mentioning specifically how faith integration strengthens the concept.
 - If the idea doesn't mention faith components, simply evaluate the general purpose and social impact without calling out the absence of faith elements.
 - Remember to be strict with low-effort submissions and rate them as 0/100 if they lack sufficient detail.
+
+IMPORTANT FOR LOW SCORES:
+- If the total score is below 50/100, replace the detailed evaluation with this simplified response:
+"🧪 Good Idea Score: XX/100
+
+This idea doesn't meet our minimum threshold for being a "Good Business". 
+
+We're looking for business ideas that demonstrate purpose-driven impact, clear problem-solution fit, viability, feasibility, and scalability potential.
+
+Please revisit your concept focusing on these areas to create a stronger business proposal."
 
 Business Idea:
 """${idea}"""

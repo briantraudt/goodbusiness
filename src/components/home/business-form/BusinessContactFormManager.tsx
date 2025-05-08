@@ -26,6 +26,9 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
 }) => {
   const contactFormRef = useRef<HTMLDivElement>(null);
   
+  // Check if score meets the minimum threshold to display the form
+  const shouldDisplayForm = score !== null && score >= 85;
+  
   // Use our custom hook to manage all form state
   const {
     fullName,
@@ -64,14 +67,19 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
   });
   
   useEffect(() => {
-    // Making sure it triggers for score >= 85
-    if (score !== null && score >= 85 && contactFormRef.current) {
+    // Making sure it triggers only for score >= 85
+    if (shouldDisplayForm && contactFormRef.current) {
       console.log('Scrolling to contact form, score:', score);
       setTimeout(() => {
         contactFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 500);
     }
-  }, [score]);
+  }, [score, shouldDisplayForm]);
+
+  // If the score doesn't meet the minimum threshold, don't render anything
+  if (!shouldDisplayForm) {
+    return null;
+  }
 
   // If the user has already submitted the contact form, show thank you message
   if (contactSubmitted) {
@@ -80,7 +88,7 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
   
   return (
     <div ref={contactFormRef} className="mt-12 p-6 bg-gb-dark text-white rounded-lg shadow-sm animate-fade-in">
-      <BusinessContactHeader score={score || 0} />
+      <BusinessContactHeader score={score} />
       
       <Card>
         <CardContent className="pt-6">
