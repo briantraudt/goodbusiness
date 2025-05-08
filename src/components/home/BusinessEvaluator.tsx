@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import BusinessEvaluatorIntro from './BusinessEvaluatorIntro';
@@ -52,15 +52,33 @@ const BusinessEvaluator = () => {
       if (data?.result) {
         setResult(data.result);
         
-        // Extract score from the result if available
-        const scoreRegex = /Overall score:\s*(\d+)/i;
-        const match = data.result.match(scoreRegex);
-        if (match && match[1]) {
-          const parsedScore = parseInt(match[1], 10);
-          console.log('Extracted score from result:', parsedScore);
-          setScore(parsedScore);
+        // Extract score from the result with improved parsing
+        let extractedScore = null;
+        
+        // Try to match patterns like "Good Idea Score: 88/100" or "Overall score: 88"
+        const scorePatterns = [
+          /(?:good idea score|overall score|score):\s*(\d+)(?:\/100)?/i,
+          /(\d+)\/100/i
+        ];
+        
+        for (const pattern of scorePatterns) {
+          const match = data.result.match(pattern);
+          if (match && match[1]) {
+            extractedScore = parseInt(match[1], 10);
+            console.log(`Extracted score ${extractedScore} using pattern:`, pattern);
+            break;
+          }
+        }
+        
+        if (extractedScore !== null) {
+          console.log('Setting score to:', extractedScore);
+          setScore(extractedScore);
         } else {
           console.warn('Could not extract score from result', data.result);
+          // If we can't extract a score but have a result, default to showing form
+          // This ensures users can still access the contact form
+          console.log('Setting default score of 85 to show form');
+          setScore(85);
         }
         
         toast.success('Idea evaluated successfully!');
@@ -76,12 +94,11 @@ const BusinessEvaluator = () => {
     }
   };
 
-  // Enhanced debug logging
-  console.log('BusinessEvaluator state:', { 
-    score, 
-    hasResult: !!result, 
-    shouldShowForm: score !== null && score >= 85 
-  });
+  // Debug logging
+  useEffect(() => {
+    console.log('Score updated:', score);
+    console.log('Should show contact form:', score !== null && score >= 85);
+  }, [score]);
 
   return (
     <section className="bg-white py-16">
@@ -97,11 +114,13 @@ const BusinessEvaluator = () => {
           result={result}
           error={error}
         />
-        <BusinessContactForm 
-          score={score}
-          contactSubmitted={contactSubmitted}
-          setContactSubmitted={setContactSubmitted}
-        />
+        {score !== null && (
+          <BusinessContactForm 
+            score={score}
+            contactSubmitted={contactSubmitted}
+            setContactSubmitted={setContactSubmitted}
+          />
+        )}
       </div>
     </section>
   );

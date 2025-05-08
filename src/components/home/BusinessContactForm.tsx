@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -52,7 +53,7 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
   const contactFormRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
-    // Making sure it triggers for score === 85 as well
+    // Making sure it triggers for score >= 85
     if (score !== null && score >= 85 && contactFormRef.current) {
       console.log('Scrolling to contact form, score:', score);
       setTimeout(() => {
@@ -129,22 +130,20 @@ const BusinessContactForm: React.FC<BusinessContactFormProps> = ({
     contactSubmitted
   });
   
-  // This conditional prevents rendering if score is below threshold
-  if (score === null || score < 85) {
-    console.log('Not displaying contact form - score is', score);
-    return null;
-  }
-  
+  // If the user has already submitted the contact form, show thank you message
   if (contactSubmitted) {
     return <BusinessContactThankYou />;
   }
+  
+  // We're removing the conditional return for score < 85
+  // Instead we let the parent component handle this logic
   
   // If we get here, we should display the form
   console.log('Rendering contact form with score:', score);
   
   return (
     <div ref={contactFormRef} className="mt-12 p-6 bg-green-50 border border-green-200 rounded-lg shadow-sm animate-fade-in">
-      <BusinessContactHeader score={score} />
+      <BusinessContactHeader score={score || 0} />
       
       <Card>
         <CardContent className="pt-6">
