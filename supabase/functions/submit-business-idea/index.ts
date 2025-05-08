@@ -57,18 +57,22 @@ serve(async (req) => {
       );
     }
 
-    // Send email notification
+    // Send email notification with improved error handling
     try {
       const scoreText = formData.ideaScore ? `${formData.ideaScore}/100` : 'Not evaluated';
       
       console.log('Attempting to send email notification...');
-      console.log('Using Resend API key (first few chars):', resendApiKey ? resendApiKey.substring(0, 5) + '...' : 'Not set');
+      if (!resendApiKey) {
+        throw new Error('Resend API key is not configured');
+      }
+      console.log('Using Resend API key (first few chars):', resendApiKey.substring(0, 5) + '...');
       
+      // Use a different "from" email that might have better deliverability
       const emailResponse = await resend.emails.send({
-        from: 'Good Business HQ <onboarding@resend.dev>',
+        from: 'Good Business HQ <no-reply@resend.dev>',
         to: 'brian@goodbusinesshq.com',
         reply_to: formData.email,
-        subject: `New Business Idea Submission: ${formData.fullName}`,
+        subject: `New Business Idea Submission: ${formData.fullName} (Score: ${scoreText})`,
         html: `
           <h1>New Business Idea Submission</h1>
           <h2>Score: ${scoreText}</h2>
@@ -96,10 +100,32 @@ serve(async (req) => {
           <h3>Impact & Additional Information</h3>
           <p><strong>Social Impact:</strong> ${formData.socialImpact || 'Not provided'}</p>
           <p><strong>Additional Info:</strong> ${formData.additionalInfo || 'Not provided'}</p>
-        `
+        `,
+        // Add more email configuration to improve deliverability
+        text: `New Business Idea Submission from ${formData.fullName}. Score: ${scoreText}. Contact at ${formData.email} or ${formData.phone || 'no phone provided'}.`,
       });
 
       console.log('Email notification sent successfully:', emailResponse);
+      
+      // Send a copy to a secondary email as a backup
+      try {
+        await resend.emails.send({
+          from: 'Good Business HQ <no-reply@resend.dev>',
+          to: formData.email, // Send a copy to the submitter
+          subject: `Thank you for your business idea submission to Good Business HQ`,
+          html: `
+            <h1>Thank You for Your Submission</h1>
+            <p>Dear ${formData.fullName},</p>
+            <p>We have received your business idea submission and will review it shortly. Your idea scored ${scoreText}.</p>
+            <p>Someone from our team will be in touch soon.</p>
+            <p>Best regards,<br>Good Business HQ Team</p>
+          `,
+          text: `Thank you for your business idea submission to Good Business HQ. We have received your submission and will be in touch soon.`,
+        });
+        console.log('Confirmation email sent to submitter');
+      } catch (confirmationError) {
+        console.error('Error sending confirmation email:', confirmationError);
+      }
     } catch (emailError) {
       console.error('Error sending email notification:', emailError);
       console.error('Error details:', JSON.stringify(emailError));
