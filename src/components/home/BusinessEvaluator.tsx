@@ -7,19 +7,14 @@ import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-
-// Schema for contact form validation
-const contactFormSchema = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
-  email: z.string().email({ message: "Invalid email address" }),
-  message: z.string().min(10, { message: "Message must be at least 10 characters" }).optional(),
-});
-
-type ContactFormValues = z.infer<typeof contactFormSchema>;
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
 
 const BusinessEvaluator = () => {
   const [idea, setIdea] = useState('');
@@ -29,19 +24,16 @@ const BusinessEvaluator = () => {
   const [score, setScore] = useState<number | null>(null);
   const [contactSubmitted, setContactSubmitted] = useState(false);
   
+  // Contact form fields
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  
   // Create a ref for the result section
   const resultRef = useRef<HTMLDivElement>(null);
   const contactFormRef = useRef<HTMLDivElement>(null);
-
-  // Initialize the form
-  const form = useForm<ContactFormValues>({
-    resolver: zodResolver(contactFormSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      message: "",
-    },
-  });
 
   // Effect to scroll to results when they appear
   useEffect(() => {
@@ -120,22 +112,51 @@ const BusinessEvaluator = () => {
     }
   };
   
-  const onSubmitContact = async (data: ContactFormValues) => {
-    try {
-      // Here you would typically send this data to your backend
-      // For now we'll just log it and show a success message
-      console.log('Contact form submitted:', data);
-      
-      // If you have a Supabase function to handle this:
-      // await supabase.functions.invoke('submit-contact', {
-      //   body: { ...data, ideaScore: score }
-      // });
-      
-      setContactSubmitted(true);
-      toast.success('Thank you for your interest! We will be in touch soon.');
-    } catch (err) {
-      console.error('Error submitting contact form:', err);
-      toast.error('Failed to submit form. Please try again.');
+  const validateForm = () => {
+    let isValid = true;
+    
+    // Validate name
+    if (!name.trim()) {
+      setNameError('Name is required');
+      isValid = false;
+    } else {
+      setNameError('');
+    }
+    
+    // Validate email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.trim()) {
+      setEmailError('Email is required');
+      isValid = false;
+    } else if (!emailRegex.test(email)) {
+      setEmailError('Please enter a valid email address');
+      isValid = false;
+    } else {
+      setEmailError('');
+    }
+    
+    return isValid;
+  };
+  
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (validateForm()) {
+      try {
+        // Here you would typically send this data to your backend
+        console.log('Contact form submitted:', { name, email, message });
+        
+        // If you have a Supabase function to handle this:
+        // await supabase.functions.invoke('submit-contact', {
+        //   body: { name, email, message, ideaScore: score }
+        // });
+        
+        setContactSubmitted(true);
+        toast.success('Thank you for your interest! We will be in touch soon.');
+      } catch (err) {
+        console.error('Error submitting contact form:', err);
+        toast.error('Failed to submit form. Please try again.');
+      }
     }
   };
 
@@ -204,62 +225,60 @@ const BusinessEvaluator = () => {
               Congratulations! Your idea scored {score}/100, which shows great promise. We'd love to discuss how we can help you bring it to life.
             </p>
             
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmitContact)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Your name" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input type="email" placeholder="your.email@example.com" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Message (Optional)</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Tell us more about your idea or any questions you have..."
-                          className="min-h-[100px]" 
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gb-green hover:bg-gb-green/90 text-white font-medium py-4 h-auto"
-                >
-                  Get in Touch
-                </Button>
-              </form>
-            </Form>
+            <Card>
+              <CardHeader>
+                <CardTitle>Contact Us</CardTitle>
+                <CardDescription>
+                  Fill out the form below and we'll get back to you as soon as possible.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Name</Label>
+                      <Input 
+                        id="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="Your name"
+                      />
+                      {nameError && <p className="text-sm text-red-500">{nameError}</p>}
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input 
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="your.email@example.com"
+                      />
+                      {emailError && <p className="text-sm text-red-500">{emailError}</p>}
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="message">Message (Optional)</Label>
+                      <Textarea 
+                        id="message"
+                        value={message}
+                        onChange={(e) => setMessage(e.target.value)}
+                        placeholder="Tell us more about your idea or any questions you have..."
+                        className="min-h-[100px]"
+                      />
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-gb-green hover:bg-gb-green/90 text-white font-medium"
+                  >
+                    Submit
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
           </div>
         )}
         
