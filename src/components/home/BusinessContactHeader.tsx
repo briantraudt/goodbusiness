@@ -14,8 +14,8 @@ const BusinessContactHeader: React.FC<BusinessContactHeaderProps> = ({ score }) 
       <p className="text-white/80">
         Based on the information you have provided, we think you have a really good idea and invite you to tell us more on the form below and we will get back to you ASAP.
       </p>
-      <p className="mt-4 text-white font-semibold">
-        Your idea scored {score}/100, which shows great promise!
+      <p className="mt-4 text-white text-2xl font-bold">
+        Good Idea Score: {score}/100
       </p>
     </div>
   );
