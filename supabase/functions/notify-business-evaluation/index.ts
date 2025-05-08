@@ -2,7 +2,8 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 
-const resendApiKey = Deno.env.get('RESEND_API_KEY') || '';
+// Use the provided API key directly
+const resendApiKey = 're_7qs3S2sn_6MjZBEDUSqoqyGzw94xaCRdZ';
 const resend = new Resend(resendApiKey);
 
 const corsHeaders = {
@@ -73,6 +74,11 @@ EVALUATION RESULT
 ${result || 'No evaluation result available'}
 `;
 
+    // Log the exact configuration being used
+    console.log(`[${requestId}] Using Resend API key: ${resendApiKey ? 'API key is set' : 'API key is missing'}`);
+    console.log(`[${requestId}] Sending to: ${toRecipients.join(', ')}`);
+    console.log(`[${requestId}] BCCing to: ${bccRecipients.join(', ')}`);
+    
     // Try to send email with multiple from addresses if needed
     let emailSent = false;
     let lastError;
@@ -97,6 +103,11 @@ ${result || 'No evaluation result available'}
       } catch (err) {
         console.error(`[${requestId}] Failed to send with ${fromAddress}:`, err);
         lastError = err;
+        
+        // Log more detailed error information
+        if (err.response) {
+          console.error(`[${requestId}] Error response data:`, err.response.data);
+        }
       }
     }
     
