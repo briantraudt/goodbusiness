@@ -48,7 +48,7 @@ const Hero = () => {
             Rapid prototyping and development that turns your vision into reality.
           </p>
           <p className="mt-4 text-xl md:text-2xl font-bold text-white">
-            Build Better Software, Faster.
+            From Concept to Reality, Without The Wait
           </p>
         </div>
         
