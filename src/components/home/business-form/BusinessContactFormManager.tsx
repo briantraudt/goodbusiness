@@ -72,8 +72,12 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
     // Making sure it triggers only for score >= 85
     if (shouldDisplayForm && contactFormRef.current) {
       console.log('Scrolling to contact form, score:', score);
+      // Increase timeout to ensure DOM is fully rendered
       setTimeout(() => {
-        contactFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        contactFormRef.current?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start'
+        });
       }, 500);
     }
   }, [score, shouldDisplayForm]);
@@ -89,7 +93,11 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
   }
   
   return (
-    <div ref={contactFormRef} className="mt-12 p-6 bg-gb-dark text-white rounded-lg shadow-sm animate-fade-in">
+    <div 
+      ref={contactFormRef} 
+      id="contact-form-section"
+      className="mt-12 p-6 bg-gb-dark text-white rounded-lg shadow-sm animate-fade-in"
+    >
       <BusinessContactHeader score={score} />
       
       <Card>
