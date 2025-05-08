@@ -4,13 +4,13 @@ import { Separator } from "@/components/ui/separator";
 
 const Intro = () => {
   return (
-    <section className="bg-gb-green/20">
+    <section className="bg-gb-blue/20">
       <div className="container-custom py-12">
         <div className="max-w-3xl mx-auto text-center">
-          <p className="text-xl md:text-2xl text-white leading-relaxed flex flex-col items-center justify-center">
-            "YOUR APP IDEA DESERVES TO BECOME REALITY."
+          <p className="text-xl md:text-2xl text-white font-serif leading-relaxed flex flex-col items-center justify-center">
+            <span className="text-gb-yellow font-medium">"The secret of getting ahead is getting started."</span>
             <br />
-            <span className="text-right block mt-2 text-sm md:text-base text-white/80">-Our Promise To Innovators</span>
+            <span className="text-right block mt-2 text-sm md:text-base text-white/90">- Mark Twain</span>
           </p>
         </div>
       </div>
