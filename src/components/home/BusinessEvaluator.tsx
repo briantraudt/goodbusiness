@@ -34,6 +34,14 @@ const BusinessEvaluator = () => {
       
       if (data?.error) {
         console.error('Function returned error:', data.error);
+        
+        // Handle billing/quota issues specifically
+        if (data.error.includes('quota') || data.error.includes('billing')) {
+          setError('Your OpenAI API key has exceeded its quota. Please check your billing details on the OpenAI platform.');
+          toast.error('API quota exceeded');
+          return;
+        }
+        
         throw new Error(data.error);
       }
       

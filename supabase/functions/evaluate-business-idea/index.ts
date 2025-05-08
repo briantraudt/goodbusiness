@@ -60,37 +60,58 @@ Business Idea:
 
     console.log('Sending request to OpenAI API');
     
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [
-          { role: 'system', content: 'You are a business advisor who evaluates business ideas.' },
-          { role: 'user', content: prompt }
-        ],
-        temperature: 0.7,
-      }),
-    });
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openAIApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',  // Changed from gpt-4o to gpt-4o-mini (cheaper model)
+          messages: [
+            { role: 'system', content: 'You are a business advisor who evaluates business ideas.' },
+            { role: 'user', content: prompt }
+          ],
+          temperature: 0.7,
+        }),
+      });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('OpenAI API error:', errorData);
-      throw new Error(errorData.error?.message || 'Failed to evaluate idea');
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('OpenAI API error:', errorData);
+        
+        // Check if it's a quota error
+        if (errorData.error?.type === 'insufficient_quota') {
+          return new Response(
+            JSON.stringify({ 
+              error: 'Your OpenAI account has exceeded its quota. Please check your billing details at platform.openai.com.' 
+            }),
+            { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+        
+        throw new Error(errorData.error?.message || 'Failed to evaluate idea');
+      }
+
+      const data = await response.json();
+      console.log('Received response from OpenAI API');
+      
+      const result = data.choices[0].message.content;
+
+      return new Response(
+        JSON.stringify({ result }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    } catch (openaiError) {
+      console.error('Error when calling OpenAI:', openaiError);
+      return new Response(
+        JSON.stringify({ 
+          error: `OpenAI API error: ${openaiError.message}. Please check your API key and billing status.` 
+        }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
-
-    const data = await response.json();
-    console.log('Received response from OpenAI API');
-    
-    const result = data.choices[0].message.content;
-
-    return new Response(
-      JSON.stringify({ result }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
   } catch (error) {
     console.error('Error in evaluate-business-idea function:', error);
     return new Response(
