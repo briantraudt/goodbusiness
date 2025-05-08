@@ -1,6 +1,6 @@
 
 // Email functionality
-import { createClient } from "https://esm.sh/@resend/resend@1.2.0";
+import { createClient } from "https://esm.sh/@supabase/ssr@0.1.0/dist/esm/createClient";
 import { corsHeaders } from "./cors.ts";
 
 const resendApiKey = Deno.env.get('RESEND_API_KEY') || '';
@@ -9,7 +9,36 @@ if (!resendApiKey) {
   console.error('⚠️ CRITICAL ERROR: Resend API key is not configured. Emails cannot be sent.');
 }
 
-export const resend = createClient({ apiKey: resendApiKey });
+// Initialize Resend client with a more compatible approach
+export const resend = {
+  emails: {
+    send: async (options: any) => {
+      const url = 'https://api.resend.com/emails';
+      
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${resendApiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(options)
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(`Resend API error: ${JSON.stringify(data)}`);
+        }
+        
+        return data;
+      } catch (error) {
+        console.error('Error sending email via Resend API:', error);
+        throw error;
+      }
+    }
+  }
+};
 
 // Configuration for email sending attempts
 export const fromAddresses = [
