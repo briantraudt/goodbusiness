@@ -105,7 +105,8 @@ export const useBusinessEvaluation = () => {
             setShowContactFormOnly(true);
             
             // Force a complete page reload which will show the Private Invitation screen
-            window.location.href = '/evaluator';
+            // Add the score as a URL parameter to ensure we show the right view
+            window.location.href = `/evaluator?score=${extractedScore}`;
           }
         } else {
           console.warn('Could not extract score from result', data.result);
@@ -121,7 +122,7 @@ export const useBusinessEvaluation = () => {
           setShowContactFormOnly(true);
           
           // Force a complete page reload which will show the Private Invitation screen
-          window.location.href = '/evaluator';
+          window.location.href = '/evaluator?score=85';
         }
         
         toast.success('Idea evaluated successfully!');

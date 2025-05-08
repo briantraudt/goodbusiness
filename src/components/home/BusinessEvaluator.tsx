@@ -1,8 +1,9 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useBusinessEvaluation } from '@/hooks/useBusinessEvaluation';
 import PrivateInvitationScreen from './PrivateInvitationScreen';
 import EvaluationScreen from './EvaluationScreen';
+import { useLocation } from 'react-router-dom';
 
 const BusinessEvaluator = () => {
   const {
@@ -17,6 +18,18 @@ const BusinessEvaluator = () => {
   } = useBusinessEvaluation();
   
   const [contactSubmitted, setContactSubmitted] = useState(false);
+  const location = useLocation();
+  
+  // Check if URL has score parameter (could be passed during refresh)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const scoreParam = params.get('score');
+    
+    // If there's a score in URL and it's high enough, we know we're showing the invitation screen
+    if (scoreParam && parseInt(scoreParam, 10) >= 75) {
+      // We'll handle the display logic in the return statement
+    }
+  }, [location]);
 
   // If showing contact form only for high scores
   if (showContactFormOnly && score !== null && score >= 75) {

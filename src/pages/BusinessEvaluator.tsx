@@ -2,17 +2,20 @@
 import React, { useEffect } from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import BusinessEvaluator from '@/components/home/BusinessEvaluator';
-import { useBusinessEvaluation } from '@/hooks/useBusinessEvaluation';
+import { useLocation } from 'react-router-dom';
 
 const BusinessEvaluatorPage = () => {
-  const { score, showContactFormOnly } = useBusinessEvaluation();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const scoreParam = params.get('score');
+  
+  // Only show the header if we're not in the private invitation mode
+  // (score param in URL indicates private invitation mode)
+  const showBusinessEvaluatorHeader = !(scoreParam && parseInt(scoreParam, 10) >= 75);
   
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  
-  // Only show the business evaluator header if we're not in the private invitation screen
-  const showBusinessEvaluatorHeader = !(showContactFormOnly && score !== null && score >= 75);
   
   return (
     <PageLayout>
