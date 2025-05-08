@@ -16,7 +16,7 @@ const ConsultingCTA = () => {
             Let's discuss how we can help you achieve your business goals and create lasting impact.
           </p>
           <Button asChild className="btn-primary text-lg group">
-            <Link to="/contact">
+            <Link to="/evaluator">
               Let's Go!
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>

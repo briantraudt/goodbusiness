@@ -44,7 +44,7 @@ const Navbar = () => {
             ))}
           </ul>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white text-lg flex items-center justify-center">
-            <Link to="/contact">Work With Us</Link>
+            <Link to="/evaluator">Work With Us</Link>
           </Button>
         </div>
 
@@ -74,7 +74,7 @@ const Navbar = () => {
               ))}
               <li>
                 <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white w-full mt-2 text-lg flex items-center justify-center">
-                  <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
+                  <Link to="/evaluator" onClick={() => setIsMenuOpen(false)}>
                     Work With Us
                   </Link>
                 </Button>
