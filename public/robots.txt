@@ -1,14 +1,26 @@
+
+User-agent: *
+Allow: /
+
+# Main content pages
+Allow: /evaluator
+Allow: /consulting
+Allow: /projects
+
+# Make sure these pages are prioritized
+Sitemap: https://businesslaunchpad.com/sitemap.xml
+
+# Googlebot-specific crawl rate
 User-agent: Googlebot
 Allow: /
 
+# Bingbot-specific crawl rate
 User-agent: Bingbot
 Allow: /
 
+# Social media crawlers
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
-Allow: /
-
-User-agent: *
 Allow: /

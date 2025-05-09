@@ -18,7 +18,7 @@ const Hero = () => {
   }, []);
   
   return (
-    <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gray-900">
+    <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gray-900" id="hero-section">
       {/* Background Image with loading state */}
       <div className="absolute inset-0 w-full h-full">
         {!imageLoaded && (
@@ -26,7 +26,7 @@ const Hero = () => {
         )}
         <img 
           src="/lovable-uploads/2ed84956-a4d9-48dc-84b7-855717aba568.png"
-          alt="Person writing on whiteboard with sticky notes" 
+          alt="Austin startup entrepreneurs planning app development" 
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           onError={(e) => {
             console.error('Image failed to load:', e);
@@ -42,10 +42,10 @@ const Hero = () => {
       <div className="container-custom section-padding flex flex-col items-center justify-center h-full relative z-10">
         <div className="text-center mx-auto">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-6xl mx-auto">
-            Idea to APP in 7 Days
+            Austin's Premier App Development in 7 Days
           </h1>
           <p className="mt-6 text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
-            Rapid prototyping and software development that turns your vision into a reality.
+            Rapid prototyping and software development for Austin startup founders and entrepreneurs. Turn your tech vision into a reality.
           </p>
           {/* Second tagline removed, spacing maintained */}
           <div className="mt-4"></div>
@@ -55,7 +55,7 @@ const Hero = () => {
         <div className={`${isMobile ? 'mt-24' : 'mt-10'} flex flex-col sm:flex-row gap-4 justify-center`}>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-xl flex items-center justify-center">
             <Link to="/evaluator">
-              Start Your Project
+              Start Your App Project
               <Rocket className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>

@@ -10,22 +10,22 @@ const Focus = () => {
   
   const focusAreas = [
     {
-      title: "Validate Idea",
-      description: "Turn your app concept into an interactive prototype in days. Test your idea quickly and get real user feedback before major investment.",
+      title: "Validate App Idea",
+      description: "Austin entrepreneurs, turn your app concept into an interactive prototype in days. Test your idea quickly and get real user feedback before major investment.",
       icon: <Rocket className="h-12 w-12 text-gb-blue" />,
       link: "/evaluator",
       linkText: "Get Started"
     },
     {
-      title: "Build MVP",
-      description: "Transform your validated idea into a working minimum viable product. Focus on core features that solve your users' problems effectively.",
+      title: "Build MVP Software",
+      description: "Transform your validated idea into a working minimum viable product. For tech founders who need core features that solve their users' problems effectively.",
       icon: <Component className="h-12 w-12 text-gb-purple" />,
       link: "/evaluator",
       linkText: "Learn More"
     },
     {
-      title: "Scale Product",
-      description: "Ready to grow? We'll help evolve your successful MVP into a fully-featured application while maintaining the speed and quality that got you here.",
+      title: "Scale Your Startup",
+      description: "Ready to grow your Austin tech company? We'll help evolve your successful MVP into a fully-featured application while maintaining the speed and quality that got you here.",
       icon: <Database className="h-12 w-12 text-gb-green" />,
       link: "/evaluator",
       linkText: "Scale Now"
@@ -33,12 +33,12 @@ const Focus = () => {
   ];
 
   return (
-    <section className="bg-[#F1F0FB]/30">
+    <section className="bg-[#F1F0FB]/30" id="services-section" aria-label="Our Services">
       <div className="container-custom py-10 md:py-16">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">From Idea to Business</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">From Idea to Tech Business</h2>
           <p className="mt-3 text-lg text-gb-dark/70 max-w-2xl mx-auto">
-            We turn your ideas into working products to help you monetize quickly.
+            We help Austin startup founders turn software ideas into working products to help you monetize quickly.
           </p>
         </div>
         
