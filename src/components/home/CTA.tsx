@@ -15,7 +15,7 @@ const CTA = () => {
   }, []);
 
   return (
-    <section className="relative text-white bg-gray-900 mt-16" id="cta-section" aria-label="Start Your Project">
+    <section className="relative text-white bg-gray-900 mt-16">
       {/* Background Image with loading state */}
       <div className="absolute inset-0 w-full h-full">
         {!imageLoaded && (
@@ -23,7 +23,7 @@ const CTA = () => {
         )}
         <img 
           src="/lovable-uploads/93e6cb06-ef46-496a-9bc6-57e655a4dc18.png"
-          alt="Austin tech startup development background" 
+          alt="Background" 
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           onError={(e) => {
             console.error('Image failed to load:', e);
@@ -37,9 +37,9 @@ const CTA = () => {
       
       <div className="container-custom py-28 md:py-36 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Austin Entrepreneurs: Got a Great App Idea?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Got a Great App Idea?</h2>
           <p className="text-xl text-white/80 mb-8">
-            Don't let your brilliant tech concept become just another "what if." Partner with Business Launchpad to bring your software vision to life in Austin's thriving startup ecosystem.
+            Don't let your brilliant app idea become just another "what if." Let's bring it to life together.
           </p>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-lg group">
             <Link to="/evaluator">
