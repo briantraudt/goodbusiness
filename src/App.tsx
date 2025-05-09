@@ -9,28 +9,33 @@ import Consulting from "./pages/Consulting";
 import Ventures from "./pages/Ventures";
 import NotFound from "./pages/NotFound";
 import BusinessEvaluator from "./pages/BusinessEvaluator";
+import React from 'react';
 
+// Create a new QueryClient instance
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
+// Use functional component syntax for App
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/consulting" element={<Consulting />} />
-          <Route path="/projects" element={<Ventures />} />
-          <Route path="/ventures" element={<Navigate to="/projects" replace />} />
-          <Route path="/contact" element={<Navigate to="/evaluator" replace />} />
-          <Route path="/evaluator" element={<BusinessEvaluator />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <TooltipProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/consulting" element={<Consulting />} />
+            <Route path="/projects" element={<Ventures />} />
+            <Route path="/ventures" element={<Navigate to="/projects" replace />} />
+            <Route path="/contact" element={<Navigate to="/evaluator" replace />} />
+            <Route path="/evaluator" element={<BusinessEvaluator />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Toaster />
+          <Sonner />
+        </TooltipProvider>
       </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+    </QueryClientProvider>
+  );
+};
 
 export default App;
