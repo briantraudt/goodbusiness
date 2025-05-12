@@ -24,7 +24,7 @@ const ConsultingProcess = () => {
               <div>
                 <h3 className="text-xl font-bold text-gb-dark mb-2">Evaluate the Idea</h3>
                 <p className="text-gb-dark/80 mb-4">
-                  Start by sharing your idea. We'll help assess its potential and determine if it's a strong fit for development and long-term growth.
+                  Start by <ScrollToTopLink to="/contact" className="text-gb-green hover:underline">sharing</ScrollToTopLink> your idea. We'll help assess its potential and determine if it's a strong fit for development and long-term growth.
                 </p>
                 <ScrollToTopLink to="/evaluator">
                   <Button variant="outline" className="group">
