@@ -12,17 +12,17 @@ const Benefits = () => {
     },
     {
       title: "Cost & Value",
-      description: "Test your app idea without breaking the bank. Our focused approach means you invest only in what works.",
+      description: "Test your digital product idea without breaking the bank. Our focused approach means you invest only in what works.",
       icon: <DollarSign className="h-9 w-9 text-gb-green" />
     },
     {
       title: "Feedback & Validation",
-      description: "Validate your app idea with real users before committing significant resources. Pivot early if needed, not after major investment.",
+      description: "Validate your digital product idea with real users before committing significant resources. Pivot early if needed, not after major investment.",
       icon: <ShieldCheck className="h-9 w-9 text-gb-purple" />
     },
     {
       title: "Scale & Growth",
-      description: "Get your app in front of users quickly and start building a community of early adopters who provide invaluable feedback.",
+      description: "Get your digital product in front of users quickly and start building a community of early adopters who provide invaluable feedback.",
       icon: <Users className="h-9 w-9 text-gb-orange" />
     }
   ];
@@ -33,7 +33,7 @@ const Benefits = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Innovators Work With Us</h2>
           <p className="mt-4 text-lg text-gb-dark/70 max-w-2xl mx-auto">
-            Turn your app idea into reality faster and smarter
+            Turn your digital product idea into reality faster and smarter
           </p>
         </div>
         

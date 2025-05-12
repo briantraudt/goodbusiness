@@ -37,9 +37,9 @@ const CTA = () => {
       
       <div className="container-custom py-28 md:py-36 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Got a Great App Idea?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Got a Great Digital Product Idea?</h2>
           <p className="text-xl text-white/80 mb-8">
-            Don't let your brilliant app idea become just another "what if." Let's bring it to life together.
+            Don't let your brilliant digital product idea become just another "what if." Let's bring it to life together.
           </p>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-lg group">
             <ScrollToTopLink to="/contact">
