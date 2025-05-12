@@ -32,8 +32,13 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
 }) => {
   return (
     <div>
-      <div className="mb-6">
-        <p className="text-xl md:text-2xl font-bold text-gb-dark">We Look Forward to Hearing From You!</p>
+      <div className="mb-6 space-y-2">
+        <p className="text-xl md:text-2xl font-bold text-gb-dark">Let's Build Something Great Together</p>
+        <div className="text-gb-dark/80">
+          <p>Have a software or app idea? This is the first step toward making it real.</p>
+          <p>Tell us a little about what you're working on — no idea is too early or too rough.</p>
+          <p>We'll review it and get back to you quickly with honest feedback and next steps.</p>
+        </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
