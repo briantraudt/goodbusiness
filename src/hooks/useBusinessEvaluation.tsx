@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -18,7 +19,7 @@ export const useBusinessEvaluation = () => {
       console.log('Sending evaluation notification...');
       
       const { data, error: notifyError } = await supabase.functions.invoke('notify-business-evaluation', {
-        body: { idea, name, email, score, result }
+        body: { idea, name, email, score, result, sendUserConfirmation: true }
       });
       
       if (notifyError) {
