@@ -34,6 +34,21 @@ const ventures = [
     ]
   },
   {
+    name: "Private Pitches",
+    tagline: "An exclusive platform connecting vendors directly with decision makers.",
+    description: "Private Pitches eliminates the traditional inefficiencies of trade shows by facilitating direct connections between vendors and qualified buyers. Our platform ensures vendors get in front of the right decision makers, while buyers save time by meeting only with relevant suppliers.",
+    color: "border-gb-yellow",
+    status: "Beta Launch June 2025",
+    link: "#",
+    services: [
+      "Platform Development",
+      "UI/UX Design",
+      "Matching Algorithm",
+      "Virtual Meeting Tools",
+      "Analytics Dashboard"
+    ]
+  },
+  {
     name: "Rated JC",
     tagline: "Comprehensive database of movies, shows and books that use the name Jesus Christ dishonorably.",
     description: "In a world where entertainment often disrespects the sacred, we're making it easy to filter what you watch. Search thousands of movies, tv shows and books and Instantly see if a show takes the Lord's name in vain so you and your family can watch with peace of mind.",

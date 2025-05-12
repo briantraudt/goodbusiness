@@ -42,6 +42,93 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
         return 'hover:bg-accent hover:text-accent-foreground';
     }
   };
+  
+  // Function to render the appropriate image based on the venture name
+  const renderVentureImage = () => {
+    if (venture.name === "SideStage") {
+      return (
+        <Dialog>
+          <DialogTrigger asChild>
+            <img 
+              src="/lovable-uploads/35487980-8600-4a91-a5a8-b226968d1e70.png" 
+              alt="SideStage Mobile App" 
+              className="h-auto w-auto max-h-[500px] rounded-[2rem] cursor-pointer transition-transform hover:scale-[1.02]" 
+            />
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[80vw] max-h-[90vh] flex items-center justify-center p-0 overflow-hidden">
+            <img 
+              src="/lovable-uploads/35487980-8600-4a91-a5a8-b226968d1e70.png" 
+              alt="SideStage Mobile App - Enlarged" 
+              className="w-auto h-auto max-h-[90vh] max-w-[80vw] object-contain rounded-[2rem]" 
+            />
+          </DialogContent>
+        </Dialog>
+      );
+    } else if (venture.name === "Pardners") {
+      return (
+        <Dialog>
+          <DialogTrigger asChild>
+            <img 
+              src="/lovable-uploads/d86fe6aa-3b7b-450a-bdd6-a217b5a55078.png" 
+              alt="Pardners Mobile App" 
+              className="h-auto w-auto max-h-[500px] rounded-[2rem] cursor-pointer transition-transform hover:scale-[1.02]" 
+            />
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[80vw] max-h-[90vh] flex items-center justify-center p-0 overflow-hidden">
+            <img 
+              src="/lovable-uploads/d86fe6aa-3b7b-450a-bdd6-a217b5a55078.png" 
+              alt="Pardners Mobile App - Enlarged" 
+              className="w-auto h-auto max-h-[90vh] max-w-[80vw] object-contain rounded-[2rem]" 
+            />
+          </DialogContent>
+        </Dialog>
+      );
+    } else if (venture.name === "Private Pitches") {
+      return (
+        <Dialog>
+          <DialogTrigger asChild>
+            <div className="imac-container cursor-pointer transition-transform hover:scale-[1.02]">
+              {/* iMac frame */}
+              <div className="relative max-w-[500px]">
+                {/* iMac screen bezel */}
+                <div className="bg-gray-800 rounded-t-lg p-2 relative">
+                  {/* Screen content */}
+                  <div className="relative bg-white overflow-hidden rounded-sm">
+                    <img 
+                      src="/lovable-uploads/fb1103d2-bae9-4f06-957a-253ecbed761f.png" 
+                      alt="Private Pitches Website" 
+                      className="w-full h-auto"
+                    />
+                  </div>
+                  {/* Camera */}
+                  <div className="absolute top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 rounded-full bg-gray-900"></div>
+                </div>
+                {/* iMac stand */}
+                <div className="mx-auto w-20 h-6 bg-gray-300 rounded-b-lg"></div>
+                <div className="mx-auto w-36 h-1 bg-gray-400 rounded-b"></div>
+              </div>
+            </div>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[80vw] max-h-[90vh] flex items-center justify-center p-0 overflow-hidden">
+            <img 
+              src="/lovable-uploads/fb1103d2-bae9-4f06-957a-253ecbed761f.png" 
+              alt="Private Pitches Website - Enlarged" 
+              className="w-auto h-auto max-h-[90vh] max-w-[80vw] object-contain" 
+            />
+          </DialogContent>
+        </Dialog>
+      );
+    } else {
+      return (
+        <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
+          <div className="w-full h-full flex flex-col items-center justify-center bg-gb-green/10 text-gb-green">
+            <Clock size={64} strokeWidth={1.5} className="mb-3" />
+            <p className="text-lg font-medium">Coming Soon</p>
+          </div>
+        </div>
+      );
+    }
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
@@ -68,48 +155,7 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
         </div>
       </div>
       <div className="flex justify-center">
-        {venture.name === "SideStage" ? (
-          <Dialog>
-            <DialogTrigger asChild>
-              <img 
-                src="/lovable-uploads/35487980-8600-4a91-a5a8-b226968d1e70.png" 
-                alt="SideStage Mobile App" 
-                className="h-auto w-auto max-h-[500px] rounded-[2rem] cursor-pointer transition-transform hover:scale-[1.02]" 
-              />
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[80vw] max-h-[90vh] flex items-center justify-center p-0 overflow-hidden">
-              <img 
-                src="/lovable-uploads/35487980-8600-4a91-a5a8-b226968d1e70.png" 
-                alt="SideStage Mobile App - Enlarged" 
-                className="w-auto h-auto max-h-[90vh] max-w-[80vw] object-contain rounded-[2rem]" 
-              />
-            </DialogContent>
-          </Dialog>
-        ) : venture.name === "Pardners" ? (
-          <Dialog>
-            <DialogTrigger asChild>
-              <img 
-                src="/lovable-uploads/d86fe6aa-3b7b-450a-bdd6-a217b5a55078.png" 
-                alt="Pardners Mobile App" 
-                className="h-auto w-auto max-h-[500px] rounded-[2rem] cursor-pointer transition-transform hover:scale-[1.02]" 
-              />
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[80vw] max-h-[90vh] flex items-center justify-center p-0 overflow-hidden">
-              <img 
-                src="/lovable-uploads/d86fe6aa-3b7b-450a-bdd6-a217b5a55078.png" 
-                alt="Pardners Mobile App - Enlarged" 
-                className="w-auto h-auto max-h-[90vh] max-w-[80vw] object-contain rounded-[2rem]" 
-              />
-            </DialogContent>
-          </Dialog>
-        ) : (
-          <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-            <div className="w-full h-full flex flex-col items-center justify-center bg-gb-green/10 text-gb-green">
-              <Clock size={64} strokeWidth={1.5} className="mb-3" />
-              <p className="text-lg font-medium">Coming Soon</p>
-            </div>
-          </div>
-        )}
+        {renderVentureImage()}
       </div>
 
       {/* Services Dialog - Now only shows pre-populated services */}
