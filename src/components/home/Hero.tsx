@@ -18,7 +18,7 @@ const Hero = () => {
   }, []);
   
   return (
-    <section className="relative overflow-hidden min-h-[80vh] flex items-center bg-gray-900">
+    <section className="relative overflow-hidden min-h-[40vh] flex items-center bg-gray-900">
       {/* Background Image with loading state */}
       <div className="absolute inset-0 w-full h-full">
         {!imageLoaded && (
@@ -39,28 +39,26 @@ const Hero = () => {
       </div>
       
       {/* Content - Modified to center content vertically */}
-      <div className="container-custom section-padding flex flex-col items-center justify-center h-full relative z-10">
+      <div className="container-custom py-8 md:py-10 flex flex-col items-center justify-center h-full relative z-10">
         <div className="text-center mx-auto">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-6xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl mx-auto">
             Idea to APP in 7 Days
           </h1>
-          <p className="mt-6 text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
+          <p className="mt-3 md:mt-4 text-base md:text-lg text-white/80 max-w-3xl mx-auto">
             Rapid prototyping and software development that turns your vision into a reality.
           </p>
-          {/* Second tagline removed, spacing maintained */}
-          <div className="mt-4"></div>
         </div>
         
-        {/* Buttons - Added conditional margin top for mobile */}
-        <div className={`${isMobile ? 'mt-24' : 'mt-10'} flex flex-col sm:flex-row gap-4 justify-center`}>
-          <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-xl flex items-center justify-center">
+        {/* Buttons - reduced margin and size */}
+        <div className={`${isMobile ? 'mt-6' : 'mt-4'} flex flex-col sm:flex-row gap-3 justify-center`}>
+          <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center">
             <Link to="/contact">
               Start Your Project
-              <Rocket className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              <Rocket className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
           
-          <Button asChild variant="outline" className="border-white text-white hover:bg-white/10 hover:text-white py-6 px-8 text-xl font-semibold bg-black/40 flex items-center justify-center">
+          <Button asChild variant="outline" className="border-white text-white hover:bg-white/10 hover:text-white py-4 px-6 text-lg font-semibold bg-black/40 flex items-center justify-center">
             <Link to="/ventures">
               See Our Work
             </Link>
