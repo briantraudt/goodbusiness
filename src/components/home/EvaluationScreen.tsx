@@ -31,7 +31,9 @@ const EvaluationScreen: React.FC<EvaluationScreenProps> = ({
   isLoading,
   result,
   error,
-  score
+  score,
+  contactSubmitted,
+  setContactSubmitted
 }) => {
   return (
     <section className="bg-white py-16">

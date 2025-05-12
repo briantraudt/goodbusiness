@@ -29,15 +29,6 @@ const BusinessEvaluatorForm: React.FC<BusinessEvaluatorFormProps> = ({
 }) => {
   return (
     <div className="space-y-4">
-      <Textarea 
-        id="ideaInput"
-        value={idea}
-        onChange={(e) => setIdea(e.target.value)}
-        placeholder="Describe your business or mission idea..."
-        className="w-full p-4 min-h-[160px] text-base"
-        rows={8}
-      />
-      
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="nameInput">Your Name</Label>
@@ -61,6 +52,18 @@ const BusinessEvaluatorForm: React.FC<BusinessEvaluatorFormProps> = ({
             className="w-full"
           />
         </div>
+      </div>
+      
+      <div className="space-y-2">
+        <Label htmlFor="ideaInput">Your Business Idea</Label>
+        <Textarea 
+          id="ideaInput"
+          value={idea}
+          onChange={(e) => setIdea(e.target.value)}
+          placeholder="Describe your business or mission idea..."
+          className="w-full p-4 min-h-[160px] text-base"
+          rows={8}
+        />
       </div>
       
       <Button 
