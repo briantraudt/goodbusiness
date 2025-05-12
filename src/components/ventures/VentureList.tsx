@@ -73,7 +73,7 @@ const VentureList = () => {
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-3xl font-bold text-gb-dark mb-6">Current Projects</h2>
           <p className="text-lg text-gb-dark/80">
-            These are the companies we're currently building and developing in our venture studio.
+            These are a few of the ideas currently in development at Good Business.
           </p>
         </div>
 
