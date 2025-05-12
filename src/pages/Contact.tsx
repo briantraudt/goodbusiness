@@ -17,7 +17,7 @@ const Contact = () => {
           <div className="flex items-center gap-4">
             <div>
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Contact Us
+                Work With Us
               </h1>
               <p className="text-xl text-white/80">
                 Tell us about your Go<span className="text-gb-green">o</span>d Business idea.
