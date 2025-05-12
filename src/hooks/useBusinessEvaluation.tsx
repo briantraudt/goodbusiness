@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -36,8 +35,30 @@ export const useBusinessEvaluation = () => {
   };
 
   const evaluateIdea = async () => {
+    // Validate required fields
     if (!idea.trim()) {
       setError('Please enter your business idea.');
+      toast.error('Please enter your business idea');
+      return;
+    }
+
+    if (!name.trim()) {
+      setError('Please enter your name.');
+      toast.error('Please enter your name');
+      return;
+    }
+
+    if (!email.trim()) {
+      setError('Please enter your email address.');
+      toast.error('Please enter your email address');
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Please enter a valid email address.');
+      toast.error('Please enter a valid email address');
       return;
     }
 

@@ -31,18 +31,19 @@ const BusinessEvaluatorForm: React.FC<BusinessEvaluatorFormProps> = ({
     <div className="space-y-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label htmlFor="nameInput">Your Name</Label>
+          <Label htmlFor="nameInput">Your Name *</Label>
           <Input
             id="nameInput"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="John Doe"
             className="w-full"
+            required
           />
         </div>
         
         <div className="space-y-2">
-          <Label htmlFor="emailInput">Email Address</Label>
+          <Label htmlFor="emailInput">Email Address *</Label>
           <Input
             id="emailInput"
             type="email"
@@ -50,12 +51,13 @@ const BusinessEvaluatorForm: React.FC<BusinessEvaluatorFormProps> = ({
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your.email@example.com"
             className="w-full"
+            required
           />
         </div>
       </div>
       
       <div className="space-y-2">
-        <Label htmlFor="ideaInput">Your Business Idea</Label>
+        <Label htmlFor="ideaInput">Your Business Idea *</Label>
         <Textarea 
           id="ideaInput"
           value={idea}
@@ -63,6 +65,7 @@ const BusinessEvaluatorForm: React.FC<BusinessEvaluatorFormProps> = ({
           placeholder="Describe your business or mission idea..."
           className="w-full p-4 min-h-[160px] text-base"
           rows={8}
+          required
         />
       </div>
       
