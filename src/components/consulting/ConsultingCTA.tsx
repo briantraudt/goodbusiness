@@ -17,7 +17,7 @@ const ConsultingCTA = () => {
           </p>
           <Button asChild className="btn-primary text-lg group">
             <ScrollToTopLink to="/evaluator">
-              Let's Go!
+              Start Evaluation
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </ScrollToTopLink>
           </Button>
