@@ -3,7 +3,6 @@ import React from 'react';
 import BusinessEvaluatorIntro from './BusinessEvaluatorIntro';
 import BusinessEvaluatorForm from './BusinessEvaluatorForm';
 import BusinessEvaluationResult from './BusinessEvaluationResult';
-import BusinessContactForm from './BusinessContactForm';
 
 interface EvaluationScreenProps {
   idea: string;
@@ -24,9 +23,7 @@ const EvaluationScreen: React.FC<EvaluationScreenProps> = ({
   isLoading,
   result,
   error,
-  score,
-  contactSubmitted,
-  setContactSubmitted
+  score
 }) => {
   return (
     <section className="bg-white py-16">
@@ -43,13 +40,6 @@ const EvaluationScreen: React.FC<EvaluationScreenProps> = ({
           error={error}
           score={score}
         />
-        {score !== null && score >= 75 && (
-          <BusinessContactForm 
-            score={score}
-            contactSubmitted={contactSubmitted}
-            setContactSubmitted={setContactSubmitted}
-          />
-        )}
       </div>
     </section>
   );

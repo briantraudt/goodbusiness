@@ -1,7 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useBusinessEvaluation } from '@/hooks/useBusinessEvaluation';
-import PrivateInvitationScreen from './PrivateInvitationScreen';
 import EvaluationScreen from './EvaluationScreen';
 import { useSearchParams } from 'react-router-dom';
 
@@ -13,47 +12,19 @@ const BusinessEvaluator = () => {
     isLoading,
     error,
     score,
-    showContactFormOnly,
     evaluateIdea
   } = useBusinessEvaluation();
   
   const [contactSubmitted, setContactSubmitted] = useState(false);
   const [searchParams] = useSearchParams();
-  const scoreParam = searchParams.get('score');
   
   // Effect to scroll to top when the component mounts or URL parameters change
   useEffect(() => {
     // Scroll to top immediately when component mounts or URL changes
     window.scrollTo({ top: 0, behavior: 'auto' });
-  }, [scoreParam]);
-  
-  // If there's a score parameter in the URL, we should show the Private Invitation screen
-  const shouldShowPrivateInvitation = scoreParam && parseInt(scoreParam, 10) >= 75;
-  const scoreValue = scoreParam ? parseInt(scoreParam, 10) : score;
+  }, [searchParams]);
 
-  // If showing private invitation based on URL parameter
-  if (shouldShowPrivateInvitation) {
-    return (
-      <PrivateInvitationScreen
-        score={scoreValue}
-        contactSubmitted={contactSubmitted}
-        setContactSubmitted={setContactSubmitted}
-      />
-    );
-  }
-
-  // If showing contact form only for high scores (this handles the case during the initial evaluation)
-  if (showContactFormOnly && score !== null && score >= 75) {
-    return (
-      <PrivateInvitationScreen
-        score={score}
-        contactSubmitted={contactSubmitted}
-        setContactSubmitted={setContactSubmitted}
-      />
-    );
-  }
-
-  // Normal view for evaluation or low scores
+  // Normal view for evaluation regardless of score
   return (
     <EvaluationScreen
       idea={idea}

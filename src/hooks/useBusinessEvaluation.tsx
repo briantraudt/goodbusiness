@@ -2,17 +2,14 @@
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router-dom';
 
 export const useBusinessEvaluation = () => {
-  const navigate = useNavigate();
   const [idea, setIdea] = useState('');
   const [result, setResult] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [score, setScore] = useState<number | null>(null);
   const [notificationSent, setNotificationSent] = useState(false);
-  const [showContactFormOnly, setShowContactFormOnly] = useState(false);
 
   // Send notification about the evaluation
   const sendEvaluationNotification = async (idea: string, score: number | null, result: string | null) => {
@@ -47,7 +44,6 @@ export const useBusinessEvaluation = () => {
     setResult(null);
     setScore(null);
     setNotificationSent(false);
-    setShowContactFormOnly(false);
 
     try {
       const { data, error: supabaseError } = await supabase.functions.invoke('evaluate-business-idea', {
@@ -73,7 +69,6 @@ export const useBusinessEvaluation = () => {
       }
       
       if (data?.result) {
-        // For high scores, we'll handle everything before showing any UI
         // Extract score from the result with improved parsing
         let extractedScore = null;
         
@@ -92,30 +87,7 @@ export const useBusinessEvaluation = () => {
           }
         }
         
-        // If high score, we'll navigate immediately without setting state
-        if (extractedScore !== null && extractedScore >= 75) {
-          console.log('High score detected, preparing to navigate...');
-          
-          // Send notification before navigation
-          await sendEvaluationNotification(idea, extractedScore, data.result);
-          
-          // Navigate without updating any local state first
-          // This prevents any flashing of UI
-          navigate(`/evaluator?score=${extractedScore}`, { replace: true });
-          return; // End execution here to prevent further state changes
-        } else if (extractedScore === null) {
-          // If we can't extract a score but have a result, default to showing form
-          console.log('Could not extract score, using default score of 85');
-          
-          // Send notification before navigation
-          await sendEvaluationNotification(idea, 85, data.result);
-          
-          // Navigate without updating any local state first
-          navigate('/evaluator?score=85', { replace: true });
-          return; // End execution here
-        }
-        
-        // Only for non-qualifying scores do we update the local state
+        // Update state with results - always show the result regardless of score
         setResult(data.result);
         setScore(extractedScore);
         
@@ -144,7 +116,6 @@ export const useBusinessEvaluation = () => {
     error,
     score,
     notificationSent,
-    showContactFormOnly,
     evaluateIdea
   };
 };

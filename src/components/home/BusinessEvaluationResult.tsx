@@ -36,14 +36,8 @@ const BusinessEvaluationResult: React.FC<BusinessEvaluationResultProps> = ({
       </div>
     );
   }
-
-  // For high scores (75+), don't show anything
-  // The contact form will be shown separately with the score
-  if (score !== null && score >= 75) {
-    return null;
-  }
   
-  // For lower scores (<75), show the full evaluation
+  // Always show the full evaluation result, regardless of score
   return (
     <div ref={resultRef} className="mt-8 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
       <pre className="whitespace-pre-wrap font-sans text-base">{result}</pre>
