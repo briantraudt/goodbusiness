@@ -16,8 +16,8 @@ const VentureImage = ({ venture }: VentureImageProps) => {
   // Function to render the appropriate image based on the venture name
   if (venture.name === "SideStage") {
     return (
-      <MobileAppImage 
-        imageSrc="/lovable-uploads/35487980-8600-4a91-a5a8-b226968d1e70.png"
+      <IPhoneFrameImage 
+        imageSrc="/lovable-uploads/9d0ef0ed-db26-400c-b819-328a0f6cc204.png"
         altText="SideStage Mobile App"
       />
     );
