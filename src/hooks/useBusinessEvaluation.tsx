@@ -13,35 +13,62 @@ export const useBusinessEvaluation = () => {
   const [score, setScore] = useState<number | null>(null);
   const [notificationSent, setNotificationSent] = useState(false);
 
-  // Send notification about the evaluation
+  // Send notification about the evaluation with improved logging and error handling
   const sendEvaluationNotification = async (idea: string, name: string, email: string, score: number | null, result: string | null) => {
     try {
       console.log('Sending evaluation notification...');
       
+      toast.info('Sending email notifications...');
+      
       const { data, error: notifyError } = await supabase.functions.invoke('notify-business-evaluation', {
-        body: { idea, name, email, score, result, sendUserConfirmation: true }
+        body: { 
+          idea, 
+          name, 
+          email, 
+          score, 
+          result, 
+          sendUserConfirmation: true,
+          timestamp: new Date().toISOString() // Add timestamp for tracking
+        }
       });
       
       if (notifyError) {
         console.error('Notification error:', notifyError);
-        toast.error('Could not send email notifications');
+        toast.error('Failed to send email notifications. Please contact support.');
         return false;
-      }
-      
-      if (data.warning) {
-        console.warn('Notification warning:', data.warning);
-        toast.warning('Email notifications may not have been sent');
       }
       
       console.log('Notification response:', data);
       
-      // Consider it a success if at least the admin or user email was sent
-      // or if emails aren't configured (which isn't an error condition)
-      const emailSuccess = data.adminEmailSent || data.userEmailSent || !data.emailsConfigured;
+      if (data?.emailsConfigured === false) {
+        console.warn('Email service not properly configured');
+        toast.warning('Email service is not configured. Notifications were not sent.');
+        return false;
+      }
+      
+      if (data?.warning) {
+        console.warn('Notification warning:', data.warning);
+        toast.warning(`Email notification status: ${data.warning}`);
+      }
+      
+      if (data?.adminEmailSent) {
+        console.log('Admin notification email sent successfully');
+      }
+      
+      if (data?.userEmailSent) {
+        console.log('User confirmation email sent successfully');
+        toast.success('Confirmation email sent to your inbox');
+      } else if (data?.emailsConfigured !== false) {
+        console.warn('User email not sent but email service is configured');
+        toast.warning('Could not send confirmation email to your address. Please check your email later.');
+      }
+      
+      // Consider it a success if at least one email was sent
+      const emailSuccess = data?.adminEmailSent || data?.userEmailSent;
       return emailSuccess;
     } catch (err) {
       console.error('Error sending notification:', err);
-      toast.error('Could not send email notifications');
+      toast.error('Could not send email notifications. Network or server error.');
       return false;
     }
   };
@@ -154,6 +181,7 @@ export const useBusinessEvaluation = () => {
         }
         
         // Send notification email about the evaluation
+        console.log('About to send notification email...');
         const notificationSuccess = await sendEvaluationNotification(idea, name, email, extractedScore, data.result);
         setNotificationSent(notificationSuccess);
         

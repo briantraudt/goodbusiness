@@ -10,6 +10,11 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
+  // Generate a unique request ID for tracking
+  const requestId = crypto.randomUUID();
+  
+  console.log(`[${requestId}] Notification request received`);
+  
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -22,7 +27,7 @@ serve(async (req) => {
     const resendApiKey = Deno.env.get('RESEND_API_KEY');
     
     if (!supabaseUrl || !supabaseServiceKey) {
-      console.error('Missing Supabase environment variables');
+      console.error(`[${requestId}] Missing Supabase environment variables`);
       return new Response(
         JSON.stringify({ error: 'Server configuration error' }),
         { 
@@ -33,10 +38,11 @@ serve(async (req) => {
     }
 
     // Get request body
-    const { idea, name, email, score, result, sendUserConfirmation = false } = await req.json();
+    const { idea, name, email, score, result, sendUserConfirmation = false, timestamp } = await req.json();
     
     // Validate required parameters
     if (!idea || !email) {
+      console.error(`[${requestId}] Missing required parameters`);
       return new Response(
         JSON.stringify({ error: 'Missing required parameters' }),
         { 
@@ -46,17 +52,36 @@ serve(async (req) => {
       );
     }
 
-    console.log(`Processing notification for ${email} with score ${score}`);
+    console.log(`[${requestId}] Processing notification for ${email} with score ${score}`);
 
     // Check if Resend API key is available
     if (!resendApiKey) {
-      console.warn('Resend API key not configured. Email notifications will not be sent.');
+      console.warn(`[${requestId}] CRITICAL: Resend API key not configured. Email notifications will not be sent.`);
       
-      // Still return success but note that emails were not sent
+      // Create a Supabase client for logging errors
+      const supabaseClient = createClient(supabaseUrl, supabaseServiceKey);
+      
+      // Log the missing API key error
+      try {
+        await supabaseClient
+          .from('email_delivery_logs')
+          .insert([{
+            recipient_type: 'system',
+            error_message: 'RESEND_API_KEY is not configured in Supabase secrets',
+            idea_submitted: idea.substring(0, 100),
+            submitter_email: email,
+            created_at: new Date().toISOString()
+          }]);
+      } catch (logError) {
+        console.error(`[${requestId}] Error logging missing API key:`, logError);
+      }
+      
+      // Still return a response with clear indication that emails were not sent
       return new Response(
         JSON.stringify({ 
-          success: true, 
-          warning: 'Email notifications not sent due to missing API key' 
+          success: false, 
+          emailsConfigured: false,
+          warning: 'Email service not configured. Please add RESEND_API_KEY to Supabase secrets.' 
         }),
         { 
           status: 200, 
@@ -65,13 +90,15 @@ serve(async (req) => {
       );
     }
 
-    // Initialize Resend client with simple fetch-based wrapper
+    // Initialize Resend client with robust error handling
     const resend = {
       emails: {
         send: async (options: any) => {
           const url = 'https://api.resend.com/emails';
           
           try {
+            console.log(`[${requestId}] Sending email to ${options.to.join(', ')} from ${options.from}`);
+            
             const response = await fetch(url, {
               method: 'POST',
               headers: {
@@ -84,12 +111,14 @@ serve(async (req) => {
             const data = await response.json();
             
             if (!response.ok) {
+              console.error(`[${requestId}] Resend API error: Status ${response.status}`, data);
               throw new Error(`Resend API error: ${JSON.stringify(data)}`);
             }
             
+            console.log(`[${requestId}] Email sent successfully:`, data);
             return data;
           } catch (error) {
-            console.error('Error sending email via Resend API:', error);
+            console.error(`[${requestId}] Error sending email via Resend API:`, error);
             throw error;
           }
         }
@@ -100,12 +129,13 @@ serve(async (req) => {
     const ideaSummary = idea.length > 100 ? `${idea.substring(0, 100)}...` : idea;
     const scoreText = score ? `${score}/100` : 'Not available';
 
-    // Send admin notification email
+    // Detailed admin email with HTML formatting
     const adminEmailHtml = `
       <h1>New Business Idea Evaluation</h1>
       <p><strong>Name:</strong> ${name || 'Not provided'}</p>
       <p><strong>Email:</strong> ${email || 'Not provided'}</p>
       <p><strong>Score:</strong> ${scoreText}</p>
+      <p><strong>Timestamp:</strong> ${timestamp || new Date().toISOString()}</p>
       <h2>Business Idea</h2>
       <p>${idea}</p>
       <h2>Evaluation Results</h2>
@@ -121,34 +151,60 @@ serve(async (req) => {
       let userEmailSent = false;
       
       try {
-        // Send notification to admin
-        await resend.emails.send({
-          from: 'Good Business HQ <onboarding@resend.dev>',
-          to: ['brian@goodbusinesshq.com'],
-          subject: `Business Idea Evaluation: ${name || 'Anonymous'} - Score: ${scoreText}`,
-          html: adminEmailHtml,
-        });
+        // Try multiple email configurations if the first one fails
+        const fromAddresses = [
+          'Good Business HQ <onboarding@resend.dev>',
+          'Good Business HQ <notifications@goodbusinesshq.com>',
+          'Resend <onboarding@resend.dev>'
+        ];
         
-        adminEmailSent = true;
-        console.log('Admin notification sent successfully');
-      } catch (adminEmailError) {
-        console.error('Error sending admin notification email:', adminEmailError);
+        let adminEmailError = null;
         
-        // Log the email sending error to Supabase
-        try {
-          await supabaseClient
-            .from('email_delivery_logs')
-            .insert([{
-              recipient_type: 'admin',
-              recipient_email: 'brian@goodbusinesshq.com',
+        // Try each from address until one works
+        for (const fromAddress of fromAddresses) {
+          try {
+            console.log(`[${requestId}] Attempting to send admin email using: ${fromAddress}`);
+            
+            // Send notification to admin
+            await resend.emails.send({
+              from: fromAddress,
+              to: ['brian@goodbusinesshq.com'],
               subject: `Business Idea Evaluation: ${name || 'Anonymous'} - Score: ${scoreText}`,
-              error_message: adminEmailError.message,
-              idea_submitted: ideaSummary,
-              submitter_email: email
-            }]);
-        } catch (logError) {
-          console.error('Error logging admin email failure:', logError);
+              html: adminEmailHtml,
+            });
+            
+            adminEmailSent = true;
+            console.log(`[${requestId}] Admin notification sent successfully using ${fromAddress}`);
+            break; // Exit the loop if successful
+          } catch (err) {
+            console.error(`[${requestId}] Failed to send admin email with ${fromAddress}:`, err);
+            adminEmailError = err;
+          }
         }
+        
+        // If all attempts failed, log the error
+        if (!adminEmailSent) {
+          console.error(`[${requestId}] All attempts to send admin email failed`);
+          
+          // Log the email sending error to Supabase
+          try {
+            await supabaseClient
+              .from('email_delivery_logs')
+              .insert([{
+                recipient_type: 'admin',
+                recipient_email: 'brian@goodbusinesshq.com',
+                subject: `Business Idea Evaluation: ${name || 'Anonymous'} - Score: ${scoreText}`,
+                error_message: adminEmailError ? adminEmailError.message : 'All sending attempts failed',
+                idea_submitted: ideaSummary,
+                submitter_email: email,
+                created_at: new Date().toISOString()
+              }]);
+          } catch (logError) {
+            console.error(`[${requestId}] Error logging admin email failure:`, logError);
+          }
+        }
+      } catch (adminEmailError) {
+        console.error(`[${requestId}] Error sending admin notification email:`, adminEmailError);
       }
       
       // Send confirmation email to the user if requested
@@ -169,32 +225,57 @@ serve(async (req) => {
         `;
         
         try {
-          await resend.emails.send({
-            from: 'Good Business HQ <onboarding@resend.dev>',
-            to: [email],
-            subject: `Your Business Idea Evaluation Results`,
-            html: userEmailHtml,
-          });
+          // Try multiple from addresses for user email too
+          const userFromAddresses = [
+            'Good Business HQ <onboarding@resend.dev>', 
+            'Good Business HQ <notifications@goodbusinesshq.com>',
+            'Good Business HQ <hello@goodbusinesshq.com>',
+            'Resend <onboarding@resend.dev>'
+          ];
           
-          userEmailSent = true;
-          console.log('User confirmation email sent successfully');
-        } catch (userEmailError) {
-          console.error('Error sending user confirmation email:', userEmailError);
+          let userEmailError = null;
           
-          // Log the email sending error to Supabase
-          try {
-            await supabaseClient
-              .from('email_delivery_logs')
-              .insert([{
-                recipient_type: 'user',
-                recipient_email: email,
-                subject: 'Your Business Idea Evaluation Results',
-                error_message: userEmailError.message,
-                idea_submitted: ideaSummary
-              }]);
-          } catch (logError) {
-            console.error('Error logging user email failure:', logError);
+          for (const fromAddress of userFromAddresses) {
+            try {
+              console.log(`[${requestId}] Attempting to send user confirmation email using: ${fromAddress}`);
+              
+              await resend.emails.send({
+                from: fromAddress,
+                to: [email],
+                subject: `Your Business Idea Evaluation Results`,
+                html: userEmailHtml,
+              });
+              
+              userEmailSent = true;
+              console.log(`[${requestId}] User confirmation email sent successfully using ${fromAddress}`);
+              break;
+            } catch (err) {
+              console.error(`[${requestId}] Failed to send user email with ${fromAddress}:`, err);
+              userEmailError = err;
+            }
           }
+          
+          if (!userEmailSent) {
+            console.error(`[${requestId}] All attempts to send user email failed`);
+            
+            // Log the email sending error to Supabase
+            try {
+              await supabaseClient
+                .from('email_delivery_logs')
+                .insert([{
+                  recipient_type: 'user',
+                  recipient_email: email,
+                  subject: 'Your Business Idea Evaluation Results',
+                  error_message: userEmailError ? userEmailError.message : 'All sending attempts failed',
+                  idea_submitted: ideaSummary,
+                  created_at: new Date().toISOString()
+                }]);
+            } catch (logError) {
+              console.error(`[${requestId}] Error logging user email failure:`, logError);
+            }
+          }
+        } catch (userEmailError) {
+          console.error(`[${requestId}] Error sending user confirmation email:`, userEmailError);
         }
       }
       
@@ -203,7 +284,8 @@ serve(async (req) => {
           success: true,
           adminEmailSent,
           userEmailSent,
-          emailsConfigured: !!resendApiKey
+          emailsConfigured: true,
+          warning: !adminEmailSent && !userEmailSent ? 'All email sending attempts failed' : undefined
         }),
         { 
           status: 200, 
@@ -211,12 +293,12 @@ serve(async (req) => {
         }
       );
     } catch (error) {
-      console.error('Error in notification process:', error);
+      console.error(`[${requestId}] Error in notification process:`, error);
       throw error;
     }
 
   } catch (error) {
-    console.error('Error in notify-business-evaluation function:', error);
+    console.error(`[${requestId}] Error in notify-business-evaluation function:`, error);
     
     return new Response(
       JSON.stringify({ error: error.message }),
