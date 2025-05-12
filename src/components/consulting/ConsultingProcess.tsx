@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import ScrollToTopLink from '@/components/common/ScrollToTopLink';
 
 const ConsultingProcess = () => {
   return (
@@ -20,13 +21,13 @@ const ConsultingProcess = () => {
               <div>
                 <h3 className="text-xl font-bold text-gb-dark mb-2">Business Evaluator</h3>
                 <p className="text-gb-dark/80 mb-4">
-                  Use our streamlined Business Evaluator tool to share your idea with us. We'll help you analyze its potential and determine if it's a good fit for development.
+                  Contact us and share your idea. We will help you analyze it's potential and determine if it's a good fit.
                 </p>
-                <Link to="/contact">
+                <ScrollToTopLink to="/evaluator">
                   <Button variant="outline" className="group">
-                    Start evaluation <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
+                    Try Our Idea Evaluator <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
-                </Link>
+                </ScrollToTopLink>
               </div>
             </div>
             
