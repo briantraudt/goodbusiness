@@ -45,7 +45,7 @@ const BusinessEvaluationResult: React.FC<BusinessEvaluationResultProps> = ({
       <div className="mt-8 text-center">
         <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white rounded-lg px-6 py-3 h-auto">
           <Link to="/contact">
-            Want to Build Something?
+            Let's Build It!
           </Link>
         </Button>
       </div>
