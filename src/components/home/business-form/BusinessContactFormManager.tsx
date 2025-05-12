@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import PrivateInvitationHeader from '../PrivateInvitationHeader';
@@ -77,73 +76,69 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
   }
   
   return (
-    <div className="mt-12 p-6 bg-gb-dark text-white rounded-lg shadow-sm animate-fade-in">
-      <Card>
-        <CardContent className="pt-6">
-          <form onSubmit={handleSubmit} className="space-y-8">
-            <ContactInfoSection
-              fullName={fullName}
-              setFullName={setFullName}
-              email={email}
-              setEmail={setEmail}
-              phone={phone}
-              setPhone={setPhone}
-              companyName={companyName}
-              setCompanyName={setCompanyName}
-              errors={errors}
-            />
-            
-            <BusinessIdeaSection
-              businessIdea={businessIdea}
-              setBusinessIdea={setBusinessIdea}
-              problemSolution={problemSolution}
-              setProblemSolution={setProblemSolution}
-              customers={customers}
-              setCustomers={setCustomers}
-              profitType={profitType}
-              setProfitType={setProfitType}
-              errors={errors}
-            />
-            
-            <ReadinessBudgetSection
-              businessStage={businessStage}
-              setBusinessStage={setBusinessStage}
-              budget={budget}
-              setBudget={setBudget}
-              errors={errors}
-            />
-            
-            <SupportNeededSection
-              helpTypes={helpTypes}
-              handleHelpTypeChange={handleHelpTypeChange}
-              otherHelpExplanation={otherHelpExplanation}
-              setOtherHelpExplanation={setOtherHelpExplanation}
-            />
-            
-            <ImpactValuesSection
-              socialImpact={socialImpact}
-              setSocialImpact={setSocialImpact}
-              additionalInfo={additionalInfo}
-              setAdditionalInfo={setAdditionalInfo}
-            />
-            
-            <Button 
-              type="submit" 
-              className="w-full bg-gb-green hover:bg-gb-green/90 text-white font-medium py-6 h-auto text-lg"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Submitting...
-                </>
-              ) : (
-                "Submit My Idea"
-              )}
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
+    <div className="mt-6 animate-fade-in">
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <ContactInfoSection
+          fullName={fullName}
+          setFullName={setFullName}
+          email={email}
+          setEmail={setEmail}
+          phone={phone}
+          setPhone={setPhone}
+          companyName={companyName}
+          setCompanyName={setCompanyName}
+          errors={errors}
+        />
+        
+        <BusinessIdeaSection
+          businessIdea={businessIdea}
+          setBusinessIdea={setBusinessIdea}
+          problemSolution={problemSolution}
+          setProblemSolution={setProblemSolution}
+          customers={customers}
+          setCustomers={setCustomers}
+          profitType={profitType}
+          setProfitType={setProfitType}
+          errors={errors}
+        />
+        
+        <ReadinessBudgetSection
+          businessStage={businessStage}
+          setBusinessStage={setBusinessStage}
+          budget={budget}
+          setBudget={setBudget}
+          errors={errors}
+        />
+        
+        <SupportNeededSection
+          helpTypes={helpTypes}
+          handleHelpTypeChange={handleHelpTypeChange}
+          otherHelpExplanation={otherHelpExplanation}
+          setOtherHelpExplanation={setOtherHelpExplanation}
+        />
+        
+        <ImpactValuesSection
+          socialImpact={socialImpact}
+          setSocialImpact={setSocialImpact}
+          additionalInfo={additionalInfo}
+          setAdditionalInfo={setAdditionalInfo}
+        />
+        
+        <Button 
+          type="submit" 
+          className="w-full bg-gb-green hover:bg-gb-green/90 text-white font-medium py-6 h-auto text-lg"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Submitting...
+            </>
+          ) : (
+            "Submit My Idea"
+          )}
+        </Button>
+      </form>
     </div>
   );
 };

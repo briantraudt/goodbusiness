@@ -26,7 +26,7 @@ const Contact = () => {
           </div>
         </div>
       </div>
-      <div className="container-custom max-w-3xl mx-auto py-16">
+      <div className="container-custom mx-auto py-16">
         <BusinessContactForm 
           score={defaultScore}
           contactSubmitted={contactSubmitted}
