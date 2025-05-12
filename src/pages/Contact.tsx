@@ -12,17 +12,15 @@ const Contact = () => {
 
   return (
     <PageLayout>
-      <div className="bg-gb-dark text-white py-16">
-        <div className="container-custom">
-          <div className="flex items-center gap-4">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Work With Us
-              </h1>
-              <p className="text-xl text-white/80">
-                Tell us about your Go<span className="text-gb-green">o</span>d Business idea.
-              </p>
-            </div>
+      <div className="bg-gb-dark text-white">
+        <div className="container-custom py-20">
+          <div className="max-w-3xl">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Work With Us
+            </h1>
+            <p className="text-xl text-white/80">
+              Tell us about your Go<span className="text-gb-green">o</span>d Business idea.
+            </p>
           </div>
         </div>
       </div>
