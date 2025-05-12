@@ -21,7 +21,7 @@ const Focus = () => {
     },
     {
       title: "Scale Product",
-      description: "Ready to grow? We'll help evolve your successful MVP into a fully-featured application while maintaining the speed and quality that got you here.",
+      description: "Ready to grow? We'll help evolve your successful MVP into a fully-featured app while maintaining the speed and quality that got you here.",
       icon: <Database className="h-12 w-12 text-gb-green" />
     },
   ];

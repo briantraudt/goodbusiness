@@ -22,7 +22,7 @@ const Benefits = () => {
     },
     {
       title: "Scale & Growth",
-      description: "Get your digital product in front of users quickly and start building a community of early adopters who provide invaluable feedback.",
+      description: "Get your app in front of users quickly and start building a community of early adopters who provide invaluable feedback.",
       icon: <Users className="h-9 w-9 text-gb-orange" />
     }
   ];
