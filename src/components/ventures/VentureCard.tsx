@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ExternalLink, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -44,6 +43,17 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
     }
   };
   
+  // Function to handle the view prototype or learn more action
+  const handleViewAction = () => {
+    if (venture.link && venture.link !== "#") {
+      // If it has a real link, open in new tab
+      window.open(venture.link, "_blank");
+    } else {
+      // Otherwise show the services dialog
+      setIsDetailsOpen(true);
+    }
+  };
+
   // Function to render the appropriate image based on the venture name
   const renderVentureImage = () => {
     if (venture.name === "SideStage") {
@@ -166,9 +176,9 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
           <Button 
             variant="outline" 
             className={cn("mt-auto inline-flex items-center", getHoverColorClass())}
-            onClick={() => setIsDetailsOpen(true)}
+            onClick={handleViewAction}
           >
-            Learn More
+            {venture.link && venture.link !== "#" ? "View Prototype" : "Learn More"}
             <ExternalLink className="ml-2 h-4 w-4" />
           </Button>
         </div>

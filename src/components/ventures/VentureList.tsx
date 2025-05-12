@@ -1,3 +1,4 @@
+
 import React from 'react';
 import VentureCard from './VentureCard';
 
@@ -23,7 +24,7 @@ const ventures = [
     description: "Pardners bridges generational gaps by facilitating meaningful connections between people of different age groups. Our platform enables knowledge exchange, skill sharing, and mutual mentorship that honors the wisdom of experience while embracing fresh perspectives from younger generations.",
     color: "border-gb-blue",
     status: "In Development",
-    link: "#",
+    link: "https://www.figma.com/proto/QJSsTlTy3MRyDKd52GFEiJ/Pardners?node-id=60-185&t=y3IuAMP0G6Xr6TgI-1",
     services: [
       "Mentorship Matching",
       "Community Building",
