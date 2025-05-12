@@ -2,7 +2,7 @@
 import React from 'react';
 import { Rocket, Component, Database } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import ScrollToTopLink from '@/components/common/ScrollToTopLink';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Focus = () => {
@@ -52,9 +52,9 @@ const Focus = () => {
               <p className="text-gb-dark/70 mb-5 text-base md:text-lg flex-grow">{area.description}</p>
               <div className="mt-auto">
                 <Button asChild variant="outline" className="border-gb-blue text-gb-blue hover:bg-gb-blue/5 flex items-center justify-center w-full text-base rounded-lg">
-                  <Link to={area.link}>
+                  <ScrollToTopLink to={area.link}>
                     {area.linkText}
-                  </Link>
+                  </ScrollToTopLink>
                 </Button>
               </div>
             </div>

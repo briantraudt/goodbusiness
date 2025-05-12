@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import ScrollToTopLink from "@/components/common/ScrollToTopLink";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,28 +24,28 @@ const Navbar = () => {
     <nav className="bg-white/90 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-100">
       <div className="container-custom py-4 flex justify-between items-center">
         <div className={`${isMobile ? 'flex-1 text-center' : ''}`}>
-          <Link to="/" className={`flex ${isMobile ? 'justify-center' : ''} items-center`}>
+          <ScrollToTopLink to="/" className={`flex ${isMobile ? 'justify-center' : ''} items-center`}>
             <span className="font-sans text-2xl md:text-3xl font-bold text-[#333333]">
               Go<span className="text-gb-green">o</span>d Business
             </span>
-          </Link>
+          </ScrollToTopLink>
         </div>
         
         <div className="hidden md:flex items-center space-x-8">
           <ul className="flex space-x-8">
             {menuItems.map((item) => (
               <li key={item.name}>
-                <Link
+                <ScrollToTopLink
                   to={item.path}
                   className="text-gb-dark hover:text-gb-green transition-colors font-medium text-lg"
                 >
                   {item.name}
-                </Link>
+                </ScrollToTopLink>
               </li>
             ))}
           </ul>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white text-lg flex items-center justify-center">
-            <Link to="/contact">Work With Us</Link>
+            <ScrollToTopLink to="/contact">Work With Us</ScrollToTopLink>
           </Button>
         </div>
 
@@ -63,20 +64,20 @@ const Navbar = () => {
             <ul className="flex flex-col space-y-4">
               {menuItems.map((item) => (
                 <li key={item.name}>
-                  <Link
+                  <ScrollToTopLink
                     to={item.path}
                     className="text-gb-dark hover:text-gb-green transition-colors font-medium text-lg block py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.name}
-                  </Link>
+                  </ScrollToTopLink>
                 </li>
               ))}
               <li>
                 <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white w-full mt-2 text-lg flex items-center justify-center">
-                  <Link to="/contact" onClick={() => setIsMenuOpen(false)}>
+                  <ScrollToTopLink to="/contact" onClick={() => setIsMenuOpen(false)}>
                     Work With Us
-                  </Link>
+                  </ScrollToTopLink>
                 </Button>
               </li>
             </ul>

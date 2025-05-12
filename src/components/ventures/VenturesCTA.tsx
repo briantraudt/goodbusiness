@@ -2,7 +2,7 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import ScrollToTopLink from '@/components/common/ScrollToTopLink';
 
 const VenturesCTA = () => {
   return (
@@ -14,10 +14,10 @@ const VenturesCTA = () => {
             We're always interested in connecting with mission-aligned founders and investors.
           </p>
           <Button asChild className="btn-primary text-lg group">
-            <Link to="/evaluator">
+            <ScrollToTopLink to="/evaluator">
               Start a Conversation
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            </ScrollToTopLink>
           </Button>
         </div>
       </div>

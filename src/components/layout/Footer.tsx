@@ -2,6 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Mail, MapPin } from "lucide-react";
+import ScrollToTopLink from "@/components/common/ScrollToTopLink";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -42,24 +43,24 @@ const Footer = () => {
             <h4 className="font-serif text-xl font-bold mb-4">Navigation</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-gray-300 hover:text-gb-green transition-colors">
+                <ScrollToTopLink to="/" className="text-gray-300 hover:text-gb-green transition-colors">
                   Home
-                </Link>
+                </ScrollToTopLink>
               </li>
               <li>
-                <Link to="/consulting" className="text-gray-300 hover:text-gb-green transition-colors">
+                <ScrollToTopLink to="/consulting" className="text-gray-300 hover:text-gb-green transition-colors">
                   Services
-                </Link>
+                </ScrollToTopLink>
               </li>
               <li>
-                <Link to="/ventures" className="text-gray-300 hover:text-gb-green transition-colors">
+                <ScrollToTopLink to="/projects" className="text-gray-300 hover:text-gb-green transition-colors">
                   Projects
-                </Link>
+                </ScrollToTopLink>
               </li>
               <li>
-                <Link to="/evaluator" className="text-gray-300 hover:text-gb-green transition-colors">
+                <ScrollToTopLink to="/evaluator" className="text-gray-300 hover:text-gb-green transition-colors">
                   Evaluator
-                </Link>
+                </ScrollToTopLink>
               </li>
             </ul>
           </div>

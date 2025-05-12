@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import ScrollToTopLink from '@/components/common/ScrollToTopLink';
 
 const CTA = () => {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -42,10 +42,10 @@ const CTA = () => {
             Don't let your brilliant app idea become just another "what if." Let's bring it to life together.
           </p>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 px-8 rounded-md text-lg group">
-            <Link to="/contact">
+            <ScrollToTopLink to="/contact">
               Turn Your Idea Into Reality
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
+            </ScrollToTopLink>
           </Button>
         </div>
       </div>
