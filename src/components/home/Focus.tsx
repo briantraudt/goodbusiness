@@ -13,7 +13,7 @@ const Focus = () => {
       title: "Validate Idea",
       description: "Turn your app concept into an interactive prototype in days. Test your idea quickly and get real user feedback before major investment.",
       icon: <Rocket className="h-12 w-12 text-gb-blue" />,
-      link: "/evaluator",
+      link: "/consulting",
       linkText: "Get Started"
     },
     {
@@ -27,7 +27,7 @@ const Focus = () => {
       title: "Scale Product",
       description: "Ready to grow? We'll help evolve your successful MVP into a fully-featured application while maintaining the speed and quality that got you here.",
       icon: <Database className="h-12 w-12 text-gb-green" />,
-      link: "/evaluator",
+      link: "/consulting",
       linkText: "Scale Now"
     },
   ];
