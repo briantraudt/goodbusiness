@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import Hero from '@/components/home/Hero';
-import Focus from '@/components/home/Focus';
 import CTA from '@/components/home/CTA';
 import Benefits from '@/components/home/Benefits';
 import Intro from '@/components/home/Intro';
@@ -29,7 +28,6 @@ const Index = () => {
       <Hero />
       <Intro />
       <ConsultingProcess />
-      <Focus />
       <Benefits />
       <CTA />
     </PageLayout>
