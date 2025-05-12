@@ -43,7 +43,7 @@ const Focus = () => {
                 {area.icon}
                 <h3 className="text-2xl md:text-2xl lg:text-3xl font-bold text-gb-dark whitespace-nowrap">{area.title}</h3>
               </div>
-              <p className="text-gb-dark/70 mb-5 text-base md:text-lg flex-grow">{area.description}</p>
+              <p className="text-gb-dark/70 text-base md:text-lg">{area.description}</p>
             </div>
           ))}
         </div>
