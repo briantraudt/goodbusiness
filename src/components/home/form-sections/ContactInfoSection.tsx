@@ -32,6 +32,9 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
 }) => {
   return (
     <div>
+      <div className="mb-6 text-center">
+        <p className="text-xl md:text-2xl font-medium text-gb-dark">We promise to respond within 24 hours</p>
+      </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="fullName">Full Name <span className="text-red-500">*</span></Label>
