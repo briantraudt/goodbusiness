@@ -124,20 +124,22 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
           setAdditionalInfo={setAdditionalInfo}
         />
         
-        <Button 
-          type="submit" 
-          className="w-full bg-gb-green hover:bg-gb-green/90 text-white font-medium py-6 h-auto text-lg"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Submitting...
-            </>
-          ) : (
-            "Submit My Idea"
-          )}
-        </Button>
+        <div className="flex justify-center">
+          <Button 
+            type="submit" 
+            className="w-1/2 bg-gb-green hover:bg-gb-green/90 text-white font-medium py-6 h-auto text-lg"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Submitting...
+              </>
+            ) : (
+              "Submit My Idea"
+            )}
+          </Button>
+        </div>
       </form>
     </div>
   );

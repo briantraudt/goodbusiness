@@ -32,8 +32,6 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
 }) => {
   return (
     <div>
-      <h4 className="text-lg font-semibold mb-4">Contact Info</h4>
-      
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="fullName">Full Name <span className="text-red-500">*</span></Label>
