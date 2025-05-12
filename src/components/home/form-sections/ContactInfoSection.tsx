@@ -32,7 +32,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
 }) => {
   return (
     <div>
-      <div className="mb-6 text-center">
+      <div className="mb-6">
         <p className="text-xl md:text-2xl font-medium text-gb-dark">We promise to respond within 24 hours</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
