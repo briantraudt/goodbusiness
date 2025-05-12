@@ -18,7 +18,7 @@ const Hero = () => {
   }, []);
   
   return (
-    <section className="relative overflow-hidden min-h-[40vh] flex items-center bg-gray-900">
+    <section className="relative overflow-hidden min-h-[50vh] flex items-center bg-gray-900">
       {/* Background Image with loading state */}
       <div className="absolute inset-0 w-full h-full">
         {!imageLoaded && (
