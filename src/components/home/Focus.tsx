@@ -12,23 +12,17 @@ const Focus = () => {
     {
       title: "Validate Idea",
       description: "Turn your app concept into an interactive prototype in days. Test your idea quickly and get real user feedback before major investment.",
-      icon: <Rocket className="h-12 w-12 text-gb-blue" />,
-      link: "/evaluator",
-      linkText: "Get Started"
+      icon: <Rocket className="h-12 w-12 text-gb-blue" />
     },
     {
       title: "Build MVP",
       description: "Transform your validated idea into a working minimum viable product. Focus on core features that solve your users' problems effectively.",
-      icon: <Component className="h-12 w-12 text-gb-purple" />,
-      link: "/consulting",
-      linkText: "Learn More"
+      icon: <Component className="h-12 w-12 text-gb-purple" />
     },
     {
       title: "Scale Product",
       description: "Ready to grow? We'll help evolve your successful MVP into a fully-featured application while maintaining the speed and quality that got you here.",
-      icon: <Database className="h-12 w-12 text-gb-green" />,
-      link: "/consulting",
-      linkText: "Scale Now"
+      icon: <Database className="h-12 w-12 text-gb-green" />
     },
   ];
 
@@ -50,15 +44,16 @@ const Focus = () => {
                 <h3 className="text-2xl md:text-2xl lg:text-3xl font-bold text-gb-dark whitespace-nowrap">{area.title}</h3>
               </div>
               <p className="text-gb-dark/70 mb-5 text-base md:text-lg flex-grow">{area.description}</p>
-              <div className="mt-auto">
-                <Button asChild variant="outline" className="border-gb-blue text-gb-blue hover:bg-gb-blue/5 flex items-center justify-center w-full text-base rounded-lg">
-                  <ScrollToTopLink to={area.link}>
-                    {area.linkText}
-                  </ScrollToTopLink>
-                </Button>
-              </div>
             </div>
           ))}
+        </div>
+        
+        <div className="mt-10 text-center">
+          <Button asChild size="lg" className="bg-gb-blue hover:bg-gb-blue/90 text-white rounded-lg text-lg px-8 py-6 h-auto">
+            <ScrollToTopLink to="/evaluator">
+              Free Business Evaluator
+            </ScrollToTopLink>
+          </Button>
         </div>
       </div>
     </section>
