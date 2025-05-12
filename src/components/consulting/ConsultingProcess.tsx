@@ -21,7 +21,7 @@ const ConsultingProcess = () => {
               <div>
                 <h3 className="text-xl font-bold text-gb-dark mb-2">Business Evaluator</h3>
                 <p className="text-gb-dark/80 mb-4">
-                  <ScrollToTopLink to="/contact" className="text-gb-green hover:underline">Contact us</ScrollToTopLink> and share your idea. We will help you analyze it's potential and determine if it's a good fit.
+                  <ScrollToTopLink to="/contact" className="text-gb-green hover:underline">Contact us</ScrollToTopLink> and share your idea. We will help you analyze it's potential and determine if it's a good fit for us as well as being a viable business with opportunities for scale.
                 </p>
                 <ScrollToTopLink to="/evaluator">
                   <Button variant="outline" className="group">
