@@ -1,5 +1,7 @@
 
 import React, { useRef, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 interface BusinessEvaluationResultProps {
   result: string | null;
@@ -45,6 +47,14 @@ const BusinessEvaluationResult: React.FC<BusinessEvaluationResultProps> = ({
   return (
     <div ref={resultRef} className="mt-8 p-6 bg-white border border-gray-200 rounded-lg shadow-sm">
       <pre className="whitespace-pre-wrap font-sans text-base">{result}</pre>
+      
+      <div className="mt-8 text-center">
+        <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white rounded-lg px-6 py-3 h-auto">
+          <Link to="/contact">
+            Want to Build Something?
+          </Link>
+        </Button>
+      </div>
     </div>
   );
 };
