@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -33,7 +32,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
   return (
     <div>
       <div className="mb-6">
-        <p className="text-xl md:text-2xl font-medium text-gb-dark">We promise to respond within 24 hours</p>
+        <p className="text-xl md:text-2xl font-bold text-gb-dark">We Look Forward to Hearing From You</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
