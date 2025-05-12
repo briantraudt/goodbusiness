@@ -35,7 +35,7 @@ const PrivateInvitationScreen: React.FC<PrivateInvitationScreenProps> = ({
             </div>
             <div>
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Private Invitation
+                Invitation to Partner
               </h1>
               <p className="text-xl text-white/80">
                 Tell us more about your Go<span className="text-gb-green">o</span>d Business idea.

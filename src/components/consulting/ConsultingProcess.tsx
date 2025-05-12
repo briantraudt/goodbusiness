@@ -37,9 +37,9 @@ const ConsultingProcess = () => {
                 <div className="hidden md:block w-px h-full bg-gray-200 mx-auto mt-2"></div>
               </div>
               <div>
-                <h3 className="text-xl font-bold text-gb-dark mb-2">Private Invitation</h3>
+                <h3 className="text-xl font-bold text-gb-dark mb-2">Invitation to Partner</h3>
                 <p className="text-gb-dark/80 mb-4">
-                  After reviewing your evaluation, we'll send a private invitation to discuss your idea further. This allows us to explore potential solutions and determine the best path forward.
+                  After determining the viability of your idea, we will sit down with you and talk about some ideas for partnership.
                 </p>
               </div>
             </div>
