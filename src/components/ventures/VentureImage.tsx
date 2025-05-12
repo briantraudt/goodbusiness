@@ -23,7 +23,7 @@ const VentureImage = ({ venture }: VentureImageProps) => {
   } else if (venture.name === "Pardners") {
     return (
       <MobileAppImage 
-        imageSrc="/lovable-uploads/50f65942-3bd6-4cdc-b1a2-298d75e67917.png"
+        imageSrc="/lovable-uploads/70caa22f-e0b9-4fbc-b9b6-5ae5af3de7e5.png"
         altText="Pardners Mobile App"
       />
     );
