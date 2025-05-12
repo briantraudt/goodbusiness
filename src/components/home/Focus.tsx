@@ -49,7 +49,7 @@ const Focus = () => {
         </div>
         
         <div className="mt-10 text-center">
-          <Button asChild size="lg" className="bg-gb-blue hover:bg-gb-blue/90 text-white rounded-lg text-lg px-8 py-6 h-auto">
+          <Button asChild size="lg" className="bg-gb-blue hover:bg-gb-blue/90 text-white rounded-lg text-lg px-8 py-3 h-auto">
             <ScrollToTopLink to="/evaluator">
               Free Business Evaluator
             </ScrollToTopLink>
