@@ -24,13 +24,24 @@ export const useBusinessEvaluation = () => {
       
       if (notifyError) {
         console.error('Notification error:', notifyError);
+        toast.error('Could not send email notifications');
         return false;
       }
       
-      console.log('Notification sent successfully:', data);
-      return true;
+      if (data.warning) {
+        console.warn('Notification warning:', data.warning);
+        toast.warning('Email notifications may not have been sent');
+      }
+      
+      console.log('Notification response:', data);
+      
+      // Consider it a success if at least the admin or user email was sent
+      // or if emails aren't configured (which isn't an error condition)
+      const emailSuccess = data.adminEmailSent || data.userEmailSent || !data.emailsConfigured;
+      return emailSuccess;
     } catch (err) {
       console.error('Error sending notification:', err);
+      toast.error('Could not send email notifications');
       return false;
     }
   };
@@ -133,6 +144,10 @@ export const useBusinessEvaluation = () => {
           
           if (storeError) {
             console.error('Error storing evaluation:', storeError);
+            toast.error('Could not save your evaluation');
+          } else {
+            // Toast for successful database save
+            toast.success('Evaluation saved to database');
           }
         } catch (storeErr) {
           console.error('Failed to store evaluation data:', storeErr);
