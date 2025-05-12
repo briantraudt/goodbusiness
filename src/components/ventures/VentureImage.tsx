@@ -1,6 +1,7 @@
 
 import React from 'react';
 import MobileAppImage from './image-types/MobileAppImage';
+import IPhoneFrameImage from './image-types/IPhoneFrameImage';
 import DesktopWebsiteImage from './image-types/DesktopWebsiteImage';
 import ComingSoonImage from './image-types/ComingSoonImage';
 
@@ -22,7 +23,7 @@ const VentureImage = ({ venture }: VentureImageProps) => {
     );
   } else if (venture.name === "Pardners") {
     return (
-      <MobileAppImage 
+      <IPhoneFrameImage 
         imageSrc="/lovable-uploads/70caa22f-e0b9-4fbc-b9b6-5ae5af3de7e5.png"
         altText="Pardners Mobile App"
       />
