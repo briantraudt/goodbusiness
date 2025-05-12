@@ -56,20 +56,12 @@ const ReadinessBudgetSection: React.FC<ReadinessBudgetSectionProps> = ({
           </Label>
           <RadioGroup value={budget} onValueChange={setBudget} className="flex flex-col space-y-2">
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="0" id="budget0" />
-              <Label htmlFor="budget0">$0 – I'm looking for a co-founder or guidance</Label>
+              <RadioGroupItem value="partnership" id="budget-partnership" />
+              <Label htmlFor="budget-partnership">I don't have a budget, but I'm open to a partnership or equity-based arrangement.</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="1000-5000" id="budget1k" />
-              <Label htmlFor="budget1k">$1,000–$5,000 – I need help validating or prototyping</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="5000-25000" id="budget5k" />
-              <Label htmlFor="budget5k">$5,000–$25,000 – I'm ready to build and launch</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="25000+" id="budget25k" />
-              <Label htmlFor="budget25k">$25,000+ – I'm ready to grow or scale</Label>
+              <RadioGroupItem value="5000+" id="budget5k" />
+              <Label htmlFor="budget5k">Yes – I have at least $5,000 to invest in development.</Label>
             </div>
           </RadioGroup>
           {errors.budget && <p className="text-sm text-red-500">{errors.budget}</p>}
