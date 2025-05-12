@@ -20,7 +20,7 @@ const Focus = () => {
       title: "Build MVP",
       description: "Transform your validated idea into a working minimum viable product. Focus on core features that solve your users' problems effectively.",
       icon: <Component className="h-12 w-12 text-gb-purple" />,
-      link: "/evaluator",
+      link: "/consulting",
       linkText: "Learn More"
     },
     {
