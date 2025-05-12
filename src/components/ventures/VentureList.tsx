@@ -1,4 +1,3 @@
-
 import React from 'react';
 import VentureCard from './VentureCard';
 
@@ -20,17 +19,17 @@ const ventures = [
   },
   {
     name: "Pardners",
-    tagline: "Helping people connect through shared affinities and real-life events.",
-    description: "Pardners is a community platform that brings together like-minded individuals through shared interests, facilitating meaningful connections and in-person gatherings. We're building tools to help people move from online interaction to real-world relationships.",
+    tagline: "Connecting generations through peer-to-peer mentorship and knowledge sharing.",
+    description: "Pardners bridges generational gaps by facilitating meaningful connections between people of different age groups. Our platform enables knowledge exchange, skill sharing, and mutual mentorship that honors the wisdom of experience while embracing fresh perspectives from younger generations.",
     color: "border-gb-blue",
     status: "In Development",
     link: "#",
     services: [
-      "Product Vision",
-      "Wireframing",
-      "User Testing",
-      "Community Strategy",
-      "Frontend Development"
+      "Mentorship Matching",
+      "Community Building",
+      "Knowledge Exchange Platform",
+      "Intergenerational Events",
+      "Skills Development Framework"
     ]
   },
   {
