@@ -1,8 +1,6 @@
 
 import { useState } from 'react';
-import { sendEvaluationNotification } from '@/utils/evaluationNotifications';
-import { validateEvaluationForm } from '@/utils/evaluationValidation';
-import { evaluateBusinessIdea, storeEvaluationData } from '@/services/evaluationService';
+import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
 export const useBusinessEvaluation = () => {
@@ -14,20 +12,35 @@ export const useBusinessEvaluation = () => {
   const [error, setError] = useState<string | null>(null);
   const [score, setScore] = useState<number | null>(null);
   const [notificationSent, setNotificationSent] = useState(false);
-  const [emailStatus, setEmailStatus] = useState<string | null>(null);
+
+  // Send notification about the evaluation
+  const sendEvaluationNotification = async (idea: string, name: string, email: string, score: number | null, result: string | null) => {
+    try {
+      console.log('Sending evaluation notification...');
+      
+      const { data, error: notifyError } = await supabase.functions.invoke('notify-business-evaluation', {
+        body: { idea, name, email, score, result }
+      });
+      
+      if (notifyError) {
+        console.error('Notification error:', notifyError);
+        return false;
+      }
+      
+      console.log('Notification sent successfully:', data);
+      return true;
+    } catch (err) {
+      console.error('Error sending notification:', err);
+      return false;
+    }
+  };
 
   const evaluateIdea = async () => {
-    // Reset states
-    setEmailStatus(null);
-    
-    // Validate form inputs
-    const { isValid, errorMessage } = validateEvaluationForm(idea, name, email);
-    if (!isValid) {
-      setError(errorMessage);
+    if (!idea.trim()) {
+      setError('Please enter your business idea.');
       return;
     }
 
-    // Start evaluation process
     setIsLoading(true);
     setError(null);
     setResult(null);
@@ -35,37 +48,84 @@ export const useBusinessEvaluation = () => {
     setNotificationSent(false);
 
     try {
-      // Call the evaluation service
-      const evaluationResult = await evaluateBusinessIdea(idea);
-      
-      if (!evaluationResult.success) {
-        setError(evaluationResult.error);
-        return;
+      const { data, error: supabaseError } = await supabase.functions.invoke('evaluate-business-idea', {
+        body: { idea }
+      });
+
+      if (supabaseError) {
+        console.error('Supabase function error:', supabaseError);
+        throw new Error(supabaseError.message);
       }
       
-      // Update state with results
-      setResult(evaluationResult.result);
-      setScore(evaluationResult.score);
+      if (data?.error) {
+        console.error('Function returned error:', data.error);
+        
+        // Handle billing/quota issues specifically
+        if (data.error.includes('quota') || data.error.includes('billing')) {
+          setError('Your OpenAI API key has exceeded its quota. Please check your billing details on the OpenAI platform.');
+          toast.error('API quota exceeded');
+          return;
+        }
+        
+        throw new Error(data.error);
+      }
       
-      // Store the evaluation data
-      await storeEvaluationData(name, email, idea, evaluationResult.score, evaluationResult.result!);
-      
-      // Send notification email
-      console.log('About to send notification email...');
-      const { success, status } = await sendEvaluationNotification(
-        idea, 
-        name, 
-        email, 
-        evaluationResult.score, 
-        evaluationResult.result
-      );
-      
-      setNotificationSent(success);
-      setEmailStatus(status);
-      
-      toast.success('Idea evaluated successfully!');
+      if (data?.result) {
+        // Extract score from the result with improved parsing
+        let extractedScore = null;
+        
+        // Try to match patterns like "Good Idea Score: 88/100" or "Overall score: 88"
+        const scorePatterns = [
+          /(?:good idea score|overall score|score):\s*(\d+)(?:\/100)?/i,
+          /(\d+)\/100/i
+        ];
+        
+        for (const pattern of scorePatterns) {
+          const match = data.result.match(pattern);
+          if (match && match[1]) {
+            extractedScore = parseInt(match[1], 10);
+            console.log(`Extracted score ${extractedScore} using pattern:`, pattern);
+            break;
+          }
+        }
+        
+        // Update state with results - always show the result regardless of score
+        setResult(data.result);
+        setScore(extractedScore);
+        
+        // Store the evaluation data in Supabase
+        const timestamp = new Date().toISOString();
+        try {
+          const { error: storeError } = await supabase
+            .from('business_evaluations')
+            .insert([
+              { 
+                name, 
+                email, 
+                idea, 
+                score: extractedScore, 
+                result: data.result,
+                evaluation_date: timestamp
+              }
+            ]);
+          
+          if (storeError) {
+            console.error('Error storing evaluation:', storeError);
+          }
+        } catch (storeErr) {
+          console.error('Failed to store evaluation data:', storeErr);
+        }
+        
+        // Send notification email about the evaluation
+        const notificationSuccess = await sendEvaluationNotification(idea, name, email, extractedScore, data.result);
+        setNotificationSent(notificationSuccess);
+        
+        toast.success('Idea evaluated successfully!');
+      } else {
+        throw new Error('No result returned from the evaluation.');
+      }
     } catch (err) {
-      console.error('Error in evaluation process:', err);
+      console.error('Error evaluating business idea:', err);
       setError(`Failed to evaluate business idea. ${err instanceof Error ? err.message : 'Please try again later.'}`);
       toast.error('Failed to evaluate idea');
     } finally {
@@ -85,7 +145,6 @@ export const useBusinessEvaluation = () => {
     error,
     score,
     notificationSent,
-    emailStatus,
     evaluateIdea
   };
 };

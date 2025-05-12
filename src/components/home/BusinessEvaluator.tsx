@@ -1,46 +1,36 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useBusinessEvaluation } from '@/hooks/useBusinessEvaluation';
-import { useScoreUrlProcessor } from './evaluator/ScoreUrlProcessor';
-import ScoreBasedRouter from './evaluator/ScoreBasedRouter';
+import EvaluationScreen from './EvaluationScreen';
+import { useSearchParams } from 'react-router-dom';
 
-/**
- * Main BusinessEvaluator component that coordinates the evaluation process
- */
 const BusinessEvaluator = () => {
-  // Get score from URL parameter
-  const { initialScore } = useScoreUrlProcessor();
-  
-  // State for managing the contact form submission
-  const [contactSubmitted, setContactSubmitted] = React.useState(false);
-  
-  // Get business evaluation hook
   const {
     idea,
     setIdea,
-    name, 
+    name,
     setName,
     email,
     setEmail,
     result,
     isLoading,
     error,
-    score: evaluationScore,
-    emailStatus,
+    score,
     evaluateIdea
   } = useBusinessEvaluation();
   
-  // Effect to pre-fill form if score provided in URL
-  React.useEffect(() => {
-    // Force pre-fill if score is provided in URL
-    if (initialScore && initialScore >= 75 && !result) {
-      setIdea('This idea was pre-approved with a score of ' + initialScore);
-    }
-  }, [initialScore, result]);
+  const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [searchParams] = useSearchParams();
   
+  // Effect to scroll to top when the component mounts or URL parameters change
+  useEffect(() => {
+    // Scroll to top immediately when component mounts or URL changes
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, [searchParams]);
+
+  // Normal view for evaluation regardless of score
   return (
-    <ScoreBasedRouter
-      initialScore={initialScore}
+    <EvaluationScreen
       idea={idea}
       setIdea={setIdea}
       name={name}
@@ -51,10 +41,9 @@ const BusinessEvaluator = () => {
       isLoading={isLoading}
       result={result}
       error={error}
-      evaluationScore={evaluationScore}
+      score={score}
       contactSubmitted={contactSubmitted}
       setContactSubmitted={setContactSubmitted}
-      emailStatus={emailStatus}
     />
   );
 };
