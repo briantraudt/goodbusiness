@@ -28,7 +28,7 @@ const Benefits = () => {
   ];
 
   return (
-    <section className="bg-white py-16 md:py-28">
+    <section className="bg-gray-50 py-16 md:py-28">
       <div className="container-custom">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Innovators Work With Us</h2>
@@ -39,7 +39,7 @@ const Benefits = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 max-w-6xl mx-auto">
           {benefits.map((benefit, index) => (
-            <Card key={index} className="border border-gray-100 shadow-md hover:shadow-lg transition-all p-4 md:p-6">
+            <Card key={index} className="border border-gray-100 shadow-md hover:shadow-lg transition-all p-4 md:p-6 bg-white">
               <CardHeader className="flex flex-row items-center gap-4 pb-4">
                 <div className="p-3 bg-gray-50 rounded-lg">
                   {benefit.icon}
