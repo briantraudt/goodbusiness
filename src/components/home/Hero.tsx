@@ -49,18 +49,12 @@ const Hero = () => {
           </p>
         </div>
         
-        {/* Buttons - reduced margin and size */}
-        <div className={`${isMobile ? 'mt-6' : 'mt-4'} flex flex-col sm:flex-row gap-3 justify-center`}>
+        {/* Button - removed the second button */}
+        <div className={`${isMobile ? 'mt-6' : 'mt-4'} flex justify-center`}>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center">
             <Link to="/contact">
               Let's Build Something
               <Rocket className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
-          
-          <Button asChild variant="outline" className="border-white text-white hover:bg-white/10 hover:text-white py-4 px-6 text-lg font-semibold bg-black/40 flex items-center justify-center">
-            <Link to="/ventures">
-              See Our Work
             </Link>
           </Button>
         </div>
