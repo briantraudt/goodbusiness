@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PrivateInvitationScreen from './PrivateInvitationScreen';
@@ -27,6 +28,7 @@ const BusinessEvaluator = () => {
     error,
     score: evaluationScore,
     notificationSent,
+    emailStatus,
     evaluateIdea
   } = useBusinessEvaluation();
   
@@ -45,7 +47,11 @@ const BusinessEvaluator = () => {
   if (initialScore && initialScore >= 75) {
     return (
       <>
-        <PrivateInvitationScreen score={initialScore} />
+        <PrivateInvitationScreen 
+          score={initialScore}
+          contactSubmitted={contactSubmitted}
+          setContactSubmitted={setContactSubmitted}
+        />
         <BusinessContactFormManager 
           score={initialScore}
           contactSubmitted={contactSubmitted}
@@ -72,6 +78,7 @@ const BusinessEvaluator = () => {
         score={displayScore}
         contactSubmitted={contactSubmitted}
         setContactSubmitted={setContactSubmitted}
+        emailStatus={emailStatus}
       />
       {displayScore !== null && displayScore >= 75 && (
         <BusinessContactFormManager 
