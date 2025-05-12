@@ -61,7 +61,8 @@ const ventures = [
       "Local Business Strategy",
       "Content Management",
       "SEO Optimization"
-    ]
+    ],
+    imageUrl: "/lovable-uploads/0c24f616-5309-4d29-8c19-556e61654622.png"
   }
 ];
 
