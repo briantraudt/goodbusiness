@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ExternalLink, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -56,6 +57,9 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
             />
           </DialogTrigger>
           <DialogContent className="sm:max-w-[80vw] max-h-[90vh] flex items-center justify-center p-0 overflow-hidden">
+            <DialogHeader>
+              <DialogTitle className="sr-only">SideStage Mobile App</DialogTitle>
+            </DialogHeader>
             <img 
               src="/lovable-uploads/35487980-8600-4a91-a5a8-b226968d1e70.png" 
               alt="SideStage Mobile App - Enlarged" 
@@ -69,14 +73,17 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
         <Dialog>
           <DialogTrigger asChild>
             <img 
-              src="/lovable-uploads/9603c551-1b9e-4036-9ef5-05987e181b78.png" 
+              src="/lovable-uploads/50f65942-3bd6-4cdc-b1a2-298d75e67917.png" 
               alt="Pardners Mobile App" 
               className="h-auto w-auto max-h-[500px] rounded-[2rem] cursor-pointer transition-transform hover:scale-[1.02]" 
             />
           </DialogTrigger>
           <DialogContent className="sm:max-w-[80vw] max-h-[90vh] flex items-center justify-center p-0 overflow-hidden">
+            <DialogHeader>
+              <DialogTitle className="sr-only">Pardners Mobile App</DialogTitle>
+            </DialogHeader>
             <img 
-              src="/lovable-uploads/9603c551-1b9e-4036-9ef5-05987e181b78.png" 
+              src="/lovable-uploads/50f65942-3bd6-4cdc-b1a2-298d75e67917.png" 
               alt="Pardners Mobile App - Enlarged" 
               className="w-auto h-auto max-h-[90vh] max-w-[80vw] object-contain" 
             />
@@ -119,6 +126,9 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
             </div>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[80vw] max-h-[90vh] flex items-center justify-center p-0 overflow-hidden">
+            <DialogHeader>
+              <DialogTitle className="sr-only">{altText}</DialogTitle>
+            </DialogHeader>
             <img 
               src={imageSource}
               alt={`${altText} - Enlarged`} 
