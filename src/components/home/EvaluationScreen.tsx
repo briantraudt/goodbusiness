@@ -18,6 +18,7 @@ interface EvaluationScreenProps {
   score: number | null;
   contactSubmitted: boolean;
   setContactSubmitted: (value: boolean) => void;
+  emailStatus?: string | null;
 }
 
 const EvaluationScreen: React.FC<EvaluationScreenProps> = ({
@@ -33,7 +34,8 @@ const EvaluationScreen: React.FC<EvaluationScreenProps> = ({
   error,
   score,
   contactSubmitted,
-  setContactSubmitted
+  setContactSubmitted,
+  emailStatus
 }) => {
   return (
     <section className="bg-white py-16">
@@ -53,6 +55,7 @@ const EvaluationScreen: React.FC<EvaluationScreenProps> = ({
           result={result}
           error={error}
           score={score}
+          emailStatus={emailStatus}
         />
       </div>
     </section>

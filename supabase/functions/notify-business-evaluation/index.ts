@@ -54,12 +54,12 @@ serve(async (req) => {
 
     console.log(`[${requestId}] Processing notification for ${email} with score ${score}`);
 
-    // Check if Resend API key is available
+    // Create a Supabase client for logging
+    const supabaseClient = createClient(supabaseUrl, supabaseServiceKey);
+
+    // Verify Resend API Key validity
     if (!resendApiKey) {
       console.warn(`[${requestId}] CRITICAL: Resend API key not configured. Email notifications will not be sent.`);
-      
-      // Create a Supabase client for logging errors
-      const supabaseClient = createClient(supabaseUrl, supabaseServiceKey);
       
       // Log the missing API key error
       try {
@@ -76,12 +76,48 @@ serve(async (req) => {
         console.error(`[${requestId}] Error logging missing API key:`, logError);
       }
       
-      // Still return a response with clear indication that emails were not sent
+      // Return with clear indication that emails were not sent
       return new Response(
         JSON.stringify({ 
           success: false, 
           emailsConfigured: false,
           warning: 'Email service not configured. Please add RESEND_API_KEY to Supabase secrets.' 
+        }),
+        { 
+          status: 200, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      );
+    }
+
+    // Verify API key pattern (simple validation to catch obviously malformed keys)
+    // Resend API keys typically start with "re_" followed by a string of alphanumeric characters
+    const validResendKeyPattern = /^re_[a-zA-Z0-9]{30,}/;
+    const isKeyValidFormat = validResendKeyPattern.test(resendApiKey);
+    
+    if (!isKeyValidFormat) {
+      console.error(`[${requestId}] CRITICAL: Resend API key appears to be in an invalid format`);
+      
+      // Log the invalid key format error
+      try {
+        await supabaseClient
+          .from('email_delivery_logs')
+          .insert([{
+            recipient_type: 'system',
+            error_message: 'RESEND_API_KEY is in an invalid format (should start with re_)',
+            idea_submitted: idea.substring(0, 100),
+            submitter_email: email,
+            created_at: new Date().toISOString()
+          }]);
+      } catch (logError) {
+        console.error(`[${requestId}] Error logging invalid key format:`, logError);
+      }
+      
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          emailsConfigured: false,
+          warning: 'Email service API key appears to be in an incorrect format. API keys should start with "re_".' 
         }),
         { 
           status: 200, 
@@ -112,6 +148,28 @@ serve(async (req) => {
             
             if (!response.ok) {
               console.error(`[${requestId}] Resend API error: Status ${response.status}`, data);
+              
+              // Log more details about the API key issue
+              if (response.status === 401 || response.status === 403 || 
+                  (data?.message && data.message.toLowerCase().includes('key'))) {
+                console.error(`[${requestId}] API key authentication issue. Key might be revoked, expired, or invalid.`);
+                
+                // Log the API key authentication issue to Supabase
+                try {
+                  await supabaseClient
+                    .from('email_delivery_logs')
+                    .insert([{
+                      recipient_type: 'system',
+                      error_message: `API key authentication failed: ${data.message || 'Unknown reason'}`,
+                      created_at: new Date().toISOString()
+                    }]);
+                } catch (logError) {
+                  console.error(`[${requestId}] Error logging API key issue:`, logError);
+                }
+                
+                throw new Error(`API key authentication error: ${JSON.stringify(data)}`);
+              }
+              
               throw new Error(`Resend API error: ${JSON.stringify(data)}`);
             }
             
@@ -143,9 +201,6 @@ serve(async (req) => {
     `;
 
     try {
-      // Create a Supabase client for storing notification attempts
-      const supabaseClient = createClient(supabaseUrl, supabaseServiceKey);
-      
       // Track email delivery attempts
       let adminEmailSent = false;
       let userEmailSent = false;
@@ -155,7 +210,8 @@ serve(async (req) => {
         const fromAddresses = [
           'Good Business HQ <onboarding@resend.dev>',
           'Good Business HQ <notifications@goodbusinesshq.com>',
-          'Resend <onboarding@resend.dev>'
+          'Resend <onboarding@resend.dev>',
+          'Notifications <hello@goodbusinesshq.com>'
         ];
         
         let adminEmailError = null;
@@ -278,6 +334,16 @@ serve(async (req) => {
           console.error(`[${requestId}] Error sending user confirmation email:`, userEmailError);
         }
       }
+
+      // Determine if we should suggest checking the Resend API key
+      const allAttemptsFailed = !adminEmailSent && !userEmailSent;
+      let warningMessage = null;
+      
+      if (allAttemptsFailed) {
+        warningMessage = 'All email sending attempts failed. Please verify your Resend API key is valid and correctly configured.';
+      } else if (!userEmailSent && sendUserConfirmation) {
+        warningMessage = 'Could not send confirmation email to your address. Please check your email later.';
+      }
       
       return new Response(
         JSON.stringify({ 
@@ -285,7 +351,7 @@ serve(async (req) => {
           adminEmailSent,
           userEmailSent,
           emailsConfigured: true,
-          warning: !adminEmailSent && !userEmailSent ? 'All email sending attempts failed' : undefined
+          warning: warningMessage
         }),
         { 
           status: 200, 

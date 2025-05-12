@@ -12,6 +12,7 @@ export const useBusinessEvaluation = () => {
   const [error, setError] = useState<string | null>(null);
   const [score, setScore] = useState<number | null>(null);
   const [notificationSent, setNotificationSent] = useState(false);
+  const [emailStatus, setEmailStatus] = useState<string | null>(null);
 
   // Send notification about the evaluation with improved logging and error handling
   const sendEvaluationNotification = async (idea: string, name: string, email: string, score: number | null, result: string | null) => {
@@ -34,7 +35,8 @@ export const useBusinessEvaluation = () => {
       
       if (notifyError) {
         console.error('Notification error:', notifyError);
-        toast.error('Failed to send email notifications. Please contact support.');
+        toast.error('Failed to send email notifications');
+        setEmailStatus('Email server error - notification could not be sent');
         return false;
       }
       
@@ -42,13 +44,15 @@ export const useBusinessEvaluation = () => {
       
       if (data?.emailsConfigured === false) {
         console.warn('Email service not properly configured');
-        toast.warning('Email service is not configured. Notifications were not sent.');
+        toast.warning('Email service is not configured');
+        setEmailStatus('Email service not configured - please contact support');
         return false;
       }
       
       if (data?.warning) {
         console.warn('Notification warning:', data.warning);
-        toast.warning(`Email notification status: ${data.warning}`);
+        toast.warning(`${data.warning}`);
+        setEmailStatus(data.warning);
       }
       
       if (data?.adminEmailSent) {
@@ -58,22 +62,27 @@ export const useBusinessEvaluation = () => {
       if (data?.userEmailSent) {
         console.log('User confirmation email sent successfully');
         toast.success('Confirmation email sent to your inbox');
+        setEmailStatus('Email sent successfully');
       } else if (data?.emailsConfigured !== false) {
         console.warn('User email not sent but email service is configured');
-        toast.warning('Could not send confirmation email to your address. Please check your email later.');
+        toast.warning('Could not send confirmation email to your address');
+        setEmailStatus('Could not send confirmation email to your address. Please check your email later.');
       }
       
-      // Consider it a success if at least one email was sent
-      const emailSuccess = data?.adminEmailSent || data?.userEmailSent;
-      return emailSuccess;
+      // If any email was sent, consider it partial success
+      return data?.adminEmailSent || data?.userEmailSent;
     } catch (err) {
       console.error('Error sending notification:', err);
-      toast.error('Could not send email notifications. Network or server error.');
+      toast.error('Could not send email notifications');
+      setEmailStatus('Network or server error - notification could not be sent');
       return false;
     }
   };
 
   const evaluateIdea = async () => {
+    // Reset states
+    setEmailStatus(null);
+    
     // Validate required fields
     if (!idea.trim()) {
       setError('Please enter your business idea.');
@@ -174,7 +183,7 @@ export const useBusinessEvaluation = () => {
             toast.error('Could not save your evaluation');
           } else {
             // Toast for successful database save
-            toast.success('Evaluation saved to database');
+            toast.success('Evaluation saved successfully');
           }
         } catch (storeErr) {
           console.error('Failed to store evaluation data:', storeErr);
@@ -210,6 +219,7 @@ export const useBusinessEvaluation = () => {
     error,
     score,
     notificationSent,
+    emailStatus,
     evaluateIdea
   };
 };
