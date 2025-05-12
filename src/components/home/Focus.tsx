@@ -11,7 +11,7 @@ const Focus = () => {
   const focusAreas = [
     {
       title: "Validate Idea",
-      description: "Turn your digital product concept into an interactive prototype in days. Test your idea quickly and get real user feedback before major investment.",
+      description: "Turn your technology concept into an interactive prototype in days. Test your idea quickly and get real user feedback before major investment.",
       icon: <Rocket className="h-12 w-12 text-gb-blue" />
     },
     {
