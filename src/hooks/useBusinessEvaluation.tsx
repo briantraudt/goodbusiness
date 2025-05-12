@@ -1,6 +1,8 @@
 
 import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
+import { sendEvaluationNotification } from '@/utils/evaluationNotifications';
+import { validateEvaluationForm } from '@/utils/evaluationValidation';
+import { evaluateBusinessIdea, storeEvaluationData } from '@/services/evaluationService';
 import { toast } from 'sonner';
 
 export const useBusinessEvaluation = () => {
@@ -14,102 +16,18 @@ export const useBusinessEvaluation = () => {
   const [notificationSent, setNotificationSent] = useState(false);
   const [emailStatus, setEmailStatus] = useState<string | null>(null);
 
-  // Send notification about the evaluation with improved logging and error handling
-  const sendEvaluationNotification = async (idea: string, name: string, email: string, score: number | null, result: string | null) => {
-    try {
-      console.log('Sending evaluation notification...');
-      
-      toast.info('Sending email notifications...');
-      
-      const { data, error: notifyError } = await supabase.functions.invoke('notify-business-evaluation', {
-        body: { 
-          idea, 
-          name, 
-          email, 
-          score, 
-          result, 
-          sendUserConfirmation: true,
-          timestamp: new Date().toISOString() // Add timestamp for tracking
-        }
-      });
-      
-      if (notifyError) {
-        console.error('Notification error:', notifyError);
-        toast.error('Failed to send email notifications');
-        setEmailStatus('Email server error - notification could not be sent');
-        return false;
-      }
-      
-      console.log('Notification response:', data);
-      
-      if (data?.emailsConfigured === false) {
-        console.warn('Email service not properly configured');
-        toast.warning('Email service is not configured');
-        setEmailStatus('Email service not configured - please contact support');
-        return false;
-      }
-      
-      if (data?.warning) {
-        console.warn('Notification warning:', data.warning);
-        toast.warning(`${data.warning}`);
-        setEmailStatus(data.warning);
-      }
-      
-      if (data?.adminEmailSent) {
-        console.log('Admin notification email sent successfully');
-      }
-      
-      if (data?.userEmailSent) {
-        console.log('User confirmation email sent successfully');
-        toast.success('Confirmation email sent to your inbox');
-        setEmailStatus('Email sent successfully');
-      } else if (data?.emailsConfigured !== false) {
-        console.warn('User email not sent but email service is configured');
-        toast.warning('Could not send confirmation email to your address');
-        setEmailStatus('Could not send confirmation email to your address. Please check your email later.');
-      }
-      
-      // If any email was sent, consider it partial success
-      return data?.adminEmailSent || data?.userEmailSent;
-    } catch (err) {
-      console.error('Error sending notification:', err);
-      toast.error('Could not send email notifications');
-      setEmailStatus('Network or server error - notification could not be sent');
-      return false;
-    }
-  };
-
   const evaluateIdea = async () => {
     // Reset states
     setEmailStatus(null);
     
-    // Validate required fields
-    if (!idea.trim()) {
-      setError('Please enter your business idea.');
-      toast.error('Please enter your business idea');
+    // Validate form inputs
+    const { isValid, errorMessage } = validateEvaluationForm(idea, name, email);
+    if (!isValid) {
+      setError(errorMessage);
       return;
     }
 
-    if (!name.trim()) {
-      setError('Please enter your name.');
-      toast.error('Please enter your name');
-      return;
-    }
-
-    if (!email.trim()) {
-      setError('Please enter your email address.');
-      toast.error('Please enter your email address');
-      return;
-    }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError('Please enter a valid email address.');
-      toast.error('Please enter a valid email address');
-      return;
-    }
-
+    // Start evaluation process
     setIsLoading(true);
     setError(null);
     setResult(null);
@@ -117,89 +35,37 @@ export const useBusinessEvaluation = () => {
     setNotificationSent(false);
 
     try {
-      const { data, error: supabaseError } = await supabase.functions.invoke('evaluate-business-idea', {
-        body: { idea }
-      });
-
-      if (supabaseError) {
-        console.error('Supabase function error:', supabaseError);
-        throw new Error(supabaseError.message);
+      // Call the evaluation service
+      const evaluationResult = await evaluateBusinessIdea(idea);
+      
+      if (!evaluationResult.success) {
+        setError(evaluationResult.error);
+        return;
       }
       
-      if (data?.error) {
-        console.error('Function returned error:', data.error);
-        
-        // Handle billing/quota issues specifically
-        if (data.error.includes('quota') || data.error.includes('billing')) {
-          setError('Your OpenAI API key has exceeded its quota. Please check your billing details on the OpenAI platform.');
-          toast.error('API quota exceeded');
-          return;
-        }
-        
-        throw new Error(data.error);
-      }
+      // Update state with results
+      setResult(evaluationResult.result);
+      setScore(evaluationResult.score);
       
-      if (data?.result) {
-        // Extract score from the result with improved parsing
-        let extractedScore = null;
-        
-        // Try to match patterns like "Good Idea Score: 88/100" or "Overall score: 88"
-        const scorePatterns = [
-          /(?:good idea score|overall score|score):\s*(\d+)(?:\/100)?/i,
-          /(\d+)\/100/i
-        ];
-        
-        for (const pattern of scorePatterns) {
-          const match = data.result.match(pattern);
-          if (match && match[1]) {
-            extractedScore = parseInt(match[1], 10);
-            console.log(`Extracted score ${extractedScore} using pattern:`, pattern);
-            break;
-          }
-        }
-        
-        // Update state with results - always show the result regardless of score
-        setResult(data.result);
-        setScore(extractedScore);
-        
-        // Store the evaluation data in Supabase
-        const timestamp = new Date().toISOString();
-        try {
-          const { error: storeError } = await supabase
-            .from('business_evaluations')
-            .insert([
-              { 
-                name, 
-                email, 
-                idea, 
-                score: extractedScore, 
-                result: data.result,
-                evaluation_date: timestamp
-              }
-            ]);
-          
-          if (storeError) {
-            console.error('Error storing evaluation:', storeError);
-            toast.error('Could not save your evaluation');
-          } else {
-            // Toast for successful database save
-            toast.success('Evaluation saved successfully');
-          }
-        } catch (storeErr) {
-          console.error('Failed to store evaluation data:', storeErr);
-        }
-        
-        // Send notification email about the evaluation
-        console.log('About to send notification email...');
-        const notificationSuccess = await sendEvaluationNotification(idea, name, email, extractedScore, data.result);
-        setNotificationSent(notificationSuccess);
-        
-        toast.success('Idea evaluated successfully!');
-      } else {
-        throw new Error('No result returned from the evaluation.');
-      }
+      // Store the evaluation data
+      await storeEvaluationData(name, email, idea, evaluationResult.score, evaluationResult.result!);
+      
+      // Send notification email
+      console.log('About to send notification email...');
+      const { success, status } = await sendEvaluationNotification(
+        idea, 
+        name, 
+        email, 
+        evaluationResult.score, 
+        evaluationResult.result
+      );
+      
+      setNotificationSent(success);
+      setEmailStatus(status);
+      
+      toast.success('Idea evaluated successfully!');
     } catch (err) {
-      console.error('Error evaluating business idea:', err);
+      console.error('Error in evaluation process:', err);
       setError(`Failed to evaluate business idea. ${err instanceof Error ? err.message : 'Please try again later.'}`);
       toast.error('Failed to evaluate idea');
     } finally {
