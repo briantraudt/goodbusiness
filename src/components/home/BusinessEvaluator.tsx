@@ -8,6 +8,10 @@ const BusinessEvaluator = () => {
   const {
     idea,
     setIdea,
+    name,
+    setName,
+    email,
+    setEmail,
     result,
     isLoading,
     error,
@@ -29,6 +33,10 @@ const BusinessEvaluator = () => {
     <EvaluationScreen
       idea={idea}
       setIdea={setIdea}
+      name={name}
+      setName={setName}
+      email={email}
+      setEmail={setEmail}
       evaluateIdea={evaluateIdea}
       isLoading={isLoading}
       result={result}

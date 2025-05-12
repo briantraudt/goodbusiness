@@ -5,6 +5,8 @@ import { toast } from 'sonner';
 
 export const useBusinessEvaluation = () => {
   const [idea, setIdea] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [result, setResult] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -12,12 +14,12 @@ export const useBusinessEvaluation = () => {
   const [notificationSent, setNotificationSent] = useState(false);
 
   // Send notification about the evaluation
-  const sendEvaluationNotification = async (idea: string, score: number | null, result: string | null) => {
+  const sendEvaluationNotification = async (idea: string, name: string, email: string, score: number | null, result: string | null) => {
     try {
       console.log('Sending evaluation notification...');
       
       const { data, error: notifyError } = await supabase.functions.invoke('notify-business-evaluation', {
-        body: { idea, score, result }
+        body: { idea, name, email, score, result }
       });
       
       if (notifyError) {
@@ -91,8 +93,31 @@ export const useBusinessEvaluation = () => {
         setResult(data.result);
         setScore(extractedScore);
         
+        // Store the evaluation data in Supabase
+        const timestamp = new Date().toISOString();
+        try {
+          const { error: storeError } = await supabase
+            .from('business_evaluations')
+            .insert([
+              { 
+                name, 
+                email, 
+                idea, 
+                score: extractedScore, 
+                result: data.result,
+                evaluation_date: timestamp
+              }
+            ]);
+          
+          if (storeError) {
+            console.error('Error storing evaluation:', storeError);
+          }
+        } catch (storeErr) {
+          console.error('Failed to store evaluation data:', storeErr);
+        }
+        
         // Send notification email about the evaluation
-        const notificationSuccess = await sendEvaluationNotification(idea, extractedScore, data.result);
+        const notificationSuccess = await sendEvaluationNotification(idea, name, email, extractedScore, data.result);
         setNotificationSent(notificationSuccess);
         
         toast.success('Idea evaluated successfully!');
@@ -111,6 +136,10 @@ export const useBusinessEvaluation = () => {
   return {
     idea,
     setIdea,
+    name,
+    setName,
+    email,
+    setEmail,
     result,
     isLoading,
     error,

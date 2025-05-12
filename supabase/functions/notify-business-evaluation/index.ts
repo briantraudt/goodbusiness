@@ -39,7 +39,7 @@ serve(async (req) => {
       throw new Error('Resend API key is not configured');
     }
 
-    const { idea, score, result } = await req.json();
+    const { idea, name, email, score, result } = await req.json();
     
     if (!idea) {
       console.error(`[${requestId}] Missing required field: idea`);
@@ -51,10 +51,25 @@ serve(async (req) => {
 
     console.log(`[${requestId}] Processing evaluation notification for idea with score: ${score}`);
     
+    // Contact info section
+    const contactSection = `
+      <h3>Contact Information</h3>
+      <p><strong>Name:</strong> ${name || 'Not provided'}</p>
+      <p><strong>Email:</strong> ${email || 'Not provided'}</p>
+    `;
+
+    const contactSectionText = `
+CONTACT INFORMATION
+Name: ${name || 'Not provided'}
+Email: ${email || 'Not provided'}
+    `;
+    
     // Generate email content
     const emailHtml = `
       <h1>New Business Idea Evaluation</h1>
       <h2>Score: ${score !== null ? `${score}/100` : 'Not available'}</h2>
+      
+      ${contactSection}
       
       <h3>Business Idea</h3>
       <p>${idea}</p>
@@ -66,6 +81,8 @@ serve(async (req) => {
     const plainText = `
 New Business Idea Evaluation
 Score: ${score !== null ? `${score}/100` : 'Not available'}
+
+${contactSectionText}
 
 BUSINESS IDEA
 ${idea}
@@ -91,9 +108,10 @@ ${result || 'No evaluation result available'}
           from: fromAddress,
           to: toRecipients,
           // Removed BCC
-          subject: `[NEW EVALUATION] Business Idea (Score: ${score !== null ? score : 'N/A'})`,
+          subject: `[NEW EVALUATION] Business Idea from ${name || 'Anonymous'} (Score: ${score !== null ? score : 'N/A'})`,
           html: emailHtml,
           text: plainText,
+          reply_to: email || undefined,
         });
         
         console.log(`[${requestId}] Evaluation notification sent successfully with ${fromAddress}:`, emailResponse);
@@ -121,8 +139,8 @@ ${result || 'No evaluation result available'}
         emailResponse = await resend.emails.send({
           from: 'Resend <onboarding@resend.dev>',
           to: 'brian@goodbusinesshq.com',
-          subject: 'URGENT: Business Idea Evaluation (Simplified Email)',
-          text: `New business idea evaluation. Score: ${score !== null ? score : 'N/A'}.\n\nIdea: ${idea.substring(0, 100)}...`,
+          subject: `URGENT: Business Idea from ${name || 'Anonymous'} (Score: ${score !== null ? score : 'N/A'})`,
+          text: `New business idea evaluation from ${name || 'Anonymous'} (${email || 'No email'}). Score: ${score !== null ? score : 'N/A'}.\n\nIdea: ${idea.substring(0, 100)}...`,
         });
         
         console.log(`[${requestId}] Last resort email sent:`, emailResponse);

@@ -7,6 +7,10 @@ import BusinessEvaluationResult from './BusinessEvaluationResult';
 interface EvaluationScreenProps {
   idea: string;
   setIdea: (value: string) => void;
+  name: string;
+  setName: (value: string) => void;
+  email: string;
+  setEmail: (value: string) => void;
   evaluateIdea: () => void;
   isLoading: boolean;
   result: string | null;
@@ -19,6 +23,10 @@ interface EvaluationScreenProps {
 const EvaluationScreen: React.FC<EvaluationScreenProps> = ({
   idea,
   setIdea,
+  name,
+  setName,
+  email,
+  setEmail,
   evaluateIdea,
   isLoading,
   result,
@@ -32,6 +40,10 @@ const EvaluationScreen: React.FC<EvaluationScreenProps> = ({
         <BusinessEvaluatorForm 
           idea={idea}
           setIdea={setIdea}
+          name={name}
+          setName={setName}
+          email={email}
+          setEmail={setEmail}
           evaluateIdea={evaluateIdea}
           isLoading={isLoading}
         />
