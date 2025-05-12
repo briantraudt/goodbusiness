@@ -1,19 +1,18 @@
 
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import PrivateInvitationScreen from './PrivateInvitationScreen';
-import EvaluationScreen from './EvaluationScreen';
-import BusinessContactFormManager from './business-form/BusinessContactFormManager';
+import React from 'react';
 import { useBusinessEvaluation } from '@/hooks/useBusinessEvaluation';
+import { useScoreUrlProcessor } from './evaluator/ScoreUrlProcessor';
+import ScoreBasedRouter from './evaluator/ScoreBasedRouter';
 
+/**
+ * Main BusinessEvaluator component that coordinates the evaluation process
+ */
 const BusinessEvaluator = () => {
-  // Get any score from URL parameters
-  const [searchParams] = useSearchParams();
-  const scoreParam = searchParams.get('score');
-  const initialScore = scoreParam ? parseInt(scoreParam, 10) : null;
+  // Get score from URL parameter
+  const { initialScore } = useScoreUrlProcessor();
   
   // State for managing the contact form submission
-  const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [contactSubmitted, setContactSubmitted] = React.useState(false);
   
   // Get business evaluation hook
   const {
@@ -27,67 +26,36 @@ const BusinessEvaluator = () => {
     isLoading,
     error,
     score: evaluationScore,
-    notificationSent,
     emailStatus,
     evaluateIdea
   } = useBusinessEvaluation();
   
-  // Combine score from URL and evaluation
-  const displayScore = evaluationScore !== null ? evaluationScore : initialScore;
-  
-  // Effects
-  useEffect(() => {
+  // Effect to pre-fill form if score provided in URL
+  React.useEffect(() => {
     // Force pre-fill if score is provided in URL
     if (initialScore && initialScore >= 75 && !result) {
       setIdea('This idea was pre-approved with a score of ' + initialScore);
     }
   }, [initialScore, result]);
   
-  // Render private invitation screen for high scores in URL
-  if (initialScore && initialScore >= 75) {
-    return (
-      <>
-        <PrivateInvitationScreen 
-          score={initialScore}
-          contactSubmitted={contactSubmitted}
-          setContactSubmitted={setContactSubmitted}
-        />
-        <BusinessContactFormManager 
-          score={initialScore}
-          contactSubmitted={contactSubmitted}
-          setContactSubmitted={setContactSubmitted}
-        />
-      </>
-    );
-  }
-  
-  // Otherwise show the standard evaluation screen
   return (
-    <>
-      <EvaluationScreen 
-        idea={idea}
-        setIdea={setIdea}
-        name={name} 
-        setName={setName}
-        email={email}
-        setEmail={setEmail}
-        evaluateIdea={evaluateIdea}
-        isLoading={isLoading}
-        result={result}
-        error={error}
-        score={displayScore}
-        contactSubmitted={contactSubmitted}
-        setContactSubmitted={setContactSubmitted}
-        emailStatus={emailStatus}
-      />
-      {displayScore !== null && displayScore >= 75 && (
-        <BusinessContactFormManager 
-          score={displayScore}
-          contactSubmitted={contactSubmitted}
-          setContactSubmitted={setContactSubmitted} 
-        />
-      )}
-    </>
+    <ScoreBasedRouter
+      initialScore={initialScore}
+      idea={idea}
+      setIdea={setIdea}
+      name={name}
+      setName={setName}
+      email={email}
+      setEmail={setEmail}
+      evaluateIdea={evaluateIdea}
+      isLoading={isLoading}
+      result={result}
+      error={error}
+      evaluationScore={evaluationScore}
+      contactSubmitted={contactSubmitted}
+      setContactSubmitted={setContactSubmitted}
+      emailStatus={emailStatus}
+    />
   );
 };
 
