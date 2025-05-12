@@ -53,6 +53,15 @@ const ConsultingServices = () => {
   return (
     <section className="bg-white">
       <div className="container-custom py-20">
+        <div className="text-center mb-12">
+          <p className="text-lg md:text-xl text-gb-dark leading-relaxed max-w-4xl mx-auto">
+            At Good Business, we specialize in transforming ideas into real, working products—quickly and
+            collaboratively. Whether you're refining a concept, designing a user-friendly interface, validating a
+            prototype, or building a scalable app, our team walks with you every step of the way. We don't just offer
+            advice—we roll up our sleeves and help you build something great.
+          </p>
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((service, index) => (
             <div 
