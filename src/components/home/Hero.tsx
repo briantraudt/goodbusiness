@@ -53,7 +53,7 @@ const Hero = () => {
         <div className={`${isMobile ? 'mt-6' : 'mt-4'} flex flex-col sm:flex-row gap-3 justify-center`}>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center">
             <Link to="/contact">
-              Start Your Project
+              Let's Build Something Together
               <Rocket className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
