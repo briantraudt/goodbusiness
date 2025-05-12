@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { ExternalLink, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -68,17 +69,31 @@ const VentureCard = ({ venture, index }: VentureCardProps) => {
       return (
         <Dialog>
           <DialogTrigger asChild>
-            <img 
-              src="/lovable-uploads/d86fe6aa-3b7b-450a-bdd6-a217b5a55078.png" 
-              alt="Pardners Mobile App" 
-              className="h-auto w-auto max-h-[500px] rounded-[2rem] cursor-pointer transition-transform hover:scale-[1.02]" 
-            />
+            <div className="iphone-container cursor-pointer transition-transform hover:scale-[1.02]">
+              {/* iPhone frame */}
+              <div className="relative w-[300px]">
+                {/* iPhone bezel */}
+                <div className="bg-black rounded-[3rem] p-3 relative">
+                  {/* Notch */}
+                  <div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-[100px] h-[25px] bg-black rounded-b-xl z-10"></div>
+                  
+                  {/* Screen content */}
+                  <div className="relative bg-white overflow-hidden rounded-[2rem] aspect-[9/19.5] z-0">
+                    <img 
+                      src="/lovable-uploads/805caec3-384e-4327-9640-0c22e7068940.png" 
+                      alt="Pardners Mobile App" 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[80vw] max-h-[90vh] flex items-center justify-center p-0 overflow-hidden">
             <img 
-              src="/lovable-uploads/d86fe6aa-3b7b-450a-bdd6-a217b5a55078.png" 
+              src="/lovable-uploads/805caec3-384e-4327-9640-0c22e7068940.png" 
               alt="Pardners Mobile App - Enlarged" 
-              className="w-auto h-auto max-h-[90vh] max-w-[80vw] object-contain rounded-[2rem]" 
+              className="w-auto h-auto max-h-[90vh] max-w-[80vw] object-contain" 
             />
           </DialogContent>
         </Dialog>
