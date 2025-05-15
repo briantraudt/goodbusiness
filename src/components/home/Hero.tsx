@@ -42,7 +42,7 @@ const Hero = () => {
       <div className="container-custom py-8 md:py-10 flex flex-col items-center justify-center h-full relative z-10">
         <div className="text-center mx-auto">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl mx-auto">
-            Idea to APP in 7 Days
+            Turn Your Idea Into a Job
           </h1>
           <p className="mt-3 md:mt-4 text-base md:text-lg text-white/80 max-w-3xl mx-auto">
             Rapid prototyping and software development that turns your vision into a reality.
