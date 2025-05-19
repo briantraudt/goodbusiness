@@ -14,7 +14,7 @@ const VenturesCTA = () => {
             We're always interested in connecting with mission-aligned founders and investors.
           </p>
           <Button asChild className="btn-primary text-lg group">
-            <ScrollToTopLink to="/evaluator">
+            <ScrollToTopLink to="/contact">
               Start a Conversation
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </ScrollToTopLink>
