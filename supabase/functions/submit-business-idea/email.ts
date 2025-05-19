@@ -15,9 +15,13 @@ export async function sendNotificationEmail(formData: any, requestId: string) {
   console.log(`[${requestId}] Will attempt email sending with ${fromAddresses.length} different from addresses`);
   console.log(`[${requestId}] Email recipients: ${toRecipients.join(', ')}`);
   
+  // First attempt - try with all configured from addresses
   for (const fromAddress of fromAddresses) {
     try {
       console.log(`[${requestId}] Attempting to send admin notification with "${fromAddress}" as sender to ${toRecipients.join(', ')}`);
+      
+      // Add detailed logging for API key check
+      console.log(`[${requestId}] Using Resend API key starting with: ${(Deno.env.get('RESEND_API_KEY') || '').substring(0, 3)}...`);
       
       emailResponse = await resend.emails.send({
         from: fromAddress,
@@ -34,20 +38,20 @@ export async function sendNotificationEmail(formData: any, requestId: string) {
       break;
     } catch (err) {
       console.error(`[${requestId}] Failed to send with ${fromAddress}:`, err);
-      console.error(`[${requestId}] Error details:`, JSON.stringify(err));
+      console.error(`[${requestId}] Error details:`, JSON.stringify(err, null, 2));
       lastError = err;
     }
   }
   
   if (!primaryEmailSent) {
     console.error(`[${requestId}] ⚠️ CRITICAL: Failed to send primary notification email with all configurations`);
-    console.error(`[${requestId}] Last error:`, lastError);
+    console.error(`[${requestId}] Last error:`, JSON.stringify(lastError, null, 2));
     
     // Try a last-resort email with minimal configuration
     try {
       console.log(`[${requestId}] Attempting last-resort email delivery with simplified configuration`);
       
-      // Use the Resend default sender as a last resort
+      // Use the Resend default onboarding sender as a last resort
       const lastResortResponse = await resend.emails.send({
         from: 'Resend <onboarding@resend.dev>',
         to: 'brian@goodbusinesshq.com',
@@ -59,6 +63,7 @@ export async function sendNotificationEmail(formData: any, requestId: string) {
       return lastResortResponse;
     } catch (finalErr) {
       console.error(`[${requestId}] Even last resort email failed:`, finalErr);
+      console.error(`[${requestId}] Final error details:`, JSON.stringify(finalErr, null, 2));
       throw new Error(`Failed to send notification email: ${finalErr.message}`);
     }
   }
