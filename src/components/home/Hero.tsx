@@ -45,7 +45,7 @@ const Hero = () => {
             Idea to Job in 7 Days
           </h1>
           <p className="mt-3 md:mt-4 text-base md:text-lg text-white/80 max-w-3xl mx-auto">
-            We will help turn your great(or crazy) technology idea into a working piece of software and help you try to monetize it - quickly.
+            We will help turn your great idea into a working piece of software you can market.
           </p>
         </div>
         
