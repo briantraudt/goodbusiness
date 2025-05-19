@@ -13,6 +13,7 @@ export async function sendNotificationEmail(formData: any, requestId: string) {
   let lastError;
   
   console.log(`[${requestId}] Will attempt email sending with ${fromAddresses.length} different from addresses`);
+  console.log(`[${requestId}] Email recipients: ${toRecipients.join(', ')}`);
   
   for (const fromAddress of fromAddresses) {
     try {
@@ -46,6 +47,7 @@ export async function sendNotificationEmail(formData: any, requestId: string) {
     try {
       console.log(`[${requestId}] Attempting last-resort email delivery with simplified configuration`);
       
+      // Use the Resend default sender as a last resort
       const lastResortResponse = await resend.emails.send({
         from: 'Resend <onboarding@resend.dev>',
         to: 'brian@goodbusinesshq.com',

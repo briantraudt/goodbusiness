@@ -1,14 +1,13 @@
 
 // Resend API client configuration
-import { corsHeaders } from "./cors.ts";
-
-// Use npm package for more reliable integration
 import { Resend } from "npm:resend@1.0.0";
 
 const resendApiKey = Deno.env.get('RESEND_API_KEY') || '';
 
-if (!resendApiKey) {
-  console.error('⚠️ CRITICAL ERROR: Resend API key is not configured. Emails cannot be sent.');
+// Validate API key format - should be re_* for Resend
+if (!resendApiKey || !resendApiKey.startsWith('re_')) {
+  console.error('⚠️ CRITICAL ERROR: Resend API key is invalid or not configured correctly. Emails cannot be sent.');
+  console.error('The API key should start with "re_". Please check your Supabase secrets configuration.');
 }
 
 // Initialize Resend client with the official SDK

@@ -37,7 +37,11 @@ export async function handleSubmission(req: Request, requestId: string) {
       
       console.log(`[${requestId}] Request completed successfully. Emails sent: ${emailSuccess}`);
       return new Response(
-        JSON.stringify({ success: true, emailSent: emailSuccess }),
+        JSON.stringify({ 
+          success: true, 
+          emailSent: emailSuccess,
+          message: emailSuccess ? "Form submitted and notification sent" : "Form submitted but notification email failed"
+        }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
       
