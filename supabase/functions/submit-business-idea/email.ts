@@ -20,20 +20,33 @@ export async function sendNotificationEmail(formData: any, requestId: string) {
     try {
       console.log(`[${requestId}] Attempting to send admin notification with "${fromAddress}" as sender to ${toRecipients.join(', ')}`);
       
-      // Add detailed logging for API key check
-      console.log(`[${requestId}] Using Resend API key starting with: ${(Deno.env.get('RESEND_API_KEY') || '').substring(0, 3)}...`);
+      // Log API key details for debugging
+      const apiKey = Deno.env.get('RESEND_API_KEY') || '';
+      console.log(`[${requestId}] API Key check - Length: ${apiKey.length}, Format valid: ${apiKey.startsWith('re_')}, Prefix: ${apiKey.substring(0, 5)}...`);
       
-      emailResponse = await resend.emails.send({
+      // Prepare email data for better error diagnostics
+      const emailData = {
         from: fromAddress,
         to: toRecipients,
         cc: ccRecipients,
         reply_to: formData.email,
         subject: `[URGENT] New Business Idea: ${formData.fullName} (Score: ${scoreText})`,
+      };
+      
+      console.log(`[${requestId}] Sending email with data:`, JSON.stringify({
+        ...emailData,
+        htmlLength: html?.length || 0,
+        textLength: text?.length || 0
+      }, null, 2));
+      
+      // Actually send the email
+      emailResponse = await resend.emails.send({
+        ...emailData,
         html,
         text,
       });
       
-      console.log(`[${requestId}] Admin notification sent successfully with ${fromAddress}:`, emailResponse);
+      console.log(`[${requestId}] Admin notification sent successfully with ${fromAddress}:`, JSON.stringify(emailResponse, null, 2));
       primaryEmailSent = true;
       break;
     } catch (err) {
@@ -53,7 +66,7 @@ export async function sendNotificationEmail(formData: any, requestId: string) {
       
       // Use the Resend default onboarding sender as a last resort
       const lastResortResponse = await resend.emails.send({
-        from: 'Resend <onboarding@resend.dev>',
+        from: 'Urgent Contact Form <onboarding@resend.dev>',
         to: 'brian@goodbusinesshq.com',
         subject: 'URGENT: Business Idea Submission (Simplified Email)',
         text: `New business idea submission from ${formData.fullName} (${formData.email}). Score: ${scoreText}.\n\nPlease check your Supabase database for full details.`,

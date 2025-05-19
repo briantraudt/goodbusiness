@@ -9,7 +9,7 @@ export async function handleSubmission(req: Request, requestId: string) {
     const formData = await req.json();
     
     console.log(`[${requestId}] Received business idea submission for ${formData.fullName} (${formData.email})`);
-    console.log(`[${requestId}] Environment check: RESEND_API_KEY exists: ${Boolean(Deno.env.get('RESEND_API_KEY'))}`);
+    console.log(`[${requestId}] Environment check: RESEND_API_KEY exists: ${Boolean(Deno.env.get('RESEND_API_KEY'))}, format valid: ${(Deno.env.get('RESEND_API_KEY') || '').startsWith('re_')}`);
     
     // Step 1: Store the submission in the database
     try {
@@ -26,14 +26,15 @@ export async function handleSubmission(req: Request, requestId: string) {
         // Send notification to admin
         console.log(`[${requestId}] Attempting to send admin notification email`);
         const adminEmailResult = await sendNotificationEmail(formData, requestId);
-        console.log(`[${requestId}] Admin email result:`, adminEmailResult);
+        console.log(`[${requestId}] Admin email result:`, JSON.stringify(adminEmailResult, null, 2));
         
         emailSuccess = true;
         console.log(`[${requestId}] Admin email sent successfully`);
-      } catch (emailError) {
-        console.error(`[${requestId}] Email sending error:`, emailError);
-        console.error(`[${requestId}] Error stack:`, emailError.stack);
-        console.error(`[${requestId}] Error details:`, JSON.stringify(emailError, null, 2));
+      } catch (err) {
+        emailError = err;
+        console.error(`[${requestId}] Email sending error:`, err);
+        console.error(`[${requestId}] Error stack:`, err.stack);
+        console.error(`[${requestId}] Error details:`, JSON.stringify(err, null, 2));
         // We still consider the submission successful even if emails fail
       }
       
