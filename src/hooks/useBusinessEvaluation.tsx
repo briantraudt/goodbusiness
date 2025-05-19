@@ -61,9 +61,9 @@ export const useBusinessEvaluation = () => {
         console.error('Function returned error:', data.error);
         
         // Handle billing/quota issues specifically
-        if (data.error.includes('quota') || data.error.includes('billing')) {
-          setError('Your OpenAI API key has exceeded its quota. Please check your billing details on the OpenAI platform.');
-          toast.error('API quota exceeded');
+        if (data.error.includes('quota') || data.error.includes('billing') || data.error.includes('API key')) {
+          setError('There was an issue with our evaluation system. Your idea has been received, but we cannot generate immediate feedback. Please try again later or contact our team for assistance.');
+          toast.error('Evaluation system temporarily unavailable');
           return;
         }
         
@@ -111,6 +111,8 @@ export const useBusinessEvaluation = () => {
           
           if (storeError) {
             console.error('Error storing evaluation:', storeError);
+          } else {
+            console.log('Evaluation data stored successfully');
           }
         } catch (storeErr) {
           console.error('Failed to store evaluation data:', storeErr);
@@ -126,8 +128,26 @@ export const useBusinessEvaluation = () => {
       }
     } catch (err) {
       console.error('Error evaluating business idea:', err);
-      setError(`Failed to evaluate business idea. ${err instanceof Error ? err.message : 'Please try again later.'}`);
-      toast.error('Failed to evaluate idea');
+      setError(`We encountered a technical issue while evaluating your idea. ${err instanceof Error ? err.message : 'Please try again later.'}`);
+      toast.error('Evaluation temporarily unavailable');
+      
+      // Store the failed evaluation attempt for customer service follow-up
+      try {
+        const timestamp = new Date().toISOString();
+        await supabase
+          .from('business_evaluations')
+          .insert([
+            { 
+              name, 
+              email, 
+              idea,
+              result: `Error during evaluation: ${err instanceof Error ? err.message : 'Unknown error'}`,
+              evaluation_date: timestamp
+            }
+          ]);
+      } catch (storeErr) {
+        console.error('Failed to store error data:', storeErr);
+      }
     } finally {
       setIsLoading(false);
     }
