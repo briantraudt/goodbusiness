@@ -1,4 +1,3 @@
-
 // Email functionality
 import { corsHeaders } from "./cors.ts";
 
@@ -15,6 +14,13 @@ export const resend = {
       const url = 'https://api.resend.com/emails';
       
       try {
+        console.log('Attempting to send email with options:', {
+          from: options.from,
+          to: options.to,
+          subject: options.subject,
+          // Not logging full HTML/text to keep logs manageable
+        });
+        
         const response = await fetch(url, {
           method: 'POST',
           headers: {
@@ -27,9 +33,11 @@ export const resend = {
         const data = await response.json();
         
         if (!response.ok) {
-          throw new Error(`Resend API error: ${JSON.stringify(data)}`);
+          console.error('Resend API error response:', data);
+          throw new Error(`Resend API error (${response.status}): ${JSON.stringify(data)}`);
         }
         
+        console.log('Resend API success response:', data);
         return data;
       } catch (error) {
         console.error('Error sending email via Resend API:', error);
@@ -128,7 +136,7 @@ export async function sendNotificationEmail(formData: any, requestId: string) {
   
   for (const fromAddress of fromAddresses) {
     try {
-      console.log(`[${requestId}] Attempting to send admin notification with "${fromAddress}" as sender`);
+      console.log(`[${requestId}] Attempting to send admin notification with "${fromAddress}" as sender to ${toRecipients.join(', ')}`);
       
       emailResponse = await resend.emails.send({
         from: fromAddress,

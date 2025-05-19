@@ -8,12 +8,12 @@ export async function handleSubmission(req: Request, requestId: string) {
   try {
     const formData = await req.json();
     
-    console.log(`[${requestId}] Received business idea submission:`, formData);
+    console.log(`[${requestId}] Received business idea submission for ${formData.fullName} (${formData.email})`);
     
     // Step 1: Store the submission in the database
     try {
       const data = await storeSubmission(formData, requestId);
-      console.log(`[${requestId}] Database storage completed successfully`);
+      console.log(`[${requestId}] Database storage completed successfully. Record ID: ${data?.[0]?.id}`);
       
       // Even if email sending fails, we'll return success since the data is stored
       // This ensures the user gets a confirmation message
@@ -22,15 +22,21 @@ export async function handleSubmission(req: Request, requestId: string) {
       // Step 2: Send notification emails (don't block submission success on email)
       try {
         // Send notification to admin
-        await sendNotificationEmail(formData, requestId);
+        console.log(`[${requestId}] Attempting to send admin notification email`);
+        const adminEmailResult = await sendNotificationEmail(formData, requestId);
+        console.log(`[${requestId}] Admin email result:`, adminEmailResult);
         
         // Send confirmation to the submitter
-        await sendConfirmationEmail(formData, requestId);
+        console.log(`[${requestId}] Attempting to send confirmation email to user`);
+        const confirmEmailResult = await sendConfirmationEmail(formData, requestId);
+        console.log(`[${requestId}] Confirmation email result:`, confirmEmailResult);
         
         emailSuccess = true;
+        console.log(`[${requestId}] All emails sent successfully`);
       } catch (emailError) {
         console.error(`[${requestId}] Email sending error:`, emailError);
         console.error(`[${requestId}] Error stack:`, emailError.stack);
+        console.error(`[${requestId}] Error details:`, JSON.stringify(emailError));
         // We still consider the submission successful even if emails fail
       }
       
@@ -42,6 +48,7 @@ export async function handleSubmission(req: Request, requestId: string) {
       
     } catch (dbError) {
       console.error(`[${requestId}] Database error:`, dbError);
+      console.error(`[${requestId}] Error details:`, JSON.stringify(dbError));
       return new Response(
         JSON.stringify({ error: `Database error: ${dbError.message}` }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -51,6 +58,7 @@ export async function handleSubmission(req: Request, requestId: string) {
   } catch (error) {
     console.error(`[${requestId}] Error in submit-business-idea function:`, error);
     console.error(`[${requestId}] Error stack:`, error.stack);
+    console.error(`[${requestId}] Error details:`, JSON.stringify(error));
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
