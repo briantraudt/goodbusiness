@@ -41,7 +41,7 @@ const Hero = () => {
       {/* Content - Modified to center content vertically */}
       <div className="container-custom py-8 md:py-10 flex flex-col items-center justify-center h-full relative z-10">
         <div className="text-center mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white max-w-6xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-6xl mx-auto">
             Idea to Job in 7 Days
           </h1>
           <p className="mt-3 md:mt-4 text-base md:text-lg text-white/80 max-w-3xl mx-auto">
