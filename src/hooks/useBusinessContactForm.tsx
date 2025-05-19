@@ -1,6 +1,5 @@
 
 import { useState } from 'react';
-import { toast } from 'sonner';
 import { validateBusinessForm, FormErrors } from '@/components/home/business-form-validation';
 import { supabase } from "@/integrations/supabase/client";
 
@@ -94,16 +93,16 @@ export const useBusinessContactForm = ({ score, setContactSubmitted }: UseBusine
         }
         
         setContactSubmitted(true);
-        toast.success('Thank you for your interest! We will be in touch soon.');
+        // Toast notification removed
       } catch (err) {
         console.error('Error submitting contact form:', err);
-        toast.error('Failed to submit form. Please try again.');
+        // Toast error notification removed
       } finally {
         setIsSubmitting(false);
       }
     } else {
       setErrors(validation.errors);
-      toast.error('Please fill in all required fields');
+      // Toast error notification removed
     }
   };
 
