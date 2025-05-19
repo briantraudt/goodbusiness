@@ -2,7 +2,7 @@
 // Request handlers
 import { corsHeaders } from "./cors.ts";
 import { storeSubmission } from "./db.ts";
-import { sendNotificationEmail, sendConfirmationEmail } from "./email.ts";
+import { sendNotificationEmail } from "./email.ts";
 
 export async function handleSubmission(req: Request, requestId: string) {
   try {
@@ -19,20 +19,17 @@ export async function handleSubmission(req: Request, requestId: string) {
       // This ensures the user gets a confirmation message
       let emailSuccess = false;
       
-      // Step 2: Send notification emails (don't block submission success on email)
+      // Step 2: Send notification email to admin only (don't block submission success on email)
       try {
         // Send notification to admin
         console.log(`[${requestId}] Attempting to send admin notification email`);
         const adminEmailResult = await sendNotificationEmail(formData, requestId);
         console.log(`[${requestId}] Admin email result:`, adminEmailResult);
         
-        // Send confirmation to the submitter
-        console.log(`[${requestId}] Attempting to send confirmation email to user`);
-        const confirmEmailResult = await sendConfirmationEmail(formData, requestId);
-        console.log(`[${requestId}] Confirmation email result:`, confirmEmailResult);
+        // No longer sending confirmation email to submitter
         
         emailSuccess = true;
-        console.log(`[${requestId}] All emails sent successfully`);
+        console.log(`[${requestId}] Admin email sent successfully`);
       } catch (emailError) {
         console.error(`[${requestId}] Email sending error:`, emailError);
         console.error(`[${requestId}] Error stack:`, emailError.stack);

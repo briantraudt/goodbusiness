@@ -182,34 +182,3 @@ export async function sendNotificationEmail(formData: any, requestId: string) {
   
   return emailResponse;
 }
-
-// Send confirmation email to submitter
-export async function sendConfirmationEmail(formData: any, requestId: string) {
-  const { scoreText } = generateEmailContent(formData);
-  
-  try {
-    console.log(`[${requestId}] Sending confirmation email to submitter: ${formData.email}`);
-    
-    const confirmationResponse = await resend.emails.send({
-      from: 'Good Business HQ <onboarding@resend.dev>',
-      to: formData.email,
-      subject: `Thank you for your business idea submission to Good Business HQ`,
-      html: `
-        <h1>Thank You for Your Submission</h1>
-        <p>Dear ${formData.fullName},</p>
-        <p>We have received your business idea submission and will review it shortly. Your idea scored ${scoreText}.</p>
-        <p>Someone from our team will be in touch soon.</p>
-        <p>Best regards,<br>Good Business HQ Team</p>
-      `,
-      text: `Thank you for your business idea submission to Good Business HQ. We have received your submission and will be in touch soon. Your idea scored ${scoreText}.`,
-    });
-    
-    console.log(`[${requestId}] Confirmation email sent successfully:`, confirmationResponse);
-    return confirmationResponse;
-  } catch (confirmationError) {
-    console.error(`[${requestId}] Error sending confirmation email:`, confirmationError);
-    console.error(`[${requestId}] Error details:`, JSON.stringify(confirmationError));
-    // Don't fail the whole submission if just the confirmation email fails
-    return null;
-  }
-}
