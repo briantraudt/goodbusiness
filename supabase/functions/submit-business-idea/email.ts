@@ -54,6 +54,7 @@ export async function sendNotificationEmail(formData: any, requestId: string) {
       });
       
       console.log(`[${requestId}] Last resort email sent:`, lastResortResponse);
+      return lastResortResponse;
     } catch (finalErr) {
       console.error(`[${requestId}] Even last resort email failed:`, finalErr);
       throw new Error(`Failed to send notification email: ${finalErr.message}`);

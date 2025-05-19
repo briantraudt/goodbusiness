@@ -26,8 +26,6 @@ export async function handleSubmission(req: Request, requestId: string) {
         const adminEmailResult = await sendNotificationEmail(formData, requestId);
         console.log(`[${requestId}] Admin email result:`, adminEmailResult);
         
-        // No longer sending confirmation email to submitter
-        
         emailSuccess = true;
         console.log(`[${requestId}] Admin email sent successfully`);
       } catch (emailError) {
