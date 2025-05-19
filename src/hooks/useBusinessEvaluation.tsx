@@ -48,6 +48,8 @@ export const useBusinessEvaluation = () => {
     setNotificationSent(false);
 
     try {
+      console.log('Evaluating business idea:', idea.substring(0, 50) + '...');
+      
       const { data, error: supabaseError } = await supabase.functions.invoke('evaluate-business-idea', {
         body: { idea }
       });
@@ -57,14 +59,14 @@ export const useBusinessEvaluation = () => {
         throw new Error(supabaseError.message);
       }
       
+      console.log('Evaluation response:', data);
+      
       if (data?.error) {
         console.error('Function returned error:', data.error);
         
         // Handle billing/quota issues specifically
         if (data.error.includes('quota') || data.error.includes('billing') || data.error.includes('API key')) {
-          setError('There was an issue with our evaluation system. Your idea has been received, but we cannot generate immediate feedback. Please try again later or contact our team for assistance.');
-          toast.error('Evaluation system temporarily unavailable');
-          return;
+          throw new Error('OpenAI API issue: ' + data.error);
         }
         
         throw new Error(data.error);
@@ -128,8 +130,15 @@ export const useBusinessEvaluation = () => {
       }
     } catch (err) {
       console.error('Error evaluating business idea:', err);
-      setError(`We encountered a technical issue while evaluating your idea. ${err instanceof Error ? err.message : 'Please try again later.'}`);
-      toast.error('Evaluation temporarily unavailable');
+      
+      // Provide more user-friendly error messages
+      if (err.message?.includes('OpenAI API')) {
+        setError('We\'re experiencing high demand. Your idea has been received, but we cannot generate immediate feedback. Please try again in a few minutes.');
+        toast.error('Evaluation system temporarily busy');
+      } else {
+        setError(`We encountered an issue while evaluating your idea. ${err instanceof Error ? err.message : 'Please try again later.'}`);
+        toast.error('Evaluation temporarily unavailable');
+      }
       
       // Store the failed evaluation attempt for customer service follow-up
       try {
