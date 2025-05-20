@@ -10,6 +10,10 @@ import Ventures from "./pages/Ventures";
 import NotFound from "./pages/NotFound";
 import BusinessEvaluator from "./pages/BusinessEvaluator";
 import Contact from "./pages/Contact";
+import ClientLogin from "./pages/ClientLogin";
+import ClientDashboard from "./pages/ClientDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import { ClientAuthProvider } from "./contexts/ClientAuthContext";
 import ScrollToTop from "./components/common/ScrollToTop";
 
 const queryClient = new QueryClient();
@@ -21,16 +25,21 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/consulting" element={<Consulting />} />
-          <Route path="/projects" element={<Ventures />} />
-          <Route path="/ventures" element={<Navigate to="/projects" replace />} />
-          <Route path="/evaluator" element={<BusinessEvaluator />} />
-          <Route path="/contact" element={<Contact />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <ClientAuthProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/consulting" element={<Consulting />} />
+            <Route path="/projects" element={<Ventures />} />
+            <Route path="/ventures" element={<Navigate to="/projects" replace />} />
+            <Route path="/evaluator" element={<BusinessEvaluator />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/client" element={<ClientLogin />} />
+            <Route path="/client/:slug" element={<ClientDashboard />} />
+            <Route path="/admin/clients" element={<AdminDashboard />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </ClientAuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
