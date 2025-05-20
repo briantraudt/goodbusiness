@@ -9,6 +9,53 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      admin_roles: {
+        Row: {
+          admin_id: string | null
+          id: string
+          role: Database["public"]["Enums"]["admin_role"]
+        }
+        Insert: {
+          admin_id?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["admin_role"]
+        }
+        Update: {
+          admin_id?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["admin_role"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_roles_admin_id_fkey"
+            columns: ["admin_id"]
+            isOneToOne: false
+            referencedRelation: "admin_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      admin_users: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          password: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          password: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          password?: string
+        }
+        Relationships: []
+      }
       business_evaluations: {
         Row: {
           created_at: string | null
@@ -353,6 +400,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_admin_credentials: {
+        Args: { email_param: string; password_param: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _user_id: string
@@ -366,6 +417,7 @@ export type Database = {
       }
     }
     Enums: {
+      admin_role: "admin"
       app_role: "admin" | "user"
     }
     CompositeTypes: {
@@ -482,6 +534,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      admin_role: ["admin"],
       app_role: ["admin", "user"],
     },
   },

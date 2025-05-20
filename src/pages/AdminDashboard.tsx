@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import PageLayout from '@/components/layout/PageLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -24,7 +24,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
-import { PlusCircle, Clipboard, RefreshCw, Eye } from 'lucide-react';
+import { PlusCircle, Clipboard, RefreshCw, Eye, LogOut } from 'lucide-react';
 
 interface Client {
   id: string;
@@ -78,6 +78,7 @@ const AdminDashboard = () => {
   });
 
   const { toast } = useToast();
+  const { adminEmail, logout } = useAdminAuth();
 
   useEffect(() => {
     fetchClients();
@@ -132,6 +133,10 @@ const AdminDashboard = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleLogout = async () => {
+    await logout();
   };
 
   const createClient = async () => {
@@ -339,7 +344,19 @@ const AdminDashboard = () => {
     <PageLayout>
       <div className="min-h-screen bg-gray-50 py-10 px-4">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold text-gb-dark mb-8">Client Portal Management</h1>
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold text-gb-dark">Client Portal Management</h1>
+            <div className="flex items-center space-x-4">
+              <span className="text-gray-600">Logged in as: <span className="font-medium">{adminEmail}</span></span>
+              <Button 
+                variant="outline" 
+                className="flex items-center" 
+                onClick={handleLogout}
+              >
+                <LogOut className="mr-2 h-4 w-4" /> Logout
+              </Button>
+            </div>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
             {/* Add Client */}

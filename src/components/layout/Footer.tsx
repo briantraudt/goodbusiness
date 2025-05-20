@@ -95,7 +95,7 @@ const Footer = () => {
               </li>
               <li className="flex items-start">
                 <Settings className="mr-3 h-5 w-5 text-gb-green" />
-                <ScrollToTopLink to="/admin/clients" className="text-gray-300 hover:text-gb-green transition-colors">
+                <ScrollToTopLink to="/admin/login" className="text-gray-300 hover:text-gb-green transition-colors">
                   Admin Login
                 </ScrollToTopLink>
               </li>
