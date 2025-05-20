@@ -5,42 +5,21 @@ import { useToast } from '@/hooks/use-toast';
 import { useAdminAuth } from '@/contexts/AdminAuthContext';
 import PageLayout from '@/components/layout/PageLayout';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Textarea } from '@/components/ui/textarea';
-import { PlusCircle, Clipboard, RefreshCw, Eye, LogOut, Link, ExternalLink, Edit } from 'lucide-react';
-import { Switch } from "@/components/ui/switch"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
+import { LogOut } from 'lucide-react';
+
+// Import our new components
+import AddClientDialog from '@/components/admin/dialogs/AddClientDialog';
+import AddProjectDialog from '@/components/admin/dialogs/AddProjectDialog';
+import AddUpdateDialog from '@/components/admin/dialogs/AddUpdateDialog';
+import EditProjectDialog from '@/components/admin/dialogs/EditProjectDialog';
+import ClientList from '@/components/admin/lists/ClientList';
+import ProjectList from '@/components/admin/lists/ProjectList';
 
 interface Client {
   id: string;
   name: string;
   slug: string;
   created_at: string;
-}
-
-interface ClientAccess {
-  id: string;
-  client_id: string;
-  access_code: string;
 }
 
 interface Project {
@@ -53,44 +32,16 @@ interface Project {
   embed_project?: boolean | null;
 }
 
-interface ProjectUpdate {
-  id: string;
-  project_id: string;
-  title: string;
-  description: string;
-  date: string;
-}
-
 const AdminDashboard = () => {
   const [clients, setClients] = useState<Client[]>([]);
   const [accessCodes, setAccessCodes] = useState<{ [key: string]: string }>({});
   const [projects, setProjects] = useState<Project[]>([]);
-  const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [loading, setLoading] = useState(true);
   
   // Dialog open states
   const [addClientDialogOpen, setAddClientDialogOpen] = useState(false);
   const [addProjectDialogOpen, setAddProjectDialogOpen] = useState(false);
   const [addUpdateDialogOpen, setAddUpdateDialogOpen] = useState(false);
-  
-  // Form states
-  const [newClient, setNewClient] = useState({ name: '', slug: '' });
-  const [newProject, setNewProject] = useState({ 
-    name: '', 
-    description: '', 
-    client_id: '',
-    status: 'in_progress',
-    project_url: '',
-    embed_project: false
-  });
-  const [newUpdate, setNewUpdate] = useState({
-    project_id: '',
-    title: '',
-    description: '',
-    date: new Date().toISOString().split('T')[0]
-  });
-
-  // Add state for editing project
   const [editProjectDialogOpen, setEditProjectDialogOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   
@@ -156,285 +107,10 @@ const AdminDashboard = () => {
     await logout();
   };
 
-  const createClient = async () => {
-    if (!newClient.name || !newClient.slug) {
-      toast({
-        title: 'Missing information',
-        description: 'Please enter both client name and unique slug.',
-        variant: 'destructive'
-      });
-      return;
-    }
-
-    try {
-      // Create client
-      const { data: clientData, error: clientError } = await supabase
-        .from('clients')
-        .insert([
-          { name: newClient.name, slug: newClient.slug.toLowerCase() }
-        ])
-        .select()
-        .single();
-      
-      if (clientError) throw clientError;
-      
-      // Generate random access code
-      const accessCode = Math.random().toString(36).substring(2, 10).toUpperCase();
-      
-      // Create access code entry
-      const { error: accessError } = await supabase
-        .from('client_access')
-        .insert([
-          { client_id: clientData.id, access_code: accessCode }
-        ]);
-      
-      if (accessError) throw accessError;
-      
-      toast({
-        title: 'Client created',
-        description: `${newClient.name} has been added with access code: ${accessCode}`
-      });
-      
-      // Reset form and refresh data
-      setNewClient({ name: '', slug: '' });
-      setAddClientDialogOpen(false); // Close dialog after success
-      fetchClients(); // Refresh client list
-      
-    } catch (error: any) {
-      console.error('Error creating client:', error);
-      
-      // Handle duplicate slug error
-      if (error.code === '23505') {
-        toast({
-          title: 'Error',
-          description: 'This slug is already in use. Please choose another one.',
-          variant: 'destructive'
-        });
-      } else {
-        toast({
-          title: 'Error',
-          description: 'Failed to create client. Please try again.',
-          variant: 'destructive'
-        });
-      }
-    }
-  };
-
-  const createProject = async () => {
-    if (!newProject.name || !newProject.client_id) {
-      toast({
-        title: 'Missing information',
-        description: 'Please enter project name and select a client.',
-        variant: 'destructive'
-      });
-      return;
-    }
-
-    try {
-      const { data, error } = await supabase
-        .from('projects')
-        .insert([
-          { 
-            name: newProject.name, 
-            description: newProject.description,
-            client_id: newProject.client_id,
-            status: newProject.status,
-            project_url: newProject.project_url || null,
-            embed_project: newProject.embed_project
-          }
-        ])
-        .select();
-      
-      if (error) throw error;
-      
-      toast({
-        title: 'Project created',
-        description: `${newProject.name} has been added successfully.`
-      });
-      
-      setNewProject({ 
-        name: '', 
-        description: '', 
-        client_id: '', 
-        status: 'in_progress',
-        project_url: '',
-        embed_project: false
-      });
-      setAddProjectDialogOpen(false);
-      fetchClients();
-      
-    } catch (error) {
-      console.error('Error creating project:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to create project. Please try again.',
-        variant: 'destructive'
-      });
-    }
-  };
-
-  const addProjectUpdate = async () => {
-    if (!newUpdate.title || !newUpdate.description || !newUpdate.project_id) {
-      toast({
-        title: 'Missing information',
-        description: 'Please fill in all required fields.',
-        variant: 'destructive'
-      });
-      return;
-    }
-
-    try {
-      const { data, error } = await supabase
-        .from('project_updates')
-        .insert([
-          {
-            title: newUpdate.title,
-            description: newUpdate.description,
-            project_id: newUpdate.project_id,
-            date: new Date(newUpdate.date).toISOString()
-          }
-        ]);
-      
-      if (error) throw error;
-      
-      toast({
-        title: 'Update added',
-        description: 'Project update has been published successfully.'
-      });
-      
-      setNewUpdate({
-        project_id: '',
-        title: '',
-        description: '',
-        date: new Date().toISOString().split('T')[0]
-      });
-      
-      setAddUpdateDialogOpen(false);
-      
-    } catch (error) {
-      console.error('Error adding update:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to add project update. Please try again.',
-        variant: 'destructive'
-      });
-    }
-  };
-
-  const copyToClipboard = (text: string, message: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      toast({
-        title: 'Copied!',
-        description: message
-      });
-    });
-  };
-
-  const resetAccessCode = async (clientId: string) => {
-    try {
-      // Generate new access code
-      const newCode = Math.random().toString(36).substring(2, 10).toUpperCase();
-      
-      // Update the access code in the database
-      const { error } = await supabase
-        .from('client_access')
-        .update({ access_code: newCode })
-        .eq('client_id', clientId);
-      
-      if (error) throw error;
-      
-      // Update local state
-      setAccessCodes({
-        ...accessCodes,
-        [clientId]: newCode
-      });
-      
-      toast({
-        title: 'Access code reset',
-        description: `New access code: ${newCode}`
-      });
-      
-    } catch (error) {
-      console.error('Error resetting access code:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to reset access code. Please try again.',
-        variant: 'destructive'
-      });
-    }
-  };
-
-  const getClientPortalUrl = (slug: string) => {
-    // Get the base URL of the application
-    const baseUrl = window.location.origin;
-    return `${baseUrl}/client/${slug}`;
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'in_progress':
-        return 'bg-blue-500';
-      case 'completed':
-        return 'bg-green-500';
-      case 'on_hold':
-        return 'bg-yellow-500';
-      default:
-        return '';
-    }
-  };
-
-  const formatStatusLabel = (status: string) => {
-    switch (status) {
-      case 'in_progress':
-        return 'In Progress';
-      case 'completed':
-        return 'Completed';
-      case 'on_hold':
-        return 'On Hold';
-      default:
-        return status;
-    }
-  };
-
-  // Add function to handle opening the edit project dialog
+  // Handler for editing projects
   const handleEditProject = (project: Project) => {
     setEditingProject(project);
     setEditProjectDialogOpen(true);
-  };
-
-  // Add function to update project
-  const updateProject = async () => {
-    if (!editingProject) return;
-
-    try {
-      const { error } = await supabase
-        .from('projects')
-        .update({
-          name: editingProject.name,
-          description: editingProject.description,
-          status: editingProject.status,
-          project_url: editingProject.project_url || null,
-          embed_project: editingProject.embed_project
-        })
-        .eq('id', editingProject.id);
-
-      if (error) throw error;
-
-      toast({
-        title: 'Project updated',
-        description: `${editingProject.name} has been updated successfully.`
-      });
-
-      setEditProjectDialogOpen(false);
-      fetchClients();
-    } catch (error) {
-      console.error('Error updating project:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to update project. Please try again.',
-        variant: 'destructive'
-      });
-    }
   };
 
   return (
@@ -456,210 +132,33 @@ const AdminDashboard = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
-            {/* Add Client */}
-            <Dialog open={addClientDialogOpen} onOpenChange={setAddClientDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="w-full">
-                  <PlusCircle className="mr-2 h-4 w-4" /> Add New Client
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Add New Client</DialogTitle>
-                  <DialogDescription>
-                    Create a new client portal and generate their access code.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="client-name">Client Name</Label>
-                    <Input
-                      id="client-name"
-                      placeholder="E.g. Tiger Totes"
-                      value={newClient.name}
-                      onChange={(e) => setNewClient({ ...newClient, name: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="client-slug">
-                      Unique Slug
-                      <span className="text-sm text-gray-500 block">
-                        Used in the URL: goodbusinesshq.com/client/{newClient.slug || 'example'}
-                      </span>
-                    </Label>
-                    <Input
-                      id="client-slug"
-                      placeholder="E.g. tigertotes"
-                      value={newClient.slug}
-                      onChange={(e) => setNewClient({ ...newClient, slug: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button onClick={createClient}>Create Client Portal</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-
-            {/* Add Project - Update the dialog to include project URL and embed option */}
-            <Dialog open={addProjectDialogOpen} onOpenChange={setAddProjectDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="w-full" variant="outline">
-                  <PlusCircle className="mr-2 h-4 w-4" /> Add New Project
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Add New Project</DialogTitle>
-                  <DialogDescription>
-                    Create a new project for a client.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="project-client">Select Client</Label>
-                    <select
-                      id="project-client"
-                      className="w-full rounded-md border border-gray-300 p-2"
-                      value={newProject.client_id}
-                      onChange={(e) => setNewProject({ ...newProject, client_id: e.target.value })}
-                    >
-                      <option value="">-- Select Client --</option>
-                      {clients.map((client) => (
-                        <option key={client.id} value={client.id}>
-                          {client.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="project-name">Project Name</Label>
-                    <Input
-                      id="project-name"
-                      placeholder="E.g. Website Redesign"
-                      value={newProject.name}
-                      onChange={(e) => setNewProject({ ...newProject, name: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="project-description">Description (Optional)</Label>
-                    <Textarea
-                      id="project-description"
-                      placeholder="Brief description of the project"
-                      value={newProject.description}
-                      onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="project-status">Status</Label>
-                    <select
-                      id="project-status"
-                      className="w-full rounded-md border border-gray-300 p-2"
-                      value={newProject.status}
-                      onChange={(e) => setNewProject({ ...newProject, status: e.target.value })}
-                    >
-                      <option value="in_progress">In Progress</option>
-                      <option value="completed">Completed</option>
-                      <option value="on_hold">On Hold</option>
-                    </select>
-                  </div>
-                  
-                  {/* Add project URL field */}
-                  <div className="space-y-2">
-                    <Label htmlFor="project-url">Project URL (Optional)</Label>
-                    <Input
-                      id="project-url"
-                      placeholder="https://your-project-url.com"
-                      value={newProject.project_url}
-                      onChange={(e) => setNewProject({ ...newProject, project_url: e.target.value })}
-                    />
-                    <p className="text-xs text-gray-500">The URL where this project is hosted</p>
-                  </div>
-                  
-                  {/* Add embed project option */}
-                  <div className="flex items-center space-x-2">
-                    <Switch
-                      id="embed-project"
-                      checked={newProject.embed_project}
-                      onCheckedChange={(checked) => setNewProject({ ...newProject, embed_project: checked })}
-                    />
-                    <Label htmlFor="embed-project">Embed project in client dashboard</Label>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button onClick={createProject}>Create Project</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-
-            {/* Add Update */}
-            <Dialog open={addUpdateDialogOpen} onOpenChange={setAddUpdateDialogOpen}>
-              <DialogTrigger asChild>
-                <Button className="w-full" variant="outline">
-                  <PlusCircle className="mr-2 h-4 w-4" /> Add Project Update
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Add Project Update</DialogTitle>
-                  <DialogDescription>
-                    Share a progress update with your client.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="update-project">Select Project</Label>
-                    <select
-                      id="update-project"
-                      className="w-full rounded-md border border-gray-300 p-2"
-                      value={newUpdate.project_id}
-                      onChange={(e) => setNewUpdate({ ...newUpdate, project_id: e.target.value })}
-                    >
-                      <option value="">-- Select Project --</option>
-                      {projects.map((project) => {
-                        const client = clients.find(c => c.id === project.client_id);
-                        return (
-                          <option key={project.id} value={project.id}>
-                            {project.name} {client ? `(${client.name})` : ''}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="update-title">Update Title</Label>
-                    <Input
-                      id="update-title"
-                      placeholder="E.g. Design Phase Completed"
-                      value={newUpdate.title}
-                      onChange={(e) => setNewUpdate({ ...newUpdate, title: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="update-date">Date</Label>
-                    <Input
-                      id="update-date"
-                      type="date"
-                      value={newUpdate.date}
-                      onChange={(e) => setNewUpdate({ ...newUpdate, date: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="update-description">Update Details</Label>
-                    <Textarea
-                      id="update-description"
-                      placeholder="Provide details about the progress"
-                      value={newUpdate.description}
-                      onChange={(e) => setNewUpdate({ ...newUpdate, description: e.target.value })}
-                      className="min-h-[100px]"
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button onClick={addProjectUpdate}>Publish Update</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            {/* Dialog triggers */}
+            <AddClientDialog 
+              open={addClientDialogOpen} 
+              onOpenChange={setAddClientDialogOpen} 
+              onClientAdded={fetchClients} 
+            />
+            
+            <AddProjectDialog 
+              open={addProjectDialogOpen} 
+              onOpenChange={setAddProjectDialogOpen} 
+              onProjectAdded={fetchClients} 
+              clients={clients} 
+            />
+            
+            <AddUpdateDialog 
+              open={addUpdateDialogOpen} 
+              onOpenChange={setAddUpdateDialogOpen} 
+              projects={projects} 
+              clients={clients} 
+            />
+            
+            <EditProjectDialog 
+              open={editProjectDialogOpen} 
+              onOpenChange={setEditProjectDialogOpen} 
+              project={editingProject} 
+              onProjectUpdated={fetchClients} 
+            />
           </div>
           
           {/* Client List */}
@@ -671,147 +170,30 @@ const AdminDashboard = () => {
               <p>No clients added yet. Create your first client portal.</p>
             </div>
           ) : (
-            <div className="bg-white rounded-lg border overflow-hidden">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Client Name</TableHead>
-                    <TableHead>Portal URL</TableHead>
-                    <TableHead>Access Code</TableHead>
-                    <TableHead>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {clients.map((client) => (
-                    <TableRow key={client.id}>
-                      <TableCell className="font-medium">{client.name}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm truncate max-w-[200px]">
-                            /client/{client.slug}
-                          </span>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => copyToClipboard(
-                              getClientPortalUrl(client.slug),
-                              'Portal URL copied to clipboard'
-                            )}
-                          >
-                            <Clipboard className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center space-x-2">
-                          <span className="font-mono text-sm">
-                            {accessCodes[client.id] || 'Not available'}
-                          </span>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => copyToClipboard(
-                              accessCodes[client.id] || '',
-                              'Access code copied to clipboard'
-                            )}
-                          >
-                            <Clipboard className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex items-center space-x-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => resetAccessCode(client.id)}
-                          >
-                            <RefreshCw className="h-4 w-4 mr-1" /> Reset Code
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => window.open(`/client/${client.slug}`, '_blank')}
-                          >
-                            <Eye className="h-4 w-4 mr-1" /> View Portal
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+            <ClientList 
+              clients={clients} 
+              accessCodes={accessCodes} 
+              onResetAccessCode={fetchClients} 
+            />
+          )}
+          
+          {/* Projects List */}
+          <h2 className="text-xl font-semibold text-gb-dark mb-4 mt-8">Projects</h2>
+          {loading ? (
+            <div className="text-center py-10">Loading project data...</div>
+          ) : projects.length === 0 ? (
+            <div className="text-center py-10 bg-white rounded-lg border">
+              <p>No projects added yet. Create your first project.</p>
             </div>
+          ) : (
+            <ProjectList 
+              projects={projects} 
+              clients={clients} 
+              onEditProject={handleEditProject} 
+            />
           )}
         </div>
       </div>
-      
-      {/* Add Projects List Section */}
-      <h2 className="text-xl font-semibold text-gb-dark mb-4 mt-8">Projects</h2>
-      {loading ? (
-        <div className="text-center py-10">Loading project data...</div>
-      ) : projects.length === 0 ? (
-        <div className="text-center py-10 bg-white rounded-lg border">
-          <p>No projects added yet. Create your first project.</p>
-        </div>
-      ) : (
-        <div className="bg-white rounded-lg border overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Project Name</TableHead>
-                <TableHead>Client</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Project URL</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {projects.map((project) => {
-                const client = clients.find(c => c.id === project.client_id);
-                return (
-                  <TableRow key={project.id}>
-                    <TableCell className="font-medium">{project.name}</TableCell>
-                    <TableCell>{client?.name || 'Unknown Client'}</TableCell>
-                    <TableCell>
-                      <Badge className={getStatusColor(project.status) + " text-white"}>
-                        {formatStatusLabel(project.status)}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      {project.project_url ? (
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm truncate max-w-[200px]">
-                            {project.project_url}
-                          </span>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => window.open(project.project_url!, '_blank')}
-                          >
-                            <ExternalLink className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      ) : (
-                        <span className="text-gray-500">None</span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEditProject(project)}
-                      >
-                        <Edit className="h-4 w-4 mr-1" /> Edit
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </div>
-      )}
     </PageLayout>
   );
 };
