@@ -93,6 +93,11 @@ const Footer = () => {
                   Austin, TX
                 </span>
               </li>
+              <li className="flex items-start pt-2">
+                <ScrollToTopLink to="/admin/clients" className="text-gray-400 hover:text-gb-green transition-colors text-sm">
+                  Admin Login
+                </ScrollToTopLink>
+              </li>
             </ul>
           </div>
         </div>
