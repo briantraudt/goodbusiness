@@ -45,6 +45,7 @@ const AdminLogin = () => {
           title: "Login successful",
           description: "Welcome to the admin dashboard",
         });
+        // Explicitly navigate to admin dashboard after successful login
         navigate('/admin/clients');
       } else {
         toast({

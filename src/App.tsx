@@ -39,18 +39,6 @@ const ProtectedAdminRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-// Wrap protected routes with this component
-const ProtectedRoutes = () => (
-  <Routes>
-    <Route path="/admin/clients" element={
-      <ProtectedAdminRoute>
-        <AdminDashboard />
-      </ProtectedAdminRoute>
-    } />
-    <Route path="*" element={<Navigate to="/admin/login" replace />} />
-  </Routes>
-);
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -70,10 +58,10 @@ const App = () => (
               <Route path="/client" element={<ClientLogin />} />
               <Route path="/client/:slug" element={<ClientDashboard />} />
               <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin/*" element={
-                <AdminAuthProvider>
-                  <ProtectedRoutes />
-                </AdminAuthProvider>
+              <Route path="/admin/clients" element={
+                <ProtectedAdminRoute>
+                  <AdminDashboard />
+                </ProtectedAdminRoute>
               } />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
