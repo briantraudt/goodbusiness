@@ -6,7 +6,6 @@ import Intro from '@/components/home/Intro';
 import Process from '@/components/home/Process';
 import Benefits from '@/components/home/Benefits';
 import IdeaCTA from '@/components/home/IdeaCTA';
-import { Link } from 'react-router-dom';
 
 const Index = () => {
   // Preload critical images when the component mounts
@@ -30,16 +29,6 @@ const Index = () => {
       <Intro />
       <Process />
       <Benefits />
-      <div className="bg-gray-50 py-10 text-center">
-        <h2 className="text-2xl font-bold text-gb-dark mb-4">Client Portal Access</h2>
-        <p className="text-gray-600 mb-4">Existing clients can access their project dashboards.</p>
-        <Link 
-          to="/client"
-          className="inline-block bg-gb-blue hover:bg-gb-blue/90 text-white rounded-lg px-6 py-3 font-medium"
-        >
-          Client Login
-        </Link>
-      </div>
       <IdeaCTA />
     </PageLayout>
   );

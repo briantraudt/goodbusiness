@@ -12,7 +12,11 @@ const Footer = () => {
       <div className="container-custom py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="font-serif text-2xl font-bold mb-4">Good Business HQ</h3>
+            <h3 className="font-serif text-2xl font-bold mb-4">
+              <ScrollToTopLink to="/admin/login" className="hover:text-gb-green transition-colors">
+                Good Business HQ
+              </ScrollToTopLink>
+            </h3>
             <p className="mb-6 text-gray-300 max-w-md">
               We help entrepreneurs and teams build, scale, and launch great software—fast.
             </p>
@@ -95,8 +99,8 @@ const Footer = () => {
               </li>
               <li className="flex items-start">
                 <Settings className="mr-3 h-5 w-5 text-gb-green" />
-                <ScrollToTopLink to="/admin/login" className="text-gray-300 hover:text-gb-green transition-colors">
-                  Admin Login
+                <ScrollToTopLink to="/client" className="text-gray-300 hover:text-gb-green transition-colors">
+                  Client Portal
                 </ScrollToTopLink>
               </li>
             </ul>
