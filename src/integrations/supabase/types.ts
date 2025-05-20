@@ -245,8 +245,10 @@ export type Database = {
           client_id: string
           created_at: string
           description: string | null
+          embed_project: boolean | null
           id: string
           name: string
+          project_url: string | null
           status: string
           updated_at: string
         }
@@ -254,8 +256,10 @@ export type Database = {
           client_id: string
           created_at?: string
           description?: string | null
+          embed_project?: boolean | null
           id?: string
           name: string
+          project_url?: string | null
           status?: string
           updated_at?: string
         }
@@ -263,8 +267,10 @@ export type Database = {
           client_id?: string
           created_at?: string
           description?: string | null
+          embed_project?: boolean | null
           id?: string
           name?: string
+          project_url?: string | null
           status?: string
           updated_at?: string
         }

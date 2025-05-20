@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { CalendarIcon, BarChart3, ClipboardList } from 'lucide-react';
+import { CalendarIcon, BarChart3, ClipboardList, ExternalLink } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Project {
@@ -18,6 +18,8 @@ interface Project {
   status: string;
   created_at: string;
   updated_at: string;
+  project_url: string | null;
+  embed_project: boolean | null;
 }
 
 interface ProjectUpdate {
@@ -28,6 +30,20 @@ interface ProjectUpdate {
   created_at: string;
   project_id: string;
 }
+
+const ProjectEmbed = ({ url }: { url: string }) => {
+  return (
+    <div className="w-full rounded-md overflow-hidden border border-gray-200 mt-2">
+      <iframe 
+        src={url} 
+        className="w-full h-[600px]" 
+        style={{ border: 'none' }}
+        title="Project Preview"
+        sandbox="allow-same-origin allow-scripts allow-forms"
+      />
+    </div>
+  );
+};
 
 const ClientDashboard = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -138,7 +154,27 @@ const ClientDashboard = () => {
                       </CardHeader>
                       <CardContent>
                         <p className="text-gray-600 mb-4">{project.description || "No description provided."}</p>
-                        <div className="flex items-center text-sm text-gray-500">
+                        
+                        {/* Project URL */}
+                        {project.project_url && !project.embed_project && (
+                          <div className="flex items-center mt-4 mb-4">
+                            <Button 
+                              variant="outline" 
+                              className="flex items-center" 
+                              onClick={() => window.open(project.project_url!, '_blank')}
+                            >
+                              <ExternalLink className="mr-2 w-4 h-4" />
+                              View Project
+                            </Button>
+                          </div>
+                        )}
+                        
+                        {/* Embedded Project */}
+                        {project.project_url && project.embed_project && (
+                          <ProjectEmbed url={project.project_url} />
+                        )}
+                        
+                        <div className="flex items-center text-sm text-gray-500 mt-4">
                           <CalendarIcon className="w-4 h-4 mr-1" />
                           <span>Started: {format(new Date(project.created_at), 'MMM d, yyyy')}</span>
                         </div>

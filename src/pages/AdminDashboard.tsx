@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -25,7 +24,9 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Textarea } from '@/components/ui/textarea';
-import { PlusCircle, Clipboard, RefreshCw, Eye, LogOut } from 'lucide-react';
+import { PlusCircle, Clipboard, RefreshCw, Eye, LogOut, Link, ExternalLink, Edit } from 'lucide-react';
+import { Switch } from "@/components/ui/switch"
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from '@/components/ui/form';
 
 interface Client {
   id: string;
@@ -46,6 +47,8 @@ interface Project {
   description: string | null;
   client_id: string;
   status: string;
+  project_url?: string | null;
+  embed_project?: boolean | null;
 }
 
 interface ProjectUpdate {
@@ -74,7 +77,9 @@ const AdminDashboard = () => {
     name: '', 
     description: '', 
     client_id: '',
-    status: 'in_progress'
+    status: 'in_progress',
+    project_url: '',
+    embed_project: false
   });
   const [newUpdate, setNewUpdate] = useState({
     project_id: '',
@@ -83,6 +88,10 @@ const AdminDashboard = () => {
     date: new Date().toISOString().split('T')[0]
   });
 
+  // Add state for editing project
+  const [editProjectDialogOpen, setEditProjectDialogOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | null>(null);
+  
   const { toast } = useToast();
   const { adminEmail, logout } = useAdminAuth();
 
@@ -227,7 +236,9 @@ const AdminDashboard = () => {
             name: newProject.name, 
             description: newProject.description,
             client_id: newProject.client_id,
-            status: newProject.status
+            status: newProject.status,
+            project_url: newProject.project_url || null,
+            embed_project: newProject.embed_project
           }
         ])
         .select();
@@ -239,7 +250,14 @@ const AdminDashboard = () => {
         description: `${newProject.name} has been added successfully.`
       });
       
-      setNewProject({ name: '', description: '', client_id: '', status: 'in_progress' });
+      setNewProject({ 
+        name: '', 
+        description: '', 
+        client_id: '', 
+        status: 'in_progress',
+        project_url: '',
+        embed_project: false
+      });
       setAddProjectDialogOpen(false);
       fetchClients();
       
@@ -350,6 +368,73 @@ const AdminDashboard = () => {
     return `${baseUrl}/client/${slug}`;
   };
 
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'in_progress':
+        return 'bg-blue-500';
+      case 'completed':
+        return 'bg-green-500';
+      case 'on_hold':
+        return 'bg-yellow-500';
+      default:
+        return '';
+    }
+  };
+
+  const formatStatusLabel = (status: string) => {
+    switch (status) {
+      case 'in_progress':
+        return 'In Progress';
+      case 'completed':
+        return 'Completed';
+      case 'on_hold':
+        return 'On Hold';
+      default:
+        return status;
+    }
+  };
+
+  // Add function to handle opening the edit project dialog
+  const handleEditProject = (project: Project) => {
+    setEditingProject(project);
+    setEditProjectDialogOpen(true);
+  };
+
+  // Add function to update project
+  const updateProject = async () => {
+    if (!editingProject) return;
+
+    try {
+      const { error } = await supabase
+        .from('projects')
+        .update({
+          name: editingProject.name,
+          description: editingProject.description,
+          status: editingProject.status,
+          project_url: editingProject.project_url || null,
+          embed_project: editingProject.embed_project
+        })
+        .eq('id', editingProject.id);
+
+      if (error) throw error;
+
+      toast({
+        title: 'Project updated',
+        description: `${editingProject.name} has been updated successfully.`
+      });
+
+      setEditProjectDialogOpen(false);
+      fetchClients();
+    } catch (error) {
+      console.error('Error updating project:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to update project. Please try again.',
+        variant: 'destructive'
+      });
+    }
+  };
+
   return (
     <PageLayout>
       <div className="min-h-screen bg-gray-50 py-10 px-4">
@@ -414,7 +499,7 @@ const AdminDashboard = () => {
               </DialogContent>
             </Dialog>
 
-            {/* Add Project */}
+            {/* Add Project - Update the dialog to include project URL and embed option */}
             <Dialog open={addProjectDialogOpen} onOpenChange={setAddProjectDialogOpen}>
               <DialogTrigger asChild>
                 <Button className="w-full" variant="outline">
@@ -475,6 +560,28 @@ const AdminDashboard = () => {
                       <option value="completed">Completed</option>
                       <option value="on_hold">On Hold</option>
                     </select>
+                  </div>
+                  
+                  {/* Add project URL field */}
+                  <div className="space-y-2">
+                    <Label htmlFor="project-url">Project URL (Optional)</Label>
+                    <Input
+                      id="project-url"
+                      placeholder="https://your-project-url.com"
+                      value={newProject.project_url}
+                      onChange={(e) => setNewProject({ ...newProject, project_url: e.target.value })}
+                    />
+                    <p className="text-xs text-gray-500">The URL where this project is hosted</p>
+                  </div>
+                  
+                  {/* Add embed project option */}
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="embed-project"
+                      checked={newProject.embed_project}
+                      onCheckedChange={(checked) => setNewProject({ ...newProject, embed_project: checked })}
+                    />
+                    <Label htmlFor="embed-project">Embed project in client dashboard</Label>
                   </div>
                 </div>
                 <DialogFooter>
@@ -636,6 +743,73 @@ const AdminDashboard = () => {
           )}
         </div>
       </div>
+      
+      {/* Add Projects List Section */}
+      <h2 className="text-xl font-semibold text-gb-dark mb-4 mt-8">Projects</h2>
+      {loading ? (
+        <div className="text-center py-10">Loading project data...</div>
+      ) : projects.length === 0 ? (
+        <div className="text-center py-10 bg-white rounded-lg border">
+          <p>No projects added yet. Create your first project.</p>
+        </div>
+      ) : (
+        <div className="bg-white rounded-lg border overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Project Name</TableHead>
+                <TableHead>Client</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Project URL</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {projects.map((project) => {
+                const client = clients.find(c => c.id === project.client_id);
+                return (
+                  <TableRow key={project.id}>
+                    <TableCell className="font-medium">{project.name}</TableCell>
+                    <TableCell>{client?.name || 'Unknown Client'}</TableCell>
+                    <TableCell>
+                      <Badge className={getStatusColor(project.status) + " text-white"}>
+                        {formatStatusLabel(project.status)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {project.project_url ? (
+                        <div className="flex items-center space-x-2">
+                          <span className="text-sm truncate max-w-[200px]">
+                            {project.project_url}
+                          </span>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => window.open(project.project_url!, '_blank')}
+                          >
+                            <ExternalLink className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      ) : (
+                        <span className="text-gray-500">None</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEditProject(project)}
+                      >
+                        <Edit className="h-4 w-4 mr-1" /> Edit
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      )}
     </PageLayout>
   );
 };
