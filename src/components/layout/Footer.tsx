@@ -1,18 +1,18 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Mail, MapPin, Instagram, Linkedin, X } from "lucide-react";
+import { Mail, MapPin, Linkedin } from "lucide-react";
 import ScrollToTopLink from "@/components/common/ScrollToTopLink";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-gb-dark text-white py-8 md:py-12">
+    <footer className="bg-gb-dark text-white py-6 md:py-8">
       <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
           <div>
-            <h3 className="font-serif text-xl font-bold mb-3">
+            <h3 className="font-serif text-xl font-bold mb-2">
               <ScrollToTopLink to="/admin/login" className="hover:text-gb-green transition-colors">
                 Good Business HQ
               </ScrollToTopLink>
@@ -21,24 +21,6 @@ const Footer = () => {
               We help entrepreneurs and teams build, scale, and launch great software—fast.
             </p>
             <div className="flex space-x-4">
-              <a 
-                href="https://www.instagram.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-white hover:text-gb-green transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a 
-                href="https://www.x.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="text-white hover:text-gb-green transition-colors"
-                aria-label="X (Twitter)"
-              >
-                <X className="h-5 w-5" />
-              </a>
               <a 
                 href="https://www.linkedin.com/company/good-businesshq" 
                 target="_blank" 
