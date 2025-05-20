@@ -1,29 +1,29 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Timer, DollarSign, ShieldCheck, Users } from 'lucide-react';
+import { Timer, DollarSign, Users, LineChart } from 'lucide-react';
 
 const Benefits = () => {
   const benefits = [
     {
-      title: "Speed & Efficiency",
-      description: "Don't wait months to see your idea come to life. Our rapid development process gets your concept into a working prototype in just days.",
+      title: "Speed to Market",
+      description: "Launch a working prototype in days—not months.",
       icon: <Timer className="h-9 w-9 text-gb-blue" />
     },
     {
-      title: "Cost & Value",
-      description: "Test your software idea without breaking the bank. Our focused approach means you invest only in what works.",
+      title: "Smart Spend",
+      description: "Validate your idea before making a big investment.",
       icon: <DollarSign className="h-9 w-9 text-gb-green" />
     },
     {
-      title: "Feedback & Validation",
-      description: "Validate your software idea with real users before committing significant resources. Pivot early if needed, not after major investment.",
-      icon: <ShieldCheck className="h-9 w-9 text-gb-purple" />
+      title: "Real Feedback",
+      description: "Test your software with real users and iterate early.",
+      icon: <Users className="h-9 w-9 text-gb-purple" />
     },
     {
-      title: "Scale & Growth",
-      description: "Get your app in front of users quickly and start building a community of early adopters who provide invaluable feedback.",
-      icon: <Users className="h-9 w-9 text-gb-orange" />
+      title: "Built to Scale",
+      description: "Go from MVP to market-ready with a product that grows with you.",
+      icon: <LineChart className="h-9 w-9 text-gb-orange" />
     }
   ];
 
@@ -31,10 +31,7 @@ const Benefits = () => {
     <section className="bg-gray-50 py-16 md:py-28">
       <div className="container-custom">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Innovators Work With Us</h2>
-          <p className="mt-4 text-lg text-gb-dark/70 max-w-2xl mx-auto">
-            Turn your software idea into reality faster and smarter
-          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Founders Choose Good Business</h2>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10 max-w-6xl mx-auto">

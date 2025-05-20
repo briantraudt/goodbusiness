@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Separator } from "@/components/ui/separator";
 
 const Intro = () => {
   return (
@@ -9,8 +8,11 @@ const Intro = () => {
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-xl md:text-2xl text-white font-serif leading-relaxed flex flex-col items-center justify-center">
             <span className="text-white font-medium">"The secret of getting ahead is getting started."</span>
-            <span className="text-right block mt-1 text-sm md:text-base text-white/80">- Mark Twain</span>
+            <span className="text-right block mt-1 text-sm md:text-base text-white/80">—Mark Twain</span>
           </p>
+        </div>
+        <div className="text-center mt-6">
+          <h2 className="text-white text-2xl md:text-3xl font-bold">Let's build something real.</h2>
         </div>
       </div>
     </section>

@@ -2,10 +2,10 @@
 import React, { useEffect } from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import Hero from '@/components/home/Hero';
-import CTA from '@/components/home/CTA';
-import Benefits from '@/components/home/Benefits';
 import Intro from '@/components/home/Intro';
-import ConsultingProcess from '@/components/consulting/ConsultingProcess';
+import Process from '@/components/home/Process';
+import Benefits from '@/components/home/Benefits';
+import IdeaCTA from '@/components/home/IdeaCTA';
 
 const Index = () => {
   // Preload critical images when the component mounts
@@ -27,9 +27,9 @@ const Index = () => {
     <PageLayout>
       <Hero />
       <Intro />
-      <ConsultingProcess />
+      <Process />
       <Benefits />
-      <CTA />
+      <IdeaCTA />
     </PageLayout>
   );
 };

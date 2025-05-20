@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Rocket } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -42,19 +42,19 @@ const Hero = () => {
       <div className="container-custom py-8 md:py-10 flex flex-col items-center justify-center h-full relative z-10">
         <div className="text-center mx-auto">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-6xl mx-auto">
-            Idea to Job in 7 Days
+            From Idea to Income in 7 Days
           </h1>
           <p className="mt-3 md:mt-4 text-base md:text-lg text-white/80 max-w-3xl mx-auto">
-            We will help turn your great idea into a working piece of software you can monetize - quickly.
+            We help you turn your idea into working software fast—so you can launch, test, and start earning.
           </p>
         </div>
         
-        {/* Button - removed the second button */}
+        {/* Button - updated text */}
         <div className={`${isMobile ? 'mt-6' : 'mt-4'} flex justify-center`}>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center">
             <Link to="/contact">
-              Let's Build Something
-              <Rocket className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              Start with Your Idea
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
         </div>

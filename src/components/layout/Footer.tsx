@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Mail, MapPin } from "lucide-react";
+import { Mail, MapPin, Instagram, Linkedin, X } from "lucide-react";
 import ScrollToTopLink from "@/components/common/ScrollToTopLink";
 
 const Footer = () => {
@@ -12,34 +12,37 @@ const Footer = () => {
       <div className="container-custom py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="font-serif text-2xl font-bold mb-4">Good Business</h3>
+            <h3 className="font-serif text-2xl font-bold mb-4">Good Business HQ</h3>
             <p className="mb-6 text-gray-300 max-w-md">
-              We are a software development and consulting company that helps leaders build, scale, fix and sustain.
+              We help entrepreneurs and teams build, scale, and launch great software—fast.
             </p>
             <div className="flex space-x-4">
+              <a 
+                href="https://www.instagram.com" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-white hover:text-gb-green transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a 
+                href="https://www.x.com" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-white hover:text-gb-green transition-colors"
+                aria-label="X (Twitter)"
+              >
+                <X className="h-5 w-5" />
+              </a>
               <a 
                 href="https://www.linkedin.com/company/good-businesshq" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-white hover:text-gb-green transition-colors"
+                aria-label="LinkedIn"
               >
-                <span className="sr-only">LinkedIn</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-linkedin"
-                >
-                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                  <rect width="4" height="12" x="2" y="9"></rect>
-                  <circle cx="4" cy="4" r="2"></circle>
-                </svg>
+                <Linkedin className="h-5 w-5" />
               </a>
             </div>
           </div>
@@ -65,6 +68,11 @@ const Footer = () => {
               <li>
                 <ScrollToTopLink to="/evaluator" className="text-gray-300 hover:text-gb-green transition-colors">
                   Evaluator
+                </ScrollToTopLink>
+              </li>
+              <li>
+                <ScrollToTopLink to="/contact" className="text-gray-300 hover:text-gb-green transition-colors">
+                  Contact
                 </ScrollToTopLink>
               </li>
             </ul>
