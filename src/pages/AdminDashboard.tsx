@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -61,6 +62,11 @@ const AdminDashboard = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [loading, setLoading] = useState(true);
+  
+  // Dialog open states
+  const [addClientDialogOpen, setAddClientDialogOpen] = useState(false);
+  const [addProjectDialogOpen, setAddProjectDialogOpen] = useState(false);
+  const [addUpdateDialogOpen, setAddUpdateDialogOpen] = useState(false);
   
   // Form states
   const [newClient, setNewClient] = useState({ name: '', slug: '' });
@@ -180,7 +186,8 @@ const AdminDashboard = () => {
       
       // Reset form and refresh data
       setNewClient({ name: '', slug: '' });
-      fetchClients();
+      setAddClientDialogOpen(false); // Close dialog after success
+      fetchClients(); // Refresh client list
       
     } catch (error: any) {
       console.error('Error creating client:', error);
@@ -233,6 +240,7 @@ const AdminDashboard = () => {
       });
       
       setNewProject({ name: '', description: '', client_id: '', status: 'in_progress' });
+      setAddProjectDialogOpen(false);
       fetchClients();
       
     } catch (error) {
@@ -280,6 +288,8 @@ const AdminDashboard = () => {
         description: '',
         date: new Date().toISOString().split('T')[0]
       });
+      
+      setAddUpdateDialogOpen(false);
       
     } catch (error) {
       console.error('Error adding update:', error);
@@ -360,7 +370,7 @@ const AdminDashboard = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
             {/* Add Client */}
-            <Dialog>
+            <Dialog open={addClientDialogOpen} onOpenChange={setAddClientDialogOpen}>
               <DialogTrigger asChild>
                 <Button className="w-full">
                   <PlusCircle className="mr-2 h-4 w-4" /> Add New Client
@@ -405,7 +415,7 @@ const AdminDashboard = () => {
             </Dialog>
 
             {/* Add Project */}
-            <Dialog>
+            <Dialog open={addProjectDialogOpen} onOpenChange={setAddProjectDialogOpen}>
               <DialogTrigger asChild>
                 <Button className="w-full" variant="outline">
                   <PlusCircle className="mr-2 h-4 w-4" /> Add New Project
@@ -474,7 +484,7 @@ const AdminDashboard = () => {
             </Dialog>
 
             {/* Add Update */}
-            <Dialog>
+            <Dialog open={addUpdateDialogOpen} onOpenChange={setAddUpdateDialogOpen}>
               <DialogTrigger asChild>
                 <Button className="w-full" variant="outline">
                   <PlusCircle className="mr-2 h-4 w-4" /> Add Project Update
