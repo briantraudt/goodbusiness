@@ -1,28 +1,44 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 import ScrollToTopLink from '@/components/common/ScrollToTopLink';
 
 const IdeaCTA = () => {
   return (
-    <section className="bg-gb-dark py-16 md:py-20">
-      <div className="container-custom text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">💡 Got a Great Idea?</h2>
-        
-        <div className="max-w-xl mx-auto mb-8">
-          <p className="text-white/80 text-xl mb-2">Most people never act on theirs.</p>
-          <p className="text-white text-2xl font-bold">You will.</p>
-          <p className="text-white/80 text-xl mt-2">Let's turn it into something real.</p>
+    <section className="bg-gb-dark text-white py-12 md:py-16 relative overflow-hidden">
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-15"
+        style={{ backgroundImage: "url('/lovable-uploads/93e6cb06-ef46-496a-9bc6-57e655a4dc18.png')" }}
+      />
+      
+      <div className="container-custom relative z-10 text-center">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4">
+            <span className="inline-block mr-3">💡</span>
+            Got a Great Idea?
+          </h2>
+          
+          <p className="text-lg md:text-xl mb-1 text-gray-300">
+            Most people never act on theirs.
+          </p>
+          
+          <p className="text-xl md:text-2xl font-semibold mb-3">
+            You will.
+          </p>
+          
+          <p className="text-lg mb-6 md:mb-8 text-gray-300">
+            Let's turn it into something real.
+          </p>
+          
+          <div className="flex justify-center">
+            <ScrollToTopLink to="/evaluator">
+              <Button size="lg" className="bg-gb-green hover:bg-gb-green/90">
+                Start Building <ArrowRight className="ml-1 h-5 w-5" />
+              </Button>
+            </ScrollToTopLink>
+          </div>
         </div>
-        
-        <Button asChild size="lg" className="bg-gb-green hover:bg-gb-green/90 text-white rounded-lg text-lg px-8 py-6 h-auto">
-          <ScrollToTopLink to="/contact">
-            Start Building
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </ScrollToTopLink>
-        </Button>
       </div>
     </section>
   );
