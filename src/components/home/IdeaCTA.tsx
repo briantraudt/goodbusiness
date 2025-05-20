@@ -15,7 +15,6 @@ const IdeaCTA = () => {
       <div className="container-custom relative z-10 text-center">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4">
-            <span className="inline-block mr-3">💡</span>
             Got a Great Idea?
           </h2>
           
