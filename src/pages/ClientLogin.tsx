@@ -77,7 +77,7 @@ const ClientLogin = () => {
                   id="slug"
                   name="slug"
                   type="text"
-                  placeholder="e.g. tigertotes"
+                  placeholder="" 
                   required
                   value={slug}
                   onChange={(e) => setSlug(e.target.value.toLowerCase())}
