@@ -6,6 +6,7 @@ import Intro from '@/components/home/Intro';
 import Process from '@/components/home/Process';
 import Benefits from '@/components/home/Benefits';
 import IdeaCTA from '@/components/home/IdeaCTA';
+import Pillars from '@/components/home/Pillars';
 
 const Index = () => {
   // Preload critical images when the component mounts
@@ -27,6 +28,7 @@ const Index = () => {
     <PageLayout>
       <Hero />
       <Intro />
+      <Pillars />
       <Process />
       <Benefits />
       <IdeaCTA />

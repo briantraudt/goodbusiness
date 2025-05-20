@@ -15,22 +15,26 @@ const Process = () => {
       cta: {
         text: "Try the Idea Evaluator",
         link: "/evaluator"
-      }
+      },
+      color: "border-gb-green bg-gb-green"
     },
     {
       number: 2,
       title: "Explore Partnership",
-      description: "If the idea has promise, we'll discuss partnership options—co-building, funding, or strategic support."
+      description: "If the idea has promise, we'll discuss partnership options—co-building, funding, or strategic support.",
+      color: "border-gb-blue bg-gb-blue"
     },
     {
       number: 3,
       title: "Build in 7 Days",
-      description: "In just one week, we'll bring your concept to life with a working prototype you can see, test, and share."
+      description: "In just one week, we'll bring your concept to life with a working prototype you can see, test, and share.",
+      color: "border-gb-purple bg-gb-purple"
     },
     {
       number: 4,
       title: "Launch with Confidence",
-      description: "If it's viable, we'll develop a scalable product ready for real users and long-term growth."
+      description: "If it's viable, we'll develop a scalable product ready for real users and long-term growth.",
+      color: "border-gb-orange bg-gb-orange"
     }
   ];
 
@@ -46,9 +50,15 @@ const Process = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
           {steps.map((step) => (
-            <div key={step.number} className="flex flex-col bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+            <div 
+              key={step.number} 
+              className={`flex flex-col bg-white p-6 rounded-lg shadow-sm border-l-4 ${step.color} border-gray-100`}
+            >
               <div className="flex items-center gap-4 mb-3">
-                <Badge variant="outline" className="h-8 w-8 rounded-full border-2 border-gb-green text-gb-green font-bold flex items-center justify-center p-0">
+                <Badge 
+                  variant="outline" 
+                  className={`h-10 w-10 rounded-full text-white font-bold flex items-center justify-center p-0 ${step.color}`}
+                >
                   {step.number}
                 </Badge>
                 <h3 className="text-xl font-bold text-gb-dark">{step.title}</h3>
