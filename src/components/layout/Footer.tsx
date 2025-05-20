@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Mail, MapPin, Instagram, Linkedin, X } from "lucide-react";
+import { Mail, MapPin, Instagram, Linkedin, X, Settings } from "lucide-react";
 import ScrollToTopLink from "@/components/common/ScrollToTopLink";
 
 const Footer = () => {
@@ -93,8 +93,9 @@ const Footer = () => {
                   Austin, TX
                 </span>
               </li>
-              <li className="flex items-start pt-2">
-                <ScrollToTopLink to="/admin/clients" className="text-gray-400 hover:text-gb-green transition-colors text-sm">
+              <li className="flex items-start">
+                <Settings className="mr-3 h-5 w-5 text-gb-green" />
+                <ScrollToTopLink to="/admin/clients" className="text-gray-300 hover:text-gb-green transition-colors">
                   Admin Login
                 </ScrollToTopLink>
               </li>
