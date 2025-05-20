@@ -11,9 +11,6 @@ const Intro = () => {
             <span className="text-right block mt-1 text-sm md:text-base text-white/80">—Mark Twain</span>
           </p>
         </div>
-        <div className="text-center mt-6">
-          <h2 className="text-white text-2xl md:text-3xl font-bold">Let's build something real.</h2>
-        </div>
       </div>
     </section>
   );
