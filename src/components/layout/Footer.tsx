@@ -17,7 +17,12 @@ const Footer = () => {
               We are a software development and consulting company that helps leaders build, scale, fix and sustain.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-white hover:text-gb-green transition-colors">
+              <a 
+                href="https://www.linkedin.com/company/good-businesshq" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-white hover:text-gb-green transition-colors"
+              >
                 <span className="sr-only">LinkedIn</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
