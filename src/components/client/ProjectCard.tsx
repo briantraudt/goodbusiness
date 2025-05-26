@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -71,29 +72,29 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           right: '16px',
           zIndex: 10000,
           display: 'flex',
-          gap: '8px',
+          gap: '12px',
           alignItems: 'center'
         }}>
-          <div style={{ display: 'flex', gap: '4px' }}>
+          <div style={{ display: 'flex', gap: '8px' }}>
             <Button
               variant={viewMode === 'desktop' ? 'default' : 'outline'}
-              size="sm"
+              size="default"
               onClick={() => setViewMode('desktop')}
-              className="bg-white shadow-md text-xs"
+              className="bg-white shadow-lg"
             >
               Desktop
             </Button>
             <Button
               variant={viewMode === 'mobile' ? 'default' : 'outline'}
-              size="sm"
+              size="default"
               onClick={() => setViewMode('mobile')}
-              className="bg-white shadow-md text-xs"
+              className="bg-white shadow-lg"
             >
               Mobile
             </Button>
           </div>
-          <Button variant="outline" onClick={toggleFullscreen} className="bg-white shadow-md">
-            <Minimize2 className="w-4 h-4 mr-1" />
+          <Button variant="outline" onClick={toggleFullscreen} className="bg-white shadow-lg">
+            <Minimize2 className="w-4 h-4 mr-2" />
             Exit Fullscreen
           </Button>
         </div>
@@ -140,61 +141,53 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           <p className="text-gray-600">{project.description || "No description provided."}</p>
         </div>
         
-        <div style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          alignItems: 'center',
-          width: '100%'
-        }}>
-          {/* Preview Controls */}
-          <div style={{ 
-            marginBottom: '10px', 
-            display: 'flex', 
-            gap: '8px', 
-            alignItems: 'center'
-          }}>
-            <div style={{ display: 'flex', gap: '4px' }}>
+        {/* Preview Controls - Made more prominent */}
+        <div className="px-6 pb-4">
+          <div className="flex flex-wrap gap-3 items-center justify-center bg-gray-50 p-4 rounded-lg">
+            <div className="flex gap-2">
               <Button
                 variant={viewMode === 'desktop' ? 'default' : 'outline'}
-                size="sm"
+                size="default"
                 onClick={() => setViewMode('desktop')}
-                className="text-xs"
               >
                 Desktop View
               </Button>
               <Button
                 variant={viewMode === 'mobile' ? 'default' : 'outline'}
-                size="sm"
+                size="default"
                 onClick={() => setViewMode('mobile')}
-                className="text-xs"
               >
                 Mobile View
               </Button>
             </div>
             <Button
-              variant="outline"
-              size="sm"
+              variant="default"
+              size="default"
               onClick={toggleFullscreen}
-              className="text-xs"
+              className="bg-blue-600 hover:bg-blue-700"
             >
-              <Maximize2 className="w-3 h-3 mr-1" />
-              Fullscreen
+              <Maximize2 className="w-4 h-4 mr-2" />
+              View Fullscreen
             </Button>
           </div>
+        </div>
 
-          {/* iframe Preview */}
-          <iframe 
-            src={hostedUrl}
-            style={{
-              width: viewMode === 'mobile' ? '375px' : '100%',
-              height: '90vh',
-              border: '1px solid #ccc',
-              borderRadius: '8px',
-              transition: 'width 0.3s ease'
-            }}
-            title="Project Preview"
-            allowFullScreen
-          />
+        {/* iframe Preview - Made more reasonable size */}
+        <div className="px-6 pb-4">
+          <div className="flex justify-center">
+            <iframe 
+              src={hostedUrl}
+              style={{
+                width: viewMode === 'mobile' ? '375px' : '100%',
+                height: '500px',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                transition: 'width 0.3s ease'
+              }}
+              title="Project Preview"
+              allowFullScreen
+            />
+          </div>
         </div>
         
         <div className="px-6 pt-4">
