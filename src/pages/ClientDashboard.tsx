@@ -155,7 +155,7 @@ const ClientDashboard = () => {
                       <CardContent>
                         <p className="text-gray-600 mb-4">{project.description || "No description provided."}</p>
                         
-                        {/* Always embed project if URL exists */}
+                        {/* Always embed project if URL exists - no external links */}
                         {project.project_url && (
                           <ProjectEmbed url={project.project_url} />
                         )}
