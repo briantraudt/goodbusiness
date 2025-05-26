@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -46,8 +45,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     setIsFullscreen(!isFullscreen);
   };
 
-  // Use the new hosted URL instead of the original project_url
-  const hostedUrl = 'https://goodbusinesshq.com/client/tigertotes-site';
+  // Use the correct hosted URL
+  const hostedUrl = 'https://www.goodbusinesshq.com/client/tigertotes';
 
   // Full-screen modal
   if (isFullscreen) {
