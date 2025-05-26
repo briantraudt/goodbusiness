@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useClientAuth } from '@/contexts/ClientAuthContext';
@@ -37,40 +38,40 @@ const ProjectEmbed = ({ url }: { url: string }) => {
 
   return (
     <div className="w-full mt-4">
-      <div className="flex justify-end mb-2">
-        <Toggle
-          pressed={isFullscreen}
-          onPressedChange={setIsFullscreen}
-          aria-label="Toggle fullscreen view"
-          className="flex items-center gap-2 text-sm"
+      <div className="flex justify-end mb-4 px-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setIsFullscreen(!isFullscreen)}
+          className="flex items-center gap-2 bg-white border-gray-300 hover:bg-gray-50"
         >
           {isFullscreen ? (
             <>
               <Minimize className="w-4 h-4" />
-              Mobile View
+              Exit Fullscreen
             </>
           ) : (
             <>
               <Maximize className="w-4 h-4" />
-              Fullscreen
+              View Fullscreen
             </>
           )}
-        </Toggle>
+        </Button>
       </div>
       <div className={`w-full rounded-md overflow-hidden border border-gray-200 ${
         isFullscreen ? 'fixed inset-0 z-50 bg-white' : ''
       }`}>
         {isFullscreen && (
           <div className="flex justify-end p-4 bg-gray-100 border-b">
-            <Toggle
-              pressed={isFullscreen}
-              onPressedChange={setIsFullscreen}
-              aria-label="Exit fullscreen"
-              className="flex items-center gap-2 text-sm"
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsFullscreen(false)}
+              className="flex items-center gap-2"
             >
               <Minimize className="w-4 h-4" />
               Exit Fullscreen
-            </Toggle>
+            </Button>
           </div>
         )}
         <iframe 
