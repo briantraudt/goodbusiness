@@ -103,7 +103,7 @@ const ClientDashboard = () => {
   return (
     <PageLayout>
       <div className="min-h-[80vh] bg-gray-50 py-10 px-4">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-full mx-auto">
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-3xl font-bold text-gb-dark">{clientName} Dashboard</h1>
@@ -138,24 +138,28 @@ const ClientDashboard = () => {
                           </Badge>
                         </div>
                       </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-600 mb-4">{project.description || "No description provided."}</p>
+                      <CardContent className="p-0">
+                        <div className="px-6 pb-4">
+                          <p className="text-gray-600">{project.description || "No description provided."}</p>
+                        </div>
                         
-                        {/* Project Embed - Now wider and more responsive */}
+                        {/* Project Embed - Full screen and responsive */}
                         {project.project_url && (
-                          <div className="w-full mb-6">
+                          <div className="w-full">
                             <iframe 
                               src={project.project_url} 
-                              className="w-full h-[700px] border border-gray-300 rounded-lg shadow-lg" 
+                              className="w-full h-[80vh] min-h-[600px] border-0" 
                               title="Project Preview"
                               sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
                             />
                           </div>
                         )}
                         
-                        <div className="flex items-center text-sm text-gray-500 mt-4">
-                          <CalendarIcon className="w-4 h-4 mr-1" />
-                          <span>Started: {format(new Date(project.created_at), 'MMM d, yyyy')}</span>
+                        <div className="px-6 pt-4">
+                          <div className="flex items-center text-sm text-gray-500">
+                            <CalendarIcon className="w-4 h-4 mr-1" />
+                            <span>Started: {format(new Date(project.created_at), 'MMM d, yyyy')}</span>
+                          </div>
                         </div>
                       </CardContent>
                     </Card>
