@@ -72,7 +72,7 @@ const ClientList = ({ clients, accessCodes, onResetAccessCode }: ClientListProps
   const getClientPortalUrl = (slug: string) => {
     // Get the base URL of the application
     const baseUrl = window.location.origin;
-    return `${baseUrl}/client/${slug}`;
+    return `${baseUrl}/clients/${slug}`;
   };
 
   return (
@@ -93,7 +93,7 @@ const ClientList = ({ clients, accessCodes, onResetAccessCode }: ClientListProps
               <TableCell>
                 <div className="flex items-center space-x-2">
                   <span className="text-sm truncate max-w-[200px]">
-                    /client/{client.slug}
+                    /clients/{client.slug}
                   </span>
                   <Button
                     variant="ghost"
@@ -136,7 +136,7 @@ const ClientList = ({ clients, accessCodes, onResetAccessCode }: ClientListProps
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => window.open(`/client/${client.slug}`, '_blank')}
+                    onClick={() => window.open(`/clients/${client.slug}`, '_blank')}
                   >
                     <Eye className="h-4 w-4 mr-1" /> View Portal
                   </Button>

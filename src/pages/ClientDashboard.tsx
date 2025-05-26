@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { CalendarIcon, BarChart3, ClipboardList, ExternalLink } from 'lucide-react';
+import { CalendarIcon, BarChart3, ClipboardList } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Project {
@@ -33,13 +33,13 @@ interface ProjectUpdate {
 
 const ProjectEmbed = ({ url }: { url: string }) => {
   return (
-    <div className="w-full rounded-md overflow-hidden border border-gray-200 mt-2">
+    <div className="w-full rounded-md overflow-hidden border border-gray-200 mt-4">
       <iframe 
         src={url} 
         className="w-full h-[600px]" 
         style={{ border: 'none' }}
         title="Project Preview"
-        sandbox="allow-same-origin allow-scripts allow-forms"
+        sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
       />
     </div>
   );
@@ -54,7 +54,7 @@ const ClientDashboard = () => {
 
   // Redirect to login if not authenticated or slug mismatch
   if (!isAuthenticated || clientSlug !== slug) {
-    return <Navigate to="/client" replace />;
+    return <Navigate to="/clients" replace />;
   }
 
   useEffect(() => {
@@ -141,7 +141,7 @@ const ClientDashboard = () => {
               {/* Projects Summary */}
               <div>
                 <h2 className="text-xl font-semibold text-gb-dark mb-4">Your Projects</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6">
                   {projects.map((project) => (
                     <Card key={project.id} className="overflow-hidden">
                       <CardHeader className="pb-3">
@@ -155,22 +155,8 @@ const ClientDashboard = () => {
                       <CardContent>
                         <p className="text-gray-600 mb-4">{project.description || "No description provided."}</p>
                         
-                        {/* Project URL */}
-                        {project.project_url && !project.embed_project && (
-                          <div className="flex items-center mt-4 mb-4">
-                            <Button 
-                              variant="outline" 
-                              className="flex items-center" 
-                              onClick={() => window.open(project.project_url!, '_blank')}
-                            >
-                              <ExternalLink className="mr-2 w-4 h-4" />
-                              View Project
-                            </Button>
-                          </div>
-                        )}
-                        
-                        {/* Embedded Project */}
-                        {project.project_url && project.embed_project && (
+                        {/* Always embed project if URL exists */}
+                        {project.project_url && (
                           <ProjectEmbed url={project.project_url} />
                         )}
                         

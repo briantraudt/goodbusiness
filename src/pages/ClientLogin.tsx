@@ -37,7 +37,7 @@ const ClientLogin = () => {
           title: "Access granted",
           description: "Welcome to your project dashboard",
         });
-        navigate(`/client/${slug}`);
+        navigate(`/clients/${slug}`);
       } else {
         toast({
           title: "Access denied",

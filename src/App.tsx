@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -55,8 +54,11 @@ const App = () => (
               <Route path="/ventures" element={<Navigate to="/projects" replace />} />
               <Route path="/evaluator" element={<BusinessEvaluator />} />
               <Route path="/contact" element={<Contact />} />
-              <Route path="/client" element={<ClientLogin />} />
-              <Route path="/client/:slug" element={<ClientDashboard />} />
+              <Route path="/clients" element={<ClientLogin />} />
+              <Route path="/clients/:slug" element={<ClientDashboard />} />
+              {/* Keep old routes for backward compatibility */}
+              <Route path="/client" element={<Navigate to="/clients" replace />} />
+              <Route path="/client/:slug" element={<Navigate to="/clients/:slug" replace />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route path="/admin/clients" element={
                 <ProtectedAdminRoute>

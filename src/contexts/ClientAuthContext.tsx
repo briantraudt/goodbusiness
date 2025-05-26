@@ -105,7 +105,7 @@ export function ClientAuthProvider({ children }: { children: React.ReactNode }) 
     localStorage.removeItem('clientAccessCode');
     localStorage.removeItem('clientName');
     
-    navigate('/client');
+    navigate('/clients');
   };
 
   return (
