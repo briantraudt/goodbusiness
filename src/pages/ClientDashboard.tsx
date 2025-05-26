@@ -115,7 +115,7 @@ const ClientDashboard = () => {
               variant={viewMode === 'desktop' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setViewMode('desktop')}
-              className="bg-white shadow-md text-xs"
+              className="shadow-md text-xs"
             >
               Desktop
             </Button>
@@ -123,7 +123,7 @@ const ClientDashboard = () => {
               variant={viewMode === 'mobile' ? 'default' : 'outline'}
               size="sm"
               onClick={() => setViewMode('mobile')}
-              className="bg-white shadow-md text-xs"
+              className="shadow-md text-xs"
             >
               Mobile
             </Button>
