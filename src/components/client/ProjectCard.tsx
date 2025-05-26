@@ -46,8 +46,38 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     setIsFullscreen(!isFullscreen);
   };
 
-  // Use the correct hosted URL
-  const hostedUrl = 'https://www.goodbusinesshq.com/client/tigertotes';
+  // Use the project URL from the database
+  const projectUrl = project.project_url;
+
+  // Don't render iframe if no URL is available
+  if (!projectUrl) {
+    return (
+      <Card className="overflow-hidden">
+        <CardHeader className="pb-3">
+          <div className="flex justify-between items-start">
+            <CardTitle className="text-xl">{project.name}</CardTitle>
+            <Badge className={getStatusColor(project.status) + " text-white"}>
+              {formatStatusLabel(project.status)}
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="px-6 pb-4">
+            <p className="text-gray-600">{project.description || "No description provided."}</p>
+          </div>
+          <div className="px-6 pb-4">
+            <p className="text-gray-500 italic">No project URL available for preview.</p>
+          </div>
+          <div className="px-6 pt-4">
+            <div className="flex items-center text-sm text-gray-500">
+              <CalendarIcon className="w-4 h-4 mr-1" />
+              <span>Started: {format(new Date(project.created_at), 'MMM d, yyyy')}</span>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   // Full-screen modal
   if (isFullscreen) {
@@ -110,7 +140,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           padding: 0
         }}>
           <iframe 
-            src={hostedUrl}
+            src={projectUrl}
             style={{
               width: viewMode === 'mobile' ? '375px' : '100%',
               height: '100vh',
@@ -176,7 +206,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
         <div className="px-6 pb-4">
           <div className="flex justify-center">
             <iframe 
-              src={hostedUrl}
+              src={projectUrl}
               style={{
                 width: viewMode === 'mobile' ? '375px' : '100%',
                 height: '500px',
