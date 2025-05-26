@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useClientAuth } from '@/contexts/ClientAuthContext';
@@ -9,6 +8,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { CalendarIcon, BarChart3, ClipboardList } from 'lucide-react';
+import { Toggle } from '@/components/ui/toggle';
+import { Maximize, Minimize } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Project {
@@ -32,15 +33,54 @@ interface ProjectUpdate {
 }
 
 const ProjectEmbed = ({ url }: { url: string }) => {
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
   return (
-    <div className="w-full rounded-md overflow-hidden border border-gray-200 mt-4">
-      <iframe 
-        src={url} 
-        className="w-full h-screen min-h-[800px]" 
-        style={{ border: 'none' }}
-        title="Project Preview"
-        sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
-      />
+    <div className="w-full mt-4">
+      <div className="flex justify-end mb-2">
+        <Toggle
+          pressed={isFullscreen}
+          onPressedChange={setIsFullscreen}
+          aria-label="Toggle fullscreen view"
+          className="flex items-center gap-2 text-sm"
+        >
+          {isFullscreen ? (
+            <>
+              <Minimize className="w-4 h-4" />
+              Mobile View
+            </>
+          ) : (
+            <>
+              <Maximize className="w-4 h-4" />
+              Fullscreen
+            </>
+          )}
+        </Toggle>
+      </div>
+      <div className={`w-full rounded-md overflow-hidden border border-gray-200 ${
+        isFullscreen ? 'fixed inset-0 z-50 bg-white' : ''
+      }`}>
+        {isFullscreen && (
+          <div className="flex justify-end p-4 bg-gray-100 border-b">
+            <Toggle
+              pressed={isFullscreen}
+              onPressedChange={setIsFullscreen}
+              aria-label="Exit fullscreen"
+              className="flex items-center gap-2 text-sm"
+            >
+              <Minimize className="w-4 h-4" />
+              Exit Fullscreen
+            </Toggle>
+          </div>
+        )}
+        <iframe 
+          src={url} 
+          className={isFullscreen ? "w-full h-full" : "w-full h-[600px] max-w-sm mx-auto"} 
+          style={{ border: 'none' }}
+          title="Project Preview"
+          sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
+        />
+      </div>
     </div>
   );
 };
