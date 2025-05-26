@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { CalendarIcon, Maximize2, Minimize2 } from 'lucide-react';
 import { format } from 'date-fns';
-import ProjectEmbed from './ProjectEmbed';
 
 interface Project {
   id: string;
@@ -47,8 +46,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
     setIsFullscreen(!isFullscreen);
   };
 
+  // Use the new hosted URL instead of the original project_url
+  const hostedUrl = 'https://goodbusinesshq.com/client/tigertotes-site';
+
   // Full-screen modal
-  if (isFullscreen && project.project_url) {
+  if (isFullscreen) {
     return (
       <div 
         style={{ 
@@ -108,7 +110,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           padding: 0
         }}>
           <iframe 
-            src={project.project_url} 
+            src={hostedUrl}
             style={{
               width: viewMode === 'mobile' ? '375px' : '100%',
               height: '100vh',
@@ -117,7 +119,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
               transition: 'width 0.3s ease'
             }}
             title="Project Preview"
-            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
             allowFullScreen
           />
         </div>
@@ -140,76 +141,62 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project }) => {
           <p className="text-gray-600">{project.description || "No description provided."}</p>
         </div>
         
-        {project.project_url && (
-          <div className="project-preview-container" style={{ 
-            width: '100%', 
-            height: 'auto', 
-            maxWidth: '100%', 
+        <div style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center',
+          width: '100%'
+        }}>
+          {/* Preview Controls */}
+          <div style={{ 
+            marginBottom: '10px', 
             display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'center', 
-            overflow: 'hidden' 
+            gap: '8px', 
+            alignItems: 'center'
           }}>
-            {/* Preview Controls */}
-            <div style={{ 
-              marginBottom: '10px', 
-              display: 'flex', 
-              gap: '8px', 
-              alignItems: 'center',
-              padding: '0 20px',
-              width: '100%',
-              justifyContent: 'center'
-            }}>
-              <div style={{ display: 'flex', gap: '4px' }}>
-                <Button
-                  variant={viewMode === 'desktop' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setViewMode('desktop')}
-                  className="text-xs"
-                >
-                  Desktop
-                </Button>
-                <Button
-                  variant={viewMode === 'mobile' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={() => setViewMode('mobile')}
-                  className="text-xs"
-                >
-                  Mobile
-                </Button>
-              </div>
+            <div style={{ display: 'flex', gap: '4px' }}>
               <Button
-                variant="outline"
+                variant={viewMode === 'desktop' ? 'default' : 'outline'}
                 size="sm"
-                onClick={toggleFullscreen}
+                onClick={() => setViewMode('desktop')}
                 className="text-xs"
               >
-                <Maximize2 className="w-3 h-3 mr-1" />
-                Fullscreen
+                Desktop View
+              </Button>
+              <Button
+                variant={viewMode === 'mobile' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('mobile')}
+                className="text-xs"
+              >
+                Mobile View
               </Button>
             </div>
-
-            {/* iframe Preview */}
-            <div style={{
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}>
-              <iframe 
-                src={project.project_url} 
-                style={{
-                  width: viewMode === 'mobile' ? '375px' : '100%',
-                  height: '600px',
-                  border: '1px solid #ccc',
-                  transition: 'width 0.3s ease'
-                }}
-                title="Project Preview"
-                sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
-              />
-            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleFullscreen}
+              className="text-xs"
+            >
+              <Maximize2 className="w-3 h-3 mr-1" />
+              Fullscreen
+            </Button>
           </div>
-        )}
+
+          {/* iframe Preview */}
+          <iframe 
+            src={hostedUrl}
+            style={{
+              width: viewMode === 'mobile' ? '375px' : '100%',
+              height: '90vh',
+              border: '1px solid #ccc',
+              borderRadius: '8px',
+              transition: 'width 0.3s ease'
+            }}
+            title="Project Preview"
+            allowFullScreen
+          />
+        </div>
         
         <div className="px-6 pt-4">
           <div className="flex items-center text-sm text-gray-500">
