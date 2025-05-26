@@ -36,7 +36,7 @@ const ProjectEmbed = ({ url }: { url: string }) => {
     <div className="w-full rounded-md overflow-hidden border border-gray-200 mt-4">
       <iframe 
         src={url} 
-        className="w-full h-[600px]" 
+        className="w-full h-screen min-h-[800px]" 
         style={{ border: 'none' }}
         title="Project Preview"
         sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
