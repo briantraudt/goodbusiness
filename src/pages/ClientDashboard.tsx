@@ -35,6 +35,7 @@ const ClientDashboard = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [updates, setUpdates] = useState<ProjectUpdate[]>([]);
   const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>('desktop');
 
   // Redirect to login if not authenticated or slug mismatch
   if (!isAuthenticated || clientSlug !== slug) {
@@ -86,18 +87,75 @@ const ClientDashboard = () => {
 
   if (singleProjectWithUrl && !loading) {
     return (
-      <div className="fixed inset-0 bg-white">
-        <div className="absolute top-4 right-4 z-10">
+      <div 
+        style={{ 
+          position: 'fixed', 
+          top: 0, 
+          left: 0, 
+          width: '100vw', 
+          height: '100vh', 
+          margin: 0, 
+          padding: 0, 
+          backgroundColor: 'white',
+          zIndex: 9999
+        }}
+      >
+        {/* Controls Bar */}
+        <div style={{
+          position: 'absolute',
+          top: '16px',
+          right: '16px',
+          zIndex: 10000,
+          display: 'flex',
+          gap: '8px',
+          alignItems: 'center'
+        }}>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            <Button
+              variant={viewMode === 'desktop' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setViewMode('desktop')}
+              className="bg-white shadow-md text-xs"
+            >
+              Desktop
+            </Button>
+            <Button
+              variant={viewMode === 'mobile' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setViewMode('mobile')}
+              className="bg-white shadow-md text-xs"
+            >
+              Mobile
+            </Button>
+          </div>
           <Button variant="outline" onClick={logout} className="bg-white shadow-md">
             Log out
           </Button>
         </div>
-        <iframe 
-          src={projects[0].project_url!} 
-          className="w-full h-full border-0" 
-          title="Project Preview"
-          sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
-        />
+
+        {/* iframe Container */}
+        <div style={{
+          width: '100%',
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          margin: 0,
+          padding: 0
+        }}>
+          <iframe 
+            src={projects[0].project_url!} 
+            style={{
+              width: viewMode === 'mobile' ? '375px' : '100%',
+              height: '100vh',
+              border: 'none',
+              outline: 'none'
+            }}
+            title="Project Preview"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
+            allowFullScreen
+          />
+        </div>
       </div>
     );
   }
