@@ -81,6 +81,27 @@ const ClientDashboard = () => {
     fetchClientData();
   }, [slug]);
 
+  // If there's exactly one project with a URL, show it full screen
+  const singleProjectWithUrl = projects.length === 1 && projects[0].project_url;
+
+  if (singleProjectWithUrl && !loading) {
+    return (
+      <div className="fixed inset-0 bg-white">
+        <div className="absolute top-4 right-4 z-10">
+          <Button variant="outline" onClick={logout} className="bg-white shadow-md">
+            Log out
+          </Button>
+        </div>
+        <iframe 
+          src={projects[0].project_url!} 
+          className="w-full h-full border-0" 
+          title="Project Preview"
+          sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
+        />
+      </div>
+    );
+  }
+
   return (
     <PageLayout>
       <div className="min-h-[80vh] bg-gray-50 py-10 px-4">
