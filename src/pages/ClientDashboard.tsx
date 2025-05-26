@@ -1,5 +1,4 @@
 
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useClientAuth } from '@/contexts/ClientAuthContext';
@@ -62,21 +61,6 @@ const ProjectEmbed = ({ url }: { url: string }) => {
           sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
         />
       </div>
-      
-      {/* Fullscreen toggle button - positioned outside iframe for visibility */}
-      {!isFullscreen && (
-        <div className="flex justify-center mt-4">
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={() => setIsFullscreen(true)}
-            className="flex items-center gap-2 bg-white border-gray-300 hover:bg-gray-50"
-          >
-            <Maximize className="w-4 h-4" />
-            View Fullscreen
-          </Button>
-        </div>
-      )}
     </div>
   );
 };
@@ -87,6 +71,7 @@ const ClientDashboard = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [updates, setUpdates] = useState<ProjectUpdate[]>([]);
   const [loading, setLoading] = useState(true);
+  const [fullscreenProject, setFullscreenProject] = useState<string | null>(null);
 
   // Redirect to login if not authenticated or slug mismatch
   if (!isAuthenticated || clientSlug !== slug) {
@@ -150,6 +135,10 @@ const ClientDashboard = () => {
     return status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
   };
 
+  const toggleFullscreen = (projectId: string) => {
+    setFullscreenProject(fullscreenProject === projectId ? null : projectId);
+  };
+
   return (
     <PageLayout>
       <div className="min-h-[80vh] bg-gray-50 py-10 px-4">
@@ -191,9 +180,54 @@ const ClientDashboard = () => {
                       <CardContent>
                         <p className="text-gray-600 mb-4">{project.description || "No description provided."}</p>
                         
-                        {/* Project is embedded directly - no external links */}
+                        {/* Fullscreen Button - Right below the badge */}
                         {project.project_url && (
-                          <ProjectEmbed url={project.project_url} />
+                          <div className="mb-4">
+                            <Button
+                              variant="outline"
+                              size="lg"
+                              onClick={() => toggleFullscreen(project.id)}
+                              className="flex items-center gap-2 bg-blue-50 border-blue-300 hover:bg-blue-100 text-blue-700 font-semibold"
+                            >
+                              {fullscreenProject === project.id ? (
+                                <>
+                                  <Minimize className="w-5 h-5" />
+                                  Exit Fullscreen
+                                </>
+                              ) : (
+                                <>
+                                  <Maximize className="w-5 h-5" />
+                                  View Fullscreen
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                        )}
+                        
+                        {/* Project Embed */}
+                        {project.project_url && (
+                          <div className={`w-full ${fullscreenProject === project.id ? 'fixed inset-0 z-50 bg-white' : ''}`}>
+                            {fullscreenProject === project.id && (
+                              <div className="flex justify-end p-4 bg-gray-100 border-b">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => setFullscreenProject(null)}
+                                  className="flex items-center gap-2"
+                                >
+                                  <Minimize className="w-4 h-4" />
+                                  Exit Fullscreen
+                                </Button>
+                              </div>
+                            )}
+                            <iframe 
+                              src={project.project_url} 
+                              className={fullscreenProject === project.id ? "w-full h-full" : "w-full h-[600px] max-w-sm mx-auto"} 
+                              style={{ border: 'none' }}
+                              title="Project Preview"
+                              sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
+                            />
+                          </div>
                         )}
                         
                         <div className="flex items-center text-sm text-gray-500 mt-4">
@@ -252,4 +286,3 @@ const ClientDashboard = () => {
 };
 
 export default ClientDashboard;
-
