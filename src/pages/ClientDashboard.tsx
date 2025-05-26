@@ -8,8 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { CalendarIcon, BarChart3, ClipboardList, Maximize, Minimize } from 'lucide-react';
-import { Toggle } from '@/components/ui/toggle';
+import { CalendarIcon, BarChart3, ClipboardList } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Project {
@@ -38,7 +37,6 @@ const ClientDashboard = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [updates, setUpdates] = useState<ProjectUpdate[]>([]);
   const [loading, setLoading] = useState(true);
-  const [fullscreenProject, setFullscreenProject] = useState<string | null>(null);
 
   // Redirect to login if not authenticated or slug mismatch
   if (!isAuthenticated || clientSlug !== slug) {
@@ -102,10 +100,6 @@ const ClientDashboard = () => {
     return status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
   };
 
-  const toggleFullscreen = (projectId: string) => {
-    setFullscreenProject(fullscreenProject === projectId ? null : projectId);
-  };
-
   return (
     <PageLayout>
       <div className="min-h-[80vh] bg-gray-50 py-10 px-4">
@@ -147,50 +141,12 @@ const ClientDashboard = () => {
                       <CardContent>
                         <p className="text-gray-600 mb-4">{project.description || "No description provided."}</p>
                         
-                        {/* Fullscreen Button - Always visible when project_url exists, positioned right after description */}
+                        {/* Project Embed - Now wider and more responsive */}
                         {project.project_url && (
-                          <div className="mb-6">
-                            <Button
-                              variant="outline"
-                              size="lg"
-                              onClick={() => toggleFullscreen(project.id)}
-                              className="w-full bg-blue-50 border-blue-300 hover:bg-blue-100 text-blue-700 font-semibold py-4 text-lg"
-                            >
-                              {fullscreenProject === project.id ? (
-                                <>
-                                  <Minimize className="w-6 h-6 mr-3" />
-                                  Exit Fullscreen
-                                </>
-                              ) : (
-                                <>
-                                  <Maximize className="w-6 h-6 mr-3" />
-                                  View Fullscreen
-                                </>
-                              )}
-                            </Button>
-                          </div>
-                        )}
-                        
-                        {/* Project Embed */}
-                        {project.project_url && (
-                          <div className={`w-full ${fullscreenProject === project.id ? 'fixed inset-0 z-50 bg-white' : ''}`}>
-                            {fullscreenProject === project.id && (
-                              <div className="flex justify-end p-4 bg-gray-100 border-b">
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => setFullscreenProject(null)}
-                                  className="flex items-center gap-2"
-                                >
-                                  <Minimize className="w-4 h-4" />
-                                  Exit Fullscreen
-                                </Button>
-                              </div>
-                            )}
+                          <div className="w-full mb-6">
                             <iframe 
                               src={project.project_url} 
-                              className={fullscreenProject === project.id ? "w-full h-full" : "w-full h-[600px] max-w-sm mx-auto"} 
-                              style={{ border: 'none' }}
+                              className="w-full h-[700px] border border-gray-300 rounded-lg shadow-lg" 
                               title="Project Preview"
                               sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
                             />
