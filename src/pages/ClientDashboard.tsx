@@ -32,39 +32,6 @@ interface ProjectUpdate {
   project_id: string;
 }
 
-const ProjectEmbed = ({ url }: { url: string }) => {
-  const [isFullscreen, setIsFullscreen] = useState(false);
-
-  return (
-    <div className="w-full mt-4">
-      <div className={`w-full rounded-md overflow-hidden border border-gray-200 ${
-        isFullscreen ? 'fixed inset-0 z-50 bg-white' : ''
-      }`}>
-        {isFullscreen && (
-          <div className="flex justify-end p-4 bg-gray-100 border-b">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setIsFullscreen(false)}
-              className="flex items-center gap-2"
-            >
-              <Minimize className="w-4 h-4" />
-              Exit Fullscreen
-            </Button>
-          </div>
-        )}
-        <iframe 
-          src={url} 
-          className={isFullscreen ? "w-full h-full" : "w-full h-[600px] max-w-sm mx-auto"} 
-          style={{ border: 'none' }}
-          title="Project Preview"
-          sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
-        />
-      </div>
-    </div>
-  );
-};
-
 const ClientDashboard = () => {
   const { slug } = useParams<{ slug: string }>();
   const { isAuthenticated, clientSlug, clientName, logout } = useClientAuth();
@@ -180,54 +147,54 @@ const ClientDashboard = () => {
                       <CardContent>
                         <p className="text-gray-600 mb-4">{project.description || "No description provided."}</p>
                         
-                        {/* Fullscreen Button - Right below the badge */}
+                        {/* Fullscreen Button - Always visible when project_url exists */}
                         {project.project_url && (
-                          <div className="mb-4">
-                            <Button
-                              variant="outline"
-                              size="lg"
-                              onClick={() => toggleFullscreen(project.id)}
-                              className="flex items-center gap-2 bg-blue-50 border-blue-300 hover:bg-blue-100 text-blue-700 font-semibold"
-                            >
-                              {fullscreenProject === project.id ? (
-                                <>
-                                  <Minimize className="w-5 h-5" />
-                                  Exit Fullscreen
-                                </>
-                              ) : (
-                                <>
-                                  <Maximize className="w-5 h-5" />
-                                  View Fullscreen
-                                </>
+                          <>
+                            <div className="mb-6 flex justify-center">
+                              <Button
+                                variant="outline"
+                                size="lg"
+                                onClick={() => toggleFullscreen(project.id)}
+                                className="flex items-center gap-3 bg-blue-50 border-blue-300 hover:bg-blue-100 text-blue-700 font-semibold px-6 py-3 text-lg"
+                              >
+                                {fullscreenProject === project.id ? (
+                                  <>
+                                    <Minimize className="w-6 h-6" />
+                                    Exit Fullscreen
+                                  </>
+                                ) : (
+                                  <>
+                                    <Maximize className="w-6 h-6" />
+                                    View Fullscreen
+                                  </>
+                                )}
+                              </Button>
+                            </div>
+                            
+                            {/* Project Embed */}
+                            <div className={`w-full ${fullscreenProject === project.id ? 'fixed inset-0 z-50 bg-white' : ''}`}>
+                              {fullscreenProject === project.id && (
+                                <div className="flex justify-end p-4 bg-gray-100 border-b">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => setFullscreenProject(null)}
+                                    className="flex items-center gap-2"
+                                  >
+                                    <Minimize className="w-4 h-4" />
+                                    Exit Fullscreen
+                                  </Button>
+                                </div>
                               )}
-                            </Button>
-                          </div>
-                        )}
-                        
-                        {/* Project Embed */}
-                        {project.project_url && (
-                          <div className={`w-full ${fullscreenProject === project.id ? 'fixed inset-0 z-50 bg-white' : ''}`}>
-                            {fullscreenProject === project.id && (
-                              <div className="flex justify-end p-4 bg-gray-100 border-b">
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  onClick={() => setFullscreenProject(null)}
-                                  className="flex items-center gap-2"
-                                >
-                                  <Minimize className="w-4 h-4" />
-                                  Exit Fullscreen
-                                </Button>
-                              </div>
-                            )}
-                            <iframe 
-                              src={project.project_url} 
-                              className={fullscreenProject === project.id ? "w-full h-full" : "w-full h-[600px] max-w-sm mx-auto"} 
-                              style={{ border: 'none' }}
-                              title="Project Preview"
-                              sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
-                            />
-                          </div>
+                              <iframe 
+                                src={project.project_url} 
+                                className={fullscreenProject === project.id ? "w-full h-full" : "w-full h-[600px] max-w-sm mx-auto"} 
+                                style={{ border: 'none' }}
+                                title="Project Preview"
+                                sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
+                              />
+                            </div>
+                          </>
                         )}
                         
                         <div className="flex items-center text-sm text-gray-500 mt-4">
