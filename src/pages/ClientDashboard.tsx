@@ -1,4 +1,5 @@
 
+
 import React, { useEffect, useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useClientAuth } from '@/contexts/ClientAuthContext';
@@ -8,9 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
-import { CalendarIcon, BarChart3, ClipboardList } from 'lucide-react';
+import { CalendarIcon, BarChart3, ClipboardList, Maximize, Minimize } from 'lucide-react';
 import { Toggle } from '@/components/ui/toggle';
-import { Maximize, Minimize } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface Project {
@@ -38,26 +38,6 @@ const ProjectEmbed = ({ url }: { url: string }) => {
 
   return (
     <div className="w-full mt-4">
-      <div className="flex justify-end mb-4 px-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setIsFullscreen(!isFullscreen)}
-          className="flex items-center gap-2 bg-white border-gray-300 hover:bg-gray-50"
-        >
-          {isFullscreen ? (
-            <>
-              <Minimize className="w-4 h-4" />
-              Exit Fullscreen
-            </>
-          ) : (
-            <>
-              <Maximize className="w-4 h-4" />
-              View Fullscreen
-            </>
-          )}
-        </Button>
-      </div>
       <div className={`w-full rounded-md overflow-hidden border border-gray-200 ${
         isFullscreen ? 'fixed inset-0 z-50 bg-white' : ''
       }`}>
@@ -82,6 +62,21 @@ const ProjectEmbed = ({ url }: { url: string }) => {
           sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
         />
       </div>
+      
+      {/* Fullscreen toggle button - positioned outside iframe for visibility */}
+      {!isFullscreen && (
+        <div className="flex justify-center mt-4">
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => setIsFullscreen(true)}
+            className="flex items-center gap-2 bg-white border-gray-300 hover:bg-gray-50"
+          >
+            <Maximize className="w-4 h-4" />
+            View Fullscreen
+          </Button>
+        </div>
+      )}
     </div>
   );
 };
@@ -257,3 +252,4 @@ const ClientDashboard = () => {
 };
 
 export default ClientDashboard;
+
