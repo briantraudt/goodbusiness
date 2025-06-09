@@ -131,7 +131,7 @@ const BetaSignup = () => {
             
             <div className="text-center mt-6">
               <p className="text-sm text-gray-500">
-                Get ready for something delicious!
+                Get Ready For Something Delicious!
               </p>
             </div>
           </CardContent>
