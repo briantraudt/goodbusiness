@@ -66,6 +66,8 @@ const BetaSignup = () => {
   };
 
   if (isSubmitted) {
+    const firstName = name.trim().split(' ')[0];
+    
     return (
       <PageLayout>
         <div className="bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4" style={{ height: 'calc(100vh - 140px)' }}>
@@ -75,7 +77,7 @@ const BetaSignup = () => {
             </CardHeader>
             <CardContent className="text-center space-y-4">
               <p className="text-lg">
-                Thanks for signing up for our food app beta, {name}!
+                Thanks for signing up for our food app beta, {firstName}!
               </p>
               <p className="text-gray-600">
                 We'll be in touch soon with early access details.
