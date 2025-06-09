@@ -67,8 +67,8 @@ const BetaSignup = () => {
 
   if (isSubmitted) {
     return (
-      <div className="flex flex-col h-screen">
-        <div className="flex-1 bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
+      <PageLayout>
+        <div className="bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4" style={{ height: 'calc(100vh - 140px)' }}>
           <Card className="w-full max-w-md">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl text-green-600">Thank You!</CardTitle>
@@ -83,13 +83,13 @@ const BetaSignup = () => {
             </CardContent>
           </Card>
         </div>
-      </div>
+      </PageLayout>
     );
   }
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex-1 bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
+    <PageLayout>
+      <div className="bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4" style={{ height: 'calc(100vh - 140px)' }}>
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl text-gb-dark">Join Our Food App Beta</CardTitle>
@@ -137,7 +137,7 @@ const BetaSignup = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 
