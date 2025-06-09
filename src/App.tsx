@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +14,7 @@ import ClientLogin from "./pages/ClientLogin";
 import ClientDashboard from "./pages/ClientDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminLogin from "./pages/AdminLogin";
+import BetaSignup from "./pages/BetaSignup";
 import { ClientAuthProvider } from "./contexts/ClientAuthContext";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 import ScrollToTop from "./components/common/ScrollToTop";
@@ -65,6 +67,8 @@ const App = () => (
                   <AdminDashboard />
                 </ProtectedAdminRoute>
               } />
+              {/* Beta signup page - hidden route */}
+              <Route path="/beta" element={<BetaSignup />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
