@@ -15,6 +15,8 @@ import ClientDashboard from "./pages/ClientDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminLogin from "./pages/AdminLogin";
 import BetaSignup from "./pages/BetaSignup";
+import Training from "./pages/Training";
+import TrainingSuccess from "./pages/TrainingSuccess";
 import { ClientAuthProvider } from "./contexts/ClientAuthContext";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 import ScrollToTop from "./components/common/ScrollToTop";
@@ -56,6 +58,8 @@ const App = () => (
               <Route path="/ventures" element={<Navigate to="/projects" replace />} />
               <Route path="/evaluator" element={<BusinessEvaluator />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/training" element={<Training />} />
+              <Route path="/training/success" element={<TrainingSuccess />} />
               <Route path="/clients" element={<ClientLogin />} />
               <Route path="/clients/:slug" element={<ClientDashboard />} />
               {/* Keep old routes for backward compatibility */}
