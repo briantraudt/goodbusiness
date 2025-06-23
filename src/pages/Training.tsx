@@ -81,7 +81,7 @@ const Training = () => {
     },
     {
       icon: <BookOpen className="h-6 w-6 text-gb-blue" />,
-      text: "Creating mobile apps with AI assistance"
+      text: "Creating mobile web apps with AI assistance"
     },
     {
       icon: <BookOpen className="h-6 w-6 text-gb-purple" />,
