@@ -77,7 +77,7 @@ const Training = () => {
   const learningItems = [
     {
       icon: <BookOpen className="h-6 w-6 text-gb-green" />,
-      text: "How to use AI tools to build websites without coding"
+      text: "How to use AI tools to build websites and software without coding"
     },
     {
       icon: <BookOpen className="h-6 w-6 text-gb-blue" />,
