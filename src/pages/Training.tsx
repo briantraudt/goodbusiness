@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,25 +12,65 @@ import { CheckCircle2, Clock, Video, User, FileText, BookOpen } from 'lucide-rea
 
 const Training = () => {
   const [selectedDate, setSelectedDate] = useState<Date>();
-  const [selectedTime, setSelectedTime] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDateAvailable, setIsDateAvailable] = useState<boolean | null>(null);
+  const [checkingAvailability, setCheckingAvailability] = useState(false);
   const { toast } = useToast();
 
-  // Available time slots (you can modify these)
-  const timeSlots = [
-    '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
-    '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM'
-  ];
+  // Only available time slot
+  const availableTime = '12:00 PM - 1:00 PM CST';
+
+  // Check availability when date is selected
+  useEffect(() => {
+    if (selectedDate) {
+      checkAvailability();
+    }
+  }, [selectedDate]);
+
+  const checkAvailability = async () => {
+    if (!selectedDate) return;
+
+    setCheckingAvailability(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('check-training-availability', {
+        body: {
+          date: format(selectedDate, 'MMMM dd, yyyy'),
+        },
+      });
+
+      if (error) throw error;
+
+      setIsDateAvailable(data?.available || false);
+    } catch (error) {
+      console.error('Error checking availability:', error);
+      toast({
+        title: "Error",
+        description: "Could not check availability. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setCheckingAvailability(false);
+    }
+  };
 
   const handleBooking = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!selectedDate || !selectedTime || !name.trim() || !email.trim()) {
+    if (!selectedDate || !name.trim() || !email.trim()) {
       toast({
         title: "Error",
-        description: "Please fill in all fields and select a date and time.",
+        description: "Please fill in all fields and select a date.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!isDateAvailable) {
+      toast({
+        title: "Error",
+        description: "This date is not available. Please select a different date.",
         variant: "destructive",
       });
       return;
@@ -45,7 +84,7 @@ const Training = () => {
           email: email.trim(),
           name: name.trim(),
           selectedDate: format(selectedDate, 'MMMM dd, yyyy'),
-          selectedTime: selectedTime,
+          selectedTime: availableTime,
         },
       });
 
@@ -59,7 +98,7 @@ const Training = () => {
       console.error('Error creating payment session:', error);
       toast({
         title: "Error",
-        description: "Something went wrong. Please try again.",
+        description: error.message || "Something went wrong. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -142,6 +181,9 @@ const Training = () => {
               <div className="bg-gb-green text-white text-2xl font-bold py-4 px-8 rounded-lg inline-block">
                 $250 for 1 Hour Session
               </div>
+              <div className="mt-4 text-lg opacity-80">
+                Available: 12:00 PM - 1:00 PM CST Daily
+              </div>
             </div>
           </div>
         </div>
@@ -200,7 +242,7 @@ const Training = () => {
             <Card className="max-w-4xl mx-auto shadow-lg">
               <CardHeader className="text-center bg-gb-light">
                 <CardTitle className="text-3xl text-gb-dark">Book Your Session</CardTitle>
-                <p className="text-gray-600">Select a date and time that works for you</p>
+                <p className="text-gray-600">Select a date - Available daily 12:00 PM - 1:00 PM CST</p>
               </CardHeader>
               <CardContent className="p-8">
                 <form onSubmit={handleBooking} className="space-y-8">
@@ -247,25 +289,39 @@ const Training = () => {
                     </div>
                   </div>
 
-                  {/* Time Selection */}
+                  {/* Time Display and Availability */}
                   {selectedDate && (
                     <div className="space-y-4">
                       <h3 className="text-xl font-semibold text-gb-dark">
-                        Select Time for {format(selectedDate, 'MMMM dd, yyyy')}
+                        Session Time for {format(selectedDate, 'MMMM dd, yyyy')}
                       </h3>
-                      <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
-                        {timeSlots.map((time) => (
-                          <Button
-                            key={time}
-                            type="button"
-                            variant={selectedTime === time ? "default" : "outline"}
-                            className={selectedTime === time ? "bg-gb-green hover:bg-gb-green/90" : ""}
-                            onClick={() => setSelectedTime(time)}
-                          >
-                            {time}
-                          </Button>
-                        ))}
+                      <div className="flex justify-center">
+                        <div className={`p-4 rounded-lg border-2 ${
+                          checkingAvailability 
+                            ? 'border-gray-300 bg-gray-50' 
+                            : isDateAvailable 
+                              ? 'border-gb-green bg-gb-green/10' 
+                              : 'border-red-500 bg-red-50'
+                        }`}>
+                          <div className="text-center">
+                            <div className="text-lg font-semibold text-gb-dark mb-2">
+                              {availableTime}
+                            </div>
+                            {checkingAvailability ? (
+                              <div className="text-sm text-gray-500">Checking availability...</div>
+                            ) : isDateAvailable ? (
+                              <div className="text-sm text-gb-green font-medium">✓ Available</div>
+                            ) : (
+                              <div className="text-sm text-red-500 font-medium">✗ Already Booked</div>
+                            )}
+                          </div>
+                        </div>
                       </div>
+                      {!isDateAvailable && !checkingAvailability && (
+                        <p className="text-center text-red-600">
+                          This date is already booked. Please select a different date.
+                        </p>
+                      )}
                     </div>
                   )}
 
@@ -274,7 +330,7 @@ const Training = () => {
                     <Button
                       type="submit"
                       className="bg-gb-blue hover:bg-gb-blue/90 text-white text-lg px-12 py-3"
-                      disabled={isSubmitting || !selectedDate || !selectedTime}
+                      disabled={isSubmitting || !selectedDate || !isDateAvailable || checkingAvailability}
                     >
                       {isSubmitting ? 'Processing...' : 'Pay $250 & Book Session'}
                     </Button>

@@ -9,3 +9,9 @@ verify_jwt = false
 
 [functions.notify-business-evaluation]
 verify_jwt = false
+
+[functions.create-training-payment]
+verify_jwt = false
+
+[functions.check-training-availability]
+verify_jwt = false

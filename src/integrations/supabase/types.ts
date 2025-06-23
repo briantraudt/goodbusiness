@@ -305,6 +305,39 @@ export type Database = {
           },
         ]
       }
+      training_bookings: {
+        Row: {
+          booking_date: string
+          booking_time: string
+          created_at: string
+          email: string
+          id: string
+          name: string
+          stripe_session_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          booking_date: string
+          booking_time: string
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          stripe_session_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          booking_date?: string
+          booking_time?: string
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          stripe_session_id?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_categories: {
         Row: {
           created_at: string
