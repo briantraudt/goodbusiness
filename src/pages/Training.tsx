@@ -106,11 +106,18 @@ const Training = () => {
     }
   };
 
-  // Disable past dates
+  // Disable past dates and Sundays
   const isDateDisabled = (date: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return date < today;
+    
+    // Disable past dates
+    if (date < today) return true;
+    
+    // Disable Sundays (0 = Sunday)
+    if (date.getDay() === 0) return true;
+    
+    return false;
   };
 
   const learningItems = [
@@ -182,7 +189,7 @@ const Training = () => {
                 $250 for 1 Hour Session
               </div>
               <div className="mt-4 text-lg opacity-80">
-                Available: 12:00 PM - 1:00 PM CST Daily
+                Available: 12:00 PM - 1:00 PM CST Monday-Saturday
               </div>
             </div>
           </div>
@@ -242,7 +249,7 @@ const Training = () => {
             <Card className="max-w-4xl mx-auto shadow-lg">
               <CardHeader className="text-center bg-gb-light">
                 <CardTitle className="text-3xl text-gb-dark">Book Your Session</CardTitle>
-                <p className="text-gray-600">Select a date - Available daily 12:00 PM - 1:00 PM CST</p>
+                <p className="text-gray-600">Select a date - Available Monday-Saturday 12:00 PM - 1:00 PM CST</p>
               </CardHeader>
               <CardContent className="p-8">
                 <form onSubmit={handleBooking} className="space-y-8">
