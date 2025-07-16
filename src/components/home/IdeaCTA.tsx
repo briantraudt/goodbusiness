@@ -15,12 +15,12 @@ const IdeaCTA = () => {
       <div className="container-custom relative z-10 text-center">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-6">
-            Got an AI Vision?
+            Got a Great Idea?
           </h2>
           
           <div className="space-y-3 mb-8">
             <p className="text-lg md:text-xl text-gray-300">
-              Most people never bring their AI concepts to life.
+              Most people never act on theirs.
             </p>
             
             <p className="text-xl md:text-2xl font-semibold">
@@ -28,7 +28,7 @@ const IdeaCTA = () => {
             </p>
             
             <p className="text-lg text-gray-300">
-              Let's turn it into intelligent software.
+              Let's turn it into something real.
             </p>
           </div>
           

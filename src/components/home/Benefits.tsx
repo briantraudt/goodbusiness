@@ -6,23 +6,23 @@ import { Timer, DollarSign, Users, LineChart } from 'lucide-react';
 const Benefits = () => {
   const benefits = [
     {
-      title: "Rapid AI Prototyping",
-      description: "Launch intelligent prototypes in days—not months of development cycles.",
+      title: "Speed to Market",
+      description: "Launch a working prototype in days—not months.",
       icon: <Timer className="h-10 w-10 md:h-12 md:w-12 text-gb-blue" />
     },
     {
-      title: "AI-First Validation",
-      description: "Validate your AI concept's feasibility before major AI infrastructure investment.",
+      title: "Smart Spend",
+      description: "Validate your idea before making a big investment.",
       icon: <DollarSign className="h-10 w-10 md:h-12 md:w-12 text-gb-green" />
     },
     {
-      title: "Intelligent Testing",
-      description: "Test AI behavior with real users and refine algorithms based on actual usage patterns.",
+      title: "Real Feedback",
+      description: "Test your software with real users and iterate early.",
       icon: <Users className="h-10 w-10 md:h-12 md:w-12 text-gb-purple" />
     },
     {
-      title: "Scalable AI Architecture",
-      description: "Go from AI MVP to enterprise-ready with systems that learn and adapt as you grow.",
+      title: "Built to Scale",
+      description: "Go from MVP to market-ready with a product that grows with you.",
       icon: <LineChart className="h-10 w-10 md:h-12 md:w-12 text-gb-orange" />
     }
   ];
@@ -31,7 +31,7 @@ const Benefits = () => {
     <section className="bg-slate-50 py-12 md:py-28">
       <div className="container-custom">
         <div className="text-center mb-10 md:mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Founders Choose Our AI Development</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Founders Choose Good Business</h2>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10 max-w-6xl mx-auto">

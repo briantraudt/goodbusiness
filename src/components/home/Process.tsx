@@ -10,8 +10,8 @@ const Process = () => {
   const steps = [
     {
       number: 1,
-      title: "Evaluate Your AI Concept",
-      description: "Share your AI idea. We'll assess its technical feasibility, market potential, and automation opportunities.",
+      title: "Evaluate Your Idea",
+      description: "Share your idea. We'll assess its potential for impact, scalability, and monetization.",
       cta: {
         text: "Try the Idea Evaluator",
         link: "/evaluator"
@@ -26,14 +26,14 @@ const Process = () => {
     },
     {
       number: 3,
-      title: "Build AI Solution in 7 Days",
-      description: "In just one week, we'll create an intelligent prototype with AI capabilities you can demo and validate.",
+      title: "Build in 7 Days",
+      description: "In just one week, we'll bring your concept to life with a working prototype you can see, test, and share.",
       color: "border-gb-purple bg-gb-purple"
     },
     {
       number: 4,
-      title: "Scale Your AI Product",
-      description: "If validated, we'll build a production-ready AI system that learns, adapts, and grows with your business.",
+      title: "Launch with Confidence",
+      description: "If it's viable, we'll develop a scalable product ready for real users and long-term growth.",
       color: "border-gb-orange bg-gb-orange"
     }
   ];
@@ -42,9 +42,9 @@ const Process = () => {
     <section className="bg-white py-16">
       <div className="container-custom">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-3">Our 4-Step AI Development Process</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-3">Our 4-Step Process</h2>
           <p className="text-gb-dark/70 text-lg max-w-2xl mx-auto">
-            We turn AI concepts into intelligent software solutions—fast.
+            We turn good ideas into real software—fast.
           </p>
         </div>
         

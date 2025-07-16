@@ -10,18 +10,18 @@ const Focus = () => {
   
   const focusAreas = [
     {
-      title: "Validate AI Concept",
-      description: "Turn your AI vision into an interactive prototype in days. Test intelligent features and get real user feedback before major investment.",
+      title: "Validate Idea",
+      description: "Turn your technology concept into an interactive prototype in days. Test your idea quickly and get real user feedback before major investment.",
       icon: <Rocket className="h-12 w-12 text-gb-blue" />
     },
     {
-      title: "Build AI MVP",
-      description: "Transform your validated concept into a working AI-powered product. Focus on core intelligent features that automate and optimize user workflows.",
+      title: "Build MVP",
+      description: "Transform your validated idea into a working minimum viable product. Focus on core features that solve your users' problems effectively.",
       icon: <Component className="h-12 w-12 text-gb-purple" />
     },
     {
-      title: "Scale AI System",
-      description: "Ready to grow? We'll help evolve your successful AI MVP into a fully-featured intelligent system with advanced ML capabilities.",
+      title: "Scale Product",
+      description: "Ready to grow? We'll help evolve your successful MVP into a fully-featured app while maintaining the speed and quality that got you here.",
       icon: <Database className="h-12 w-12 text-gb-green" />
     },
   ];
@@ -30,9 +30,9 @@ const Focus = () => {
     <section className="bg-[#F1F0FB]/30">
       <div className="container-custom py-10 md:py-16">
         <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">From AI Concept to Smart Business</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">From Idea to Business</h2>
           <p className="mt-3 text-lg text-gb-dark/70 max-w-2xl mx-auto">
-            We turn your AI ideas into intelligent solutions that automate and optimize your operations.
+            We turn your ideas into working products to help you monetize quickly.
           </p>
         </div>
         
@@ -51,7 +51,7 @@ const Focus = () => {
         <div className="mt-10 text-center">
           <Button asChild size="lg" className="bg-gb-blue hover:bg-gb-blue/90 text-white rounded-lg text-lg px-8 py-3 h-auto">
             <ScrollToTopLink to="/evaluator">
-              Free AI Concept Evaluator
+              Free Idea Evaluator
             </ScrollToTopLink>
           </Button>
         </div>
