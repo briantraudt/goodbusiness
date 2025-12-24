@@ -18,8 +18,9 @@ import ProjectList from '@/components/admin/lists/ProjectList';
 interface Client {
   id: string;
   name: string;
-  slug: string;
+  slug: string | null;
   created_at: string;
+  user_id: string;
 }
 
 interface Project {

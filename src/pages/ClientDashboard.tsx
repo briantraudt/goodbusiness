@@ -46,15 +46,23 @@ const ClientDashboard = () => {
     const fetchClientData = async () => {
       setLoading(true);
       try {
+        // First get the client ID
+        const { data: clientData } = await supabase
+          .from('clients')
+          .select('id')
+          .eq('slug', slug as string)
+          .maybeSingle();
+        
+        if (!clientData) {
+          setLoading(false);
+          return;
+        }
+
         // Fetch client's projects
         const { data: projectsData, error: projectsError } = await supabase
           .from('projects')
           .select('*')
-          .eq('client_id', (await supabase
-            .from('clients')
-            .select('id')
-            .eq('slug', slug)
-            .single()).data?.id);
+          .eq('client_id', clientData.id);
 
         if (projectsError) throw projectsError;
 
