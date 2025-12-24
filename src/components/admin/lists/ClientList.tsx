@@ -16,8 +16,9 @@ import { supabase } from '@/integrations/supabase/client';
 interface Client {
   id: string;
   name: string;
-  slug: string;
+  slug: string | null;
   created_at: string;
+  user_id: string;
 }
 
 interface ClientListProps {
@@ -69,7 +70,8 @@ const ClientList = ({ clients, accessCodes, onResetAccessCode }: ClientListProps
     }
   };
 
-  const getClientPortalUrl = (slug: string) => {
+  const getClientPortalUrl = (slug: string | null) => {
+    if (!slug) return '';
     // Get the base URL of the application
     const baseUrl = window.location.origin;
     return `${baseUrl}/clients/${slug}`;
@@ -93,7 +95,7 @@ const ClientList = ({ clients, accessCodes, onResetAccessCode }: ClientListProps
               <TableCell>
                 <div className="flex items-center space-x-2">
                   <span className="text-sm truncate max-w-[200px]">
-                    /clients/{client.slug}
+                    {client.slug ? `/clients/${client.slug}` : 'No slug set'}
                   </span>
                   <Button
                     variant="ghost"
@@ -133,13 +135,15 @@ const ClientList = ({ clients, accessCodes, onResetAccessCode }: ClientListProps
                   >
                     <RefreshCw className="h-4 w-4 mr-1" /> Reset Code
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => window.open(`/clients/${client.slug}`, '_blank')}
-                  >
-                    <Eye className="h-4 w-4 mr-1" /> View Portal
-                  </Button>
+                  {client.slug && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => window.open(`/clients/${client.slug}`, '_blank')}
+                    >
+                      <Eye className="h-4 w-4 mr-1" /> View Portal
+                    </Button>
+                  )}
                 </div>
               </TableCell>
             </TableRow>

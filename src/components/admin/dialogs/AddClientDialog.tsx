@@ -37,11 +37,15 @@ const AddClientDialog = ({ open, onOpenChange, onClientAdded }: AddClientDialogP
     }
 
     try {
-      // Create client
+      // Create client - using a placeholder user_id since this is admin-managed
       const { data: clientData, error: clientError } = await supabase
         .from('clients')
         .insert([
-          { name: newClient.name, slug: newClient.slug.toLowerCase() }
+          { 
+            name: newClient.name, 
+            slug: newClient.slug.toLowerCase(),
+            user_id: '00000000-0000-0000-0000-000000000000' // Placeholder for admin-created clients
+          }
         ])
         .select()
         .single();

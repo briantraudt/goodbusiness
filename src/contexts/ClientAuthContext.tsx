@@ -71,8 +71,8 @@ export function ClientAuthProvider({ children }: { children: React.ReactNode }) 
       const { data: client, error: clientError } = await supabase
         .from('clients')
         .select('name')
-        .eq('slug', slug)
-        .single();
+        .eq('slug', slug as string)
+        .maybeSingle();
         
       if (clientError || !client) {
         return { success: false, error: "Client not found" };
