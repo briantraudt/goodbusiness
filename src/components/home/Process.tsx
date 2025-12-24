@@ -1,39 +1,35 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 import ScrollToTopLink from '@/components/common/ScrollToTopLink';
 
 const Process = () => {
   const steps = [
     {
       number: 1,
-      title: "Evaluate Your Idea",
-      description: "Share your idea. We'll assess its potential for impact, scalability, and monetization.",
-      cta: {
-        text: "Try the Idea Evaluator",
-        link: "/evaluator"
-      },
+      title: "Discovery & Planning",
+      description: "We dive deep into your requirements, understand your business goals, and define the technical architecture for your solution.",
       color: "border-gb-green bg-gb-green"
     },
     {
       number: 2,
-      title: "Explore Partnership",
-      description: "If the idea has promise, we'll discuss partnership options—co-building, funding, or strategic support.",
+      title: "Design & Prototype",
+      description: "Create wireframes, UI/UX designs, and interactive prototypes to visualize your application before development begins.",
       color: "border-gb-blue bg-gb-blue"
     },
     {
       number: 3,
-      title: "Build in 7 Days",
-      description: "In just one week, we'll bring your concept to life with a working prototype you can see, test, and share.",
+      title: "Development & AI Integration",
+      description: "Build your custom software with modern tech stacks, integrating AI capabilities where they add the most value.",
       color: "border-gb-purple bg-gb-purple"
     },
     {
       number: 4,
-      title: "Launch with Confidence",
-      description: "If it's viable, we'll develop a scalable product ready for real users and long-term growth.",
+      title: "Deploy & Support",
+      description: "Launch your application, gather user feedback, and provide ongoing support with continuous improvements.",
+      cta: { text: "Start Your Project", link: "/contact" },
       color: "border-gb-orange bg-gb-orange"
     }
   ];
@@ -42,9 +38,9 @@ const Process = () => {
     <section className="bg-white py-16">
       <div className="container-custom">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-3">Our 4-Step Process</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-3">How We Build Your Software</h2>
           <p className="text-gb-dark/70 text-lg max-w-2xl mx-auto">
-            We turn good ideas into real software—fast.
+            A proven development process that delivers results quickly and efficiently
           </p>
         </div>
         

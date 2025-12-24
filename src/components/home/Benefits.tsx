@@ -1,29 +1,29 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Timer, DollarSign, Users, LineChart } from 'lucide-react';
+import { Cpu, Clock, Shield, TrendingUp } from 'lucide-react';
 
 const Benefits = () => {
   const benefits = [
     {
-      title: "Speed to Market",
-      description: "Launch a working prototype in days—not months.",
-      icon: <Timer className="h-10 w-10 md:h-12 md:w-12 text-gb-blue" />
+      title: "AI-Powered Solutions",
+      description: "Leverage machine learning, natural language processing, and computer vision to create intelligent applications.",
+      icon: <Cpu className="h-10 w-10 md:h-12 md:w-12 text-gb-blue" />
     },
     {
-      title: "Smart Spend",
-      description: "Validate your idea before making a big investment.",
-      icon: <DollarSign className="h-10 w-10 md:h-12 md:w-12 text-gb-green" />
+      title: "Rapid Development",
+      description: "Modern development practices and AI tools accelerate delivery without compromising quality.",
+      icon: <Clock className="h-10 w-10 md:h-12 md:w-12 text-gb-green" />
     },
     {
-      title: "Real Feedback",
-      description: "Test your software with real users and iterate early.",
-      icon: <Users className="h-10 w-10 md:h-12 md:w-12 text-gb-purple" />
+      title: "Enterprise Security",
+      description: "Security-first development with best practices baked into every layer of your application.",
+      icon: <Shield className="h-10 w-10 md:h-12 md:w-12 text-gb-purple" />
     },
     {
-      title: "Built to Scale",
-      description: "Go from MVP to market-ready with a product that grows with you.",
-      icon: <LineChart className="h-10 w-10 md:h-12 md:w-12 text-gb-orange" />
+      title: "Scalable Architecture",
+      description: "Cloud-native solutions built to handle growth from day one to millions of users.",
+      icon: <TrendingUp className="h-10 w-10 md:h-12 md:w-12 text-gb-orange" />
     }
   ];
 
@@ -31,7 +31,10 @@ const Benefits = () => {
     <section className="bg-slate-50 py-12 md:py-28">
       <div className="container-custom">
         <div className="text-center mb-10 md:mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Founders Choose Good Business</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Choose Our Development Team</h2>
+          <p className="mt-3 text-lg text-gb-dark/70 max-w-2xl mx-auto">
+            We combine technical expertise with a deep understanding of what it takes to build successful software products
+          </p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10 max-w-6xl mx-auto">
