@@ -13,32 +13,20 @@ const IdeaCTA = () => {
       />
       
       <div className="container-custom relative z-10 text-center">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-6">
-            Ready to Build Something Great?
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4">
+            Let's Build Together
           </h2>
           
-          <div className="space-y-3 mb-8">
-            <p className="text-lg md:text-xl text-gray-300">
-              Whether it's a new application, AI integration, or digital transformation—
-            </p>
-            
-            <p className="text-xl md:text-2xl font-semibold">
-              We're here to help you build it.
-            </p>
-            
-            <p className="text-lg text-gray-300">
-              Let's discuss your project and create a roadmap to success.
-            </p>
-          </div>
+          <p className="text-lg text-gray-300 mb-8">
+            Ready to bring your vision to life?
+          </p>
           
-          <div className="flex justify-center">
-            <ScrollToTopLink to="/contact">
-              <Button size="lg" className="bg-gb-green hover:bg-gb-green/90 px-6 py-6 text-base">
-                Get in Touch <ArrowRight className="ml-1 h-5 w-5" />
-              </Button>
-            </ScrollToTopLink>
-          </div>
+          <ScrollToTopLink to="/contact">
+            <Button size="lg" className="bg-gb-green hover:bg-gb-green/90 px-8 py-6 text-base">
+              Start a Conversation <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </ScrollToTopLink>
         </div>
       </div>
     </section>
