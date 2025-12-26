@@ -9,27 +9,27 @@ const Process = () => {
   const steps = [
     {
       number: 1,
-      title: "Discovery & Planning",
-      description: "We dive deep into your requirements, understand your business goals, and define the technical architecture for your solution.",
+      title: "Discovery",
+      description: "Understand your goals and define the right solution.",
       color: "border-gb-green bg-gb-green"
     },
     {
       number: 2,
-      title: "Design & Prototype",
-      description: "Create wireframes, UI/UX designs, and interactive prototypes to visualize your application before development begins.",
+      title: "Design",
+      description: "Prototype and refine before writing code.",
       color: "border-gb-blue bg-gb-blue"
     },
     {
       number: 3,
-      title: "Development & AI Integration",
-      description: "Build your custom software with modern tech stacks, integrating AI capabilities where they add the most value.",
+      title: "Build",
+      description: "Develop with modern tools and AI integration.",
       color: "border-gb-purple bg-gb-purple"
     },
     {
       number: 4,
-      title: "Deploy & Support",
-      description: "Launch your application, gather user feedback, and provide ongoing support with continuous improvements.",
-      cta: { text: "Start Your Project", link: "/contact" },
+      title: "Launch",
+      description: "Deploy, iterate, and support your success.",
+      cta: { text: "Get Started", link: "/contact" },
       color: "border-gb-orange bg-gb-orange"
     }
   ];
@@ -38,9 +38,9 @@ const Process = () => {
     <section className="bg-white py-16">
       <div className="container-custom">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-3">How We Build Your Software</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-3">Our Process</h2>
           <p className="text-gb-dark/70 text-lg max-w-2xl mx-auto">
-            A proven development process that delivers results quickly and efficiently
+            Simple, proven, and focused on results.
           </p>
         </div>
         
