@@ -19,17 +19,17 @@ const ScrollReveal = ({
 }: ScrollRevealProps) => {
   const { ref, isVisible } = useScrollReveal(0.1);
 
-  const getAnimationClass = () => {
+  const getInitialTransform = () => {
     switch (direction) {
       case 'left':
-        return 'animate-slide-in-left';
+        return 'translate-x-[-50px]';
       case 'right':
-        return 'animate-slide-in-right';
+        return 'translate-x-[50px]';
       case 'up':
-        return 'animate-slide-up';
+        return 'translate-y-[30px]';
       case 'fade':
       default:
-        return 'animate-fade-in';
+        return 'translate-y-[20px]';
     }
   };
 
@@ -37,13 +37,13 @@ const ScrollReveal = ({
     <div
       ref={ref}
       className={cn(
-        'opacity-0',
-        isVisible && getAnimationClass(),
+        'transition-all duration-700 ease-out',
+        !isVisible && `opacity-0 ${getInitialTransform()}`,
+        isVisible && 'opacity-100 translate-x-0 translate-y-0',
         className
       )}
       style={{ 
-        animationDelay: isVisible ? `${delay}ms` : '0ms',
-        animationFillMode: 'forwards'
+        transitionDelay: `${delay}ms`
       }}
     >
       {children}
