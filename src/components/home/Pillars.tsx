@@ -42,9 +42,9 @@ const Pillars = () => {
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
           {services.map((service, index) => (
-            <ScrollReveal key={index} direction="up" delay={index * 100}>
-              <Card className="p-4 md:p-5 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg">
-                <div className="flex flex-col items-center text-center">
+            <ScrollReveal key={index} direction="up" delay={index * 100} className="h-full">
+              <Card className="p-4 md:p-5 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg h-full">
+                <div className="flex flex-col items-center text-center h-full">
                   <div className="mb-2 md:mb-3">{service.icon}</div>
                   <h3 className="text-2xl font-bold text-gb-dark mb-1 md:mb-2">{service.title}</h3>
                   <p className="text-gb-dark/70 text-base">{service.description}</p>
