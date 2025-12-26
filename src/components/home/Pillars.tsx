@@ -9,23 +9,23 @@ const Pillars = () => {
   
   const services = [
     {
-      title: "Web Applications",
-      description: "Full-stack web applications built with modern frameworks like React, Next.js, and cloud-native backends.",
+      title: "Web Apps",
+      description: "Modern, responsive web applications.",
       icon: <Globe className="h-10 w-10 text-gb-green" />,
     },
     {
       title: "Mobile Apps",
-      description: "Cross-platform mobile applications for iOS and Android using React Native and Flutter.",
+      description: "Native iOS and Android experiences.",
       icon: <Smartphone className="h-10 w-10 text-gb-blue" />,
     },
     {
       title: "AI & Automation",
-      description: "Custom AI solutions including chatbots, document processing, and intelligent workflow automation.",
+      description: "Intelligent workflows and assistants.",
       icon: <Bot className="h-10 w-10 text-gb-purple" />,
     },
     {
       title: "Data & Analytics",
-      description: "Data pipelines, dashboards, and analytics platforms that turn your data into actionable insights.",
+      description: "Insights that drive decisions.",
       icon: <Database className="h-10 w-10 text-gb-orange" />,
     },
   ];
@@ -36,7 +36,7 @@ const Pillars = () => {
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">What We Build</h2>
           <p className="mt-3 text-lg text-gb-dark/70 max-w-2xl mx-auto">
-            From web and mobile applications to AI-powered systems, we deliver end-to-end software solutions
+            End-to-end software solutions.
           </p>
         </div>
         

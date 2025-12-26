@@ -6,23 +6,23 @@ import { Cpu, Clock, Shield, TrendingUp } from 'lucide-react';
 const Benefits = () => {
   const benefits = [
     {
-      title: "AI-Powered Solutions",
-      description: "Leverage machine learning, natural language processing, and computer vision to create intelligent applications.",
+      title: "AI-Powered",
+      description: "Intelligent features that automate and enhance.",
       icon: <Cpu className="h-10 w-10 md:h-12 md:w-12 text-gb-blue" />
     },
     {
-      title: "Rapid Development",
-      description: "Modern development practices and AI tools accelerate delivery without compromising quality.",
+      title: "Fast Delivery",
+      description: "Launch quickly without sacrificing quality.",
       icon: <Clock className="h-10 w-10 md:h-12 md:w-12 text-gb-green" />
     },
     {
-      title: "Enterprise Security",
-      description: "Security-first development with best practices baked into every layer of your application.",
+      title: "Secure",
+      description: "Built with security at every layer.",
       icon: <Shield className="h-10 w-10 md:h-12 md:w-12 text-gb-purple" />
     },
     {
-      title: "Scalable Architecture",
-      description: "Cloud-native solutions built to handle growth from day one to millions of users.",
+      title: "Scalable",
+      description: "Ready to grow with your business.",
       icon: <TrendingUp className="h-10 w-10 md:h-12 md:w-12 text-gb-orange" />
     }
   ];
@@ -31,9 +31,9 @@ const Benefits = () => {
     <section className="bg-slate-50 py-12 md:py-28">
       <div className="container-custom">
         <div className="text-center mb-10 md:mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Choose Our Development Team</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">Why Work With Us</h2>
           <p className="mt-3 text-lg text-gb-dark/70 max-w-2xl mx-auto">
-            We combine technical expertise with a deep understanding of what it takes to build successful software products
+            We build software that works.
           </p>
         </div>
         

@@ -8,10 +8,10 @@ const Intro = () => {
       <div className="container-custom">
         <div className="text-center max-w-4xl mx-auto mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Building the Future with Code & AI
+            Technology That Works
           </h2>
           <p className="text-lg text-muted-foreground">
-            We specialize in creating custom software solutions that leverage the latest in artificial intelligence. Whether you need a web application, mobile app, or AI-powered automation, we deliver technology that drives results.
+            Custom software and AI solutions designed to solve real business problems.
           </p>
         </div>
         
@@ -21,7 +21,7 @@ const Intro = () => {
               <Code className="w-7 h-7 text-gb-green" />
             </div>
             <h3 className="font-semibold text-foreground mb-2">Custom Development</h3>
-            <p className="text-sm text-muted-foreground">Tailored software built to your exact specifications</p>
+            <p className="text-sm text-muted-foreground">Built to your exact needs</p>
           </div>
           
           <div className="text-center p-6">
@@ -29,7 +29,7 @@ const Intro = () => {
               <Brain className="w-7 h-7 text-gb-blue" />
             </div>
             <h3 className="font-semibold text-foreground mb-2">AI Integration</h3>
-            <p className="text-sm text-muted-foreground">Smart features powered by cutting-edge AI models</p>
+            <p className="text-sm text-muted-foreground">Intelligent features that add value</p>
           </div>
           
           <div className="text-center p-6">
@@ -37,7 +37,7 @@ const Intro = () => {
               <Rocket className="w-7 h-7 text-gb-purple" />
             </div>
             <h3 className="font-semibold text-foreground mb-2">Rapid Delivery</h3>
-            <p className="text-sm text-muted-foreground">From concept to deployment in weeks, not months</p>
+            <p className="text-sm text-muted-foreground">Weeks, not months</p>
           </div>
           
           <div className="text-center p-6">
@@ -45,7 +45,7 @@ const Intro = () => {
               <Zap className="w-7 h-7 text-gb-orange" />
             </div>
             <h3 className="font-semibold text-foreground mb-2">Scalable Solutions</h3>
-            <p className="text-sm text-muted-foreground">Built to grow with your business needs</p>
+            <p className="text-sm text-muted-foreground">Grows with your business</p>
           </div>
         </div>
       </div>
