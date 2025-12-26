@@ -43,8 +43,8 @@ const Hero = () => {
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-6xl mx-auto">
             Custom Software & AI Solutions
           </h1>
-          <p className="mt-3 md:mt-4 text-base md:text-lg text-white/80 max-w-3xl mx-auto">
-            We build intelligent software solutions powered by AI. From custom applications to automation systems, we turn your vision into production-ready technology.
+          <p className="mt-3 md:mt-4 text-base md:text-lg text-white/80 max-w-2xl mx-auto">
+            From concept to launch, we build the technology that powers your business.
           </p>
         </div>
         
