@@ -9,22 +9,22 @@ const Pillars = () => {
     {
       title: "Web Apps",
       description: "Modern, responsive web applications.",
-      icon: <Globe className="h-10 w-10 text-gb-green" />,
+      icon: <Globe className="h-14 w-14 text-gb-green" />,
     },
     {
       title: "Mobile Apps",
       description: "Native iOS and Android experiences.",
-      icon: <Smartphone className="h-10 w-10 text-gb-blue" />,
+      icon: <Smartphone className="h-14 w-14 text-gb-blue" />,
     },
     {
       title: "AI & Automation",
       description: "Intelligent workflows and assistants.",
-      icon: <Bot className="h-10 w-10 text-gb-purple" />,
+      icon: <Bot className="h-14 w-14 text-gb-purple" />,
     },
     {
       title: "Data & Analytics",
       description: "Insights that drive decisions.",
-      icon: <Database className="h-10 w-10 text-gb-orange" />,
+      icon: <Database className="h-14 w-14 text-gb-orange" />,
     },
   ];
 
@@ -43,11 +43,11 @@ const Pillars = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
           {services.map((service, index) => (
             <ScrollReveal key={index} direction="up" delay={index * 100} className="h-full">
-              <Card className="p-4 md:p-5 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg h-full">
+              <Card className="p-6 md:p-8 shadow-md hover:shadow-lg transition-shadow duration-300 bg-white rounded-lg h-full">
                 <div className="flex flex-col items-center text-center h-full">
-                  <div className="mb-2 md:mb-3">{service.icon}</div>
-                  <h3 className="text-2xl font-bold text-gb-dark mb-1 md:mb-2">{service.title}</h3>
-                  <p className="text-gb-dark/70 text-base">{service.description}</p>
+                  <div className="mb-4">{service.icon}</div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-gb-dark mb-2 md:mb-3">{service.title}</h3>
+                  <p className="text-gb-dark/70 text-lg">{service.description}</p>
                 </div>
               </Card>
             </ScrollReveal>
