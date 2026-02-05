@@ -40,21 +40,26 @@ const Hero = () => {
       {/* Content */}
       <div className="container-custom py-8 md:py-10 flex flex-col items-center justify-center h-full relative z-10">
         <div className="text-center mx-auto">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-6xl mx-auto">
-            Custom Software & AI Solutions
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-5xl mx-auto leading-tight">
+            Stop Renting the Software That Runs Your Business.
           </h1>
-          <p className="mt-3 md:mt-4 text-base md:text-lg text-white/80 max-w-2xl mx-auto">
-            From concept to launch, we build the technology that powers your business.
+          <p className="mt-4 md:mt-6 text-lg md:text-xl text-white/80 max-w-3xl mx-auto">
+            Good Business helps companies replace bloated SaaS stacks with custom, AI-native software built around how they actually work.
           </p>
         </div>
         
-        {/* Button */}
-        <div className={`${isMobile ? 'mt-6' : 'mt-4'} flex justify-center`}>
+        {/* Buttons */}
+        <div className={`${isMobile ? 'mt-8' : 'mt-6'} flex flex-col sm:flex-row gap-4 justify-center`}>
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center">
             <Link to="/contact">
-              Start Your Project
+              Start a Conversation
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
+          </Button>
+          <Button asChild variant="outline" className="border-white/30 text-white hover:bg-white/10 font-semibold py-4 px-6 rounded-md text-lg">
+            <a href="#how-it-works">
+              See How It Works
+            </a>
           </Button>
         </div>
       </div>

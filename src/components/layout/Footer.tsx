@@ -18,7 +18,7 @@ const Footer = () => {
               </ScrollToTopLink>
             </h3>
             <p className="mb-3 text-gray-300 max-w-md text-sm">
-              We help entrepreneurs and teams build, scale, and launch great software—fast.
+              We help companies own the software that runs their business.
             </p>
             <div className="flex space-x-4">
               <a 

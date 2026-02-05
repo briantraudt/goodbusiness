@@ -7,7 +7,7 @@ import ScrollReveal from '@/components/common/ScrollReveal';
 
 const IdeaCTA = () => {
   return (
-    <section className="bg-gb-dark text-white py-16 md:py-20 relative overflow-hidden">
+    <section className="bg-gb-dark text-white py-16 md:py-24 relative overflow-hidden">
       <div 
         className="absolute inset-0 bg-cover bg-center opacity-15"
         style={{ backgroundImage: "url('/lovable-uploads/93e6cb06-ef46-496a-9bc6-57e655a4dc18.png')" }}
@@ -15,13 +15,17 @@ const IdeaCTA = () => {
       
       <div className="container-custom relative z-10 text-center">
         <ScrollReveal direction="up">
-          <div className="max-w-2xl mx-auto">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4">
-              Let's Build Together
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+              If Your Software Stack Feels Heavy, That's the Signal.
             </h2>
             
-            <p className="text-lg text-gray-300 mb-8">
-              Ready to bring your vision to life?
+            <p className="text-lg md:text-xl text-gray-300 mb-4">
+              We help companies rethink what they should buy — and what they should build.
+            </p>
+            
+            <p className="text-lg text-gray-400 mb-8">
+              Let's figure out which systems you should actually own.
             </p>
             
             <ScrollToTopLink to="/contact">
