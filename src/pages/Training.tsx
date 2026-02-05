@@ -175,21 +175,27 @@ const Training = () => {
     <PageLayout>
       <div className="bg-white min-h-screen">
         {/* Hero Section */}
-        <div className="bg-gb-dark text-white">
-          <div className="container-custom section-padding">
+        <div className="bg-gb-dark text-white relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gb-blue/10 to-transparent" />
+          
+          <div className="container-custom py-16 md:py-24 relative z-10">
             <div className="text-center max-w-4xl mx-auto">
-              <h1 className="text-5xl md:text-6xl font-bold mb-6">
-                AI 101 Training Class
+              <span className="inline-block text-gb-blue font-semibold text-sm uppercase tracking-wider mb-4">
+                1-on-1 Training
+              </span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                Learn to Build With AI
               </h1>
-              <p className="text-xl mb-8 opacity-90">
-                Learn the very basics of how to build your own website, software, and apps with AI assistance. 
-                One-on-one personalized training session.
+              <p className="text-xl text-white/80 mb-8 max-w-2xl mx-auto">
+                Master the fundamentals of AI-powered development in a personalized, one-hour session 
+                tailored to your goals.
               </p>
-              <div className="bg-gb-green text-white text-2xl font-bold py-4 px-8 rounded-lg inline-block">
-                $250 for 1 Hour Session
+              <div className="inline-flex items-center gap-3 bg-gb-green text-white text-xl md:text-2xl font-bold py-4 px-8 rounded-xl">
+                $250
+                <span className="text-white/70 font-normal text-lg">/ 1 Hour Session</span>
               </div>
-              <div className="mt-4 text-lg opacity-80">
-                Available: 12:00 PM - 1:00 PM CST Monday-Saturday
+              <div className="mt-4 text-white/60">
+                Available Monday-Saturday • 12:00 PM - 1:00 PM CST
               </div>
             </div>
           </div>
@@ -197,13 +203,17 @@ const Training = () => {
 
         {/* Course Details */}
         <div className="bg-white">
-          <div className="container-custom py-20">
+          <div className="container-custom py-16 md:py-20">
             <div className="text-center mb-12">
-              <p className="text-lg md:text-xl text-gb-dark leading-relaxed max-w-4xl mx-auto">
-                At Good Business, we specialize in transforming ideas into real, working products—quickly and
-                collaboratively. Whether you're refining a concept, designing a user-friendly interface, validating a
-                prototype, or building a scalable app, our team walks with you every step of the way. We don't just offer
-                advice—we roll up our sleeves and help you build something great.
+              <span className="inline-block text-gb-green font-semibold text-sm uppercase tracking-wider mb-3">
+                What You'll Get
+              </span>
+              <h2 className="text-2xl md:text-3xl font-bold text-gb-dark mb-4">
+                Master AI-Powered Development
+              </h2>
+              <p className="text-lg text-gb-dark/70 leading-relaxed max-w-3xl mx-auto">
+                In just one hour, you'll learn the fundamentals of using AI tools to build websites, apps, and software — 
+                even if you've never written a line of code. This personalized session is tailored to your specific goals and projects.
               </p>
             </div>
             

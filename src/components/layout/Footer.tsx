@@ -49,23 +49,21 @@ const Footer = () => {
                     </ScrollToTopLink>
                   </li>
                   <li>
+                    <ScrollToTopLink to="/training" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                      AI Training
+                    </ScrollToTopLink>
                   </li>
                 </ul>
               </div>
               <div>
                 <ul className="space-y-1">
                   <li>
-                    <ScrollToTopLink to="/evaluator" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
-                      Evaluator
-                    </ScrollToTopLink>
-                  </li>
-                  <li>
                     <ScrollToTopLink to="/contact" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
                       Contact
                     </ScrollToTopLink>
                   </li>
                   <li>
-                    <ScrollToTopLink to="/client" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                    <ScrollToTopLink to="/clients" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
                       Client Portal
                     </ScrollToTopLink>
                   </li>
