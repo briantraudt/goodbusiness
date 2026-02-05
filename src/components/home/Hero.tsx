@@ -38,36 +38,36 @@ const Hero = () => {
       
       {/* Content */}
       <div className="container-custom py-6 md:py-10 flex flex-col items-center justify-center h-full relative z-10">
-        <div className="text-center mx-auto">
+        <div className="text-center mx-auto bg-gradient-to-r from-black/75 to-black/30 px-8 py-10 md:px-12 md:py-14 rounded-xl">
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-5xl mx-auto leading-tight">
             Build the Software You Actually Need.
           </h1>
           <p className="mt-3 md:mt-6 text-base md:text-xl text-white/90 max-w-3xl mx-auto">
             Stop adapting your business to someone else's product roadmap. We build AI-native software tailored to how you work—and you own it forever.
           </p>
-        </div>
-        
-        {/* Buttons */}
-        <div className="mt-6 md:mt-6 flex flex-col sm:flex-row gap-4 justify-center">
-          <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center">
-            <Link to="/contact">
-              Start Building
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
-          {!isMobile && (
-            <Button asChild variant="outline" className="border-white/30 bg-transparent text-white hover:bg-white hover:text-gb-dark hover:border-white font-semibold py-4 px-6 rounded-md text-lg">
-              <a href="#how-it-works">
-                See What's Possible
-              </a>
+          
+          {/* Buttons */}
+          <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center">
+              <Link to="/contact">
+                Start Building
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </Button>
-          )}
+            {!isMobile && (
+              <Button asChild variant="outline" className="border-white/30 bg-transparent text-white hover:bg-white hover:text-gb-dark hover:border-white font-semibold py-4 px-6 rounded-md text-lg">
+                <a href="#how-it-works">
+                  See What's Possible
+                </a>
+              </Button>
+            )}
+          </div>
+          
+          {/* Micro-copy */}
+          <p className="mt-4 text-sm text-white/60">
+            From idea to deployment in weeks, not years.
+          </p>
         </div>
-        
-        {/* Micro-copy */}
-        <p className="mt-4 text-sm text-white/60">
-          From idea to deployment in weeks, not years.
-        </p>
       </div>
     </section>
   );
