@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import Hero from '@/components/home/Hero';
-import ProblemSection from '@/components/home/ProblemSection';
 import SolutionSection from '@/components/home/SolutionSection';
 import Pillars from '@/components/home/Pillars';
 import Process from '@/components/home/Process';
@@ -28,7 +27,6 @@ const Index = () => {
   return (
     <PageLayout>
       <Hero />
-      <ProblemSection />
       <SolutionSection />
       <Pillars />
       <Process />
