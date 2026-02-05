@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { TrendingUp, Settings, Brain, Rocket, Building2 } from 'lucide-react';
 import ScrollReveal from '@/components/common/ScrollReveal';
+import outcomesBg from '@/assets/outcomes-bg.jpg';
 
 const Pillars = () => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  
+  useEffect(() => {
+    const img = new Image();
+    img.src = outcomesBg;
+    img.onload = () => setImageLoaded(true);
+  }, []);
   const outcomes = [
     {
       title: "Revenue Growth",
@@ -37,8 +45,18 @@ const Pillars = () => {
   ];
 
   return (
-    <section className="bg-slate-50 py-16 md:py-24">
-      <div className="container-custom">
+    <section className="relative py-16 md:py-24 overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0 w-full h-full">
+        <img 
+          src={outcomesBg}
+          alt="" 
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+        />
+        {/* Light overlay to ensure text readability */}
+        <div className="absolute inset-0 bg-white/70"></div>
+      </div>
+      <div className="container-custom relative z-10">
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
             <span className="inline-block text-gb-purple font-semibold text-sm uppercase tracking-wider mb-3">
