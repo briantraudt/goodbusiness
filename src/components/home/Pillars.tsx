@@ -63,7 +63,7 @@ const Pillars = () => {
               Results That Matter
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-4">
-              What Outcomes We Deliver
+              The Impact We Create
             </h2>
           </div>
         </ScrollReveal>
@@ -85,7 +85,7 @@ const Pillars = () => {
         <ScrollReveal direction="up" delay={400}>
           <div className="text-center">
             <p className="text-lg text-gb-dark/70 font-medium">
-              If it doesn't drive a measurable outcome, <span className="text-gb-green font-semibold">we don't build it.</span>
+              If it doesn't move the needle, <span className="text-gb-green font-semibold">we don't build it.</span>
             </p>
           </div>
         </ScrollReveal>

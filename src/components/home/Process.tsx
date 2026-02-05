@@ -6,8 +6,8 @@ const Process = () => {
   const steps = [
     {
       number: 1,
-      title: "Define the Outcome",
-      description: "Align on what success actually means—financial, operational, or strategic.",
+      title: "Define Success",
+      description: "Align on what winning actually looks like—financial, operational, or strategic.",
       icon: <Target className="h-5 w-5" />,
       color: "bg-gb-green",
       borderColor: "border-l-gb-green"
@@ -31,7 +31,7 @@ const Process = () => {
     {
       number: 4,
       title: "Measure & Iterate",
-      description: "Work continues until outcomes improve.",
+      description: "Work continues until the numbers move.",
       icon: <BarChart3 className="h-5 w-5" />,
       color: "bg-gb-orange",
       borderColor: "border-l-gb-orange"
