@@ -60,7 +60,7 @@ const Hero = () => {
             </Link>
           </Button>
           {!isMobile && (
-            <Button asChild variant="outline" className="border-white/30 bg-transparent text-white hover:bg-white/10 font-semibold py-4 px-6 rounded-md text-lg">
+            <Button asChild variant="outline" className="border-white/30 bg-transparent text-white hover:bg-white hover:text-gb-dark hover:border-white font-semibold py-4 px-6 rounded-md text-lg">
               <a href="#how-it-works">
                 See How It Works
               </a>
