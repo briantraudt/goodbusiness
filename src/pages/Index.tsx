@@ -13,7 +13,7 @@ const Index = () => {
   useEffect(() => {
     // Array of image URLs to preload
     const imagesToPreload = [
-      "/lovable-uploads/2ed84956-a4d9-48dc-84b7-855717aba568.png", // Hero background
+      "/lovable-uploads/hero-image.png", // Hero background
       "/lovable-uploads/93e6cb06-ef46-496a-9bc6-57e655a4dc18.png"  // CTA background
     ];
     
