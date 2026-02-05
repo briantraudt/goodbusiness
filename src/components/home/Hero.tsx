@@ -40,12 +40,12 @@ const Hero = () => {
       <div className="container-custom py-6 md:py-10 flex flex-col items-center justify-center h-full relative z-10">
         <div className="text-center mx-auto">
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-5xl mx-auto leading-tight">
-            Stop Renting the Software That Runs Your Business.
+            We Build Outcomes. Not Software.
           </h1>
           <p className="mt-3 md:mt-6 text-base md:text-xl text-white/90 max-w-2xl mx-auto">
             {isMobile 
-              ? "Custom, AI-native software built around how your business actually works."
-              : "Good Business helps companies replace bloated SaaS stacks with custom, AI-native software built around how they actually work."
+              ? "Solutions that deliver real results—revenue, efficiency, clarity, and growth."
+              : "Good Business helps organizations design and execute solutions that deliver real results—revenue, efficiency, clarity, and growth."
             }
           </p>
         </div>
@@ -54,7 +54,7 @@ const Hero = () => {
         <div className="mt-6 md:mt-6 flex flex-col sm:flex-row gap-4 justify-center">
           <Button asChild className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center">
             <Link to="/contact">
-              Start a Conversation
+              Define Your Outcome
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
