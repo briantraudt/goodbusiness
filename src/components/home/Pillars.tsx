@@ -1,84 +1,74 @@
-
 import React from 'react';
-import { Building2, Cpu, Replace, BarChart3, ArrowRight } from 'lucide-react';
-import { Card } from "@/components/ui/card";
+import { TrendingUp, Settings, Brain, Rocket, Building2 } from 'lucide-react';
 import ScrollReveal from '@/components/common/ScrollReveal';
-import ScrollToTopLink from '@/components/common/ScrollToTopLink';
 
 const Pillars = () => {
-  const services = [
+  const outcomes = [
     {
-      title: "Internal Business Software",
-      description: "Custom tools designed around how your team actually operates — CRMs, dashboards, workflow tools, and more.",
-      icon: <Building2 className="h-8 w-8" />,
-      color: "bg-gb-green/10 text-gb-green border-gb-green/20",
-      hoverColor: "group-hover:bg-gb-green group-hover:text-white"
+      title: "Revenue Growth",
+      description: "Through smarter workflows and automation",
+      icon: <TrendingUp className="h-6 w-6" />,
+      color: "text-gb-green"
     },
     {
-      title: "AI-Native Workflows",
-      description: "Automation and intelligence built directly into your systems — not bolted on as an afterthought.",
-      icon: <Cpu className="h-8 w-8" />,
-      color: "bg-gb-blue/10 text-gb-blue border-gb-blue/20",
-      hoverColor: "group-hover:bg-gb-blue group-hover:text-white"
+      title: "Operational Efficiency",
+      description: "By removing friction and manual work",
+      icon: <Settings className="h-6 w-6" />,
+      color: "text-gb-blue"
     },
     {
-      title: "SaaS Replacement Tools",
-      description: "Purpose-built software that replaces multiple expensive licenses with one owned solution.",
-      icon: <Replace className="h-8 w-8" />,
-      color: "bg-gb-purple/10 text-gb-purple border-gb-purple/20",
-      hoverColor: "group-hover:bg-gb-purple group-hover:text-white"
+      title: "Clear Decision-Making",
+      description: "Powered by actionable data and AI",
+      icon: <Brain className="h-6 w-6" />,
+      color: "text-gb-purple"
     },
     {
-      title: "Data & Decision Systems",
-      description: "Dashboards, analytics, and insights designed for real decisions — not vanity metrics.",
-      icon: <BarChart3 className="h-8 w-8" />,
-      color: "bg-gb-orange/10 text-gb-orange border-gb-orange/20",
-      hoverColor: "group-hover:bg-gb-orange group-hover:text-white"
+      title: "Faster Execution",
+      description: "From idea to impact",
+      icon: <Rocket className="h-6 w-6" />,
+      color: "text-gb-orange"
     },
+    {
+      title: "Scalable Foundations",
+      description: "That grow with the business",
+      icon: <Building2 className="h-6 w-6" />,
+      color: "text-gb-green"
+    }
   ];
 
   return (
-    <section className="bg-white">
-      <div className="container-custom py-16 md:py-24">
+    <section className="bg-slate-50 py-16 md:py-24">
+      <div className="container-custom">
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
             <span className="inline-block text-gb-purple font-semibold text-sm uppercase tracking-wider mb-3">
-              What We Build
+              Results That Matter
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-4">
-              Software That Replaces Your SaaS Stack
+              What Outcomes We Deliver
             </h2>
-            <p className="text-lg text-gb-dark/60 max-w-2xl mx-auto">
-              We help you own the tools that run your business
-            </p>
           </div>
         </ScrollReveal>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto">
-          {services.map((service, index) => (
-            <ScrollReveal key={index} direction="up" delay={index * 100} className="h-full">
-              <Card className="group p-6 md:p-8 shadow-sm hover:shadow-lg transition-all duration-300 bg-white rounded-xl border border-slate-100 h-full">
-                <div className="flex flex-col h-full">
-                  <div className={`inline-flex items-center justify-center w-14 h-14 rounded-xl mb-5 border transition-colors duration-300 ${service.color} ${service.hoverColor}`}>
-                    {service.icon}
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-gb-dark mb-3">{service.title}</h3>
-                  <p className="text-gb-dark/70 text-base md:text-lg flex-grow">{service.description}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-6xl mx-auto mb-10">
+          {outcomes.map((outcome, index) => (
+            <ScrollReveal key={index} direction="up" delay={index * 80}>
+              <div className="text-center p-6 bg-white rounded-xl border border-slate-100 hover:border-slate-200 hover:shadow-sm transition-all h-full">
+                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-50 ${outcome.color} mb-4`}>
+                  {outcome.icon}
                 </div>
-              </Card>
+                <h3 className="text-gb-dark font-semibold mb-2">{outcome.title}</h3>
+                <p className="text-gb-dark/60 text-sm">{outcome.description}</p>
+              </div>
             </ScrollReveal>
           ))}
         </div>
 
         <ScrollReveal direction="up" delay={400}>
-          <div className="text-center mt-12">
-            <ScrollToTopLink 
-              to="/consulting" 
-              className="inline-flex items-center text-gb-green font-semibold hover:text-gb-green/80 transition-colors group text-lg"
-            >
-              See all our services 
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </ScrollToTopLink>
+          <div className="text-center">
+            <p className="text-lg text-gb-dark/70 font-medium">
+              If it doesn't drive a measurable outcome, <span className="text-gb-green font-semibold">we don't build it.</span>
+            </p>
           </div>
         </ScrollReveal>
       </div>
