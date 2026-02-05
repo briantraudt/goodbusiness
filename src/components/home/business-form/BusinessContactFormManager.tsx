@@ -127,7 +127,7 @@ const BusinessContactFormManager: React.FC<BusinessContactFormManagerProps> = ({
         <div className="flex justify-center">
           <Button 
             type="submit" 
-            className="w-1/4 bg-gb-green hover:bg-gb-green/90 text-white font-medium py-6 h-auto text-lg"
+            className="px-8 bg-gb-green hover:bg-gb-green/90 text-white font-medium text-lg"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
