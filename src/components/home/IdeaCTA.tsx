@@ -16,17 +16,13 @@ const IdeaCTA = () => {
       <div className="container-custom relative z-10 text-center">
         <ScrollReveal direction="up">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-              If Your Software Stack Feels Heavy, That's the Signal.
-            </h2>
-            
-            <p className="text-lg md:text-xl text-gray-300 mb-4">
-              We help companies rethink what they should buy — and what they should build.
-            </p>
-            
-            <p className="text-lg text-gray-400 mb-8">
-              Let's figure out which systems you should actually own.
-            </p>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
+            Ready to Own Your Software?
+          </h2>
+          
+          <p className="text-lg md:text-xl text-gray-300 mb-8">
+            Let's figure out which systems you should build — and which you should buy.
+          </p>
             
             <ScrollToTopLink to="/contact">
               <Button size="lg" className="bg-gb-green hover:bg-gb-green/90 px-8 py-6 text-base">
