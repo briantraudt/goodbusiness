@@ -291,6 +291,39 @@ export type Database = {
         }
         Relationships: []
       }
+      confidence_adjustments: {
+        Row: {
+          adjustment: number
+          category: string
+          category_type: string
+          id: string
+          last_updated: string
+          loss_count: number
+          total_trades: number
+          win_count: number
+        }
+        Insert: {
+          adjustment?: number
+          category: string
+          category_type: string
+          id?: string
+          last_updated?: string
+          loss_count?: number
+          total_trades?: number
+          win_count?: number
+        }
+        Update: {
+          adjustment?: number
+          category?: string
+          category_type?: string
+          id?: string
+          last_updated?: string
+          loss_count?: number
+          total_trades?: number
+          win_count?: number
+        }
+        Relationships: []
+      }
       invoice_items: {
         Row: {
           amount: number
@@ -637,6 +670,75 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      trade_history: {
+        Row: {
+          atr_exhaustion_applied: boolean | null
+          confidence_score: number
+          created_at: string
+          direction: string
+          entry_price: number
+          exit_price: number | null
+          final_trade_score: number | null
+          id: string
+          invalidation_level: number | null
+          market_state: string
+          max_adverse_excursion: number | null
+          max_favorable_excursion: number | null
+          rationale: string[] | null
+          result: string | null
+          spy_direction: string | null
+          structure_respected: boolean | null
+          ticker: string
+          trade_date: string
+          updated_at: string
+          vwap_respected: boolean | null
+        }
+        Insert: {
+          atr_exhaustion_applied?: boolean | null
+          confidence_score: number
+          created_at?: string
+          direction: string
+          entry_price: number
+          exit_price?: number | null
+          final_trade_score?: number | null
+          id?: string
+          invalidation_level?: number | null
+          market_state: string
+          max_adverse_excursion?: number | null
+          max_favorable_excursion?: number | null
+          rationale?: string[] | null
+          result?: string | null
+          spy_direction?: string | null
+          structure_respected?: boolean | null
+          ticker: string
+          trade_date: string
+          updated_at?: string
+          vwap_respected?: boolean | null
+        }
+        Update: {
+          atr_exhaustion_applied?: boolean | null
+          confidence_score?: number
+          created_at?: string
+          direction?: string
+          entry_price?: number
+          exit_price?: number | null
+          final_trade_score?: number | null
+          id?: string
+          invalidation_level?: number | null
+          market_state?: string
+          max_adverse_excursion?: number | null
+          max_favorable_excursion?: number | null
+          rationale?: string[] | null
+          result?: string | null
+          spy_direction?: string | null
+          structure_respected?: boolean | null
+          ticker?: string
+          trade_date?: string
+          updated_at?: string
+          vwap_respected?: boolean | null
+        }
+        Relationships: []
       }
       training_bookings: {
         Row: {

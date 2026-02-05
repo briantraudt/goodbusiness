@@ -4,7 +4,6 @@ import Hero from '@/components/home/Hero';
 import SolutionSection from '@/components/home/SolutionSection';
 import Pillars from '@/components/home/Pillars';
 import Process from '@/components/home/Process';
-import Benefits from '@/components/home/Benefits';
 import IdeaCTA from '@/components/home/IdeaCTA';
 import homeHeroBg from '@/assets/home-hero-bg.jpg';
 
@@ -30,7 +29,6 @@ const Index = () => {
       <SolutionSection />
       <Pillars />
       <Process />
-      <Benefits />
       <IdeaCTA />
     </PageLayout>
   );
