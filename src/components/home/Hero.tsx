@@ -33,8 +33,7 @@ const Hero = () => {
             target.style.display = 'none';
           }}
         />
-        {/* Dark overlay - increased contrast for mobile legibility */}
-        <div className="absolute inset-0 bg-black/80 md:bg-black/75"></div>
+        {/* Dark overlay - temporarily removed */}
       </div>
       
       {/* Content */}
