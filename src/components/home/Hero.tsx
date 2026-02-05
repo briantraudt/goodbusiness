@@ -40,7 +40,8 @@ const Hero = () => {
       <div className="container-custom py-6 md:py-10 flex flex-col items-center justify-center h-full relative z-10">
         <div className="text-center mx-auto">
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-5xl mx-auto leading-tight">
-            We Build Outcomes. Not Software.
+            We Build Outcomes.<br />
+            <span className="text-gb-green">Not Software.</span>
           </h1>
           <p className="mt-3 md:mt-6 text-base md:text-xl text-white/90 max-w-2xl mx-auto">
             {isMobile 
