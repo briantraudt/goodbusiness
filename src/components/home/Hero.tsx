@@ -1,9 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+import homeHeroBg from '@/assets/home-hero-bg.jpg';
 
 const Hero = () => {
   const isMobile = useIsMobile();
@@ -12,10 +12,9 @@ const Hero = () => {
   // Preload the hero image
   useEffect(() => {
     const img = new Image();
-    img.src = "/lovable-uploads/2ed84956-a4d9-48dc-84b7-855717aba568.png";
+    img.src = homeHeroBg;
     img.onload = () => setImageLoaded(true);
   }, []);
-  
   return (
     <section className="relative overflow-hidden min-h-[60vh] md:min-h-[70vh] flex items-center bg-gray-900">
       {/* Background Image with loading state */}
@@ -24,7 +23,7 @@ const Hero = () => {
           <div className="absolute inset-0 bg-gray-800 animate-pulse"></div>
         )}
         <img 
-          src="/lovable-uploads/2ed84956-a4d9-48dc-84b7-855717aba568.png"
+          src={homeHeroBg}
           alt="Software development and AI solutions" 
           className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           onError={(e) => {
