@@ -9,40 +9,37 @@ const Process = () => {
   const steps = [
     {
       number: 1,
-      title: "Discovery",
-      description: "Understand your goals and define the right solution.",
+      title: "Understand the Business",
+      description: "We map real workflows, constraints, and costs — not just feature requests.",
       color: "border-gb-green bg-gb-green"
     },
     {
       number: 2,
-      title: "Design",
-      description: "Prototype and refine before writing code.",
+      title: "Design the Right System",
+      description: "We prototype the simplest software that solves the actual problem.",
       color: "border-gb-blue bg-gb-blue"
     },
     {
       number: 3,
-      title: "Build",
-      description: "Develop with modern tools and AI integration.",
+      title: "Build Fast, With AI",
+      description: "Modern tools and AI let us move in weeks, not months.",
       color: "border-gb-purple bg-gb-purple"
     },
     {
       number: 4,
-      title: "Launch",
-      description: "Deploy, iterate, and support your success.",
+      title: "Launch, Iterate, Own",
+      description: "You own the software. We refine it as the business evolves.",
       cta: { text: "Get Started", link: "/contact" },
       color: "border-gb-orange bg-gb-orange"
     }
   ];
 
   return (
-    <section className="bg-white py-16">
+    <section id="how-it-works" className="bg-white py-16 md:py-24">
       <div className="container-custom">
         <ScrollReveal direction="up">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-3">Our Process</h2>
-            <p className="text-gb-dark/70 text-lg max-w-2xl mx-auto">
-              Simple, proven, and focused on results.
-            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-3">A Simple, Operator-Focused Process</h2>
           </div>
         </ScrollReveal>
         
