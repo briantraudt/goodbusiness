@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TrendingUp, Settings, Brain, Rocket, Building2 } from 'lucide-react';
+import { Compass, Layers, Wrench, CalendarCheck } from 'lucide-react';
 import ScrollReveal from '@/components/common/ScrollReveal';
 import outcomesBg from '@/assets/outcomes-bg.jpg';
 
@@ -14,34 +14,28 @@ const Pillars = () => {
 
   const outcomes = [
     {
-      title: "Revenue Growth",
-      description: "AI-powered workflows that open new revenue streams",
-      icon: <TrendingUp className="h-6 w-6" />,
+      title: "Idea Clarity",
+      description: "Know exactly what to build — and what to leave out",
+      icon: <Compass className="h-6 w-6" />,
       color: "text-gb-green"
     },
     {
-      title: "Cost Reduction",
-      description: "Automate the repetitive, focus on what matters",
-      icon: <Settings className="h-6 w-6" />,
+      title: "Product Direction",
+      description: "A clear path from idea to something people will pay for",
+      icon: <Layers className="h-6 w-6" />,
       color: "text-gb-blue"
     },
     {
-      title: "Smarter Decisions",
-      description: "Real-time insights from your data, powered by AI",
-      icon: <Brain className="h-6 w-6" />,
+      title: "Practical Execution",
+      description: "Ship fast, stay simple, use the right tools",
+      icon: <Wrench className="h-6 w-6" />,
       color: "text-gb-purple"
     },
     {
-      title: "Faster Execution",
-      description: "Ship in weeks, not quarters",
-      icon: <Rocket className="h-6 w-6" />,
+      title: "Steady Momentum",
+      description: "Weekly accountability so you don't stall out",
+      icon: <CalendarCheck className="h-6 w-6" />,
       color: "text-gb-orange"
-    },
-    {
-      title: "Scalable Systems",
-      description: "AI infrastructure that grows with you",
-      icon: <Building2 className="h-6 w-6" />,
-      color: "text-gb-green"
     }
   ];
 
@@ -59,15 +53,15 @@ const Pillars = () => {
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
             <span className="inline-block text-gb-purple font-semibold text-sm uppercase tracking-wider mb-3">
-              Real Results, Not Buzzwords
+              What You Walk Away With
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-4">
-              What AI Actually Does for Your Business
+              Clarity, Direction, and a Real Product
             </h2>
           </div>
         </ScrollReveal>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 max-w-6xl mx-auto mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-10">
           {outcomes.map((outcome, index) => (
             <ScrollReveal key={index} direction="up" delay={index * 80}>
               <div className="text-center p-6 bg-white/90 backdrop-blur-sm rounded-xl border border-slate-100 hover:border-slate-200 hover:shadow-md transition-all h-full">
@@ -84,7 +78,7 @@ const Pillars = () => {
         <ScrollReveal direction="up" delay={400}>
           <div className="text-center">
             <p className="text-lg text-gb-dark/70 font-medium">
-              If AI doesn't move the needle, <span className="text-gb-green font-semibold">we don't build it.</span>
+              We use AI where it makes sense — to move faster and reduce busywork — <span className="text-gb-green font-semibold">not because it's trendy.</span>
             </p>
           </div>
         </ScrollReveal>

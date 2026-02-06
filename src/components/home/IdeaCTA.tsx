@@ -17,11 +17,12 @@ const IdeaCTA = () => {
         <ScrollReveal direction="up">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gb-dark mb-6 leading-tight">
-              Ready to Put AI to Work for Your Business?
+              Not Sure If Your Idea Has Legs?
             </h2>
             
             <p className="text-lg md:text-xl text-gb-dark/70 mb-10 max-w-2xl mx-auto">
-              Let's find where AI will have the biggest impact — and make it happen.
+              That's exactly the right time to talk. No pitch. No pressure. 
+              Just a thoughtful conversation about what you're building and whether it's worth building.
             </p>
             
             <Button 
@@ -29,7 +30,7 @@ const IdeaCTA = () => {
               size="lg" 
               className="bg-gb-green hover:bg-gb-green/90 text-white px-8 py-6 text-lg font-semibold group"
             >
-              Let's Talk
+              Let's Figure This Out Together
               <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </div>

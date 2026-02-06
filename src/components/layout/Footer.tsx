@@ -27,7 +27,7 @@ const Footer = () => {
               </a>
             </h3>
             <p className="mb-3 text-gray-300 max-w-md text-sm">
-              AI-forward solutions that drive measurable business growth.
+              Helping solo founders build real products — with clarity, restraint, and momentum.
             </p>
             <div className="flex space-x-4">
               <a 
@@ -54,7 +54,7 @@ const Footer = () => {
                   </li>
                   <li>
                     <button onClick={() => scrollTo('services')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
-                      Services
+                      How We Help
                     </button>
                   </li>
                   <li>
@@ -68,7 +68,7 @@ const Footer = () => {
                 <ul className="space-y-1">
                   <li>
                     <button onClick={() => scrollTo('contact')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
-                      Contact
+                      Talk to Us
                     </button>
                   </li>
                   <li>

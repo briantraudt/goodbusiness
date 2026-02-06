@@ -38,23 +38,23 @@ const Hero = () => {
       {/* Content */}
       <div className="container-custom py-8 md:py-12 flex flex-col items-center justify-center h-full relative z-10">
         <div className="text-center mx-auto">
-          {/* AI badge */}
+          {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-gb-green/20 text-gb-green px-4 py-1.5 rounded-full text-sm font-medium mb-6 backdrop-blur-sm border border-gb-green/20">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gb-green opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-gb-green"></span>
             </span>
-            AI-Powered Growth Partner
+            A Thinking Partner for Founders
           </div>
           
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-5xl mx-auto leading-tight">
-            AI That Grows<br />
-            <span className="text-gb-green">Your Business.</span>
+            Build Something People<br />
+            <span className="text-gb-green">Actually Want.</span>
           </h1>
           <p className="mt-4 md:mt-6 text-base md:text-xl text-white/85 max-w-2xl mx-auto leading-relaxed">
             {isMobile 
-              ? "We help businesses harness AI to drive revenue, cut costs, and scale faster."
-              : "Good Business helps organizations design and deploy AI-driven solutions that deliver measurable growth — more revenue, lower costs, and faster execution."
+              ? "We help solo founders clarify ideas, pressure-test assumptions, and build real products that earn users and revenue."
+              : "Good Business works alongside solo founders to clarify ideas, pressure-test assumptions, and build real products that earn users and revenue."
             }
           </p>
         </div>
@@ -65,7 +65,7 @@ const Hero = () => {
             onClick={() => scrollTo('contact')}
             className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center group"
           >
-            See What AI Can Do For You
+            Talk Through Your Idea
             <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </Button>
           {!isMobile && (

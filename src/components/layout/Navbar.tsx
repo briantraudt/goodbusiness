@@ -25,7 +25,7 @@ const Navbar = () => {
 
   const menuItems = [
     { name: "Home", target: "top" },
-    { name: "Services", target: "services" },
+    { name: "How We Help", target: "services" },
     { name: "How It Works", target: "how-it-works" },
   ];
 
@@ -60,7 +60,7 @@ const Navbar = () => {
             onClick={() => scrollTo('contact')}
             className="bg-gb-green hover:bg-gb-green/90 text-white text-lg flex items-center justify-center"
           >
-            Work With Us
+            Let's Talk
           </Button>
         </div>
 
@@ -92,7 +92,7 @@ const Navbar = () => {
                   onClick={() => scrollTo('contact')}
                   className="bg-gb-green hover:bg-gb-green/90 text-white w-full mt-2 text-lg flex items-center justify-center"
                 >
-                  Work With Us
+                  Let's Talk
                 </Button>
               </li>
             </ul>

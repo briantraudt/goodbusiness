@@ -1,38 +1,38 @@
 import React from 'react';
-import { Target, Map, Wrench, BarChart3 } from 'lucide-react';
+import { User, Compass, Rocket, RefreshCw } from 'lucide-react';
 import ScrollReveal from '@/components/common/ScrollReveal';
 
 const Process = () => {
   const steps = [
     {
       number: 1,
-      title: "Find the Opportunity",
-      description: "We dig into your operations to find where AI will have the biggest, fastest impact on growth.",
-      icon: <Target className="h-5 w-5" />,
+      title: "Understand the Founder",
+      description: "Your goals. Your constraints. Your real motivations. We start by understanding you — not just your idea.",
+      icon: <User className="h-5 w-5" />,
       color: "bg-gb-green",
       borderColor: "border-l-gb-green"
     },
     {
       number: 2,
-      title: "Design the Solution",
-      description: "Map the simplest, most effective AI-powered path from where you are to where you want to be.",
-      icon: <Map className="h-5 w-5" />,
+      title: "Clarify the Product",
+      description: "What problem actually matters? Who is it for? And just as important — what should you not build?",
+      icon: <Compass className="h-5 w-5" />,
       color: "bg-gb-blue",
       borderColor: "border-l-gb-blue"
     },
     {
       number: 3,
-      title: "Build & Integrate",
-      description: "Custom AI solutions built into your existing workflows — no rip-and-replace, no disruption.",
-      icon: <Wrench className="h-5 w-5" />,
+      title: "Build the Right First Version",
+      description: "Fast. Simple. Testable. Something real users can react to — not a polished thing no one asked for.",
+      icon: <Rocket className="h-5 w-5" />,
       color: "bg-gb-purple",
       borderColor: "border-l-gb-purple"
     },
     {
       number: 4,
-      title: "Measure & Evolve",
-      description: "Track real results, optimize continuously, and expand AI across your business as you grow.",
-      icon: <BarChart3 className="h-5 w-5" />,
+      title: "Iterate With Real Feedback",
+      description: "Adjust. Refocus. Grow intentionally. We help you respond to what's working — and let go of what's not.",
+      icon: <RefreshCw className="h-5 w-5" />,
       color: "bg-gb-orange",
       borderColor: "border-l-gb-orange"
     }
@@ -47,7 +47,7 @@ const Process = () => {
               Our Process
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">
-              From AI Curiosity to Business Impact
+              Simple. Human. No Fluff.
             </h2>
           </div>
         </ScrollReveal>
