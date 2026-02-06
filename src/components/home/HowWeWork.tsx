@@ -40,7 +40,7 @@ const HowWeWork = () => {
   ];
 
   return (
-    <section id="services" className="relative py-20 md:py-28 overflow-hidden">
+    <section id="how-we-help" className="relative py-20 md:py-28 overflow-hidden">
       {/* Background Image with parallax */}
       <div className="absolute inset-0 w-full h-full">
         <div

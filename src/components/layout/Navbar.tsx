@@ -25,8 +25,7 @@ const Navbar = () => {
 
   const menuItems = [
     { name: "Home", target: "top" },
-    { name: "How We Help", target: "services" },
-    { name: "How It Works", target: "how-it-works" },
+    { name: "How We Help", target: "how-we-help" },
   ];
 
   return (
