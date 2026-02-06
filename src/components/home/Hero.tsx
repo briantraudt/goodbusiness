@@ -54,15 +54,12 @@ const Hero = () => {
       {/* Content */}
       <div className="container-custom py-8 md:py-12 flex flex-col items-center justify-center h-full relative z-10">
         <div className="text-center mx-auto">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-5xl mx-auto leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-5xl mx-auto leading-tight tracking-tight">
             Build Something People<br />
             <span className="text-gb-green">Actually Want.</span>
           </h1>
-          <p className="mt-4 md:mt-6 text-base md:text-xl text-white/85 max-w-2xl mx-auto leading-relaxed">
-            {isMobile
-              ? "We help solo founders clarify ideas, pressure-test assumptions, and build real products that earn users and revenue."
-              : "Good Business works alongside solo founders to clarify ideas, pressure-test assumptions, and build real products that earn users and revenue."
-            }
+          <p className="mt-5 md:mt-7 text-base md:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed font-light">
+            Good Business works alongside solo founders to clarify ideas, pressure-test assumptions, and build real products that earn users — and revenue.
           </p>
         </div>
 
@@ -77,11 +74,11 @@ const Hero = () => {
           </Button>
           {!isMobile && (
             <Button
-              onClick={() => scrollTo('how-it-works')}
+              onClick={() => scrollTo('how-we-help')}
               variant="outline"
               className="border-white/30 bg-transparent text-white hover:bg-white hover:text-gb-dark hover:border-white font-semibold py-4 px-6 rounded-md text-lg"
             >
-              How It Works
+              How We Help
             </Button>
           )}
         </div>
