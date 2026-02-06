@@ -1,46 +1,17 @@
-import React, { useState } from 'react';
-import { ArrowRight, Mail, MapPin, MessageCircle, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import React, { useEffect } from 'react';
+import { Mail, MapPin, MessageCircle } from 'lucide-react';
 import ScrollReveal from '@/components/common/ScrollReveal';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
 
 const ContactSection = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim() || !email.trim() || !message.trim()) {
-      toast.error('Please fill out all fields.');
-      return;
-    }
-    setIsSubmitting(true);
-    try {
-      const { error } = await supabase.from('business_submissions').insert({
-        full_name: name,
-        email: email,
-        business_idea: message,
-        problem_solution: 'Founder clarity call request',
-        profit_type: 'N/A',
-        business_stage: 'N/A',
-        budget: 'N/A',
-      });
-      if (error) throw error;
-      setSubmitted(true);
-      toast.success('Message sent! We\'ll be in touch soon.');
-    } catch (err) {
-      console.error('Contact form error:', err);
-      toast.error('Something went wrong. Please email us directly.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://assets.calendly.com/assets/external/widget.js';
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
 
   return (
     <section id="contact" className="bg-gb-dark text-white py-16 md:py-24">
@@ -49,8 +20,8 @@ const ContactSection = () => {
           <div className="max-w-5xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
               {/* Left side - messaging */}
-              <div>
-                <div className="inline-flex items-center gap-2 bg-gb-green/20 text-gb-green px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <div className="flex flex-col justify-center">
+                <div className="inline-flex items-center gap-2 bg-gb-green/20 text-gb-green px-4 py-2 rounded-full text-sm font-medium mb-6 w-fit">
                   <MessageCircle className="h-4 w-4" />
                   Founder Clarity Call
                 </div>
@@ -58,8 +29,8 @@ const ContactSection = () => {
                   Talk Through Your Idea
                 </h2>
                 <p className="text-lg text-white/70 mb-8 leading-relaxed">
-                  Tell us what you're working on, where you're stuck, and what you're trying to figure out. 
-                  We'll listen and give you honest, practical feedback.
+                  No pitch. No pressure. Just a thoughtful conversation about what you're building 
+                  and whether it's worth building. Pick a time that works for you.
                 </p>
                 <div className="space-y-4">
                   <a href="mailto:hello@goodbusinesshq.com" className="flex items-center gap-3 text-white/80 hover:text-gb-green transition-colors">
@@ -73,65 +44,13 @@ const ContactSection = () => {
                 </div>
               </div>
 
-              {/* Right side - form */}
-              <div>
-                {submitted ? (
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center border border-white/10">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gb-green/20 mb-4">
-                      <MessageCircle className="h-8 w-8 text-gb-green" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-3">Thanks for reaching out!</h3>
-                    <p className="text-white/70">We'll read what you shared and get back to you within 24 hours. No pitch — just a real conversation.</p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                      <Input
-                        placeholder="Your name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50 h-12 focus:border-gb-green"
-                      />
-                    </div>
-                    <div>
-                      <Input
-                        type="email"
-                        placeholder="Email address"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50 h-12 focus:border-gb-green"
-                      />
-                    </div>
-                    <div>
-                      <Textarea
-                        placeholder="What are you building? Where are you stuck? What are you trying to figure out?"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-[140px] focus:border-gb-green"
-                      />
-                    </div>
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-6 text-lg group"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                          Sending...
-                        </>
-                      ) : (
-                        <>
-                          Start the Conversation
-                          <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                        </>
-                      )}
-                    </Button>
-                    <p className="text-white/40 text-sm text-center">
-                      No commitment. No pitch deck required. Just a conversation.
-                    </p>
-                  </form>
-                )}
+              {/* Right side - Calendly */}
+              <div className="rounded-xl overflow-hidden bg-white">
+                <div
+                  className="calendly-inline-widget"
+                  data-url="https://calendly.com/briantraudt/free-intro-meeting?hide_gdpr_banner=1&background_color=ffffff&text_color=1a1a2e&primary_color=37b37e"
+                  style={{ minWidth: '280px', height: '660px', width: '100%' }}
+                />
               </div>
             </div>
           </div>
