@@ -48,8 +48,8 @@ const ContactSection = () => {
               <div className="rounded-xl overflow-hidden bg-white">
                 <div
                   className="calendly-inline-widget"
-                  data-url="https://calendly.com/briantraudt/free-intro-meeting?hide_gdpr_banner=1&hide_event_type_details=1&background_color=ffffff&text_color=1a1a2e&primary_color=37b37e"
-                  style={{ minWidth: '280px', height: '580px', width: '100%' }}
+                  data-url="https://calendly.com/briantraudt/free-intro-meeting?hide_event_type_details=1"
+                  style={{ minWidth: '320px', height: '700px', width: '100%' }}
                 />
               </div>
             </div>
