@@ -38,14 +38,6 @@ const Hero = () => {
       {/* Content */}
       <div className="container-custom py-8 md:py-12 flex flex-col items-center justify-center h-full relative z-10">
         <div className="text-center mx-auto">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-gb-green/20 text-gb-green px-4 py-1.5 rounded-full text-sm font-medium mb-6 backdrop-blur-sm border border-gb-green/20">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gb-green opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-gb-green"></span>
-            </span>
-            A Thinking Partner for Founders
-          </div>
           
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-5xl mx-auto leading-tight">
             Build Something People<br />
