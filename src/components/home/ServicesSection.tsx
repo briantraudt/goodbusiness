@@ -1,52 +1,52 @@
 import React from 'react';
-import { CheckCircle2, Search, Lightbulb, Code, Rocket } from 'lucide-react';
+import { CheckCircle2, Compass, Layers, Code, CalendarCheck } from 'lucide-react';
 import ScrollReveal from '@/components/common/ScrollReveal';
 
 const ServicesSection = () => {
   const services = [
     {
-      title: "AI Strategy & Discovery",
-      description: "We audit your operations, identify the highest-ROI opportunities for AI, and build a roadmap that turns hype into growth.",
+      title: "Idea Clarity & Direction",
+      description: "Before you build anything, we make sure you're building the right thing for the right person.",
       points: [
-        "AI opportunity assessment across your workflows",
-        "Build vs. buy analysis for AI tools",
-        "ROI modeling and prioritization",
-        "Technology stack recommendations"
+        "Pressure-test your idea against real market signals",
+        "Define the actual problem worth solving",
+        "Identify your real user — not a fantasy persona",
+        "Cut the features you don't need yet"
       ],
-      icon: <Search className="h-10 w-10 text-gb-green" />
+      icon: <Compass className="h-10 w-10 text-gb-green" />
     },
     {
-      title: "Rapid AI Prototyping",
-      description: "See your AI solution working in days, not months. We build fast, test with your team, and iterate until it fits perfectly.",
+      title: "Product Shaping",
+      description: "Turn a messy idea into a focused first version that's simple enough to ship and strong enough to learn from.",
       points: [
-        "Working prototypes in 7 days",
-        "Real-world testing with your data",
-        "Stakeholder feedback and refinement",
-        "Validated scope before full build"
+        "MVP definition — what to build now vs. later",
+        "Simple product architecture that won't trap you",
+        "Avoid overbuilding before you have users",
+        "Clear scope that respects your time and budget"
       ],
-      icon: <Lightbulb className="h-10 w-10 text-gb-blue" />
+      icon: <Layers className="h-10 w-10 text-gb-blue" />
     },
     {
-      title: "Custom AI Development",
-      description: "Purpose-built AI solutions that integrate directly into your business — not another SaaS subscription you'll outgrow.",
+      title: "Build With You",
+      description: "Hands-on execution alongside you — not handed off to a team you'll never talk to.",
       points: [
-        "Custom AI agents and automations",
-        "Intelligent data processing pipelines",
-        "Natural language interfaces for your team",
-        "Predictive analytics and forecasting"
+        "Fast iteration with real feedback loops",
+        "Practical tools — AI when it's useful, not for show",
+        "No unnecessary complexity or tech debt",
+        "You stay in the loop on every decision"
       ],
       icon: <Code className="h-10 w-10 text-gb-purple" />
     },
     {
-      title: "Launch, Train & Evolve",
-      description: "We don't disappear after launch. Your team learns to use AI confidently, and your systems get smarter over time.",
+      title: "Weekly Founder Support",
+      description: "A standing rhythm to keep you moving — with someone who's paying attention to your progress.",
       points: [
-        "Hands-on team training and workshops",
-        "Ongoing optimization and iteration",
-        "Performance monitoring and tuning",
-        "New capability rollouts as AI evolves"
+        "Standing check-ins so you don't stall",
+        "Decision support when you're stuck",
+        "Accountability without micromanagement",
+        "A place to think out loud"
       ],
-      icon: <Rocket className="h-10 w-10 text-gb-orange" />
+      icon: <CalendarCheck className="h-10 w-10 text-gb-orange" />
     }
   ];
 
@@ -56,14 +56,14 @@ const ServicesSection = () => {
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
             <span className="inline-block text-gb-blue font-semibold text-sm uppercase tracking-wider mb-3">
-              What We Do
+              How We Help
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-4">
-              AI Solutions, End to End
+              Guidance + Execution, Not Just Advice
             </h2>
             <p className="text-lg text-gb-dark/70 max-w-2xl mx-auto">
-              From identifying where AI will have the biggest impact to building and deploying custom solutions — 
-              we handle the full journey so you can focus on running your business.
+              We don't hand you a strategy deck and disappear. We work alongside you — 
+              from figuring out what to build to getting it in front of real users.
             </p>
           </div>
         </ScrollReveal>

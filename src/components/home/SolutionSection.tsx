@@ -8,12 +8,13 @@ const SolutionSection = () => {
         <ScrollReveal direction="up">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gb-dark mb-6 leading-tight">
-              AI is changing everything.
-              <span className="text-gb-green"> Most businesses aren't ready.</span>
+              Most founders don't fail because they can't build.
+              <span className="text-gb-green"> They build the wrong thing for too long.</span>
             </h2>
             <p className="text-lg md:text-xl text-gb-dark/70 leading-relaxed">
-              The companies that win won't be the ones with the most tools — they'll be the ones that use AI strategically. 
-              We help you cut through the noise, find the highest-impact opportunities, and build AI into the way your business actually operates.
+              Too many tools. Conflicting advice. Building in isolation. Shipping without validation. 
+              No one to sanity-check the decisions that actually matter. 
+              Good Business exists so you don't have to figure it out alone.
             </p>
           </div>
         </ScrollReveal>

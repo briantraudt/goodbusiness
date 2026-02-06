@@ -26,7 +26,7 @@ const ContactSection = () => {
         full_name: name,
         email: email,
         business_idea: message,
-        problem_solution: 'Contact form submission',
+        problem_solution: 'Founder clarity call request',
         profit_type: 'N/A',
         business_stage: 'N/A',
         budget: 'N/A',
@@ -52,14 +52,14 @@ const ContactSection = () => {
               <div>
                 <div className="inline-flex items-center gap-2 bg-gb-green/20 text-gb-green px-4 py-2 rounded-full text-sm font-medium mb-6">
                   <MessageCircle className="h-4 w-4" />
-                  Free AI Consultation
+                  Founder Clarity Call
                 </div>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Let's Find Your AI Advantage
+                  Talk Through Your Idea
                 </h2>
                 <p className="text-lg text-white/70 mb-8 leading-relaxed">
-                  Tell us about your business and where you're feeling the most friction.
-                  We'll show you exactly where AI can make the biggest difference.
+                  Tell us what you're working on, where you're stuck, and what you're trying to figure out. 
+                  We'll listen and give you honest, practical feedback.
                 </p>
                 <div className="space-y-4">
                   <a href="mailto:hello@goodbusinesshq.com" className="flex items-center gap-3 text-white/80 hover:text-gb-green transition-colors">
@@ -81,7 +81,7 @@ const ContactSection = () => {
                       <MessageCircle className="h-8 w-8 text-gb-green" />
                     </div>
                     <h3 className="text-2xl font-bold mb-3">Thanks for reaching out!</h3>
-                    <p className="text-white/70">We'll review your message and get back to you within 24 hours with initial thoughts on how AI can help.</p>
+                    <p className="text-white/70">We'll read what you shared and get back to you within 24 hours. No pitch — just a real conversation.</p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
@@ -104,7 +104,7 @@ const ContactSection = () => {
                     </div>
                     <div>
                       <Textarea
-                        placeholder="What does your business do? What's your biggest bottleneck right now?"
+                        placeholder="What are you building? Where are you stuck? What are you trying to figure out?"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-[140px] focus:border-gb-green"
@@ -122,7 +122,7 @@ const ContactSection = () => {
                         </>
                       ) : (
                         <>
-                          Get Your Free AI Assessment
+                          Start the Conversation
                           <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                         </>
                       )}
