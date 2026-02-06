@@ -9,7 +9,7 @@ const SolutionSection = () => {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gb-dark mb-6 leading-tight">
               Most founders don't fail because they can't build.
-              <span className="text-gb-green"> They build the wrong thing for too long.</span>
+              <span className="text-gb-blue"> They build the wrong thing for too long.</span>
             </h2>
             <p className="text-lg md:text-xl text-gb-dark/70 leading-relaxed">
               Too many tools. Conflicting advice. Building in isolation. Shipping without validation. 
