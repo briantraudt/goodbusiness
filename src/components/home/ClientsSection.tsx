@@ -1,8 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Building, Users, TrendingUp } from 'lucide-react';
 import ScrollReveal from '@/components/common/ScrollReveal';
+import clientsBg from '@/assets/clients-bg.jpg';
 
 const ClientsSection = () => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = clientsBg;
+    img.onload = () => setImageLoaded(true);
+  }, []);
+
   const clientTypes = [
     {
       title: "Operators Drowning in SaaS",
@@ -22,8 +31,17 @@ const ClientsSection = () => {
   ];
 
   return (
-    <section className="bg-slate-50 py-16 md:py-24">
-      <div className="container-custom">
+    <section className="relative py-16 md:py-24 overflow-hidden">
+      {/* Background Image with parallax */}
+      <div className="absolute inset-0 w-full h-full">
+        <div
+          className={`absolute inset-0 w-full h-full bg-cover bg-center bg-fixed transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+          style={{ backgroundImage: `url(${clientsBg})` }}
+        />
+        <div className="absolute inset-0 bg-white/60"></div>
+      </div>
+
+      <div className="container-custom relative z-10">
         <ScrollReveal direction="up">
           <div className="max-w-3xl mx-auto text-center mb-12 md:mb-16">
             <span className="inline-block text-gb-purple font-semibold text-sm uppercase tracking-wider mb-3">
@@ -43,7 +61,7 @@ const ClientsSection = () => {
           {clientTypes.map((client, index) => (
             <ScrollReveal key={index} direction="up" delay={index * 100}>
               <div
-                className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 hover:border-slate-200 hover:shadow-md transition-all h-full flex flex-col text-center"
+                className="bg-white/90 backdrop-blur-sm p-8 rounded-xl shadow-sm border border-slate-100 hover:border-slate-200 hover:shadow-md transition-all h-full flex flex-col text-center"
               >
                 <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-50 mb-5 mx-auto">
                   {client.icon}
