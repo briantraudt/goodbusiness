@@ -12,9 +12,7 @@ const SolutionSection = () => {
               <span className="text-gb-blue"> They build the wrong thing for too long.</span>
             </h2>
             <p className="text-lg md:text-xl text-gb-dark/70 leading-relaxed">
-              Too many tools. Conflicting advice. Building in isolation. Shipping without validation. 
-              No one to sanity-check the decisions that actually matter. 
-              Good Business exists so you don't have to figure it out alone.
+              We help you cut through the noise so you don't have to figure it out alone.
             </p>
           </div>
         </ScrollReveal>
