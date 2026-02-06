@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 60);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -27,15 +36,24 @@ const Navbar = () => {
     { name: "How We Help", target: "how-we-help" },
   ];
 
+  // On mobile: transparent over hero, solid when scrolled or menu open
+  const mobileTransparent = isMobile && !isScrolled && !isMenuOpen;
+
   return (
-    <nav className="bg-white/90 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-100">
+    <nav className={`sticky top-0 z-50 transition-all duration-300 ${
+      mobileTransparent
+        ? 'bg-transparent border-b border-transparent'
+        : 'bg-white/90 backdrop-blur-sm border-b border-gray-100'
+    }`}>
       <div className="container-custom py-4 flex justify-between items-center">
         <div className={`${isMobile ? 'flex-1 text-center' : ''}`}>
           <button
             onClick={() => scrollTo('top')}
             className={`flex ${isMobile ? 'justify-center' : ''} items-center`}
           >
-            <span className="font-sans text-2xl md:text-3xl font-bold text-[#333333]">
+            <span className={`font-sans text-2xl md:text-3xl font-bold transition-colors duration-300 ${
+              mobileTransparent ? 'text-white' : 'text-[#333333]'
+            }`}>
               Go<span className="text-gb-green">o</span>d Business
             </span>
           </button>
@@ -63,7 +81,9 @@ const Navbar = () => {
         </div>
 
         <button
-          className="md:hidden text-gb-dark hover:text-gb-green"
+          className={`md:hidden transition-colors duration-300 ${
+            mobileTransparent ? 'text-white' : 'text-gb-dark hover:text-gb-green'
+          }`}
           onClick={toggleMenu}
           aria-label="Toggle Menu"
         >
