@@ -14,27 +14,23 @@ const Pillars = () => {
 
   const outcomes = [
     {
-      title: "Idea Clarity",
-      description: "Know exactly what to build — and what to leave out",
-      icon: <Compass className="h-6 w-6" />,
+      title: "Clarity",
+      icon: <Compass className="h-8 w-8" />,
       color: "text-gb-green"
     },
     {
-      title: "Product Direction",
-      description: "A clear path from idea to something people will pay for",
-      icon: <Layers className="h-6 w-6" />,
+      title: "Direction",
+      icon: <Layers className="h-8 w-8" />,
       color: "text-gb-blue"
     },
     {
-      title: "Practical Execution",
-      description: "Ship fast, stay simple, use the right tools",
-      icon: <Wrench className="h-6 w-6" />,
+      title: "Execution",
+      icon: <Wrench className="h-8 w-8" />,
       color: "text-gb-purple"
     },
     {
-      title: "Steady Momentum",
-      description: "Weekly accountability so you don't stall out",
-      icon: <CalendarCheck className="h-6 w-6" />,
+      title: "Momentum",
+      icon: <CalendarCheck className="h-8 w-8" />,
       color: "text-gb-orange"
     }
   ];
@@ -55,33 +51,24 @@ const Pillars = () => {
             <span className="inline-block text-gb-purple font-semibold text-sm uppercase tracking-wider mb-3">
               What You Walk Away With
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-4">
-              Clarity, Direction, and a Real Product
+            <h2 className="text-4xl md:text-5xl font-bold text-gb-dark">
+              Clarity, Direction & a Real Product
             </h2>
           </div>
         </ScrollReveal>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto mb-10">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
           {outcomes.map((outcome, index) => (
             <ScrollReveal key={index} direction="up" delay={index * 80}>
-              <div className="text-center p-6 bg-white/90 backdrop-blur-sm rounded-xl border border-slate-100 hover:border-slate-200 hover:shadow-md transition-all h-full">
-                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-50 ${outcome.color} mb-4`}>
+              <div className="text-center p-6 md:p-8 bg-white/90 backdrop-blur-sm rounded-xl border border-slate-100 hover:shadow-md transition-all h-full flex flex-col items-center justify-center">
+                <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-50 ${outcome.color} mb-4`}>
                   {outcome.icon}
                 </div>
-                <h3 className="text-gb-dark font-semibold mb-2">{outcome.title}</h3>
-                <p className="text-gb-dark/60 text-sm">{outcome.description}</p>
+                <h3 className="text-xl md:text-2xl font-bold text-gb-dark">{outcome.title}</h3>
               </div>
             </ScrollReveal>
           ))}
         </div>
-
-        <ScrollReveal direction="up" delay={400}>
-          <div className="text-center">
-            <p className="text-lg text-gb-dark/70 font-medium">
-              We use AI where it makes sense — to move faster and reduce busywork — <span className="text-gb-green font-semibold">not because it's trendy.</span>
-            </p>
-          </div>
-        </ScrollReveal>
       </div>
     </section>
   );
