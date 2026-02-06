@@ -1,11 +1,20 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
 import { Mail, MapPin, Linkedin } from "lucide-react";
-import ScrollToTopLink from "@/components/common/ScrollToTopLink";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+
+  const scrollTo = (id: string) => {
+    if (id === 'top') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
   
   return (
     <footer className="bg-gb-dark text-white py-6 md:py-8">
@@ -13,9 +22,9 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
           <div>
             <h3 className="font-serif text-xl font-bold mb-2">
-              <ScrollToTopLink to="/admin/login" className="hover:text-gb-green transition-colors">
+              <a href="/admin/login" className="hover:text-gb-green transition-colors">
                 Good Business HQ
-              </ScrollToTopLink>
+              </a>
             </h3>
             <p className="mb-3 text-gray-300 max-w-md text-sm">
               We help companies own the software that runs their business.
@@ -39,33 +48,33 @@ const Footer = () => {
               <div>
                 <ul className="space-y-1">
                   <li>
-                    <ScrollToTopLink to="/" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                    <button onClick={() => scrollTo('top')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
                       Home
-                    </ScrollToTopLink>
+                    </button>
                   </li>
                   <li>
-                    <ScrollToTopLink to="/consulting" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                    <button onClick={() => scrollTo('services')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
                       Services
-                    </ScrollToTopLink>
+                    </button>
                   </li>
                   <li>
-                    <ScrollToTopLink to="/training" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
-                      AI Training
-                    </ScrollToTopLink>
+                    <button onClick={() => scrollTo('how-it-works')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                      How It Works
+                    </button>
                   </li>
                 </ul>
               </div>
               <div>
                 <ul className="space-y-1">
                   <li>
-                    <ScrollToTopLink to="/contact" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                    <button onClick={() => scrollTo('contact')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
                       Contact
-                    </ScrollToTopLink>
+                    </button>
                   </li>
                   <li>
-                    <ScrollToTopLink to="/clients" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                    <a href="/clients" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
                       Client Portal
-                    </ScrollToTopLink>
+                    </a>
                   </li>
                 </ul>
               </div>

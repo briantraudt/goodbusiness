@@ -1,10 +1,16 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import ScrollToTopLink from '@/components/common/ScrollToTopLink';
 import ScrollReveal from '@/components/common/ScrollReveal';
 
 const IdeaCTA = () => {
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="bg-white py-20 md:py-28">
       <div className="container-custom">
@@ -18,12 +24,14 @@ const IdeaCTA = () => {
               Let's start with what success looks like for your business.
             </p>
             
-            <ScrollToTopLink to="/contact">
-              <Button size="lg" className="bg-gb-green hover:bg-gb-green/90 text-white px-8 py-6 text-lg font-semibold group">
-                Define Your Success
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </ScrollToTopLink>
+            <Button 
+              onClick={() => scrollTo('contact')}
+              size="lg" 
+              className="bg-gb-green hover:bg-gb-green/90 text-white px-8 py-6 text-lg font-semibold group"
+            >
+              Define Your Success
+              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
           </div>
         </ScrollReveal>
       </div>

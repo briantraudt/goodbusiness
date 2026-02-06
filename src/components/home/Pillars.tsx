@@ -46,12 +46,11 @@ const Pillars = () => {
 
   return (
     <section className="relative py-16 md:py-24 overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image with parallax */}
       <div className="absolute inset-0 w-full h-full">
-        <img 
-          src={outcomesBg}
-          alt="" 
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+        <div
+          className={`absolute inset-0 w-full h-full bg-cover bg-center bg-fixed transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+          style={{ backgroundImage: `url(${outcomesBg})` }}
         />
         {/* Light overlay to ensure text readability */}
         <div className="absolute inset-0 bg-white/70"></div>
