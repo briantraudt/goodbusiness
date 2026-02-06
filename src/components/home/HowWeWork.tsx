@@ -16,7 +16,7 @@ const HowWeWork = () => {
     {
       icon: <Compass className="h-8 w-8" />,
       title: "Clarity Partner",
-      description: "We help you figure out what to build, who it's for, and what to skip.",
+      description: "We help founders slow down long enough to get the right things right — defining the problem, the customer, and what not to build.",
       color: "text-gb-green",
       bg: "bg-gb-green/10",
       border: "border-gb-green/20"
@@ -24,7 +24,7 @@ const HowWeWork = () => {
     {
       icon: <Handshake className="h-8 w-8" />,
       title: "Consulting Partner",
-      description: "Hands-on strategy and execution — from prototype to production.",
+      description: "We work hands-on with founders and teams to turn strategy into execution — shaping products, systems, and momentum that actually ship.",
       color: "text-gb-blue",
       bg: "bg-gb-blue/10",
       border: "border-gb-blue/20"
@@ -32,7 +32,7 @@ const HowWeWork = () => {
     {
       icon: <Rocket className="h-8 w-8" />,
       title: "Product Incubator",
-      description: "We co-build, fund, and launch products alongside founders.",
+      description: "We co-build and launch products alongside founders — investing time, experience, and conviction to bring real ideas into the world.",
       color: "text-gb-purple",
       bg: "bg-gb-purple/10",
       border: "border-gb-purple/20"
@@ -57,10 +57,10 @@ const HowWeWork = () => {
               What We Do
             </span>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gb-dark mb-4">
-              Three Ways We Help Founders
+              Three Ways We Work With Founders
             </h2>
-            <p className="text-lg text-gb-dark/60 max-w-xl mx-auto">
-              Whether you need direction, execution, or a co-founder — we meet you where you are.
+            <p className="text-lg text-gb-dark/60 max-w-2xl mx-auto">
+              We build products, partner with founders, and support teams at every stage — from first idea to real-world execution.
             </p>
           </div>
         </ScrollReveal>
