@@ -21,9 +21,9 @@ const ContactSection = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
               {/* Left side - messaging */}
               <div className="flex flex-col justify-center">
-                <div className="inline-flex items-center gap-2 bg-gb-green/20 text-gb-green px-4 py-2 rounded-full text-sm font-medium mb-6 w-fit">
+                <div className="inline-flex items-center gap-2 bg-gb-green text-white px-4 py-2 rounded-full text-sm font-medium mb-6 w-fit">
                   <MessageCircle className="h-4 w-4" />
-                  Founder Clarity Call
+                  FREE 30 Minute Founder Clarity Call
                 </div>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
                   Talk Through Your Idea
