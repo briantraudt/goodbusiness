@@ -45,11 +45,11 @@ const ContactSection = () => {
               </div>
 
               {/* Right side - Calendly */}
-              <div className="rounded-xl overflow-hidden bg-white">
+              <div className="rounded-xl overflow-hidden bg-white" style={{ maxHeight: '480px' }}>
                 <div
                   className="calendly-inline-widget"
                   data-url="https://calendly.com/briantraudt/free-intro-meeting?hide_event_type_details=1"
-                  style={{ minWidth: '320px', height: '700px', width: '100%' }}
+                  style={{ minWidth: '320px', height: '700px', width: '100%', marginTop: '-220px' }}
                 />
               </div>
             </div>
