@@ -59,7 +59,7 @@ const Hero = () => {
             <span className="text-gb-green">Actually Want.</span>
           </h1>
           <p className="mt-5 md:mt-7 text-base md:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed font-light">
-            Good Business works alongside solo founders to clarify ideas, pressure-test assumptions, and build real products that earn users — and revenue.
+            Good Business works alongside founders to clarify ideas, pressure-test assumptions, and build real products that earn users — and revenue.
           </p>
         </div>
 
