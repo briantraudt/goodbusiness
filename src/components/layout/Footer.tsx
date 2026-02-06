@@ -27,7 +27,7 @@ const Footer = () => {
               </a>
             </h3>
             <p className="mb-3 text-gray-300 max-w-md text-sm">
-              We help companies own the software that runs their business.
+              AI-forward solutions that drive measurable business growth.
             </p>
             <div className="flex space-x-4">
               <a 

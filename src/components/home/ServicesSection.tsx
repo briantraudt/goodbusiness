@@ -5,46 +5,46 @@ import ScrollReveal from '@/components/common/ScrollReveal';
 const ServicesSection = () => {
   const services = [
     {
-      title: "Discovery & Strategy",
-      description: "We dig deep into your workflows, pain points, and goals to identify exactly what custom software will move the needle.",
+      title: "AI Strategy & Discovery",
+      description: "We audit your operations, identify the highest-ROI opportunities for AI, and build a roadmap that turns hype into growth.",
       points: [
-        "Workflow and process mapping",
-        "SaaS audit and consolidation planning",
-        "Technical requirements definition",
-        "Build vs. buy analysis"
+        "AI opportunity assessment across your workflows",
+        "Build vs. buy analysis for AI tools",
+        "ROI modeling and prioritization",
+        "Technology stack recommendations"
       ],
       icon: <Search className="h-10 w-10 text-gb-green" />
     },
     {
-      title: "Rapid Prototyping",
-      description: "See your idea come to life in days. We build interactive prototypes you can test, share, and iterate on quickly.",
+      title: "Rapid AI Prototyping",
+      description: "See your AI solution working in days, not months. We build fast, test with your team, and iterate until it fits perfectly.",
       points: [
-        "7-day functional prototypes",
-        "User testing and validation",
-        "Stakeholder feedback loops",
-        "Scope refinement"
+        "Working prototypes in 7 days",
+        "Real-world testing with your data",
+        "Stakeholder feedback and refinement",
+        "Validated scope before full build"
       ],
       icon: <Lightbulb className="h-10 w-10 text-gb-blue" />
     },
     {
-      title: "AI-Native Development",
-      description: "We build software with AI baked in from day one — not bolted on as an afterthought.",
+      title: "Custom AI Development",
+      description: "Purpose-built AI solutions that integrate directly into your business — not another SaaS subscription you'll outgrow.",
       points: [
-        "Custom AI workflows and automation",
-        "Intelligent data processing",
-        "Natural language interfaces",
-        "Predictive analytics and insights"
+        "Custom AI agents and automations",
+        "Intelligent data processing pipelines",
+        "Natural language interfaces for your team",
+        "Predictive analytics and forecasting"
       ],
       icon: <Code className="h-10 w-10 text-gb-purple" />
     },
     {
-      title: "Launch & Evolve",
-      description: "Go live with confidence. We handle deployment, training, and ongoing refinement as your business grows.",
+      title: "Launch, Train & Evolve",
+      description: "We don't disappear after launch. Your team learns to use AI confidently, and your systems get smarter over time.",
       points: [
-        "Cloud deployment and hosting",
-        "Team training and documentation",
-        "Ongoing support and iteration",
-        "Performance optimization"
+        "Hands-on team training and workshops",
+        "Ongoing optimization and iteration",
+        "Performance monitoring and tuning",
+        "New capability rollouts as AI evolves"
       ],
       icon: <Rocket className="h-10 w-10 text-gb-orange" />
     }
@@ -56,14 +56,14 @@ const ServicesSection = () => {
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
             <span className="inline-block text-gb-blue font-semibold text-sm uppercase tracking-wider mb-3">
-              End-to-End Services
+              What We Do
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-4">
-              Everything You Need to Build & Own
+              AI Solutions, End to End
             </h2>
             <p className="text-lg text-gb-dark/70 max-w-2xl mx-auto">
-              From first conversation to production deployment, we handle the entire journey of building
-              custom software that replaces your bloated SaaS stack.
+              From identifying where AI will have the biggest impact to building and deploying custom solutions — 
+              we handle the full journey so you can focus on running your business.
             </p>
           </div>
         </ScrollReveal>

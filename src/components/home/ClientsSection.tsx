@@ -14,18 +14,18 @@ const ClientsSection = () => {
 
   const clientTypes = [
     {
-      title: "Operators Drowning in SaaS",
-      description: "Business leaders paying for 10+ tools that don't talk to each other and don't fit how their teams actually work.",
+      title: "Leaders Ready for AI",
+      description: "Business owners who know AI is an opportunity — they just need the right partner to make it real and practical.",
       icon: <Building className="h-10 w-10 text-gb-green" />
     },
     {
-      title: "Growing Teams Hitting Limits",
-      description: "Companies that have outgrown their current tools and need custom solutions that scale with their operations.",
+      title: "Growing Teams Hitting Ceilings",
+      description: "Companies scaling fast but drowning in manual processes that AI could handle in seconds.",
       icon: <TrendingUp className="h-10 w-10 text-gb-blue" />
     },
     {
-      title: "Founders Building Differentiation",
-      description: "Leaders who see custom software as a competitive advantage — not just an expense.",
+      title: "Founders Building an Edge",
+      description: "Visionaries who see AI as a competitive moat — not a cost center — and want to embed it into their DNA.",
       icon: <Users className="h-10 w-10 text-gb-purple" />
     }
   ];
@@ -48,11 +48,11 @@ const ClientsSection = () => {
               Who We Work With
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gb-dark mb-4">
-              Built for Operators, Not Developers
+              Built for Business Leaders, Not Engineers
             </h2>
             <p className="text-lg text-gb-dark/70">
-              We partner with business leaders who are ready to stop renting and start owning
-              the software that powers their operations.
+              You don't need to understand neural networks. You need a partner who translates 
+              AI's potential into measurable business growth.
             </p>
           </div>
         </ScrollReveal>

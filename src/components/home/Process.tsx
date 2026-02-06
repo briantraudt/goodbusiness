@@ -6,32 +6,32 @@ const Process = () => {
   const steps = [
     {
       number: 1,
-      title: "Define Success",
-      description: "Align on what winning actually looks like—financial, operational, or strategic.",
+      title: "Find the Opportunity",
+      description: "We dig into your operations to find where AI will have the biggest, fastest impact on growth.",
       icon: <Target className="h-5 w-5" />,
       color: "bg-gb-green",
       borderColor: "border-l-gb-green"
     },
     {
       number: 2,
-      title: "Design the Path",
-      description: "Map the fastest, simplest way to achieve that outcome.",
+      title: "Design the Solution",
+      description: "Map the simplest, most effective AI-powered path from where you are to where you want to be.",
       icon: <Map className="h-5 w-5" />,
       color: "bg-gb-blue",
       borderColor: "border-l-gb-blue"
     },
     {
       number: 3,
-      title: "Build What's Necessary",
-      description: "Software, AI, systems, or removal of complexity—only what's required.",
+      title: "Build & Integrate",
+      description: "Custom AI solutions built into your existing workflows — no rip-and-replace, no disruption.",
       icon: <Wrench className="h-5 w-5" />,
       color: "bg-gb-purple",
       borderColor: "border-l-gb-purple"
     },
     {
       number: 4,
-      title: "Measure & Iterate",
-      description: "Work continues until the numbers move.",
+      title: "Measure & Evolve",
+      description: "Track real results, optimize continuously, and expand AI across your business as you grow.",
       icon: <BarChart3 className="h-5 w-5" />,
       color: "bg-gb-orange",
       borderColor: "border-l-gb-orange"
@@ -44,10 +44,10 @@ const Process = () => {
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
             <span className="inline-block text-gb-blue font-semibold text-sm uppercase tracking-wider mb-3">
-              Our Approach
+              Our Process
             </span>
             <h2 className="text-3xl md:text-4xl font-bold text-gb-dark">
-              How We Work
+              From AI Curiosity to Business Impact
             </h2>
           </div>
         </ScrollReveal>
