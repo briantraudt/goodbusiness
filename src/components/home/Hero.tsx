@@ -32,7 +32,7 @@ const Hero = () => {
           className={`absolute inset-0 w-full h-full bg-cover bg-center bg-fixed transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           style={{ backgroundImage: `url(${homeHeroBg})` }}
         />
-        <div className="absolute inset-0 bg-black/80 md:bg-black/75"></div>
+        <div className="absolute inset-0 bg-black/65 md:bg-black/60"></div>
       </div>
       
       {/* Content */}
