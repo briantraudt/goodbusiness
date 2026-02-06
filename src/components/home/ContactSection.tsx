@@ -49,7 +49,7 @@ const ContactSection = () => {
                 <div
                   className="calendly-inline-widget"
                   data-url="https://calendly.com/briantraudt/free-intro-meeting?hide_event_type_details=1&hide_gdpr_banner=1"
-                  style={{ minWidth: '320px', height: '700px' }}
+                  style={{ minWidth: '320px', height: '580px' }}
                 />
               </div>
             </div>
