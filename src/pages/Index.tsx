@@ -2,10 +2,8 @@ import { useEffect } from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import Hero from '@/components/home/Hero';
 import SolutionSection from '@/components/home/SolutionSection';
-import Pillars from '@/components/home/Pillars';
-import ServicesSection from '@/components/home/ServicesSection';
+import HowWeWork from '@/components/home/HowWeWork';
 import ClientsSection from '@/components/home/ClientsSection';
-import Process from '@/components/home/Process';
 import ContactSection from '@/components/home/ContactSection';
 import homeHeroBg from '@/assets/home-hero-bg.jpg';
 
@@ -24,10 +22,8 @@ const Index = () => {
     <PageLayout>
       <Hero />
       <SolutionSection />
-      <Pillars />
-      <ServicesSection />
+      <HowWeWork />
       <ClientsSection />
-      <Process />
       <ContactSection />
     </PageLayout>
   );
