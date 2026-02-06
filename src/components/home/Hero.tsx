@@ -25,7 +25,7 @@ const Hero = () => {
 
   return (
     <section
-      className="relative overflow-hidden min-h-[60vh] md:min-h-[70vh] flex items-center -mt-[60px] md:mt-0 pt-[60px] md:pt-0"
+      className="relative overflow-hidden min-h-[60vh] md:min-h-[70vh] flex items-center"
       style={{ backgroundColor: FALLBACK_BG }}
     >
       {/* Background Image — no parallax, calm fade-in */}
@@ -59,7 +59,7 @@ const Hero = () => {
             <span className="text-gb-green">Actually Want.</span>
           </h1>
           <p className="mt-5 md:mt-7 text-base md:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed font-light">
-            Good Business works alongside founders to clarify ideas, pressure-test assumptions, and build real products that earn users — and revenue.
+            Good Business works alongside solo founders to clarify ideas, pressure-test assumptions, and build real products that earn users — and revenue.
           </p>
         </div>
 
