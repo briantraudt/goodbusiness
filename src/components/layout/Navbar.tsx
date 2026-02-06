@@ -27,7 +27,6 @@ const Navbar = () => {
     { name: "Home", target: "top" },
     { name: "Services", target: "services" },
     { name: "How It Works", target: "how-it-works" },
-    { name: "Contact", target: "contact" },
   ];
 
   return (
