@@ -15,7 +15,7 @@ const HowWeWork = () => {
   const pillars = [
     {
       icon: <Compass className="h-8 w-8" />,
-      title: "Clarity Partner",
+      title: "Direction",
       description: "We help founders slow down long enough to get the right things right — defining the problem, the customer, and what not to build.",
       color: "text-gb-green",
       bg: "bg-gb-green/10",
@@ -23,7 +23,7 @@ const HowWeWork = () => {
     },
     {
       icon: <Handshake className="h-8 w-8" />,
-      title: "Consulting Partner",
+      title: "Execution",
       description: "We work hands-on with founders and teams to turn strategy into execution — shaping products, systems, and momentum that actually ship.",
       color: "text-gb-blue",
       bg: "bg-gb-blue/10",
@@ -31,7 +31,7 @@ const HowWeWork = () => {
     },
     {
       icon: <Rocket className="h-8 w-8" />,
-      title: "Product Incubator",
+      title: "Incubation",
       description: "We co-build and launch products alongside founders — investing time, experience, and conviction to bring real ideas into the world.",
       color: "text-gb-purple",
       bg: "bg-gb-purple/10",
