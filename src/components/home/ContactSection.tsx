@@ -22,7 +22,6 @@ const ContactSection = () => {
     }
     setIsSubmitting(true);
     try {
-      // Store as a business submission with minimal fields
       const { error } = await supabase.from('business_submissions').insert({
         full_name: name,
         email: email,
@@ -53,14 +52,14 @@ const ContactSection = () => {
               <div>
                 <div className="inline-flex items-center gap-2 bg-gb-green/20 text-gb-green px-4 py-2 rounded-full text-sm font-medium mb-6">
                   <MessageCircle className="h-4 w-4" />
-                  Free Consultation
+                  Free AI Consultation
                 </div>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  Tell Us What's Not Working
+                  Let's Find Your AI Advantage
                 </h2>
                 <p className="text-lg text-white/70 mb-8 leading-relaxed">
-                  Share what you're dealing with — bloated SaaS, manual processes, tools that don't fit.
-                  We'll show you what's possible.
+                  Tell us about your business and where you're feeling the most friction.
+                  We'll show you exactly where AI can make the biggest difference.
                 </p>
                 <div className="space-y-4">
                   <a href="mailto:hello@goodbusinesshq.com" className="flex items-center gap-3 text-white/80 hover:text-gb-green transition-colors">
@@ -77,9 +76,12 @@ const ContactSection = () => {
               {/* Right side - form */}
               <div>
                 {submitted ? (
-                  <div className="bg-white/10 rounded-xl p-8 text-center">
+                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 text-center border border-white/10">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gb-green/20 mb-4">
+                      <MessageCircle className="h-8 w-8 text-gb-green" />
+                    </div>
                     <h3 className="text-2xl font-bold mb-3">Thanks for reaching out!</h3>
-                    <p className="text-white/70">We'll review your message and get back to you within 24 hours.</p>
+                    <p className="text-white/70">We'll review your message and get back to you within 24 hours with initial thoughts on how AI can help.</p>
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
@@ -88,7 +90,7 @@ const ContactSection = () => {
                         placeholder="Your name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50 h-12"
+                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50 h-12 focus:border-gb-green"
                       />
                     </div>
                     <div>
@@ -97,15 +99,15 @@ const ContactSection = () => {
                         placeholder="Email address"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50 h-12"
+                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50 h-12 focus:border-gb-green"
                       />
                     </div>
                     <div>
                       <Textarea
-                        placeholder="What are you working on? What's not working with your current tools?"
+                        placeholder="What does your business do? What's your biggest bottleneck right now?"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
-                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-[140px]"
+                        className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-[140px] focus:border-gb-green"
                       />
                     </div>
                     <Button
@@ -120,11 +122,14 @@ const ContactSection = () => {
                         </>
                       ) : (
                         <>
-                          Start the Conversation
+                          Get Your Free AI Assessment
                           <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                         </>
                       )}
                     </Button>
+                    <p className="text-white/40 text-sm text-center">
+                      No commitment. No pitch deck required. Just a conversation.
+                    </p>
                   </form>
                 )}
               </div>

@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -33,32 +32,40 @@ const Hero = () => {
           className={`absolute inset-0 w-full h-full bg-cover bg-center bg-fixed transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
           style={{ backgroundImage: `url(${homeHeroBg})` }}
         />
-        {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/80 md:bg-black/75"></div>
       </div>
       
       {/* Content */}
-      <div className="container-custom py-6 md:py-10 flex flex-col items-center justify-center h-full relative z-10">
+      <div className="container-custom py-8 md:py-12 flex flex-col items-center justify-center h-full relative z-10">
         <div className="text-center mx-auto">
+          {/* AI badge */}
+          <div className="inline-flex items-center gap-2 bg-gb-green/20 text-gb-green px-4 py-1.5 rounded-full text-sm font-medium mb-6 backdrop-blur-sm border border-gb-green/20">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gb-green opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-gb-green"></span>
+            </span>
+            AI-Powered Growth Partner
+          </div>
+          
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-5xl mx-auto leading-tight">
-            We Build Outcomes.<br />
-            <span className="text-gb-green">Not Software.</span>
+            AI That Grows<br />
+            <span className="text-gb-green">Your Business.</span>
           </h1>
-          <p className="mt-3 md:mt-6 text-base md:text-xl text-white/90 max-w-2xl mx-auto">
+          <p className="mt-4 md:mt-6 text-base md:text-xl text-white/85 max-w-2xl mx-auto leading-relaxed">
             {isMobile 
-              ? "Solutions that deliver real results—revenue, efficiency, clarity, and growth."
-              : "Good Business helps organizations design and execute solutions that deliver real results—revenue, efficiency, clarity, and growth."
+              ? "We help businesses harness AI to drive revenue, cut costs, and scale faster."
+              : "Good Business helps organizations design and deploy AI-driven solutions that deliver measurable growth — more revenue, lower costs, and faster execution."
             }
           </p>
         </div>
         
         {/* Buttons */}
-        <div className="mt-6 md:mt-6 flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="mt-8 md:mt-8 flex flex-col sm:flex-row gap-4 justify-center">
           <Button 
             onClick={() => scrollTo('contact')}
-            className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center"
+            className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center group"
           >
-            Define Your Outcome
+            See What AI Can Do For You
             <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
           </Button>
           {!isMobile && (
@@ -67,7 +74,7 @@ const Hero = () => {
               variant="outline" 
               className="border-white/30 bg-transparent text-white hover:bg-white hover:text-gb-dark hover:border-white font-semibold py-4 px-6 rounded-md text-lg"
             >
-              See How It Works
+              How It Works
             </Button>
           )}
         </div>
