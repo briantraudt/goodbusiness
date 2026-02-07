@@ -25,7 +25,7 @@ const Hero = () => {
 
   return (
     <section
-      className="relative overflow-hidden min-h-[55vh] md:min-h-[60vh] flex items-center"
+      className="relative overflow-hidden min-h-[69vh] md:min-h-[75vh] flex items-center"
       style={{ backgroundColor: FALLBACK_BG }}
     >
       {/* Background Image — no parallax, calm fade-in */}
