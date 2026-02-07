@@ -40,7 +40,7 @@ const HowWeWork = () => {
   ];
 
   return (
-    <section id="how-we-help" className="relative py-20 md:py-28 overflow-hidden">
+    <section id="how-we-help" className="relative py-14 md:py-20 overflow-hidden">
       {/* Background Image with parallax */}
       <div className="absolute inset-0 w-full h-full">
         <div
@@ -53,10 +53,10 @@ const HowWeWork = () => {
       <div className="container-custom relative z-10">
         <ScrollReveal direction="up">
           <div className="text-center mb-14 md:mb-20">
-            <span className="inline-block text-gb-blue font-semibold text-sm uppercase tracking-wider mb-3">
+            <span className="inline-block text-gb-blue font-semibold text-base md:text-lg uppercase tracking-wider mb-3">
               What We Do
             </span>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gb-dark mb-4">
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gb-dark mb-4">
               Three Ways We Work With Founders
             </h2>
             <p className="text-lg text-gb-dark/60 max-w-2xl mx-auto">
