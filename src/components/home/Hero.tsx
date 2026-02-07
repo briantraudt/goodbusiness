@@ -40,13 +40,13 @@ const Hero = () => {
           }}
         />
 
-        {/* Top-to-bottom gradient overlay — stronger on mobile for readability */}
+        {/* Top-to-bottom gradient overlay — lighter since bg is already dark */}
         <div
           className="absolute inset-0"
           style={{
             background: isMobile
-              ? 'linear-gradient(to bottom, hsla(0, 0%, 0%, 0.72) 0%, hsla(0, 0%, 0%, 0.55) 50%, hsla(0, 0%, 0%, 0.70) 100%)'
-              : 'linear-gradient(to bottom, hsla(0, 0%, 0%, 0.60) 0%, hsla(0, 0%, 0%, 0.40) 50%, hsla(0, 0%, 0%, 0.65) 100%)',
+              ? 'linear-gradient(to bottom, hsla(0, 0%, 0%, 0.55) 0%, hsla(0, 0%, 0%, 0.35) 50%, hsla(0, 0%, 0%, 0.60) 100%)'
+              : 'linear-gradient(to bottom, hsla(0, 0%, 0%, 0.45) 0%, hsla(0, 0%, 0%, 0.20) 50%, hsla(0, 0%, 0%, 0.50) 100%)',
           }}
         />
       </div>
