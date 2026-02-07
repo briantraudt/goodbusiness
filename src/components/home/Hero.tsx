@@ -36,7 +36,7 @@ const Hero = () => {
           }`}
           style={{
             backgroundImage: `url(${homeHeroBg})`,
-            backgroundPosition: isMobile ? 'center 40%' : 'center center',
+            backgroundPosition: isMobile ? 'center 40%' : '30% center',
           }}
         />
 
