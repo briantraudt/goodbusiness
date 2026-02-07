@@ -44,41 +44,23 @@ const Footer = () => {
           
           <div>
             <h4 className="font-serif text-lg font-bold mb-2">Navigation</h4>
-            <div className="grid grid-cols-2 gap-x-4">
-              <div>
-                <ul className="space-y-1">
-                  <li>
-                    <button onClick={() => scrollTo('top')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
-                      Home
-                    </button>
-                  </li>
-                  <li>
-                    <button onClick={() => scrollTo('services')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
-                      How We Help
-                    </button>
-                  </li>
-                  <li>
-                    <button onClick={() => scrollTo('how-it-works')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
-                      How It Works
-                    </button>
-                  </li>
-                </ul>
-              </div>
-              <div>
-                <ul className="space-y-1">
-                  <li>
-                    <button onClick={() => scrollTo('contact')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
-                      Talk to Us
-                    </button>
-                  </li>
-                  <li>
-                    <a href="/clients" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
-                      Client Portal
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            <ul className="space-y-1">
+              <li>
+                <button onClick={() => scrollTo('top')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                  Home
+                </button>
+              </li>
+              <li>
+                <button onClick={() => scrollTo('how-we-help')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                  How We Help
+                </button>
+              </li>
+              <li>
+                <a href="/clients" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                  Client Portal
+                </a>
+              </li>
+            </ul>
           </div>
           
           <div>
