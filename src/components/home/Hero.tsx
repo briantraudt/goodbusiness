@@ -56,7 +56,7 @@ const Hero = () => {
         <div className="text-center md:text-right md:max-w-2xl">
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight">
             Build Something People<br />
-            <span style={{ color: 'hsl(215, 40%, 20%)' }}>Actually Use.</span>
+            <span style={{ color: 'hsl(210, 55%, 55%)' }}>Actually Use.</span>
           </h1>
           <p className="mt-5 md:mt-7 text-base md:text-lg text-white/80 max-w-2xl leading-relaxed font-light">
             Good Business works alongside founders to clarify ideas, pressure-test assumptions, and build real products that earn users — and revenue.
@@ -68,7 +68,7 @@ const Hero = () => {
           <Button
             onClick={() => scrollTo('contact')}
             className="text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center group"
-            style={{ backgroundColor: 'hsl(215, 40%, 20%)' }}
+            style={{ backgroundColor: 'hsl(210, 55%, 55%)' }}
           >
             Talk Through Your Idea
             <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
