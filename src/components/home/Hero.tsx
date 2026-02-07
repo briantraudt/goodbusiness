@@ -67,7 +67,8 @@ const Hero = () => {
         <div className="mt-8 md:mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-end">
           <Button
             onClick={() => scrollTo('contact')}
-            className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center group"
+            className="text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center group"
+            style={{ backgroundColor: 'hsl(210, 60%, 70%)' }}
           >
             Talk Through Your Idea
             <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
