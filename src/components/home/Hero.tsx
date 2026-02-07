@@ -56,7 +56,7 @@ const Hero = () => {
         <div className="text-center mx-auto">
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-5xl mx-auto leading-tight tracking-tight">
             Build Something People<br />
-            <span className="text-gb-green">Actually Want.</span>
+            <span className="text-gb-green">Actually Use.</span>
           </h1>
           <p className="mt-5 md:mt-7 text-base md:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed font-light">
             Good Business works alongside founders to clarify ideas, pressure-test assumptions, and build real products that earn users — and revenue.
