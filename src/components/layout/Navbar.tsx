@@ -36,7 +36,7 @@ const Navbar = () => {
             className={`flex ${isMobile ? 'justify-center' : ''} items-center`}
           >
             <span className="font-sans text-2xl md:text-3xl font-bold text-[#333333]">
-              Go<span style={{ color: 'hsl(210, 60%, 70%)' }}>o</span>d Business
+              Go<span style={{ color: 'hsl(215, 40%, 20%)' }}>o</span>d Business
             </span>
           </button>
         </div>
@@ -57,7 +57,7 @@ const Navbar = () => {
           <Button
             onClick={() => scrollTo('contact')}
             className="text-white text-lg flex items-center justify-center"
-            style={{ backgroundColor: 'hsl(210, 60%, 70%)' }}
+            style={{ backgroundColor: 'hsl(215, 40%, 20%)' }}
           >
             Let's Talk
           </Button>
@@ -90,7 +90,7 @@ const Navbar = () => {
                 <Button
                   onClick={() => scrollTo('contact')}
                   className="text-white w-full mt-2 text-lg flex items-center justify-center"
-                  style={{ backgroundColor: 'hsl(210, 60%, 70%)' }}
+                  style={{ backgroundColor: 'hsl(215, 40%, 20%)' }}
                 >
                   Let's Talk
                 </Button>
