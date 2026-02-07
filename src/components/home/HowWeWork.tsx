@@ -53,7 +53,7 @@ const HowWeWork = () => {
       <div className="container-custom relative z-10">
         <ScrollReveal direction="up">
           <div className="text-center mb-14 md:mb-20">
-            <span className="inline-block text-gb-blue font-semibold text-base md:text-lg uppercase tracking-wider mb-3">
+            <span className="inline-block text-gb-blue font-semibold text-2xl md:text-4xl uppercase tracking-wider mb-3">
               What We Do
             </span>
             <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gb-dark mb-4">
