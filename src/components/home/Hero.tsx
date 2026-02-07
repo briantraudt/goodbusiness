@@ -52,19 +52,19 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="container-custom py-8 md:py-12 flex flex-col items-center justify-center h-full relative z-10">
-        <div className="text-center mx-auto">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white max-w-5xl mx-auto leading-tight tracking-tight">
+      <div className="container-custom py-8 md:py-12 flex flex-col items-center md:items-end justify-center h-full relative z-10">
+        <div className="text-center md:text-right md:max-w-2xl">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight">
             Build Something People<br />
             <span className="text-gb-green">Actually Use.</span>
           </h1>
-          <p className="mt-5 md:mt-7 text-base md:text-lg text-white/80 max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="mt-5 md:mt-7 text-base md:text-lg text-white/80 max-w-2xl leading-relaxed font-light">
             Good Business works alongside founders to clarify ideas, pressure-test assumptions, and build real products that earn users — and revenue.
           </p>
         </div>
 
         {/* Buttons */}
-        <div className="mt-8 md:mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="mt-8 md:mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-end">
           <Button
             onClick={() => scrollTo('contact')}
             className="bg-gb-green hover:bg-gb-green/90 text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center group"
