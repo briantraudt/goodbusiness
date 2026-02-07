@@ -56,7 +56,7 @@ const HowWeWork = () => {
             <span className="inline-block text-gb-blue font-semibold text-xl md:text-3xl uppercase tracking-wider mb-3">
               What We Do
             </span>
-            <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gb-dark mb-4">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gb-dark mb-4">
               Three Ways We Work With Founders
             </h2>
             <p className="text-lg text-gb-dark/60 max-w-2xl mx-auto">
