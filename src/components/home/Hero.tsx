@@ -19,11 +19,11 @@ const Hero = () => {
       <div className="container-custom pt-24 md:pt-28 py-8 md:py-12 flex flex-col items-center md:items-end justify-center h-full relative z-10">
         <div className="text-center md:text-right md:max-w-2xl">
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight">
-            Build Something People<br />
-            <span style={{ color: 'hsl(210, 55%, 55%)' }}>Actually Use.</span>
+            Build What the Future<br />
+            <span style={{ color: 'hsl(210, 55%, 55%)' }}>Will Use.</span>
           </h1>
           <p className="mt-5 md:mt-7 text-base md:text-lg text-white/80 max-w-2xl leading-relaxed font-light">
-            Good Business works alongside founders to clarify ideas, pressure-test assumptions, and build real products that earn users — and revenue.
+            Good Business works alongside founders to clarify ideas, pressure-test assumptions, and build real products designed to endure — not experiments that fade.
           </p>
         </div>
 
