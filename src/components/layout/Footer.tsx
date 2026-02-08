@@ -17,7 +17,7 @@ const Footer = () => {
   };
   
   return (
-    <footer className="bg-gb-dark text-white py-6 md:py-8">
+    <footer className="bg-card text-foreground py-6 md:py-8 border-t border-border">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
           <div>
@@ -26,7 +26,7 @@ const Footer = () => {
                 Good Business HQ
               </a>
             </h3>
-            <p className="mb-3 text-gray-300 max-w-md text-sm">
+            <p className="mb-3 text-muted-foreground max-w-md text-sm">
               Helping solo founders build real products — with clarity, restraint, and momentum.
             </p>
             <div className="flex space-x-4">
@@ -34,7 +34,7 @@ const Footer = () => {
                 href="https://www.linkedin.com/company/good-businesshq" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-white hover:text-gb-green transition-colors"
+                className="text-foreground hover:text-primary transition-colors"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="h-5 w-5" />
@@ -46,17 +46,17 @@ const Footer = () => {
             <h4 className="font-serif text-lg font-bold mb-2">Navigation</h4>
             <ul className="space-y-1">
               <li>
-                <button onClick={() => scrollTo('top')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                <button onClick={() => scrollTo('top')} className="text-muted-foreground hover:text-primary transition-colors text-sm">
                   Home
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollTo('how-we-help')} className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                <button onClick={() => scrollTo('how-we-help')} className="text-muted-foreground hover:text-primary transition-colors text-sm">
                   How We Help
                 </button>
               </li>
               <li>
-                <a href="/clients" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                <a href="/clients" className="text-muted-foreground hover:text-primary transition-colors text-sm">
                   Client Portal
                 </a>
               </li>
@@ -68,13 +68,13 @@ const Footer = () => {
             <ul className="space-y-1">
               <li className="flex items-center">
                 <Mail className="mr-2 h-4 w-4 text-gb-green" />
-                <a href="mailto:hello@goodbusinesshq.com" className="text-gray-300 hover:text-gb-green transition-colors text-sm">
+                <a href="mailto:hello@goodbusinesshq.com" className="text-muted-foreground hover:text-primary transition-colors text-sm">
                   hello@goodbusinesshq.com
                 </a>
               </li>
               <li className="flex items-center">
                 <MapPin className="mr-2 h-4 w-4 text-gb-green" />
-                <span className="text-gray-300 text-sm">
+                <span className="text-muted-foreground text-sm">
                   Austin, TX
                 </span>
               </li>
@@ -82,7 +82,7 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-gray-800 mt-6 pt-4 text-center text-gray-500 text-xs">
+        <div className="border-t border-border mt-6 pt-4 text-center text-muted-foreground text-xs">
           <p>&copy; {currentYear} Good Business HQ, LLC. All rights reserved.</p>
         </div>
       </div>

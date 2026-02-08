@@ -40,26 +40,25 @@ const HowWeWork = () => {
   ];
 
   return (
-    <section id="how-we-help" className="relative py-14 md:py-20 overflow-hidden">
-      {/* Background Image with parallax */}
+    <section id="how-we-help" className="relative py-14 md:py-20 overflow-hidden bg-background">
+      {/* Subtle texture overlay */}
       <div className="absolute inset-0 w-full h-full">
         <div
-          className={`absolute inset-0 w-full h-full bg-cover bg-center bg-fixed transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+          className={`absolute inset-0 w-full h-full bg-cover bg-center bg-fixed transition-opacity duration-300 ${imageLoaded ? 'opacity-[0.05]' : 'opacity-0'}`}
           style={{ backgroundImage: `url(${clientsBg})` }}
         />
-        <div className="absolute inset-0 bg-white/80"></div>
       </div>
 
       <div className="container-custom relative z-10">
         <ScrollReveal direction="up">
           <div className="text-center mb-14 md:mb-20">
-            <span className="inline-block text-gb-blue font-semibold text-xl md:text-3xl uppercase tracking-wider mb-3">
+            <span className="inline-block text-secondary font-semibold text-xl md:text-3xl uppercase tracking-wider mb-3">
               What We Do
             </span>
-            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-gb-dark mb-4">
+            <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-foreground mb-4">
               Three Ways We Work With Founders
             </h2>
-            <p className="text-lg text-gb-dark/60 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               We build products, partner with founders, and support teams at every stage — from first idea to real-world execution.
             </p>
           </div>
@@ -68,12 +67,12 @@ const HowWeWork = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
           {pillars.map((pillar, index) => (
             <ScrollReveal key={index} direction="up" delay={index * 120}>
-              <div className={`bg-white/90 backdrop-blur-sm rounded-2xl p-8 md:p-10 border ${pillar.border} hover:shadow-lg transition-all h-full flex flex-col items-center text-center`}>
+              <div className={`bg-card/80 backdrop-blur-sm rounded-2xl p-8 md:p-10 border border-border hover:border-muted-foreground/30 transition-all h-full flex flex-col items-center text-center`}>
                 <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl ${pillar.bg} ${pillar.color} mb-6`}>
                   {pillar.icon}
                 </div>
-                <h3 className="text-2xl font-bold text-gb-dark mb-3">{pillar.title}</h3>
-                <p className="text-gb-dark/60 leading-relaxed">{pillar.description}</p>
+                <h3 className="text-2xl font-bold text-foreground mb-3">{pillar.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{pillar.description}</p>
               </div>
             </ScrollReveal>
           ))}

@@ -7,44 +7,44 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 220 15% 8%;
+    --foreground: 210 20% 90%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 15% 12%;
+    --card-foreground: 210 20% 90%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 15% 12%;
+    --popover-foreground: 210 20% 90%;
 
     --primary: 162 56% 46%;
-    --primary-foreground: 210 40% 98%;
+    --primary-foreground: 220 15% 8%;
 
     --secondary: 209 100% 58%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 20% 90%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 15% 15%;
+    --muted-foreground: 215 15% 55%;
 
     --accent: 261 34% 54%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent-foreground: 210 20% 90%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 210 20% 90%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 15% 18%;
+    --input: 220 15% 18%;
+    --ring: 210 55% 55%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 220 15% 10%;
+    --sidebar-foreground: 210 20% 85%;
+    --sidebar-primary: 210 55% 55%;
+    --sidebar-primary-foreground: 210 20% 90%;
+    --sidebar-accent: 220 15% 15%;
+    --sidebar-accent-foreground: 210 20% 85%;
+    --sidebar-border: 220 15% 18%;
+    --sidebar-ring: 210 55% 55%;
   }
 
   .dark {
@@ -122,10 +122,10 @@
   }
 
   .pillar-card {
-    @apply bg-white p-6 md:p-8 rounded-lg shadow-md transition-all hover:shadow-lg flex flex-col h-full;
+    @apply bg-card p-6 md:p-8 rounded-lg border border-border transition-all hover:border-muted-foreground/30 flex flex-col h-full;
   }
 
   .venture-card {
-    @apply bg-white p-6 md:p-8 rounded-lg shadow-md transition-all hover:shadow-lg flex flex-col h-full border-t-4;
+    @apply bg-card p-6 md:p-8 rounded-lg border border-border transition-all hover:border-muted-foreground/30 flex flex-col h-full border-t-4;
   }
 }
