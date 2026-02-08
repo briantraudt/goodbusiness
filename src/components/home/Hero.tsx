@@ -1,15 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-import heroVideo from '@/assets/home-hero-bg.mp4';
-
-const FALLBACK_BG = 'hsl(220, 15%, 8%)';
 
 const Hero = () => {
   const isMobile = useIsMobile();
-  const [videoReady, setVideoReady] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -19,36 +14,7 @@ const Hero = () => {
   };
 
   return (
-    <section
-      className="relative overflow-hidden min-h-[69vh] md:min-h-[75vh] flex items-center"
-      style={{ backgroundColor: FALLBACK_BG }}
-    >
-      {/* Video Background */}
-      <div className="absolute inset-0 w-full h-full">
-        <video
-          ref={videoRef}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out ${
-            videoReady ? 'opacity-[0.15]' : 'opacity-0'
-          }`}
-          src={heroVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          onCanPlay={() => setVideoReady(true)}
-        />
-
-        {/* Gradient overlay for text contrast */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: isMobile
-              ? 'linear-gradient(to bottom, hsla(0, 0%, 0%, 0.50) 0%, hsla(0, 0%, 0%, 0.30) 50%, hsla(0, 0%, 0%, 0.55) 100%)'
-              : 'linear-gradient(to right, hsla(0, 0%, 0%, 0.10) 0%, hsla(0, 0%, 0%, 0.20) 40%, hsla(0, 0%, 0%, 0.50) 100%)',
-          }}
-        />
-      </div>
-
+    <section className="relative min-h-[69vh] md:min-h-[75vh] flex items-center">
       {/* Content */}
       <div className="container-custom pt-24 md:pt-28 py-8 md:py-12 flex flex-col items-center md:items-end justify-center h-full relative z-10">
         <div className="text-center md:text-right md:max-w-2xl">
