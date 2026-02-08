@@ -34,7 +34,7 @@ const Footer = () => {
                 href="https://www.linkedin.com/company/good-businesshq" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-foreground hover:text-primary transition-colors"
+                className="text-foreground hover:text-secondary transition-colors"
                 aria-label="LinkedIn"
               >
                 <Linkedin className="h-5 w-5" />
@@ -46,17 +46,17 @@ const Footer = () => {
             <h4 className="font-serif text-lg font-bold mb-2">Navigation</h4>
             <ul className="space-y-1">
               <li>
-                <button onClick={() => scrollTo('top')} className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                <button onClick={() => scrollTo('top')} className="text-muted-foreground hover:text-secondary transition-colors text-sm">
                   Home
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollTo('how-we-help')} className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                <button onClick={() => scrollTo('how-we-help')} className="text-muted-foreground hover:text-secondary transition-colors text-sm">
                   How We Help
                 </button>
               </li>
               <li>
-                <a href="/clients" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                <a href="/clients" className="text-muted-foreground hover:text-secondary transition-colors text-sm">
                   Client Portal
                 </a>
               </li>
@@ -68,7 +68,7 @@ const Footer = () => {
             <ul className="space-y-1">
               <li className="flex items-center">
                 <Mail className="mr-2 h-4 w-4 text-secondary" />
-                <a href="mailto:hello@goodbusinesshq.com" className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                <a href="mailto:hello@goodbusinesshq.com" className="text-muted-foreground hover:text-secondary transition-colors text-sm">
                   hello@goodbusinesshq.com
                 </a>
               </li>
