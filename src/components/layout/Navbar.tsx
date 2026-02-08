@@ -28,14 +28,14 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-white/90 backdrop-blur-sm sticky top-0 z-50 border-b border-gray-100">
+    <nav className="bg-transparent absolute top-0 left-0 right-0 z-50">
       <div className="container-custom py-4 flex justify-between items-center">
         <div className={`${isMobile ? 'flex-1 text-center' : ''}`}>
           <button
             onClick={() => scrollTo('top')}
             className={`flex ${isMobile ? 'justify-center' : ''} items-center`}
           >
-            <span className="font-sans text-2xl md:text-3xl font-bold text-[#333333]">
+            <span className="font-sans text-2xl md:text-3xl font-bold text-white">
               Go<span style={{ color: 'hsl(210, 55%, 55%)' }}>o</span>d Business
             </span>
           </button>
@@ -47,7 +47,7 @@ const Navbar = () => {
               <li key={item.name}>
                 <button
                   onClick={() => scrollTo(item.target)}
-                  className="text-gb-dark hover:text-gb-green transition-colors font-medium text-lg"
+                  className="text-white/80 hover:text-white transition-colors font-medium text-lg"
                 >
                   {item.name}
                 </button>
@@ -64,7 +64,7 @@ const Navbar = () => {
         </div>
 
         <button
-          className="md:hidden text-gb-dark hover:text-gb-green"
+          className="md:hidden text-white hover:text-white/80"
           onClick={toggleMenu}
           aria-label="Toggle Menu"
         >
@@ -73,14 +73,14 @@ const Navbar = () => {
       </div>
 
       {isMenuOpen && (
-        <div className="md:hidden bg-white py-4 border-t border-gray-100 absolute w-full z-50">
+        <div className="md:hidden bg-black/90 backdrop-blur-sm py-4 border-t border-white/10 absolute w-full z-50">
           <div className="container-custom">
             <ul className="flex flex-col space-y-4">
               {menuItems.map((item) => (
                 <li key={item.name}>
                   <button
                     onClick={() => scrollTo(item.target)}
-                    className="text-gb-dark hover:text-gb-green transition-colors font-medium text-lg block py-2 w-full text-left"
+                    className="text-white/80 hover:text-white transition-colors font-medium text-lg block py-2 w-full text-left"
                   >
                     {item.name}
                   </button>

@@ -50,7 +50,7 @@ const Hero = () => {
       </div>
 
       {/* Content */}
-      <div className="container-custom py-8 md:py-12 flex flex-col items-center md:items-end justify-center h-full relative z-10">
+      <div className="container-custom pt-24 md:pt-28 py-8 md:py-12 flex flex-col items-center md:items-end justify-center h-full relative z-10">
         <div className="text-center md:text-right md:max-w-2xl">
           <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight">
             Build Something People<br />
