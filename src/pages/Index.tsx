@@ -35,6 +35,17 @@ const Index = () => {
       {/* Page content sits above the fixed video */}
       <div className="relative z-10">
         <Hero />
+
+        {/* Subtle gradient divider */}
+        <div className="flex justify-center">
+          <div
+            className="h-px w-full max-w-2xl"
+            style={{
+              background: 'linear-gradient(to right, transparent, hsl(210 55% 55% / 0.3), transparent)',
+            }}
+          />
+        </div>
+
         <HowWeWork />
         <ContactSection />
       </div>
