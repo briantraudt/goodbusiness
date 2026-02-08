@@ -14,7 +14,7 @@ const ContactSection = () => {
   }, []);
 
   return (
-    <section id="contact" className="bg-gb-dark text-white py-16 md:py-24">
+    <section id="contact" className="bg-card text-foreground py-16 md:py-24 border-t border-border">
       <div className="container-custom">
         <ScrollReveal direction="up">
           <div className="max-w-5xl mx-auto">
@@ -28,16 +28,16 @@ const ContactSection = () => {
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
                   Talk Through Your Idea
                 </h2>
-                <p className="text-lg text-white/70 mb-8 leading-relaxed">
+                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                   No pitch. No pressure. Just a thoughtful conversation about what you're building 
                   and whether it's worth building. Pick a time that works for you.
                 </p>
                 <div className="space-y-4">
-                  <a href="mailto:hello@goodbusinesshq.com" className="flex items-center gap-3 text-white/80 hover:text-gb-green transition-colors">
+                  <a href="mailto:hello@goodbusinesshq.com" className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors">
                     <Mail className="h-5 w-5 text-gb-green" />
                     hello@goodbusinesshq.com
                   </a>
-                  <div className="flex items-center gap-3 text-white/80">
+                  <div className="flex items-center gap-3 text-muted-foreground">
                     <MapPin className="h-5 w-5 text-gb-green" />
                     Austin, TX
                   </div>
