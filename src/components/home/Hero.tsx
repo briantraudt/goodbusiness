@@ -28,7 +28,7 @@ const Hero = () => {
         <video
           ref={videoRef}
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out ${
-            videoReady ? 'opacity-60' : 'opacity-0'
+            videoReady ? 'opacity-40' : 'opacity-0'
           }`}
           src={heroVideo}
           autoPlay
