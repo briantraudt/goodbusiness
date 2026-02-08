@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Mail, MapPin, MessageCircle } from 'lucide-react';
+import { Mail, MapPin } from 'lucide-react';
 import ScrollReveal from '@/components/common/ScrollReveal';
 
 const BRAND_BLUE = 'hsl(210, 55%, 55%)';
@@ -24,10 +24,10 @@ const ContactSection = () => {
               {/* Left side - messaging */}
               <div className="flex flex-col justify-center">
                 <div
-                  className="inline-flex items-center gap-2 text-white px-4 py-2 rounded-full text-sm font-medium mb-6 w-fit"
+                  className="inline-flex items-center text-white px-4 py-2 rounded-full text-sm font-medium mb-6 w-fit"
                   style={{ backgroundColor: BRAND_BLUE }}
                 >
-                  <MessageCircle className="h-4 w-4" />
+                  FREE 30 Minute Founder Clarity Call
                   FREE 30 Minute Founder Clarity Call
                 </div>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
