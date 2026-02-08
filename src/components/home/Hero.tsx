@@ -14,24 +14,24 @@ const Hero = () => {
   };
 
   return (
-    <section className="relative min-h-[69vh] md:min-h-[75vh] flex items-center">
+    <section className="relative min-h-[72vh] md:min-h-[78vh] flex items-center">
       {/* Content */}
-      <div className="container-custom pt-24 md:pt-28 py-8 md:py-12 flex flex-col items-center md:items-end justify-center h-full relative z-10">
+      <div className="container-custom pt-28 md:pt-32 pb-12 md:pb-16 flex flex-col items-center md:items-end justify-center h-full relative z-10">
         <div className="text-center md:text-right md:max-w-2xl">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[4rem] font-extrabold text-white leading-[1.15] tracking-tight">
             Build What the Future<br />
             <span style={{ color: 'hsl(210, 55%, 55%)' }}>Will Use.</span>
           </h1>
-          <p className="mt-5 md:mt-7 text-base md:text-lg text-white/80 max-w-2xl leading-relaxed font-light">
+          <p className="mt-6 md:mt-8 text-base md:text-lg text-white/75 max-w-md md:max-w-xl md:ml-auto leading-relaxed font-light">
             Good Business works alongside founders to clarify ideas, pressure-test assumptions, and build real products designed to endure — not experiments that fade.
           </p>
         </div>
 
         {/* Buttons */}
-        <div className="mt-8 md:mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-end">
+        <div className="mt-10 md:mt-12 flex flex-col sm:flex-row gap-4 justify-center md:justify-end w-full sm:w-auto">
           <Button
             onClick={() => scrollTo('contact')}
-            className="text-white font-semibold py-4 px-6 rounded-md text-lg flex items-center justify-center group"
+            className="w-full sm:w-auto text-white font-semibold py-5 px-8 rounded-md text-lg flex items-center justify-center group"
             style={{ backgroundColor: 'hsl(210, 55%, 55%)' }}
           >
             Talk Through Your Idea
@@ -41,7 +41,7 @@ const Hero = () => {
             <Button
               onClick={() => scrollTo('how-we-help')}
               variant="outline"
-              className="border-white/30 bg-transparent text-white hover:bg-white hover:text-gb-dark hover:border-white font-semibold py-4 px-6 rounded-md text-lg"
+              className="border-white/20 bg-transparent text-white/80 hover:bg-white hover:text-gb-dark hover:border-white font-medium py-5 px-8 rounded-md text-lg"
             >
               How We Help
             </Button>
