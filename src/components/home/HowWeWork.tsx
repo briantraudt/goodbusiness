@@ -8,22 +8,22 @@ const HowWeWork = () => {
       icon: <Compass className="h-8 w-8" />,
       title: "Direction",
       description: "We help founders define what truly matters — clarifying the problem, the user, and the long-term opportunity before a single line of code is written.",
-      color: "text-gb-green",
-      bg: "bg-gb-green/10",
+      color: "text-secondary",
+      bg: "bg-secondary/10",
     },
     {
       icon: <Handshake className="h-8 w-8" />,
       title: "Execution",
       description: "We work hands-on to turn conviction into momentum — building systems and products that are designed to ship, scale, and endure.",
-      color: "text-gb-blue",
-      bg: "bg-gb-blue/10",
+      color: "text-secondary",
+      bg: "bg-secondary/10",
     },
     {
       icon: <Rocket className="h-8 w-8" />,
       title: "Incubation",
       description: "For ideas with long-term potential, we co-build alongside founders — investing time, experience, and belief to bring future-ready products to life.",
-      color: "text-gb-purple",
-      bg: "bg-gb-purple/10",
+      color: "text-secondary",
+      bg: "bg-secondary/10",
     }
   ];
 
