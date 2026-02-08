@@ -36,12 +36,12 @@ const Index = () => {
       <div className="relative z-10">
         <Hero />
 
-        {/* Subtle gradient divider */}
-        <div className="flex justify-center">
+        {/* Breathing room + subtle gradient divider */}
+        <div className="py-10 md:py-16 flex justify-center">
           <div
-            className="h-px w-full max-w-2xl"
+            className="h-px w-full max-w-xl"
             style={{
-              background: 'linear-gradient(to right, transparent, hsl(210 55% 55% / 0.3), transparent)',
+              background: 'linear-gradient(to right, transparent, hsl(210 55% 55% / 0.25), transparent)',
             }}
           />
         </div>
