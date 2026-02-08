@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import Hero from '@/components/home/Hero';
 import HowWeWork from '@/components/home/HowWeWork';
@@ -7,15 +7,24 @@ import heroVideo from '@/assets/home-hero-bg.mp4';
 
 const Index = () => {
   const [videoReady, setVideoReady] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const threshold = window.innerHeight * 0.65;
+      setPastHero(window.scrollY > threshold);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <PageLayout>
-      {/* Fixed video background — covers entire page, fades out in lower half */}
+      {/* Fixed video background — covers entire page */}
       <div className="fixed inset-0 z-0" style={{ backgroundColor: 'hsl(220, 15%, 8%)' }}>
         <video
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out ${
-            videoReady ? 'opacity-[0.15]' : 'opacity-0'
-          }`}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out`}
+          style={{ opacity: videoReady ? (pastHero ? 0.04 : 0.15) : 0 }}
           src={heroVideo}
           autoPlay
           loop
