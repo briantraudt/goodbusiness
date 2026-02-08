@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-import homeHeroBg from '@/assets/home-hero-bg.jpg';
+import heroVideo from '@/assets/home-hero-bg.mp4';
 
-const FALLBACK_BG = 'hsl(30, 15%, 25%)';
+const FALLBACK_BG = 'hsl(220, 15%, 8%)';
 
 const Hero = () => {
   const isMobile = useIsMobile();
-  const [imageLoaded, setImageLoaded] = useState(false);
-
-  useEffect(() => {
-    const img = new Image();
-    img.src = homeHeroBg;
-    img.onload = () => setImageLoaded(true);
-  }, []);
+  const [videoReady, setVideoReady] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -28,25 +23,28 @@ const Hero = () => {
       className="relative overflow-hidden min-h-[69vh] md:min-h-[75vh] flex items-center"
       style={{ backgroundColor: FALLBACK_BG }}
     >
-      {/* Background Image — no parallax, calm fade-in */}
+      {/* Video Background */}
       <div className="absolute inset-0 w-full h-full">
-        <div
-          className={`absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-500 ease-out ${
-            imageLoaded ? 'opacity-100' : 'opacity-0'
+        <video
+          ref={videoRef}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out ${
+            videoReady ? 'opacity-100' : 'opacity-0'
           }`}
-          style={{
-            backgroundImage: `url(${homeHeroBg})`,
-            backgroundPosition: isMobile ? '35% center' : '25% center',
-          }}
+          src={heroVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          onCanPlay={() => setVideoReady(true)}
         />
 
-        {/* Top-to-bottom gradient overlay — lighter since bg is already dark */}
+        {/* Gradient overlay for text contrast */}
         <div
           className="absolute inset-0"
           style={{
             background: isMobile
               ? 'linear-gradient(to bottom, hsla(0, 0%, 0%, 0.50) 0%, hsla(0, 0%, 0%, 0.30) 50%, hsla(0, 0%, 0%, 0.55) 100%)'
-              : 'linear-gradient(to right, hsla(0, 0%, 0%, 0.15) 0%, hsla(0, 0%, 0%, 0.25) 40%, hsla(0, 0%, 0%, 0.55) 100%)',
+              : 'linear-gradient(to right, hsla(0, 0%, 0%, 0.10) 0%, hsla(0, 0%, 0%, 0.20) 40%, hsla(0, 0%, 0%, 0.50) 100%)',
           }}
         />
       </div>
