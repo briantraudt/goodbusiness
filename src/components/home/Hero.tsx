@@ -36,7 +36,7 @@ const Hero = () => {
           }`}
           style={{
             backgroundImage: `url(${homeHeroBg})`,
-            backgroundPosition: isMobile ? 'center 40%' : '30% center',
+            backgroundPosition: isMobile ? '35% center' : '25% center',
           }}
         />
 
@@ -45,8 +45,8 @@ const Hero = () => {
           className="absolute inset-0"
           style={{
             background: isMobile
-              ? 'linear-gradient(to bottom, hsla(0, 0%, 0%, 0.55) 0%, hsla(0, 0%, 0%, 0.35) 50%, hsla(0, 0%, 0%, 0.60) 100%)'
-              : 'linear-gradient(to bottom, hsla(0, 0%, 0%, 0.45) 0%, hsla(0, 0%, 0%, 0.20) 50%, hsla(0, 0%, 0%, 0.50) 100%)',
+              ? 'linear-gradient(to bottom, hsla(0, 0%, 0%, 0.50) 0%, hsla(0, 0%, 0%, 0.30) 50%, hsla(0, 0%, 0%, 0.55) 100%)'
+              : 'linear-gradient(to right, hsla(0, 0%, 0%, 0.15) 0%, hsla(0, 0%, 0%, 0.25) 40%, hsla(0, 0%, 0%, 0.55) 100%)',
           }}
         />
       </div>
