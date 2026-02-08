@@ -17,12 +17,12 @@ const Footer = () => {
   };
   
   return (
-    <footer className="bg-card text-foreground py-6 md:py-8 border-t border-border">
+    <footer className="relative text-foreground py-6 md:py-8 border-t border-border">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
           <div>
             <h3 className="font-serif text-xl font-bold mb-2">
-              <a href="/admin/login" className="hover:text-gb-green transition-colors">
+              <a href="/admin/login" className="hover:text-secondary transition-colors">
                 Good Business HQ
               </a>
             </h3>
@@ -67,13 +67,13 @@ const Footer = () => {
             <h4 className="font-serif text-lg font-bold mb-2">Contact</h4>
             <ul className="space-y-1">
               <li className="flex items-center">
-                <Mail className="mr-2 h-4 w-4 text-gb-green" />
+                <Mail className="mr-2 h-4 w-4 text-secondary" />
                 <a href="mailto:hello@goodbusinesshq.com" className="text-muted-foreground hover:text-primary transition-colors text-sm">
                   hello@goodbusinesshq.com
                 </a>
               </li>
               <li className="flex items-center">
-                <MapPin className="mr-2 h-4 w-4 text-gb-green" />
+                <MapPin className="mr-2 h-4 w-4 text-secondary" />
                 <span className="text-muted-foreground text-sm">
                   Austin, TX
                 </span>
