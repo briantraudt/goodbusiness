@@ -82,7 +82,7 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-border mt-6 pt-4 text-center text-muted-foreground text-xs">
+        <div className="mt-6 pt-4 text-center text-muted-foreground text-xs">
           <p>&copy; {currentYear} Good Business HQ, LLC. All rights reserved.</p>
         </div>
       </div>
