@@ -56,6 +56,11 @@ const Footer = () => {
                 </button>
               </li>
               <li>
+                <button onClick={() => scrollTo('portfolio')} className="text-muted-foreground hover:text-primary transition-colors text-sm">
+                  Portfolio
+                </button>
+              </li>
+              <li>
                 <a href="/clients" className="text-muted-foreground hover:text-primary transition-colors text-sm">
                   Client Portal
                 </a>
