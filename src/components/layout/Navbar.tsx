@@ -25,6 +25,7 @@ const Navbar = () => {
 
   const menuItems = [
     { name: "How We Help", target: "how-we-help" },
+    { name: "Portfolio", target: "portfolio" },
   ];
 
   return (
