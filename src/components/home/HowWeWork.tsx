@@ -28,7 +28,7 @@ const HowWeWork = () => {
   ];
 
   return (
-    <section id="how-we-help" className="relative py-8 md:py-12">
+    <section id="how-we-help" className="relative py-8 md:py-4">
       <div className="container-custom relative z-10">
         <ScrollReveal direction="up">
           <div className="text-center mb-12 md:mb-16">
