@@ -6,30 +6,30 @@ const BRAND_BLUE = 'hsl(210, 55%, 55%)';
 const ventures = [
   {
     name: "DGTL Dental",
-    tagline: "Virtual Front Office for Dental Offices.",
+    tagline: "AI-powered virtual front desk that answers questions, books appointments, and reduces front-office workload for dental practices.",
     status: "In Production",
-    tags: ["Agent", "Healthcare", "Automation"],
+    tags: ["AI Agent", "Healthcare", "Workflow Automation"],
     url: "www.dgtldental.com",
   },
   {
     name: "Food Personal",
-    tagline: "Personalized meal planning and nutrition tailored to your lifestyle.",
+    tagline: "Personalized meal planning platform that generates recipes, plans meals, and adapts nutrition to individual preferences and goals.",
     status: "Beta",
-    tags: ["Mobile App", "Meal Planning", "Nutrition"],
+    tags: ["Mobile App", "Meal Planning", "Nutrition AI"],
     url: "www.foodpersonal.com",
   },
   {
     name: "NDA Company",
-    tagline: "Create, Send and Store NDA's Quickly and Securely.",
+    tagline: "Web application to create, send, sign, and store legally structured NDAs quickly and securely for founders and teams.",
     status: "Beta",
     tags: ["Web App", "Legal Tech", "Security"],
     url: "www.nda.company",
   },
   {
     name: "SideStage",
-    tagline: "Fan powered video platform for live music.",
+    tagline: "Fan-powered mobile platform for capturing, organizing, and stitching live-music videos into shared concert experiences.",
     status: "In Development",
-    tags: ["Mobile App", "UX Research", "Product Strategy"],
+    tags: ["Mobile App", "Media Platform", "Product Strategy"],
   },
 ];
 
@@ -55,25 +55,32 @@ const Portfolio = () => {
         </ScrollReveal>
 
         <ScrollReveal direction="up" delay={100}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 max-w-5xl mx-auto items-stretch">
             {ventures.map((venture, index) => (
               <div
                 key={index}
                 className="bg-card/60 backdrop-blur-sm border border-border rounded-xl px-5 py-5 flex flex-col items-center text-center"
               >
+                {/* Status */}
                 <span
-                  className="text-[10px] font-semibold uppercase tracking-widest mb-2"
+                  className="text-[10px] font-semibold uppercase tracking-widest mb-3"
                   style={{ color: BRAND_BLUE }}
                 >
                   {venture.status}
                 </span>
+
+                {/* Name */}
                 <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
                   {venture.name}
                 </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">
+
+                {/* Description — fixed height for alignment */}
+                <p className="text-muted-foreground text-sm leading-relaxed mb-4 min-h-[4.5rem]">
                   {venture.tagline}
                 </p>
-                <div className="flex flex-wrap justify-center gap-1.5">
+
+                {/* Pills — pushed to consistent position via mt-auto */}
+                <div className="mt-auto flex flex-wrap justify-center gap-1.5 mb-3">
                   {venture.tags.map((tag) => (
                     <span
                       key={tag}
@@ -83,15 +90,19 @@ const Portfolio = () => {
                     </span>
                   ))}
                 </div>
-                {venture.url && (
+
+                {/* Footer link */}
+                {venture.url ? (
                   <a
                     href={`https://${venture.url}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-3 text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+                    className="text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
                   >
                     {venture.url}
                   </a>
+                ) : (
+                  <span className="text-xs text-transparent select-none">&nbsp;</span>
                 )}
               </div>
             ))}
