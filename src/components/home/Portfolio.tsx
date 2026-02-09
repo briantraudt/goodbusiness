@@ -118,7 +118,7 @@ const Portfolio = () => {
             </div>
 
             {/* Navigation — tight under the card */}
-            <div className="flex items-center justify-center gap-6 mt-4">
+            <div className="flex items-center justify-center gap-6 mt-1">
               <button
                 onClick={scrollPrev}
                 className="p-2 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
