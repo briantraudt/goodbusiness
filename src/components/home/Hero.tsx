@@ -31,7 +31,7 @@ const Hero = () => {
         </div>
 
         {/* Buttons */}
-        <div className="mt-10 md:mt-12 flex flex-col sm:flex-row gap-4 justify-center md:justify-end w-full sm:w-auto">
+        <div className="mt-10 md:mt-12 flex flex-col sm:flex-row gap-4 justify-center md:justify-end w-3/4 sm:w-auto mx-auto md:mx-0">
           <Button
             onClick={() => scrollTo('contact')}
             className="w-auto text-white font-semibold py-5 px-8 rounded-md text-lg flex items-center justify-center group"
