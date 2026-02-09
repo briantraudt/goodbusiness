@@ -117,26 +117,26 @@ const Portfolio = () => {
               </div>
             </div>
 
-            {/* Navigation */}
-            <div className="flex items-center justify-center gap-8 mt-10">
+            {/* Navigation — tight under the card */}
+            <div className="flex items-center justify-center gap-6 mt-4">
               <button
                 onClick={scrollPrev}
-                className="p-3 rounded-full border-2 border-muted-foreground/30 text-muted-foreground hover:text-foreground hover:border-foreground/50 transition-all duration-200"
+                className="p-2 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
                 aria-label="Previous project"
               >
-                <ArrowLeft className="h-5 w-5" />
+                <ArrowLeft className="h-4 w-4" />
               </button>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2.5">
                 {ventures.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => emblaApi?.scrollTo(index)}
                     className="rounded-full transition-all duration-300"
                     style={{
-                      width: index === selectedIndex ? '2rem' : '0.5rem',
+                      width: index === selectedIndex ? '1.5rem' : '0.5rem',
                       height: '0.5rem',
-                      backgroundColor: index === selectedIndex ? BRAND_BLUE : 'hsl(var(--muted-foreground) / 0.35)',
+                      backgroundColor: index === selectedIndex ? BRAND_BLUE : 'hsl(var(--muted-foreground) / 0.3)',
                     }}
                     aria-label={`Go to project ${index + 1}`}
                   />
@@ -145,17 +145,12 @@ const Portfolio = () => {
 
               <button
                 onClick={scrollNext}
-                className="p-3 rounded-full border-2 border-muted-foreground/30 text-muted-foreground hover:text-foreground hover:border-foreground/50 transition-all duration-200"
+                className="p-2 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground/40 transition-colors"
                 aria-label="Next project"
               >
-                <ArrowRight className="h-5 w-5" />
+                <ArrowRight className="h-4 w-4" />
               </button>
             </div>
-
-            {/* Slide counter */}
-            <p className="text-center text-sm text-muted-foreground mt-4">
-              {selectedIndex + 1} / {ventures.length}
-            </p>
           </div>
         </ScrollReveal>
       </div>
