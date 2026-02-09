@@ -78,7 +78,7 @@ const Portfolio = () => {
                     key={index}
                     className="flex-[0_0_100%] min-w-0 px-4"
                   >
-                    <div className="bg-card/60 backdrop-blur-sm border border-border rounded-2xl p-8 md:p-12 flex flex-col items-center text-center">
+                    <div className="bg-card/60 backdrop-blur-sm border border-border rounded-2xl px-8 pt-8 pb-4 md:px-12 md:pt-12 md:pb-5 flex flex-col items-center text-center">
                       {venture.imageUrl && (
                         <div className="w-full max-w-sm mb-8 rounded-xl overflow-hidden">
                           <img
