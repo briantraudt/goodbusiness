@@ -27,7 +27,7 @@ const ventures = [
   },
   {
     name: "SideStage",
-    tagline: "A fan-powered video platform that lets you stay in the moment at concerts.",
+    tagline: "Fan powered video platform for live music.",
     status: "In Development",
     tags: ["Mobile App", "UX Research", "Product Strategy"],
   },
