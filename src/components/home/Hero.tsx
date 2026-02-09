@@ -26,7 +26,7 @@ const Hero = () => {
             We partner with founders to build real products designed to endure.
           </p>
           <p className="hidden md:block mt-8 text-lg text-white/75 max-w-xl md:ml-auto leading-relaxed font-light">
-            We help founders shape ideas worth building — then build them to last.
+            We partner with founders to turn bold ideas into products the future actually needs.
           </p>
         </div>
 
