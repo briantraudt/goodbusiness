@@ -8,7 +8,7 @@ const ventures = [
     name: "DGTL Dental",
     tagline: "Virtual Front Office for Dental Offices.",
     status: "In Production",
-    tags: ["SaaS", "Healthcare", "Automation"],
+    tags: ["Agent", "Healthcare", "Automation"],
     url: "www.dgtldental.com",
   },
   {
