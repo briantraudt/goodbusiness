@@ -49,7 +49,7 @@ const Portfolio = () => {
               What We've Built
             </h2>
             <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
-              A look at the products and platforms we're bringing to life.
+              A look at some of the recent products and platforms we are bringing to life.
             </p>
           </div>
         </ScrollReveal>
