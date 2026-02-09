@@ -11,23 +11,22 @@ const ventures = [
     tags: ["Mobile App", "UX Research", "Product Strategy"],
   },
   {
-    name: "Pardners",
-    tagline: "Connecting generations through peer-to-peer mentorship and knowledge sharing.",
+    name: "DGTL",
+    tagline: "Virtual Front Office for Dental Offices.",
     status: "In Development",
-    tags: ["Community", "Mentorship", "Platform"],
+    tags: ["SaaS", "Healthcare", "Automation"],
   },
   {
-    name: "Private Pitches",
-    tagline: "An exclusive platform connecting vendors directly with decision makers.",
-    status: "Beta Launch June 2025",
-    tags: ["Platform", "Matching Algorithm", "Analytics"],
+    name: "Food Personal",
+    tagline: "Personalized meal planning and nutrition tailored to your lifestyle.",
+    status: "In Development",
+    tags: ["Mobile App", "Meal Planning", "Nutrition"],
   },
   {
-    name: "Rated JC",
-    tagline: "Comprehensive database of movies, shows and books that use the name Jesus Christ dishonorably.",
-    status: "Beta Launch May 2025",
-    tags: ["Web App", "Content Management", "SEO"],
-    imageUrl: "/lovable-uploads/0c24f616-5309-4d29-8c19-556e61654622.png",
+    name: "NDA Company",
+    tagline: "Create, Send and Store NDA's Quickly and Securely.",
+    status: "In Development",
+    tags: ["Web App", "Legal Tech", "Security"],
   },
 ];
 
@@ -53,22 +52,12 @@ const Portfolio = () => {
         </ScrollReveal>
 
         <ScrollReveal direction="up" delay={100}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 max-w-5xl mx-auto">
             {ventures.map((venture, index) => (
               <div
                 key={index}
-                className="bg-card/60 backdrop-blur-sm border border-border rounded-xl px-6 py-5 md:px-8 md:py-6 flex flex-col items-center text-center"
+                className="bg-card/60 backdrop-blur-sm border border-border rounded-xl px-5 py-5 flex flex-col items-center text-center"
               >
-                {venture.imageUrl && (
-                  <div className="w-full max-w-[200px] mb-4 rounded-lg overflow-hidden">
-                    <img
-                      src={venture.imageUrl}
-                      alt={venture.name}
-                      className="w-full h-28 object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
                 <span
                   className="text-[10px] font-semibold uppercase tracking-widest mb-2"
                   style={{ color: BRAND_BLUE }}
