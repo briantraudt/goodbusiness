@@ -5,28 +5,31 @@ const BRAND_BLUE = 'hsl(210, 55%, 55%)';
 
 const ventures = [
   {
-    name: "SideStage",
-    tagline: "A fan-powered video platform that lets you stay in the moment at concerts.",
-    status: "In Development",
-    tags: ["Mobile App", "UX Research", "Product Strategy"],
-  },
-  {
-    name: "DGTL",
+    name: "DGTL Dental",
     tagline: "Virtual Front Office for Dental Offices.",
-    status: "In Development",
+    status: "In Production",
     tags: ["SaaS", "Healthcare", "Automation"],
+    url: "www.dgtldental.com",
   },
   {
     name: "Food Personal",
     tagline: "Personalized meal planning and nutrition tailored to your lifestyle.",
-    status: "In Development",
+    status: "Beta",
     tags: ["Mobile App", "Meal Planning", "Nutrition"],
+    url: "www.foodpersonal.com",
   },
   {
     name: "NDA Company",
     tagline: "Create, Send and Store NDA's Quickly and Securely.",
-    status: "In Development",
+    status: "Beta",
     tags: ["Web App", "Legal Tech", "Security"],
+    url: "www.nda.company",
+  },
+  {
+    name: "SideStage",
+    tagline: "A fan-powered video platform that lets you stay in the moment at concerts.",
+    status: "In Development",
+    tags: ["Mobile App", "UX Research", "Product Strategy"],
   },
 ];
 
@@ -80,6 +83,16 @@ const Portfolio = () => {
                     </span>
                   ))}
                 </div>
+                {venture.url && (
+                  <a
+                    href={`https://${venture.url}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+                  >
+                    {venture.url}
+                  </a>
+                )}
               </div>
             ))}
           </div>
