@@ -45,8 +45,8 @@ const Index = () => {
       <div className="relative z-10">
         <Hero />
 
-        {/* Breathing room + subtle gradient divider */}
-        <div className="py-10 md:py-16 flex justify-center">
+        {/* Subtle gradient divider */}
+        <div className="py-6 md:py-8 flex justify-center">
           <div
             className="h-px w-full max-w-xl"
             style={{
