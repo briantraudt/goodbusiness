@@ -84,7 +84,7 @@ const Portfolio = () => {
                   {venture.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-[10px] font-medium px-2.5 py-0.5 rounded-full border border-border text-muted-foreground"
+                      className="text-[10px] font-medium px-2.5 py-0.5 rounded-full border border-secondary text-secondary"
                     >
                       {tag}
                     </span>
