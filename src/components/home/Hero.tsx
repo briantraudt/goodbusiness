@@ -34,7 +34,7 @@ const Hero = () => {
         <div className="mt-10 md:mt-12 flex flex-col sm:flex-row gap-4 justify-center md:justify-end w-full sm:w-auto">
           <Button
             onClick={() => scrollTo('contact')}
-            className="w-full sm:w-auto text-white font-semibold py-5 px-8 rounded-md text-lg flex items-center justify-center group"
+            className="w-auto text-white font-semibold py-5 px-8 rounded-md text-lg flex items-center justify-center group"
             style={{ backgroundColor: 'hsl(210, 55%, 55%)' }}
           >
             Talk Through Your Idea
