@@ -97,7 +97,7 @@ const Portfolio = () => {
                     href={`https://${venture.url}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+                    className="text-xs text-muted-foreground hover:text-secondary transition-colors underline underline-offset-2"
                   >
                     {venture.url}
                   </a>
