@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import PageLayout from '@/components/layout/PageLayout';
 import Hero from '@/components/home/Hero';
 import HowWeWork from '@/components/home/HowWeWork';
+import Portfolio from '@/components/home/Portfolio';
 import ContactSection from '@/components/home/ContactSection';
 import heroVideo from '@/assets/home-hero-bg.mp4';
 
@@ -56,6 +57,7 @@ const Index = () => {
         </div>
 
         <HowWeWork />
+        <Portfolio />
         <ContactSection />
       </div>
     </PageLayout>
