@@ -42,7 +42,7 @@ const ContactSection = () => {
                 <div
                   className="calendly-inline-widget rounded-xl overflow-hidden [&_iframe]:overflow-hidden"
                   data-url="https://calendly.com/briantraudt/free-intro-meeting?hide_event_type_details=1&hide_gdpr_banner=1&background_color=1a1f2e&text_color=e0e4ed&primary_color=4a90c4"
-                  style={{ minWidth: '280px', height: '700px', overflow: 'hidden' }}
+                  style={{ minWidth: '280px', height: '580px', overflow: 'hidden' }}
                 />
               </div>
             </div>
