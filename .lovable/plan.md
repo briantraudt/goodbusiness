@@ -1,23 +1,17 @@
 
 
-## Fix: Remove Gap Between Portfolio Card and Navigation Arrows
+## Remove Padding Below Timezone in Calendly Widget
 
-**Problem**: The card itself has large internal bottom padding (`p-8 md:p-12`), creating a big empty space between the tags and the card's bottom edge. Then the navigation arrows sit below that. The `mt-1` on the nav container is already minimal -- the real culprit is the card's generous bottom padding.
+**The problem**: The blank space below "Central Time" lives inside Calendly's iframe, which we cannot style directly. The fix is to shorten the container height so the overflow is clipped away.
 
-**Solution**: Replace the uniform padding with separate top/bottom values so the bottom of the card is tighter against the content, bringing the arrows much closer.
+**What changes**:
+- In `src/components/home/ContactSection.tsx`, reduce the widget container height from `580px` to approximately `520px` (may need fine-tuning)
+- The existing `overflow: hidden` on the container will clip the extra space
 
-### Technical Change
+**Risk**: If the height is too aggressive, the timezone row itself could get cut off. We may need to iterate on the exact pixel value (e.g., 530px vs 520px).
 
-**File: `src/components/home/Portfolio.tsx`**
-
-Change the card's padding from:
-```
-p-8 md:p-12
-```
-to:
-```
-px-8 pt-8 pb-4 md:px-12 md:pt-12 md:pb-5
-```
-
-This keeps the top and side padding generous while drastically reducing the bottom padding, closing the visual gap between the card content and the navigation arrows below.
+### Technical Detail
+- File: `src/components/home/ContactSection.tsx`
+- Change: `height: '580px'` to `height: '520px'`
+- The `overflow: hidden` and `[&_iframe]:overflow-hidden` classes already handle clipping
 
