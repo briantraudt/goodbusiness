@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Mail, MapPin } from 'lucide-react';
 import ScrollReveal from '@/components/common/ScrollReveal';
 
 const BRAND_BLUE = 'hsl(210, 55%, 55%)';
@@ -36,16 +35,6 @@ const ContactSection = () => {
                   No pitch. No pressure. Just a thoughtful conversation about what you're building 
                   and whether it's worth building. Pick a time that works for you.
                 </p>
-                <div className="space-y-4">
-                  <a href="mailto:hello@goodbusinesshq.com" className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors">
-                    <Mail className="h-5 w-5" style={{ color: BRAND_BLUE }} />
-                    hello@goodbusinesshq.com
-                  </a>
-                  <div className="flex items-center gap-3 text-muted-foreground">
-                    <MapPin className="h-5 w-5" style={{ color: BRAND_BLUE }} />
-                    Austin, TX
-                  </div>
-                </div>
               </div>
 
               {/* Right side - Calendly (dark mode) */}
