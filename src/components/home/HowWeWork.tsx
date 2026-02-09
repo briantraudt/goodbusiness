@@ -46,7 +46,7 @@ const HowWeWork = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8 max-w-5xl mx-auto">
           {pillars.map((pillar, index) => (
-            <ScrollReveal key={index} direction="up" delay={index * 120}>
+            <ScrollReveal key={index} direction={index === 0 ? 'left' : index === 2 ? 'right' : 'up'} delay={index * 150}>
               <div className="bg-card/60 backdrop-blur-sm rounded-2xl p-8 md:p-10 border border-border hover:border-muted-foreground/30 transition-all h-full flex flex-col items-center text-center">
                 <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl ${pillar.bg} ${pillar.color} mb-6`}>
                   {pillar.icon}
