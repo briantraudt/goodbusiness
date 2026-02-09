@@ -46,7 +46,7 @@ const Index = () => {
         <Hero />
 
         {/* Subtle gradient divider */}
-        <div className="py-6 md:py-8 flex justify-center">
+        <div className="py-3 md:py-4 flex justify-center">
           <div
             className="h-px w-full max-w-xl"
             style={{
