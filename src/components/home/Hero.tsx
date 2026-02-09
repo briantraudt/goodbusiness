@@ -18,9 +18,9 @@ const Hero = () => {
       {/* Content */}
       <div className="container-custom pt-28 md:pt-32 pb-12 md:pb-16 flex flex-col items-center md:items-end justify-center h-full relative z-10">
         <div className="text-center md:text-right md:max-w-4xl">
-          <h1 className="text-[3.25rem] sm:text-[3.5rem] md:text-[6rem] lg:text-[8rem] font-extrabold text-white leading-[1.08] tracking-tight">
-            Build What the Future<br />
-            <span style={{ color: 'hsl(210, 55%, 55%)' }}>Will Use.</span>
+          <h1 className="text-[2.75rem] sm:text-[3.5rem] md:text-[6rem] lg:text-[8rem] font-extrabold text-white leading-[1.08] tracking-tight">
+            Build What the<br className="hidden md:inline" />{" "}
+            Future <span style={{ color: 'hsl(210, 55%, 55%)' }}>Will Use.</span>
           </h1>
           <p className="md:hidden mt-6 text-base text-white/60 max-w-xs mx-auto leading-relaxed font-light">
             We partner with founders to build real products designed to endure.
