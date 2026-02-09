@@ -18,8 +18,8 @@ const Hero = () => {
       {/* Content */}
       <div className="container-custom pt-28 md:pt-32 pb-12 md:pb-16 flex flex-col items-center md:items-end justify-center h-full relative z-10">
         <div className="text-center md:text-right md:max-w-2xl">
-          <h1 className="text-[3.25rem] sm:text-[3.5rem] md:text-[5.5rem] lg:text-[8rem] font-extrabold text-white leading-[1.05] tracking-tight">
-            Build What the Future<br />
+          <h1 className="text-[3.25rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[6.5rem] font-extrabold text-white leading-[1.05] tracking-tight">
+            <span className="md:whitespace-nowrap">Build What the Future</span><br />
             <span style={{ color: 'hsl(210, 55%, 55%)' }}>Will Use.</span>
           </h1>
           <p className="hidden md:block mt-8 text-lg text-white/75 max-w-xl md:ml-auto leading-relaxed font-light">
