@@ -27,8 +27,7 @@ const ContactSection = () => {
                   className="inline-flex items-center text-white px-4 py-2 rounded-full text-sm font-medium mb-6 w-fit"
                   style={{ backgroundColor: BRAND_BLUE }}
                 >
-                  FREE 30 Minute Founder Clarity Call
-                  FREE 30 Minute Founder Clarity Call
+                   FREE 30 Minute Founder Call
                 </div>
                 <h2 className="text-3xl md:text-4xl font-bold mb-4">
                   Talk Through Your Idea
