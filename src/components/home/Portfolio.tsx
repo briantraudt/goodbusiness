@@ -46,7 +46,7 @@ const Portfolio = () => {
               Portfolio
             </span>
             <h2 className="text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-5">
-              What We've Built
+              What We Are Building
             </h2>
             <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
               A look at some of the recent products and platforms we are bringing to life.
