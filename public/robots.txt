@@ -1,16 +1,9 @@
+# Good Business HQ - robots.txt
 
-# Allow all crawlers
 User-agent: *
 Allow: /
-
-# Special instructions for specific bots
-User-agent: Googlebot
-Allow: /
-Crawl-delay: 1
-
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
+Disallow: /admin/
+Disallow: /clients/
 
 # Social media crawlers
 User-agent: Twitterbot
@@ -19,6 +12,8 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-# Sitemap location - uncomment and update when you have a sitemap
-# Sitemap: https://businesslaunchpad.com/sitemap.xml
+User-agent: LinkedInBot
+Allow: /
 
+# Sitemap
+Sitemap: https://goodbusinesshq.com/sitemap.xml

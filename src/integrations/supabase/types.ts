@@ -633,6 +633,36 @@ export type Database = {
         }
         Relationships: []
       }
+      scan_results: {
+        Row: {
+          id: string
+          scan_data: Json
+          scanned_at: string
+          source: string
+          top_tickers: string[] | null
+          total_scanned: number
+          trades_found: number
+        }
+        Insert: {
+          id?: string
+          scan_data: Json
+          scanned_at?: string
+          source?: string
+          top_tickers?: string[] | null
+          total_scanned?: number
+          trades_found?: number
+        }
+        Update: {
+          id?: string
+          scan_data?: Json
+          scanned_at?: string
+          source?: string
+          top_tickers?: string[] | null
+          total_scanned?: number
+          trades_found?: number
+        }
+        Relationships: []
+      }
       story_content: {
         Row: {
           content: string
@@ -737,6 +767,198 @@ export type Database = {
           trade_date?: string
           updated_at?: string
           vwap_respected?: boolean | null
+        }
+        Relationships: []
+      }
+      trade_journal: {
+        Row: {
+          atr: number | null
+          confidence: number | null
+          contract_symbol: string | null
+          created_at: string
+          direction: string
+          entry_price: number
+          entry_stock_price: number | null
+          entry_time: string
+          exit_price: number | null
+          exit_stock_price: number | null
+          exit_time: string | null
+          expiration: string | null
+          id: string
+          invalidation_level: number | null
+          market_state: string | null
+          notes: string | null
+          pnl: number | null
+          pnl_percent: number | null
+          quantity: number
+          r_multiple: number | null
+          rationale: string[] | null
+          relative_volume: number | null
+          status: string
+          strike: number | null
+          ticker: string
+          user_id: string
+        }
+        Insert: {
+          atr?: number | null
+          confidence?: number | null
+          contract_symbol?: string | null
+          created_at?: string
+          direction: string
+          entry_price: number
+          entry_stock_price?: number | null
+          entry_time?: string
+          exit_price?: number | null
+          exit_stock_price?: number | null
+          exit_time?: string | null
+          expiration?: string | null
+          id?: string
+          invalidation_level?: number | null
+          market_state?: string | null
+          notes?: string | null
+          pnl?: number | null
+          pnl_percent?: number | null
+          quantity?: number
+          r_multiple?: number | null
+          rationale?: string[] | null
+          relative_volume?: number | null
+          status?: string
+          strike?: number | null
+          ticker: string
+          user_id: string
+        }
+        Update: {
+          atr?: number | null
+          confidence?: number | null
+          contract_symbol?: string | null
+          created_at?: string
+          direction?: string
+          entry_price?: number
+          entry_stock_price?: number | null
+          entry_time?: string
+          exit_price?: number | null
+          exit_stock_price?: number | null
+          exit_time?: string | null
+          expiration?: string | null
+          id?: string
+          invalidation_level?: number | null
+          market_state?: string | null
+          notes?: string | null
+          pnl?: number | null
+          pnl_percent?: number | null
+          quantity?: number
+          r_multiple?: number | null
+          rationale?: string[] | null
+          relative_volume?: number | null
+          status?: string
+          strike?: number | null
+          ticker?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      trade_snapshots: {
+        Row: {
+          atr: number
+          atr_exhaustion_applied: boolean
+          confidence: number
+          created_at: string
+          days_to_expiration: number | null
+          delta: number | null
+          direction: string
+          directional_bias: string
+          entry_price: number | null
+          expected_move_remaining: number | null
+          final_score: number
+          id: string
+          implied_volatility: number | null
+          liquidity_rating: string | null
+          margin_percent: number | null
+          market_state: string
+          premium: number | null
+          previous_day_high: number
+          previous_day_low: number
+          regime_passed: boolean
+          relative_volume: number
+          required_move: number | null
+          spy_change: number | null
+          state_weight: number | null
+          structure_clarity: number | null
+          swing_high: number | null
+          swing_low: number | null
+          ticker: string
+          time_context: string
+          trade_date: string
+          volume_quality: number | null
+          vwap: number
+        }
+        Insert: {
+          atr: number
+          atr_exhaustion_applied?: boolean
+          confidence: number
+          created_at?: string
+          days_to_expiration?: number | null
+          delta?: number | null
+          direction: string
+          directional_bias: string
+          entry_price?: number | null
+          expected_move_remaining?: number | null
+          final_score: number
+          id?: string
+          implied_volatility?: number | null
+          liquidity_rating?: string | null
+          margin_percent?: number | null
+          market_state: string
+          premium?: number | null
+          previous_day_high: number
+          previous_day_low: number
+          regime_passed?: boolean
+          relative_volume: number
+          required_move?: number | null
+          spy_change?: number | null
+          state_weight?: number | null
+          structure_clarity?: number | null
+          swing_high?: number | null
+          swing_low?: number | null
+          ticker: string
+          time_context: string
+          trade_date: string
+          volume_quality?: number | null
+          vwap: number
+        }
+        Update: {
+          atr?: number
+          atr_exhaustion_applied?: boolean
+          confidence?: number
+          created_at?: string
+          days_to_expiration?: number | null
+          delta?: number | null
+          direction?: string
+          directional_bias?: string
+          entry_price?: number | null
+          expected_move_remaining?: number | null
+          final_score?: number
+          id?: string
+          implied_volatility?: number | null
+          liquidity_rating?: string | null
+          margin_percent?: number | null
+          market_state?: string
+          premium?: number | null
+          previous_day_high?: number
+          previous_day_low?: number
+          regime_passed?: boolean
+          relative_volume?: number
+          required_move?: number | null
+          spy_change?: number | null
+          state_weight?: number | null
+          structure_clarity?: number | null
+          swing_high?: number | null
+          swing_low?: number | null
+          ticker?: string
+          time_context?: string
+          trade_date?: string
+          volume_quality?: number | null
+          vwap?: number
         }
         Relationships: []
       }
@@ -886,6 +1108,30 @@ export type Database = {
         Update: {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_stock_selections: {
+        Row: {
+          created_at: string
+          id: string
+          tickers: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          tickers: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          tickers?: string[]
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
