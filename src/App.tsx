@@ -54,7 +54,7 @@ const App = () => (
                 <Route path="/evaluator" element={<Navigate to="/" replace />} />
                 {/* AI Business Ideas - Programmatic SEO */}
                 <Route path="/ai-business-ideas" element={<AIBusinessIdeasIndex />} />
-                <Route path="/ai-business-ideas-for-:slug" element={<AIBusinessIdeas />} />
+                <Route path="/ai-business-ideas-for-*" element={<AIBusinessIdeas />} />
                 {/* Client portal */}
                 <Route path="/clients" element={<ClientLogin />} />
                 <Route path="/clients/:slug" element={<ClientDashboard />} />
