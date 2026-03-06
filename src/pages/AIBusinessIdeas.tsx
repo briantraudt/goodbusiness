@@ -1,4 +1,4 @@
-import { useLocation, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getIndustryBySlug } from '@/data/industries';
 import { generatePageContent } from '@/data/ai-content-generator';
 import SEOHead from '@/components/seo/SEOHead';
@@ -8,8 +8,7 @@ import { ArrowRight, Lightbulb, Wrench, Rocket, ChevronRight } from 'lucide-reac
 import { Button } from '@/components/ui/button';
 
 const AIBusinessIdeas = () => {
-  const location = useLocation();
-  const slug = location.pathname.replace('/ai-business-ideas-for-', '');
+  const { slug } = useParams<{ slug: string }>();
   const industry = slug ? getIndustryBySlug(slug) : undefined;
 
   if (!industry) return <NotFound />;
@@ -23,7 +22,7 @@ const AIBusinessIdeas = () => {
     "description": content.metaDescription,
     "author": { "@type": "Organization", "name": "Good Business HQ" },
     "publisher": { "@type": "Organization", "name": "Good Business HQ", "url": "https://goodbusinesshq.com" },
-    "mainEntityOfPage": `https://goodbusinesshq.com/ai-business-ideas-for-${slug}`,
+    "mainEntityOfPage": `https://goodbusinesshq.com/ai-business-ideas-for/${slug}`,
   };
 
   return (
