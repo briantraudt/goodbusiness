@@ -43,6 +43,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <ClientAuthProvider>
             <AdminAuthProvider>
               <Routes>
