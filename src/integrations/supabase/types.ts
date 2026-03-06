@@ -61,6 +61,27 @@ export type Database = {
         }
         Relationships: []
       }
+      api_cache: {
+        Row: {
+          cache_key: string
+          data: Json
+          expires_at: string
+          updated_at: string | null
+        }
+        Insert: {
+          cache_key: string
+          data: Json
+          expires_at: string
+          updated_at?: string | null
+        }
+        Update: {
+          cache_key?: string
+          data?: Json
+          expires_at?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       beta_signups: {
         Row: {
           created_at: string
@@ -321,6 +342,36 @@ export type Database = {
           loss_count?: number
           total_trades?: number
           win_count?: number
+        }
+        Relationships: []
+      }
+      earnings_calendar: {
+        Row: {
+          before_or_after: string | null
+          confirmed: boolean | null
+          earnings_date: string
+          id: string
+          source: string | null
+          ticker: string
+          updated_at: string | null
+        }
+        Insert: {
+          before_or_after?: string | null
+          confirmed?: boolean | null
+          earnings_date: string
+          id?: string
+          source?: string | null
+          ticker: string
+          updated_at?: string | null
+        }
+        Update: {
+          before_or_after?: string | null
+          confirmed?: boolean | null
+          earnings_date?: string
+          id?: string
+          source?: string | null
+          ticker?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -663,6 +714,159 @@ export type Database = {
         }
         Relationships: []
       }
+      signal_audit_log: {
+        Row: {
+          atr: number | null
+          bid_ask_spread_pct: number | null
+          created_at: string | null
+          direction: string | null
+          directional_bias: string | null
+          earnings_days_away: number | null
+          final_confidence: number | null
+          final_score: number | null
+          id: string
+          iv_percentile: number | null
+          iv_rank: number | null
+          market_state: string | null
+          outcome_1d: number | null
+          outcome_2d: number | null
+          outcome_3d: number | null
+          outcome_max_drawdown: number | null
+          passed_all_gates: boolean | null
+          position_grade: string | null
+          price: number | null
+          quality_score: number | null
+          raw_confidence: number | null
+          relative_volume: number | null
+          rsi: number | null
+          run_timestamp: string
+          sector: string | null
+          theta_cost_pct: number | null
+          ticker: string
+          time_context: string | null
+          unusual_activity_flag: boolean | null
+          vetoes_applied: Json | null
+          vix_level: number | null
+          vix_regime: string | null
+          vwap: number | null
+          was_best_trade: boolean | null
+        }
+        Insert: {
+          atr?: number | null
+          bid_ask_spread_pct?: number | null
+          created_at?: string | null
+          direction?: string | null
+          directional_bias?: string | null
+          earnings_days_away?: number | null
+          final_confidence?: number | null
+          final_score?: number | null
+          id?: string
+          iv_percentile?: number | null
+          iv_rank?: number | null
+          market_state?: string | null
+          outcome_1d?: number | null
+          outcome_2d?: number | null
+          outcome_3d?: number | null
+          outcome_max_drawdown?: number | null
+          passed_all_gates?: boolean | null
+          position_grade?: string | null
+          price?: number | null
+          quality_score?: number | null
+          raw_confidence?: number | null
+          relative_volume?: number | null
+          rsi?: number | null
+          run_timestamp?: string
+          sector?: string | null
+          theta_cost_pct?: number | null
+          ticker: string
+          time_context?: string | null
+          unusual_activity_flag?: boolean | null
+          vetoes_applied?: Json | null
+          vix_level?: number | null
+          vix_regime?: string | null
+          vwap?: number | null
+          was_best_trade?: boolean | null
+        }
+        Update: {
+          atr?: number | null
+          bid_ask_spread_pct?: number | null
+          created_at?: string | null
+          direction?: string | null
+          directional_bias?: string | null
+          earnings_days_away?: number | null
+          final_confidence?: number | null
+          final_score?: number | null
+          id?: string
+          iv_percentile?: number | null
+          iv_rank?: number | null
+          market_state?: string | null
+          outcome_1d?: number | null
+          outcome_2d?: number | null
+          outcome_3d?: number | null
+          outcome_max_drawdown?: number | null
+          passed_all_gates?: boolean | null
+          position_grade?: string | null
+          price?: number | null
+          quality_score?: number | null
+          raw_confidence?: number | null
+          relative_volume?: number | null
+          rsi?: number | null
+          run_timestamp?: string
+          sector?: string | null
+          theta_cost_pct?: number | null
+          ticker?: string
+          time_context?: string | null
+          unusual_activity_flag?: boolean | null
+          vetoes_applied?: Json | null
+          vix_level?: number | null
+          vix_regime?: string | null
+          vwap?: number | null
+          was_best_trade?: boolean | null
+        }
+        Relationships: []
+      }
+      stock_universe: {
+        Row: {
+          active: boolean | null
+          added_date: string | null
+          avg_daily_option_volume: number | null
+          avg_option_spread_pct: number | null
+          company_name: string | null
+          last_reviewed: string | null
+          notes: string | null
+          recent_win_rate: number | null
+          sector: string | null
+          ticker: string
+          updated_at: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          added_date?: string | null
+          avg_daily_option_volume?: number | null
+          avg_option_spread_pct?: number | null
+          company_name?: string | null
+          last_reviewed?: string | null
+          notes?: string | null
+          recent_win_rate?: number | null
+          sector?: string | null
+          ticker: string
+          updated_at?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          added_date?: string | null
+          avg_daily_option_volume?: number | null
+          avg_option_spread_pct?: number | null
+          company_name?: string | null
+          last_reviewed?: string | null
+          notes?: string | null
+          recent_win_rate?: number | null
+          sector?: string | null
+          ticker?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       story_content: {
         Row: {
           content: string
@@ -872,23 +1076,34 @@ export type Database = {
           final_score: number
           id: string
           implied_volatility: number | null
+          iv_percentile: number | null
+          iv_rank: number | null
           liquidity_rating: string | null
           margin_percent: number | null
           market_state: string
+          position_grade: string | null
           premium: number | null
           previous_day_high: number
           previous_day_low: number
+          quality_score: number | null
           regime_passed: boolean
           relative_volume: number
           required_move: number | null
+          rsi: number | null
+          sector_consensus: string | null
+          spread_cost_pct: number | null
           spy_change: number | null
           state_weight: number | null
           structure_clarity: number | null
           swing_high: number | null
           swing_low: number | null
+          theta_cost_pct: number | null
           ticker: string
           time_context: string
           trade_date: string
+          unusual_activity: boolean | null
+          vix_level: number | null
+          vix_regime: string | null
           volume_quality: number | null
           vwap: number
         }
@@ -906,23 +1121,34 @@ export type Database = {
           final_score: number
           id?: string
           implied_volatility?: number | null
+          iv_percentile?: number | null
+          iv_rank?: number | null
           liquidity_rating?: string | null
           margin_percent?: number | null
           market_state: string
+          position_grade?: string | null
           premium?: number | null
           previous_day_high: number
           previous_day_low: number
+          quality_score?: number | null
           regime_passed?: boolean
           relative_volume: number
           required_move?: number | null
+          rsi?: number | null
+          sector_consensus?: string | null
+          spread_cost_pct?: number | null
           spy_change?: number | null
           state_weight?: number | null
           structure_clarity?: number | null
           swing_high?: number | null
           swing_low?: number | null
+          theta_cost_pct?: number | null
           ticker: string
           time_context: string
           trade_date: string
+          unusual_activity?: boolean | null
+          vix_level?: number | null
+          vix_regime?: string | null
           volume_quality?: number | null
           vwap: number
         }
@@ -940,23 +1166,34 @@ export type Database = {
           final_score?: number
           id?: string
           implied_volatility?: number | null
+          iv_percentile?: number | null
+          iv_rank?: number | null
           liquidity_rating?: string | null
           margin_percent?: number | null
           market_state?: string
+          position_grade?: string | null
           premium?: number | null
           previous_day_high?: number
           previous_day_low?: number
+          quality_score?: number | null
           regime_passed?: boolean
           relative_volume?: number
           required_move?: number | null
+          rsi?: number | null
+          sector_consensus?: string | null
+          spread_cost_pct?: number | null
           spy_change?: number | null
           state_weight?: number | null
           structure_clarity?: number | null
           swing_high?: number | null
           swing_low?: number | null
+          theta_cost_pct?: number | null
           ticker?: string
           time_context?: string
           trade_date?: string
+          unusual_activity?: boolean | null
+          vix_level?: number | null
+          vix_regime?: string | null
           volume_quality?: number | null
           vwap?: number
         }
@@ -1204,13 +1441,52 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      confidence_bucket_analysis: {
+        Row: {
+          avg_max_drawdown: number | null
+          avg_return_1d: number | null
+          confidence_bucket: string | null
+          total_signals: number | null
+          win_rate_1d: number | null
+        }
+        Relationships: []
+      }
+      iv_rank_performance: {
+        Row: {
+          avg_return_1d: number | null
+          iv_bucket: string | null
+          total_signals: number | null
+          win_rate_1d: number | null
+        }
+        Relationships: []
+      }
+      signal_expectancy: {
+        Row: {
+          avg_iv_rank: number | null
+          avg_loss_1d: number | null
+          avg_quality_score: number | null
+          avg_rsi: number | null
+          avg_win_1d: number | null
+          direction: string | null
+          losses_1d: number | null
+          market_state: string | null
+          position_grade: string | null
+          ticker: string | null
+          time_context: string | null
+          total_signals: number | null
+          vix_regime: string | null
+          win_rate_1d: number | null
+          wins_1d: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       check_admin_credentials: {
         Args: { email_param: string; password_param: string }
         Returns: boolean
       }
+      cleanup_expired_cache: { Args: never; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
