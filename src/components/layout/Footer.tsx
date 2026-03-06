@@ -61,6 +61,11 @@ const Footer = () => {
                 </button>
               </li>
               <li>
+                <a href="/ai-business-ideas" className="text-muted-foreground hover:text-secondary transition-colors text-sm">
+                  AI Business Ideas
+                </a>
+              </li>
+              <li>
                 <a href="/clients" className="text-muted-foreground hover:text-secondary transition-colors text-sm">
                   Client Portal
                 </a>
