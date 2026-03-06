@@ -2,13 +2,24 @@ import React, { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogoClick = () => {
+    if (location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate('/');
+    }
   };
 
   const scrollTo = (id: string) => {
@@ -33,7 +44,7 @@ const Navbar = () => {
       <div className="container-custom py-4 flex justify-between items-center">
         <div className={`${isMobile ? 'flex-1 text-center' : ''}`}>
           <button
-            onClick={() => scrollTo('top')}
+            onClick={handleLogoClick}
             className={`flex ${isMobile ? 'justify-center' : ''} items-center`}
           >
             <span className="font-sans text-2xl md:text-3xl font-bold text-white">
