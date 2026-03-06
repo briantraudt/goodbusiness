@@ -44,7 +44,7 @@ const Navbar = () => {
       <div className="container-custom py-4 flex justify-between items-center">
         <div className={`${isMobile ? 'flex-1 text-center' : ''}`}>
           <button
-            onClick={() => scrollTo('top')}
+            onClick={handleLogoClick}
             className={`flex ${isMobile ? 'justify-center' : ''} items-center`}
           >
             <span className="font-sans text-2xl md:text-3xl font-bold text-white">
