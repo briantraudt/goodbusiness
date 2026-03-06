@@ -65,7 +65,7 @@ const AIBusinessIdeasIndex = () => {
                 {inds.map((ind) => (
                   <Link
                     key={ind.slug}
-                    to={`/ai-business-ideas-for-${ind.slug}`}
+                    to={`/ai-business-ideas-for/${ind.slug}`}
                     className="group flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-3 hover:border-secondary/50 transition-colors"
                   >
                     <span className="text-sm text-foreground group-hover:text-secondary transition-colors flex-1">

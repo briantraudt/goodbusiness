@@ -22,7 +22,7 @@ const AIBusinessIdeas = () => {
     "description": content.metaDescription,
     "author": { "@type": "Organization", "name": "Good Business HQ" },
     "publisher": { "@type": "Organization", "name": "Good Business HQ", "url": "https://goodbusinesshq.com" },
-    "mainEntityOfPage": `https://goodbusinesshq.com/ai-business-ideas-for-${slug}`,
+    "mainEntityOfPage": `https://goodbusinesshq.com/ai-business-ideas-for/${slug}`,
   };
 
   return (
