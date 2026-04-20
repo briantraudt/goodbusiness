@@ -2,22 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Good Business HQ — rebranded</title>
+<title>Good Business — Software, built by hand</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="We help solo founders turn ideas into real products. Based in Austin, TX.">
+<link rel="icon" href="/favicon.ico">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* Monochrome palette — paper, ink, and grays */
-    --cream: #FAFAF7;      /* page bg, near-white warm paper */
-    --cream-2: #F2F2EE;    /* soft section bg */
-    --cream-3: #E5E5E0;    /* borders */
-    --teal: #111111;       /* primary ink — was teal, now near-black */
-    --teal-2: #000000;     /* deepest ink */
+    --cream: #FAFAF7;
+    --cream-2: #F2F2EE;
+    --cream-3: #E5E5E0;
+    --teal: #111111;
+    --teal-2: #000000;
     --amber: #2E6BE6;
-    --ink: #0E0E0E;        /* footer/dark section */
-    --ink-2: #4A4A4A;      /* body text */
-    --ink-3: #8A8A86;      /* tertiary / mono */
-    --rule: #E0E0DA;       /* hairlines */
+    --ink: #0E0E0E;
+    --ink-2: #4A4A4A;
+    --ink-3: #8A8A86;
+    --rule: #E0E0DA;
     --sans: 'Geist', system-ui, sans-serif;
     --mono: 'Geist Mono', ui-monospace, Menlo, monospace;
     --serif: 'Instrument Serif', ui-serif, Georgia, serif;
@@ -26,13 +27,6 @@
   html,body{margin:0; background:var(--cream); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased}
   a{color:inherit; text-decoration:none}
   .container{max-width:1240px; margin:0 auto; padding: 0 32px}
-
-  /* Browser chrome wrapper for preview */
-  .browser{max-width:1360px; margin:24px auto; border-radius:14px; overflow:hidden; border:1px solid var(--cream-3); box-shadow: 0 30px 80px -40px rgba(0,0,0,0.2)}
-  .bchrome{background: var(--cream-2); padding: 10px 16px; display:flex; align-items:center; gap:12px; border-bottom:1px solid var(--cream-3)}
-  .bchrome .dots{display:flex; gap:6px}
-  .bchrome .dots i{width:11px; height:11px; border-radius:50%; background:var(--cream-3); display:block}
-  .bchrome .url{flex:1; background: var(--cream); border-radius:6px; padding:5px 12px; font-family:var(--mono); font-size:11px; color:var(--ink-3); max-width:420px}
 
   /* Header */
   header.site{position:sticky; top:0; z-index:40; background: color-mix(in oklab, var(--cream) 90%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule)}
@@ -48,7 +42,6 @@
 
   /* Hero */
   .hero{position:relative; padding: 120px 0 80px; overflow:hidden; background: var(--cream)}
-  .hero:before{content:""; position:absolute; inset:0; pointer-events:none}
   .hero .inner{position:relative; display:grid; grid-template-columns: 1.15fr 1fr; gap: 60px; align-items:center; max-width:1240px; margin:0 auto; padding: 0 32px}
   .hero .kicker{font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--teal); margin-bottom:24px; display:inline-flex; align-items:center; gap:10px}
   .hero .kicker .d{width:6px; height:6px; border-radius:50%; background:var(--amber)}
@@ -60,7 +53,7 @@
   .btn.primary{background:var(--teal); color:var(--cream)}
   .btn.primary:hover{background:var(--teal-2)}
   .btn.ghost{background:transparent; color:var(--teal); border:1px solid var(--rule)}
-  .btn.ghost:hover{border-color:var(--teal); background:rgba(30,74,78,0.04)}
+  .btn.ghost:hover{border-color:var(--teal); background:rgba(17,17,17,0.04)}
 
   /* Robot hero illustration */
   .hero-bot{display:flex; align-items:center; justify-content:center; position:relative}
@@ -73,10 +66,6 @@
   /* Section rhythm */
   section.sec{padding: 96px 0; position:relative}
   section.sec.tight{padding: 72px 0}
-  section.sec.ink{background: var(--ink); color: var(--cream)}
-  section.sec.ink .eyebrow{color: var(--amber)}
-  section.sec.ink h2{color: var(--cream)}
-  section.sec.ink p{color: rgba(250,244,230,0.75)}
   section.sec.cream-2{background: var(--cream-2)}
 
   .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); font-weight:500; margin-bottom:18px; display:inline-flex; align-items:center; gap:10px}
@@ -88,305 +77,191 @@
   /* How We Help — 3 pillars */
   .pillars{display:grid; grid-template-columns: repeat(3, 1fr); gap:20px; margin-top:56px}
   .pillar{background: var(--cream); border:1px solid var(--rule); border-radius:16px; padding: 40px 32px; display:flex; flex-direction:column; gap:14px; transition: all 0.2s}
-  .pillar:hover{border-color: var(--teal); transform: translateY(-2px); box-shadow: 0 20px 40px -24px rgba(30,74,78,0.2)}
+  .pillar:hover{border-color: var(--teal); transform: translateY(-2px); box-shadow: 0 20px 40px -24px rgba(17,17,17,0.2)}
   .pillar .num{font-family:var(--mono); font-size:11px; color:var(--ink-3); letter-spacing:0.08em; text-transform:uppercase}
   .pillar .glyph{width:56px; height:56px; border-radius:12px; background: var(--teal); display:grid; place-items:center; margin-bottom:8px}
   .pillar .glyph svg{width:28px; height:28px; stroke:var(--amber); stroke-width:1.8; fill:none; stroke-linecap:round; stroke-linejoin:round}
   .pillar h3{margin:0; font-size:26px; font-weight:600; letter-spacing:-0.02em; color:var(--teal)}
   .pillar p{margin:0; color:var(--ink-2); font-size:15px; line-height:1.55}
 
-  /* Portfolio / Clients — teal tinted image panel */
-  .founders{background: var(--ink); position:relative; overflow:hidden}
-  .founders:before{content:""; position:absolute; inset:0; background:
-    radial-gradient(circle at 20% 30%, rgba(240, 162, 59, 0.12), transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(30, 74, 78, 0.5), transparent 50%)}
-  .founders .inner{position:relative; max-width:1240px; margin:0 auto; padding:0 32px}
-  .founder-grid{display:grid; grid-template-columns: repeat(4, 1fr); gap:16px; margin-top:56px}
-  .founder-card{background: rgba(250,244,230,0.05); backdrop-filter: blur(10px); border:1px solid rgba(250,244,230,0.1); border-radius:14px; padding:28px; transition: all 0.2s}
-  .founder-card:hover{background: rgba(250,244,230,0.08); border-color: var(--amber)}
-  .founder-card .icn{width:44px; height:44px; border-radius:10px; background: rgba(240,162,59,0.15); display:grid; place-items:center; margin-bottom:18px}
-  .founder-card .icn svg{width:22px; height:22px; stroke:var(--amber); stroke-width:1.8; fill:none; stroke-linecap:round; stroke-linejoin:round}
-  .founder-card h4{margin:0 0 6px; font-size:17px; font-weight:600; color:var(--cream); letter-spacing:-0.015em}
-  .founder-card p{margin:0; color: rgba(250,244,230,0.6); font-size:13px; line-height:1.5}
-
-  /* Process: horizontal */
-  .process{display:grid; grid-template-columns: repeat(3,1fr); gap:32px; margin-top:56px; counter-reset: step}
-  .step{position:relative; padding-top: 32px}
-  .step:before{content: counter(step, decimal-leading-zero); counter-increment: step; font-family:var(--mono); font-size:11px; letter-spacing:0.1em; color: var(--amber); display:block; margin-bottom:12px}
-  .step h3{margin:0 0 12px; font-size:26px; font-weight:500; letter-spacing:-0.02em; color: var(--teal)}
-  .step h3 em{font-family:var(--serif); font-style:italic; color: var(--amber)}
-  .step p{margin:0; color:var(--ink-2); font-size:15px; line-height:1.55}
-  .step .bar{width: 44px; height:3px; background: var(--amber); margin-bottom:24px; border-radius:2px}
-
-  /* Quote/testimonial strip */
-  .quote{padding: 80px 0; background: var(--cream-2); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule)}
-  .quote blockquote{margin:0; max-width:860px; margin:0 auto; text-align:center; padding: 0 32px}
-  .quote .mark{font-family:var(--serif); font-style:italic; color:var(--amber); font-size: 64px; line-height:1; margin-bottom:16px}
-  .quote q{font-family:var(--serif); font-style:italic; font-size: clamp(24px, 3vw, 36px); color:var(--teal); letter-spacing:-0.01em; line-height:1.25; quotes:none}
-  .quote cite{display:block; margin-top:24px; font-style:normal; font-family:var(--mono); font-size:11px; color:var(--ink-3); letter-spacing:0.08em; text-transform:uppercase}
-
   /* CTA block */
   .final-cta{background: var(--teal); color: var(--cream); padding: 100px 0; text-align:center; position:relative; overflow:hidden}
   .final-cta:before{content:""; position:absolute; inset:0; background:
-    radial-gradient(ellipse at 50% 0%, rgba(240,162,59,0.18), transparent 60%)}
+    radial-gradient(ellipse at 50% 0%, rgba(46,107,230,0.18), transparent 60%)}
   .final-cta .inner{position:relative; max-width:840px; margin:0 auto; padding:0 32px}
   .final-cta h2{color:var(--cream); margin:0 auto; max-width:20ch}
   .final-cta h2 em{color: var(--amber)}
-  .final-cta p{margin:20px auto 32px; color: rgba(250,244,230,0.8); font-size:18px; max-width:52ch}
-  .final-cta .btn{background: var(--amber); color: var(--teal); font-weight:600}
-  .final-cta .btn:hover{background:#FFB85C}
+  .final-cta .eyebrow{color: var(--amber)}
+  .final-cta p{margin:20px auto 32px; color: rgba(250,250,247,0.8); font-size:18px; max-width:52ch}
+  .final-cta .btn{background: var(--amber); color: var(--cream); font-weight:600}
+  .final-cta .btn:hover{background:#1F4BFF}
 
   /* Footer */
-  footer.site.mini{background: var(--ink); color: rgba(250,244,230,0.6); padding: 32px 0}
+  footer.site.mini{background: var(--ink); color: rgba(250,250,247,0.6); padding: 32px 0}
   footer.site.mini .inner{max-width:1240px; margin:0 auto; padding: 0 32px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap}
-  footer.site.mini .foot-meta{display:flex; gap:10px; font-family:var(--mono); font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:rgba(250,244,230,0.55); align-items:center}
+  footer.site.mini .foot-meta{display:flex; gap:10px; font-family:var(--mono); font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:rgba(250,250,247,0.55); align-items:center}
   footer.site.mini .foot-meta a:hover{color:var(--amber)}
 
-  /* Brand note banner */
-  .brandnote{max-width:1360px; margin:32px auto 0; padding:16px 32px; display:flex; align-items:center; gap:24px; flex-wrap:wrap}
-  .brandnote .palette{display:flex; gap:8px; align-items:center; flex-wrap:wrap; flex:1}
-  .brandnote .k{font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-3)}
-  .brandnote .palette{display:flex; gap:8px}
-  .brandnote .sw{width:22px; height:22px; border-radius:5px; border:1px solid var(--rule)}
-
   @media (max-width: 900px){
-    .hero .inner{grid-template-columns: 1fr}
+    .hero{padding: 64px 0 56px}
+    .hero .inner{grid-template-columns: 1fr; gap: 40px}
     .hero-bot{order: -1}
-    .pillars, .process, .founder-grid{grid-template-columns: 1fr 1fr}
-    footer.site .inner{grid-template-columns: 1fr 1fr}
-    header.site nav{display:none}
+    .hero-bot svg{max-width: 240px}
+    .hero h1{font-size: 44px}
+    .hero .sub{font-size: 16px}
+    .hero .actions{flex-direction: column; align-items: stretch}
+    .hero .actions .btn{justify-content: center}
+    .pillars{grid-template-columns: 1fr; gap: 14px; margin-top: 36px}
+    .pillar{padding: 28px 24px}
+    section.sec{padding: 64px 0}
+    section.sec.tight{padding: 48px 0}
+    h2{font-size: 34px; max-width: none}
+    .lead{font-size: 16px}
+    header.site nav{display: none}
+    header.site .inner{padding: 14px 18px}
+    .container{padding: 0 22px}
+    .final-cta{padding: 64px 0}
+    .final-cta .btn{width: 100%; justify-content: center}
+    footer.site.mini .inner{flex-direction: column; align-items: flex-start; gap: 14px; padding: 0 22px}
+    footer.site.mini .foot-meta{flex-wrap: wrap; gap: 6px}
   }
 </style>
 </head>
 <body>
 
-<div class="brandnote">
-  <span class="k">§ goodbusinesshq.com · choose accent</span>
-  <div class="palette" id="accent-picker">
-    <button class="sw acc is-active" data-c="#2E6BE6" title="Azure" style="background:#2E6BE6"></button>
-    <button class="sw acc" data-c="#1F4BFF" title="Cobalt" style="background:#1F4BFF"></button>
-    <button class="sw acc" data-c="#0EA5E9" title="Sky" style="background:#0EA5E9"></button>
-    <button class="sw acc" data-c="#3B82F6" title="Royal" style="background:#3B82F6"></button>
-    <button class="sw acc" data-c="#1E3A8A" title="Navy" style="background:#1E3A8A"></button>
-    <button class="sw acc" data-c="#06B6D4" title="Cyan" style="background:#06B6D4"></button>
-    <button class="sw acc" data-c="#4F46E5" title="Indigo" style="background:#4F46E5"></button>
-    <button class="sw acc" data-c="#5B8DEF" title="Periwinkle" style="background:#5B8DEF"></button>
-    <span class="accent-label" id="accent-label">Azure</span>
-    <span class="vp-toggle-wrap">
-      <button class="vp-btn is-active" data-vp="desktop">Desktop</button>
-      <button class="vp-btn" data-vp="mobile">Mobile</button>
-    </span>
+<!-- HEADER -->
+<header class="site">
+  <div class="inner">
+    <a class="logo-lockup" href="#">
+      <svg viewBox="0 0 40 40" class="live" aria-hidden="true">
+        <g transform="translate(3,7)">
+          <line x1="17" y1="-2" x2="17" y2="3" stroke="var(--teal)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="17" cy="-4" r="2" fill="var(--amber)"/>
+          <rect x="1" y="3" width="32" height="28" rx="4.5" fill="var(--teal)"/>
+          <rect x="5" y="8" width="24" height="17" rx="2.5" fill="var(--cream)"/>
+          <rect x="10" y="13" width="3.2" height="4" rx="0.7" fill="var(--teal)" class="eye l"/>
+          <rect x="20" y="13" width="3.2" height="4" rx="0.7" fill="var(--teal)" class="eye r"/>
+          <path d="M 10.5 19.5 Q 17 23 23.5 19.5" fill="none" stroke="var(--amber)" stroke-width="1.7" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="wm">Good Business</span>
+    </a>
+    <nav>
+      <a href="#how">How we help</a>
+      <a href="#who">Who it's for</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#contact" class="cta">Start a conversation →</a>
   </div>
-</div>
-<style>
-  .palette .sw.acc{cursor:pointer; border:1px solid var(--rule); padding:0; transition: transform 0.1s, box-shadow 0.1s}
-  .palette .sw.acc:hover{transform: translateY(-1px)}
-  .palette .sw.acc.is-active{box-shadow: 0 0 0 2px var(--ink), 0 0 0 3px var(--cream)}
-  .accent-label{font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:0.1em; color:var(--ink-2); margin-left:8px; min-width:100px}
-  .vp-toggle-wrap{display:inline-flex; margin-left:auto; background:var(--cream); border:1px solid var(--rule); border-radius:7px; padding:2px; gap:2px}
-  .vp-btn{font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:0.1em; padding:5px 10px; border-radius:5px; border:0; background:transparent; color:var(--ink-3); cursor:pointer; transition:all 0.15s}
-  .vp-btn.is-active{background:var(--teal); color:var(--cream)}
-  .browser{transition: max-width 0.35s cubic-bezier(.4,0,.2,1)}
-  .browser.is-mobile{max-width:412px}
-  .browser.is-mobile .bchrome .url{max-width:none; font-size:10px}
-  /* Mobile layout when .browser.is-mobile is applied */
-  .browser.is-mobile header.site .inner{padding:14px 18px}
-  .browser.is-mobile header.site nav{display:none}
-  .browser.is-mobile header.site .cta{padding:7px 12px; font-size:12px}
-  .browser.is-mobile .logo-lockup svg{height:28px}
-  .browser.is-mobile .logo-lockup .wm{font-size:17px}
-  .browser.is-mobile .hero{padding:48px 0 56px}
-  .browser.is-mobile .container{max-width:100%; padding:0 22px}
-  .browser.is-mobile header.site .inner{max-width:100%; padding:14px 18px}
-  .browser.is-mobile .hero .inner{max-width:100%; grid-template-columns:1fr; gap:40px; padding:0 22px}
-  .browser.is-mobile .final-cta .inner{max-width:100%; padding:0 22px}
-  .browser.is-mobile footer.site.mini .inner{max-width:100%}
-  .browser.is-mobile .hero-bot{order:-1}
-  .browser.is-mobile .hero-bot svg{max-width:220px}
-  .browser.is-mobile .hero h1{font-size:44px; letter-spacing:-0.03em}
-  .browser.is-mobile .hero .sub{font-size:16px; margin-top:18px}
-  .browser.is-mobile .hero .actions{margin-top:26px; flex-direction:column; align-items:stretch}
-  .browser.is-mobile .hero .actions .btn{justify-content:center; width:100%}
-  .browser.is-mobile .container{padding:0 22px}
-  .browser.is-mobile section.sec{padding:64px 0}
-  .browser.is-mobile section.sec.tight{padding:48px 0}
-  .browser.is-mobile h2{font-size:34px; max-width:none}
-  .browser.is-mobile .lead{font-size:16px}
-  .browser.is-mobile .pillars{grid-template-columns:1fr; gap:14px; margin-top:36px}
-  .browser.is-mobile .pillar{padding:28px 24px}
-  .browser.is-mobile .pillar h3{font-size:22px}
-  .browser.is-mobile .final-cta{padding:64px 0}
-  .browser.is-mobile .final-cta .inner{padding:0 22px}
-  .browser.is-mobile .final-cta .btn{width:100%; justify-content:center}
-  .browser.is-mobile footer.site.mini .inner{flex-direction:column; align-items:flex-start; gap:14px; padding:0 22px}
-  .browser.is-mobile footer.site.mini .foot-meta{flex-wrap:wrap; gap:6px}
-</style>
-<script>
-  (function(){
-    const picker = document.getElementById('accent-picker');
-    const label = document.getElementById('accent-label');
-    picker.addEventListener('click', (e) => {
-      const btn = e.target.closest('.acc');
-      if(!btn) return;
-      const c = btn.dataset.c;
-      document.documentElement.style.setProperty('--amber', c);
-      picker.querySelectorAll('.acc').forEach(b => b.classList.toggle('is-active', b === btn));
-      label.textContent = btn.title;
-    });
+</header>
 
-    // Viewport toggle
-    const browser = document.querySelector('.browser');
-    document.querySelectorAll('.vp-btn').forEach(btn => {
-      btn.addEventListener('click', (ev) => {
-        ev.preventDefault(); ev.stopPropagation();
-        const vp = btn.dataset.vp;
-        browser.classList.toggle('is-mobile', vp === 'mobile');
-        document.querySelectorAll('.vp-btn').forEach(b => b.classList.toggle('is-active', b === btn));
-      });
-    });
-  })();
-</script>
-
-<div class="browser">
-  <div class="bchrome">
-    <div class="dots"><i></i><i></i><i></i></div>
-    <div class="url">goodbusinesshq.com</div>
+<!-- HERO -->
+<section class="hero">
+  <div class="inner">
+    <div>
+      <div class="kicker"><span class="d"></span>Austin, TX</div>
+      <h1>Software, <em>built by hand.</em></h1>
+      <p class="sub">We help solo founders turn ideas into real products. If it ships from us, we wrote it.</p>
+      <div class="actions">
+        <a href="#contact" class="btn primary">Start a conversation →</a>
+        <a href="#how" class="btn ghost">How we work</a>
+      </div>
+    </div>
+    <div class="hero-bot floaty">
+      <svg viewBox="0 0 320 320" class="live" aria-label="Good Business robot">
+        <g transform="translate(64,64)">
+          <line x1="96" y1="-18" x2="96" y2="22" stroke="var(--teal)" stroke-width="8" stroke-linecap="round"/>
+          <circle cx="96" cy="-24" r="8" fill="var(--amber)"/>
+          <rect x="0" y="22" width="192" height="172" rx="26" fill="var(--teal)"/>
+          <rect x="20" y="58" width="152" height="108" rx="14" fill="var(--cream)"/>
+          <rect x="54" y="90" width="20" height="24" rx="4" fill="var(--teal)" class="eye l"/>
+          <rect x="118" y="90" width="20" height="24" rx="4" fill="var(--teal)" class="eye r"/>
+          <path d="M 58 138 Q 96 164 134 138" fill="none" stroke="var(--amber)" stroke-width="11" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
   </div>
+</section>
 
-  <!-- HEADER -->
-  <header class="site">
-    <div class="inner">
-      <a class="logo-lockup" href="#">
-        <svg viewBox="0 0 40 40" class="live" aria-hidden="true">
-          <g transform="translate(3,7)">
-            <line x1="17" y1="-2" x2="17" y2="3" stroke="var(--teal)" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="17" cy="-4" r="2" fill="var(--amber)"/>
-            <rect x="1" y="3" width="32" height="28" rx="4.5" fill="var(--teal)"/>
-            <rect x="5" y="8" width="24" height="17" rx="2.5" fill="var(--cream)"/>
-            <rect x="10" y="13" width="3.2" height="4" rx="0.7" fill="var(--teal)" class="eye l"/>
-            <rect x="20" y="13" width="3.2" height="4" rx="0.7" fill="var(--teal)" class="eye r"/>
-            <path d="M 10.5 19.5 Q 17 23 23.5 19.5" fill="none" stroke="var(--amber)" stroke-width="1.7" stroke-linecap="round"/>
-          </g>
-        </svg>
-        <span class="wm">Good Business</span>
-      </a>
-      <nav>
-        <a href="#how">How we help</a>
-        <a href="#who">Who it's for</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <a href="#contact" class="cta">Start a conversation →</a>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="inner">
-      <div>
-        <div class="kicker"><span class="d"></span>Austin, TX</div>
-        <h1>Software, <em>built by hand.</em></h1>
-        <p class="sub">We help solo founders turn ideas into real products. If it ships from us, we wrote it.</p>
-        <div class="actions">
-          <a href="#contact" class="btn primary">Start a conversation →</a>
-          <a href="#how" class="btn ghost">How we work</a>
+<!-- HOW WE HELP -->
+<section class="sec" id="how">
+  <div class="container">
+    <div class="eyebrow">How we work</div>
+    <h2>Three ways in, <em>one standard.</em></h2>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M7 7l2 2M15 15l2 2M7 17l2-2M15 9l2-2"/></svg>
         </div>
+        <span class="num">01 · Direction</span>
+        <h3>Direction</h3>
+        <p>Get clear on the problem, the user, and what matters — before writing a line of code.</p>
       </div>
-      <div class="hero-bot floaty">
-        <svg viewBox="0 0 320 320" class="live" aria-label="Good Business robot">
-          <g transform="translate(64,64)">
-            <line x1="96" y1="-18" x2="96" y2="22" stroke="var(--teal)" stroke-width="8" stroke-linecap="round"/>
-            <circle cx="96" cy="-24" r="8" fill="var(--amber)"/>
-            <rect x="0" y="22" width="192" height="172" rx="26" fill="var(--teal)"/>
-            <rect x="20" y="58" width="152" height="108" rx="14" fill="var(--cream)"/>
-            <rect x="54" y="90" width="20" height="24" rx="4" fill="var(--teal)" class="eye l"/>
-            <rect x="118" y="90" width="20" height="24" rx="4" fill="var(--teal)" class="eye r"/>
-            <path d="M 58 138 Q 96 164 134 138" fill="none" stroke="var(--amber)" stroke-width="11" stroke-linecap="round"/>
-          </g>
-        </svg>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW WE HELP -->
-  <section class="sec" id="how">
-    <div class="container">
-      <div class="eyebrow">How we work</div>
-      <h2>Three ways in, <em>one standard.</em></h2>
-      <div class="pillars">
-        <div class="pillar">
-          <div class="glyph">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M7 7l2 2M15 15l2 2M7 17l2-2M15 9l2-2"/></svg>
-          </div>
-          <span class="num">01 · Direction</span>
-          <h3>Direction</h3>
-          <p>Get clear on the problem, the user, and what matters — before writing a line of code.</p>
+      <div class="pillar">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M8 14l3 3 5-7"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
         </div>
-        <div class="pillar">
-          <div class="glyph">
-            <svg viewBox="0 0 24 24"><path d="M8 14l3 3 5-7"/><rect x="3" y="4" width="18" height="16" rx="2"/></svg>
-          </div>
-          <span class="num">02 · Execution</span>
-          <h3>Execution</h3>
-          <p>Hands-on building. Designed to ship, scale, and hold up over time.</p>
+        <span class="num">02 · Execution</span>
+        <h3>Execution</h3>
+        <p>Hands-on building. Designed to ship, scale, and hold up over time.</p>
+      </div>
+      <div class="pillar">
+        <div class="glyph">
+          <svg viewBox="0 0 24 24"><path d="M5 15c0-4 3-8 7-8 3 0 7 2 7 6 0 3-2 5-5 5-2 0-3-1-3-3"/><circle cx="12" cy="15" r="1.5" fill="var(--amber)" stroke="none"/></svg>
         </div>
-        <div class="pillar">
-          <div class="glyph">
-            <svg viewBox="0 0 24 24"><path d="M5 15c0-4 3-8 7-8 3 0 7 2 7 6 0 3-2 5-5 5-2 0-3-1-3-3"/><circle cx="12" cy="15" r="1.5" fill="var(--amber)" stroke="none"/></svg>
-          </div>
-          <span class="num">03 · Incubation</span>
-          <h3>Incubation</h3>
-          <p>For ideas we believe in, we co-build as partners — not contractors.</p>
-        </div>
+        <span class="num">03 · Incubation</span>
+        <h3>Incubation</h3>
+        <p>For ideas we believe in, we co-build as partners — not contractors.</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- WHO IT'S FOR -->
-  <section class="sec tight cream-2" id="who">
-    <div class="container">
-      <div class="eyebrow">Who it's for</div>
-      <h2>Solo founders <em>ready to ship.</em></h2>
-      <p class="lead">If you've been stuck in "almost ready," building nights and weekends, or looking for a partner who actually gives a damn — we should talk.</p>
-    </div>
-  </section>
+<!-- WHO IT'S FOR -->
+<section class="sec tight cream-2" id="who">
+  <div class="container">
+    <div class="eyebrow">Who it's for</div>
+    <h2>Solo founders <em>ready to ship.</em></h2>
+    <p class="lead">If you've been stuck in "almost ready," building nights and weekends, or looking for a partner who actually gives a damn — we should talk.</p>
+  </div>
+</section>
 
-  <!-- FINAL CTA -->
-  <section class="final-cta" id="contact">
-    <div class="inner">
-      <div class="eyebrow" style="color: var(--amber)">Let's talk</div>
-      <h2>Got an idea? <em>Tell us about it.</em></h2>
-      <p>One conversation. No pitch deck, no pressure.</p>
-      <a href="mailto:hello@goodbusinesshq.com" class="btn">hello@goodbusinesshq.com →</a>
-    </div>
-  </section>
+<!-- FINAL CTA -->
+<section class="final-cta" id="contact">
+  <div class="inner">
+    <div class="eyebrow">Let's talk</div>
+    <h2>Got an idea? <em>Tell us about it.</em></h2>
+    <p>One conversation. No pitch deck, no pressure.</p>
+    <a href="mailto:hello@goodbusinesshq.com" class="btn">hello@goodbusinesshq.com →</a>
+  </div>
+</section>
 
-  <!-- FOOTER -->
-  <footer class="site mini">
-    <div class="inner">
-      <div class="logo-lockup">
-        <svg viewBox="0 0 40 40" class="live" aria-hidden="true">
-          <g transform="translate(3,7)">
-            <line x1="17" y1="-2" x2="17" y2="3" stroke="var(--cream)" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="17" cy="-4" r="2" fill="var(--amber)"/>
-            <rect x="1" y="3" width="32" height="28" rx="4.5" fill="var(--cream)"/>
-            <rect x="5" y="8" width="24" height="17" rx="2.5" fill="var(--teal)"/>
-            <rect x="10" y="13" width="3.2" height="4" rx="0.7" fill="var(--cream)" class="eye l"/>
-            <rect x="20" y="13" width="3.2" height="4" rx="0.7" fill="var(--cream)" class="eye r"/>
-            <path d="M 10.5 19.5 Q 17 23 23.5 19.5" fill="none" stroke="var(--amber)" stroke-width="1.7" stroke-linecap="round"/>
-          </g>
-        </svg>
-        <span class="wm" style="color:var(--cream)">Good Business</span>
-      </div>
-      <div class="foot-meta">
-        <span>Austin, TX</span>
-        <span>·</span>
-        <a href="mailto:hello@goodbusinesshq.com">hello@goodbusinesshq.com</a>
-        <span>·</span>
-        <span>© 2026</span>
-      </div>
+<!-- FOOTER -->
+<footer class="site mini">
+  <div class="inner">
+    <div class="logo-lockup">
+      <svg viewBox="0 0 40 40" class="live" aria-hidden="true">
+        <g transform="translate(3,7)">
+          <line x1="17" y1="-2" x2="17" y2="3" stroke="var(--cream)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="17" cy="-4" r="2" fill="var(--amber)"/>
+          <rect x="1" y="3" width="32" height="28" rx="4.5" fill="var(--cream)"/>
+          <rect x="5" y="8" width="24" height="17" rx="2.5" fill="var(--teal)"/>
+          <rect x="10" y="13" width="3.2" height="4" rx="0.7" fill="var(--cream)" class="eye l"/>
+          <rect x="20" y="13" width="3.2" height="4" rx="0.7" fill="var(--cream)" class="eye r"/>
+          <path d="M 10.5 19.5 Q 17 23 23.5 19.5" fill="none" stroke="var(--amber)" stroke-width="1.7" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="wm" style="color:var(--cream)">Good Business</span>
     </div>
-  </footer>
-</div>
+    <div class="foot-meta">
+      <span>Austin, TX</span>
+      <span>·</span>
+      <a href="mailto:hello@goodbusinesshq.com">hello@goodbusinesshq.com</a>
+      <span>·</span>
+      <span>© 2026</span>
+    </div>
+  </div>
+</footer>
 
 </body>
 </html>
