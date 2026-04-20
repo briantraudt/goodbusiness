@@ -28,6 +28,7 @@
   *{box-sizing:border-box}
   html,body{margin:0; background:var(--cream); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased}
   a{color:inherit; text-decoration:none}
+  button{font-family:inherit; font-size:inherit; color:inherit; background:transparent; border:none; cursor:pointer; padding:0}
   .container{max-width:1240px; margin:0 auto; padding: 0 32px}
 
   /* Header */
@@ -102,6 +103,27 @@
   footer.site.mini .foot-meta{display:flex; gap:10px; font-family:var(--mono); font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:rgba(250,250,247,0.55); align-items:center}
   footer.site.mini .foot-meta a:hover{color:var(--amber)}
 
+  /* Contact modal */
+  .modal{position:fixed; inset:0; z-index:100; display:none; place-items:center; padding:20px}
+  .modal.open{display:grid}
+  .modal .backdrop{position:absolute; inset:0; background:rgba(17,17,17,0.55); backdrop-filter:blur(6px); animation: mfadein 0.18s ease}
+  .modal .card{position:relative; background:var(--cream); border:1px solid var(--rule); border-radius:16px; padding:40px; max-width:520px; width:100%; box-shadow:0 24px 60px -20px rgba(0,0,0,0.35); animation: mslidein 0.22s cubic-bezier(0.2, 0.8, 0.2, 1)}
+  @keyframes mfadein { from { opacity:0 } to { opacity:1 } }
+  @keyframes mslidein { from { opacity:0; transform: translateY(12px) } to { opacity:1; transform: translateY(0) } }
+  .modal .close{position:absolute; top:14px; right:14px; width:32px; height:32px; display:grid; place-items:center; border-radius:8px; color:var(--ink-3); font-size:20px; line-height:1}
+  .modal .close:hover{background:var(--cream-2); color:var(--teal)}
+  .modal .eyebrow{margin-bottom:14px}
+  .modal h3{margin:0 0 22px; font-size:26px; font-weight:500; letter-spacing:-0.02em; color:var(--teal); line-height:1.15}
+  .modal h3 em{font-family:var(--serif); font-style:italic; font-weight:400; color:var(--amber)}
+  .modal form{display:flex; flex-direction:column; gap:14px}
+  .modal label{display:flex; flex-direction:column; gap:6px; font-family:var(--mono); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-3); font-weight:500}
+  .modal input, .modal textarea{font-family:var(--sans); font-size:15px; color:var(--ink); background:#fff; border:1px solid var(--rule); border-radius:8px; padding:11px 13px; width:100%; box-sizing:border-box; transition: border-color 0.15s, box-shadow 0.15s; text-transform:none; letter-spacing:0}
+  .modal input:focus, .modal textarea:focus{outline:none; border-color:var(--teal); box-shadow: 0 0 0 3px rgba(17,17,17,0.08)}
+  .modal textarea{min-height:110px; resize:vertical; line-height:1.5}
+  .modal .submit{margin-top:8px; background:var(--teal); color:var(--cream); padding:13px 20px; border-radius:10px; font-size:15px; font-weight:500; display:inline-flex; align-items:center; justify-content:center; gap:8px; transition: background 0.15s}
+  .modal .submit:hover{background:var(--amber)}
+  body.modal-open{overflow:hidden}
+
   @media (max-width: 900px){
     .hero{padding: 64px 0 56px}
     .hero .inner{grid-template-columns: 1fr; gap: 40px}
@@ -117,8 +139,8 @@
     section.sec.tight{padding: 48px 0}
     h2{font-size: 34px; max-width: none}
     .lead{font-size: 16px}
-    header.site nav{display: none}
     header.site .inner{padding: 14px 18px}
+    .modal .card{padding: 28px 24px}
     .container{padding: 0 22px}
     .final-cta{padding: 56px 0}
     .final-cta .btn{width: 100%; justify-content: center}
@@ -146,11 +168,7 @@
       </svg>
       <span class="wm">Good Business</span>
     </a>
-    <nav>
-      <a href="#how">What we build</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <a href="#contact" class="cta">Get in touch →</a>
+    <button type="button" class="cta" data-open-contact>Get in touch →</button>
   </div>
 </header>
 
@@ -161,7 +179,7 @@
       <h1>We build things that <em>make life more meaningful.</em></h1>
       <p class="sub">We design and build software that feels impossible in the best way — products with the ambition and polish to make people do a double take.</p>
       <div class="actions">
-        <a href="#contact" class="btn primary">Start a conversation →</a>
+        <button type="button" class="btn primary" data-open-contact>Start a conversation →</button>
         <a href="#how" class="btn ghost">See what we build</a>
       </div>
     </div>
@@ -208,8 +226,7 @@
   <div class="inner">
     <div class="eyebrow">Let's talk</div>
     <h2>Got something to build?<br><em>Tell us about it.</em></h2>
-    <p>One conversation. No pitch deck, no pressure.</p>
-    <a href="mailto:hello@goodbusinesshq.com" class="btn">hello@goodbusinesshq.com →</a>
+    <button type="button" class="btn" data-open-contact>hello@goodbusinesshq.com →</button>
   </div>
 </section>
 
@@ -239,6 +256,73 @@
     </div>
   </div>
 </footer>
+
+<!-- CONTACT MODAL -->
+<div class="modal" id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" hidden>
+  <div class="backdrop" data-close-contact></div>
+  <div class="card">
+    <button type="button" class="close" data-close-contact aria-label="Close">×</button>
+    <div class="eyebrow">Let's talk</div>
+    <h3 id="contact-modal-title">Tell us about <em>what you're building.</em></h3>
+    <form id="contact-form" novalidate>
+      <label>Name
+        <input type="text" name="name" autocomplete="name" required>
+      </label>
+      <label>Email
+        <input type="email" name="email" autocomplete="email" required>
+      </label>
+      <label>What are you building?
+        <textarea name="message" rows="4" required></textarea>
+      </label>
+      <button type="submit" class="submit">Send →</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  (function(){
+    const modal = document.getElementById('contact-modal');
+    const form = document.getElementById('contact-form');
+    const openers = document.querySelectorAll('[data-open-contact]');
+    const closers = modal.querySelectorAll('[data-close-contact]');
+
+    function open(e){
+      if (e) e.preventDefault();
+      modal.hidden = false;
+      modal.classList.add('open');
+      document.body.classList.add('modal-open');
+      setTimeout(() => { const f = modal.querySelector('input'); if (f) f.focus(); }, 60);
+    }
+    function close(){
+      modal.classList.remove('open');
+      document.body.classList.remove('modal-open');
+      modal.hidden = true;
+    }
+
+    openers.forEach(el => el.addEventListener('click', open));
+    closers.forEach(el => el.addEventListener('click', close));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) close();
+    });
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const name = (data.get('name') || '').trim();
+      const email = (data.get('email') || '').trim();
+      const message = (data.get('message') || '').trim();
+      if (!name || !email || !message) {
+        form.reportValidity();
+        return;
+      }
+      const subject = encodeURIComponent('New project inquiry' + (name ? ' — ' + name : ''));
+      const body = encodeURIComponent(
+        message + '\n\n— —\nFrom: ' + name + (email ? ' <' + email + '>' : '')
+      );
+      window.location.href = 'mailto:hello@goodbusinesshq.com?subject=' + subject + '&body=' + body;
+    });
+  })();
+</script>
 
 </body>
 </html>
