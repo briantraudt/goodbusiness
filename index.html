@@ -5,7 +5,9 @@
 <title>Good Business — We build things that make life more meaningful</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="We design and build software that feels impossible in the best way — products with the ambition and polish to make people do a double take.">
-<link rel="icon" href="/favicon.ico">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -83,14 +85,14 @@
   .pillar p{margin:0; color:var(--ink-2); font-size:15px; line-height:1.55}
 
   /* CTA block */
-  .final-cta{background: var(--teal); color: var(--cream); padding: 100px 0; text-align:center; position:relative; overflow:hidden}
+  .final-cta{background: var(--teal); color: var(--cream); padding: 72px 0; text-align:center; position:relative; overflow:hidden}
   .final-cta:before{content:""; position:absolute; inset:0; background:
     radial-gradient(ellipse at 50% 0%, rgba(46,107,230,0.18), transparent 60%)}
   .final-cta .inner{position:relative; max-width:840px; margin:0 auto; padding:0 32px}
-  .final-cta h2{color:var(--cream); margin:0 auto; max-width:20ch}
+  .final-cta h2{color:var(--cream); margin:0 auto; max-width:22ch; line-height:1.1}
   .final-cta h2 em{color: var(--amber)}
   .final-cta .eyebrow{color: var(--amber)}
-  .final-cta p{margin:20px auto 32px; color: rgba(250,250,247,0.8); font-size:18px; max-width:52ch}
+  .final-cta p{margin:16px auto 24px; color: rgba(250,250,247,0.8); font-size:17px; max-width:52ch}
   .final-cta .btn{background: var(--amber); color: var(--cream); font-weight:600}
   .final-cta .btn:hover{background:#1F4BFF}
 
@@ -118,7 +120,7 @@
     header.site nav{display: none}
     header.site .inner{padding: 14px 18px}
     .container{padding: 0 22px}
-    .final-cta{padding: 64px 0}
+    .final-cta{padding: 56px 0}
     .final-cta .btn{width: 100%; justify-content: center}
     footer.site.mini .inner{flex-direction: column; align-items: flex-start; gap: 14px; padding: 0 22px}
     footer.site.mini .foot-meta{flex-wrap: wrap; gap: 6px}
@@ -130,7 +132,7 @@
 <!-- HEADER -->
 <header class="site">
   <div class="inner">
-    <a class="logo-lockup" href="#">
+    <a class="logo-lockup" href="/">
       <svg viewBox="0 0 40 40" class="live" aria-hidden="true">
         <g transform="translate(3,7)">
           <line x1="17" y1="-2" x2="17" y2="3" stroke="var(--teal)" stroke-width="2" stroke-linecap="round"/>
@@ -186,18 +188,15 @@
     <h2>Three things we <em>build well.</em></h2>
     <div class="pillars">
       <div class="pillar">
-        <span class="num">01 · AI</span>
-        <h3>AI</h3>
+        <h3>01 · AI</h3>
         <p>AI-enabled products built to ship, not demo. LLM integrations, RAG pipelines, agentic workflows, and custom model deployments — wired into real product surfaces.</p>
       </div>
       <div class="pillar">
-        <span class="num">02 · Mobile</span>
-        <h3>Mobile</h3>
+        <h3>02 · Mobile</h3>
         <p>Native iOS and Android apps built for the long haul. Thoughtful UX, reliable performance, and release pipelines you can trust.</p>
       </div>
       <div class="pillar">
-        <span class="num">03 · Enterprise</span>
-        <h3>Enterprise</h3>
+        <h3>03 · Enterprise</h3>
         <p>Internal tools, dashboards, and workflow platforms for teams that need software to match how they actually work — not the other way around.</p>
       </div>
     </div>
@@ -208,7 +207,7 @@
 <section class="final-cta" id="contact">
   <div class="inner">
     <div class="eyebrow">Let's talk</div>
-    <h2>Got something to build? <em>Tell us about it.</em></h2>
+    <h2>Got something to build?<br><em>Tell us about it.</em></h2>
     <p>One conversation. No pitch deck, no pressure.</p>
     <a href="mailto:hello@goodbusinesshq.com" class="btn">hello@goodbusinesshq.com →</a>
   </div>
