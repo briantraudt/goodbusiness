@@ -122,6 +122,13 @@
   .modal textarea{min-height:110px; resize:vertical; line-height:1.5}
   .modal .submit{margin-top:8px; background:var(--teal); color:var(--cream); padding:13px 20px; border-radius:10px; font-size:15px; font-weight:500; display:inline-flex; align-items:center; justify-content:center; gap:8px; transition: background 0.15s}
   .modal .submit:hover{background:var(--amber)}
+  .modal .submit[disabled]{opacity:0.7; cursor:default}
+  .modal .submit[disabled]:hover{background:var(--teal)}
+  .modal .form-error{margin:0; color:#B42318; font-family:var(--mono); font-size:12px; letter-spacing:0.04em}
+  .modal .success{padding:28px 8px 8px; text-align:center}
+  .modal .success h4{margin:0 0 10px; font-size:22px; font-weight:500; letter-spacing:-0.015em; color:var(--teal)}
+  .modal .success h4 em{font-family:var(--serif); font-style:italic; font-weight:400; color:var(--amber)}
+  .modal .success p{margin:0; color:var(--ink-2); font-size:15px; line-height:1.55}
   body.modal-open{overflow:hidden}
 
   @media (max-width: 900px){
@@ -305,8 +312,41 @@
       if (e.key === 'Escape' && modal.classList.contains('open')) close();
     });
 
-    form.addEventListener('submit', e => {
+    const card = modal.querySelector('.card');
+    const submitBtn = form.querySelector('.submit');
+
+    function showError(msg){
+      let el = form.querySelector('.form-error');
+      if (!el) {
+        el = document.createElement('p');
+        el.className = 'form-error';
+        form.insertBefore(el, submitBtn);
+      }
+      el.textContent = msg;
+    }
+
+    function clearError(){
+      const el = form.querySelector('.form-error');
+      if (el) el.remove();
+    }
+
+    function showSuccess(name){
+      const safe = String(name).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      const intro = card.querySelector('.eyebrow');
+      const title = card.querySelector('h3');
+      if (intro) intro.remove();
+      if (title) title.remove();
+      form.outerHTML = [
+        '<div class="success">',
+          '<h4>Thanks, ', safe, '. <em>Talk soon.</em></h4>',
+          '<p>We got your note and will be in touch shortly.</p>',
+        '</div>'
+      ].join('');
+    }
+
+    form.addEventListener('submit', async e => {
       e.preventDefault();
+      clearError();
       const data = new FormData(form);
       const name = (data.get('name') || '').trim();
       const email = (data.get('email') || '').trim();
@@ -315,11 +355,31 @@
         form.reportValidity();
         return;
       }
-      const subject = encodeURIComponent('New project inquiry' + (name ? ' — ' + name : ''));
-      const body = encodeURIComponent(
-        message + '\n\n— —\nFrom: ' + name + (email ? ' <' + email + '>' : '')
-      );
-      window.location.href = 'mailto:hello@goodbusinesshq.com?subject=' + subject + '&body=' + body;
+
+      const originalLabel = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+
+      try {
+        const res = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, message })
+        });
+        if (!res.ok) {
+          let msg = 'Something went wrong. Try emailing hello@goodbusinesshq.com.';
+          try {
+            const j = await res.json();
+            if (j && j.error) msg = j.error;
+          } catch {}
+          throw new Error(msg);
+        }
+        showSuccess(name);
+      } catch (err) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+        showError(err && err.message ? err.message : 'Something went wrong.');
+      }
     });
   })();
 </script>
