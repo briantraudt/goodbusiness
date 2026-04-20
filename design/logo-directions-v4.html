@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Good Business — 3 New Directions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script>
+  const TWEAKS = /*EDITMODE-BEGIN*/{
+    "bg": "paper",
+    "focus": "all"
+  }/*EDITMODE-END*/;
+</script>
+<style>
+  :root{
+    --paper: oklch(0.985 0.003 250);
+    --paper-2: oklch(0.965 0.004 250);
+    --ink: oklch(0.16 0.015 250);
+    --ink-2: oklch(0.42 0.012 250);
+    --ink-3: oklch(0.62 0.008 250);
+    --rule: oklch(0.88 0.006 250);
+    /* direction accents */
+    --grin: oklch(0.72 0.20 28);       /* hot coral */
+    --robot: oklch(0.82 0.17 95);      /* sunflower */
+    --portal: oklch(0.65 0.24 305);    /* electric violet */
+    --sans: 'Geist', system-ui, sans-serif;
+    --mono: 'Geist Mono', ui-monospace, Menlo, monospace;
+    --serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  }
+  [data-bg="ink"]{
+    --paper: oklch(0.14 0.015 250);
+    --paper-2: oklch(0.19 0.015 250);
+    --ink: oklch(0.98 0.003 250);
+    --ink-2: oklch(0.82 0.008 250);
+    --ink-3: oklch(0.62 0.010 250);
+    --rule: oklch(0.30 0.010 250);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--mono); font-size:11px; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink-3)}
+
+  header.page{position:sticky; top:0; z-index:20; background:color-mix(in oklab, var(--paper) 92%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--rule); display:flex; align-items:center; justify-content:space-between; padding:14px 36px}
+  header.page .name{font-weight:600; letter-spacing:-0.01em}
+  header.page .name span{color:var(--ink-3); font-weight:400}
+  header.page .tabs{display:flex; border:1px solid var(--rule); border-radius:999px; padding:2px}
+  header.page .tabs button{background:transparent; border:none; padding:6px 12px; font:inherit; font-size:12px; color:var(--ink-3); cursor:pointer; border-radius:999px; font-family:inherit}
+  header.page .tabs button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+
+  .intro{padding: 60px 36px 16px; max-width:1100px}
+  .intro .kicker{font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-3); margin-bottom:12px}
+  .intro h1{margin:0; font-size: clamp(36px, 4.4vw, 68px); font-weight:500; letter-spacing:-0.03em; line-height:1.02}
+  .intro h1 em{font-family:var(--serif); font-style:italic; font-weight:400; color:var(--ink-2)}
+  .intro p{margin:14px 0 0; color:var(--ink-2); max-width:62ch; font-size:16px}
+
+  /* direction block */
+  .dir{border-top: 1px solid var(--rule); padding: 44px 36px 56px; max-width: 1600px; margin:0 auto; display:grid; grid-template-columns: 280px 1fr; gap: 48px}
+  .dir .left{position:sticky; top: 80px; align-self:start}
+  .dir .left .num{display:inline-flex; gap:10px; font-family:var(--mono); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-3); margin-bottom:10px}
+  .dir .left .num b{background:var(--ink); color:var(--paper); padding:2px 7px; border-radius:3px; font-weight:500}
+  .dir .left h2{font-size: 36px; font-weight:500; letter-spacing:-0.02em; margin: 4px 0 8px; line-height:1.05}
+  .dir .left h2 em{font-family:var(--serif); font-style:italic; font-weight:400; color:var(--ink-2)}
+  .dir .left .desc{color:var(--ink-2); font-size: 14.5px; line-height:1.6; max-width: 40ch}
+  .dir .left .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:16px}
+  .dir .left .chips span{border:1px solid var(--rule); font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:0.06em; padding:4px 8px; border-radius:3px; color:var(--ink-3)}
+  .dir .left .swatch{display:inline-flex; align-items:center; gap:8px; margin-top:14px; font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-3)}
+  .dir .left .swatch i{width:14px; height:14px; border-radius:3px; border:1px solid var(--rule)}
+
+  .stage{display:grid; grid-template-columns: 1.6fr 1fr 1fr; grid-auto-rows: minmax(180px, auto); gap:12px}
+  .tile{border:1px solid var(--rule); border-radius:10px; background:var(--paper); position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; padding: 28px}
+  .tile .lbl{position:absolute; top:10px; left:12px; font-family:var(--mono); font-size:10px; letter-spacing:0.06em; color:var(--ink-3); text-transform:uppercase}
+  .tile .spec{position:absolute; bottom:10px; right:12px; font-family:var(--mono); font-size:10px; letter-spacing:0.06em; color:var(--ink-3); text-transform:uppercase}
+  .tile.inv{background:var(--ink); color:var(--paper)}
+  .tile.paper2{background:var(--paper-2)}
+  .tile.inv .lbl, .tile.inv .spec{color: color-mix(in oklab, currentColor 65%, transparent)}
+  .tile.hero{grid-column: 1 / 2; grid-row: span 2; min-height: 380px; padding: 44px}
+  .tile.hero svg{width: 100%; height:auto; max-height: 220px}
+  .tile.wide{grid-column: span 2}
+
+  /* Direction focus */
+  [data-focus="grin"]   .dir:not(#d-grin)   { display:none }
+  [data-focus="robot"]  .dir:not(#d-robot)  { display:none }
+  [data-focus="portal"] .dir:not(#d-portal) { display:none }
+
+  /* app tile frame */
+  .app-frame{width: 110px; height:110px; border-radius:24px; display:grid; place-items:center; box-shadow: 0 2px 0 var(--rule), 0 12px 32px -12px oklch(0 0 0 / 0.18)}
+
+  /* robot animations */
+  @keyframes blink { 0%, 92%, 100% { transform: scaleY(1) } 95%, 97% { transform: scaleY(0.08) } }
+  @keyframes scan { 0%, 100% { transform: translateX(0) } 50% { transform: translateX(6px) } }
+  .robot-live .eye { transform-origin: center; animation: blink 4.2s infinite }
+  .robot-live .eye.r { animation-delay: 0.1s }
+  .robot-live .mouth { animation: scan 2.4s ease-in-out infinite }
+
+  /* portal spin */
+  @keyframes spin { to { transform: rotate(360deg) } }
+  .portal-live .p-slice { transform-origin: 50% 50%; animation: spin 14s linear infinite }
+
+  /* tweaks panel */
+  .tweaks{position:fixed; right:16px; bottom:16px; z-index:60; width:260px; background:var(--paper); border:1px solid var(--rule); border-radius:8px; box-shadow:0 20px 48px -16px oklch(0 0 0 / 0.2); display:none}
+  .tweaks.open{display:block}
+  .tweaks header{padding:10px 14px; border-bottom:1px solid var(--rule); background:var(--paper-2); font-family:var(--mono); font-size:11px; color:var(--ink-3); display:flex; justify-content:space-between}
+  .tweaks .bd{padding:12px 14px}
+  .tweaks .r{display:flex; flex-direction:column; gap:6px; margin:10px 0}
+  .tweaks label{font-family:var(--mono); font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em}
+  .tweaks .seg{display:flex; border:1px solid var(--rule); border-radius:6px; overflow:hidden}
+  .tweaks .seg button{flex:1; background:transparent; border:none; padding:6px 8px; font-size:12px; cursor:pointer; color:var(--ink-2); border-right:1px solid var(--rule); font-family:inherit}
+  .tweaks .seg button:last-child{border-right:none}
+  .tweaks .seg button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+
+  @media (max-width: 980px){
+    .dir{grid-template-columns: 1fr}
+    .dir .left{position:static}
+    .stage{grid-template-columns: 1fr 1fr}
+    .tile.hero{grid-column: 1 / -1; grid-row:auto}
+    .tile.wide{grid-column: span 2}
+  }
+</style>
+</head>
+<body data-bg="paper" data-focus="all">
+
+<header class="page">
+  <div class="name">Good Business <span>/ 3 new directions · scrap &amp; restart</span></div>
+  <div class="tabs" id="bg-tabs">
+    <button data-bg="paper" aria-pressed="true">Paper</button>
+    <button data-bg="ink" aria-pressed="false">Ink</button>
+  </div>
+  <span class="mono">T for tweaks</span>
+</header>
+
+<section class="intro">
+  <div class="kicker">§ scrap the meter · three directions · sky is the limit</div>
+  <h1>Playful. Cutting-edge. <em>Trustworthy anyway.</em></h1>
+  <p>Three wildly different marks. Each one ships with wordmark, glyph, app tile, and a texture of how the brand would feel in the wild. Focus on one in Tweaks (T) to see it isolated.</p>
+</section>
+
+<!-- ══════════════════ 01 · THE GRIN ══════════════════ -->
+<section class="dir" id="d-grin">
+  <div class="left">
+    <div class="num"><b>01</b> the grin</div>
+    <h2>A face <em>hiding</em> in the wordmark.</h2>
+    <p class="desc">The "oo" in Good are eyes. A confident crescent smile sits under the word. Reads as a wordmark at a glance; as a face when you look twice. Gets away with coral because the smile earns it.</p>
+    <div class="swatch"><i style="background:var(--grin)"></i> hot coral · 0.72 L · 28 H</div>
+    <div class="chips"><span>face</span><span>friendly</span><span>wordmark-led</span><span>embroiderable</span></div>
+  </div>
+  <div class="stage">
+    <!-- HERO: full lockup -->
+    <div class="tile hero">
+      <span class="lbl">primary · wordmark + grin</span>
+      <!-- Design: "Good" with oo-as-eyes, then crescent smile under "Business" baseline -->
+      <svg viewBox="0 0 780 260" aria-label="Good Business grin">
+        <!-- GOOD with eye-dots over the o's -->
+        <text x="40" y="150" font-family="Geist" font-weight="800" font-size="140" letter-spacing="-0.045em" fill="currentColor">Good</text>
+        <!-- eye pupils, positioned inside the two o's -->
+        <circle cx="223" cy="113" r="11" fill="var(--grin)"/>
+        <circle cx="300" cy="113" r="11" fill="var(--grin)"/>
+        <!-- Business -->
+        <text x="40" y="228" font-family="Geist" font-weight="500" font-size="48" letter-spacing="-0.02em" fill="var(--ink-2)">Business</text>
+        <!-- Smile: big crescent, anchored to the right, opens upward, cheerful -->
+        <path d="M 440 150 Q 580 260 720 150" fill="none" stroke="var(--grin)" stroke-width="22" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <!-- Compact lockup -->
+    <div class="tile">
+      <span class="lbl">compact · inline</span>
+      <svg viewBox="0 0 360 140" width="88%">
+        <text x="20" y="88" font-family="Geist" font-weight="800" font-size="78" letter-spacing="-0.04em" fill="currentColor">Good</text>
+        <circle cx="121" cy="60" r="6.5" fill="var(--grin)"/>
+        <circle cx="164" cy="60" r="6.5" fill="var(--grin)"/>
+        <path d="M 220 84 Q 260 124 300 84" fill="none" stroke="var(--grin)" stroke-width="11" stroke-linecap="round"/>
+        <text x="220" y="118" font-family="Geist" font-weight="500" font-size="22" letter-spacing="-0.02em" fill="var(--ink-2)">Business</text>
+      </svg>
+    </div>
+    <!-- Glyph only: the grin alone -->
+    <div class="tile inv">
+      <span class="lbl">glyph · smile + eyes</span>
+      <svg viewBox="0 0 160 160" width="120">
+        <circle cx="56" cy="60" r="10" fill="var(--grin)"/>
+        <circle cx="104" cy="60" r="10" fill="var(--grin)"/>
+        <path d="M 36 88 Q 80 140 124 88" fill="none" stroke="var(--grin)" stroke-width="14" stroke-linecap="round"/>
+      </svg>
+      <span class="spec">standalone</span>
+    </div>
+    <!-- App tile -->
+    <div class="tile">
+      <span class="lbl">app · ios squircle</span>
+      <div class="app-frame" style="background: var(--grin)">
+        <svg viewBox="0 0 100 100" width="78">
+          <circle cx="36" cy="38" r="7" fill="var(--paper)"/>
+          <circle cx="64" cy="38" r="7" fill="var(--paper)"/>
+          <path d="M 22 58 Q 50 92 78 58" fill="none" stroke="var(--paper)" stroke-width="10" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+    <!-- Favicon strip -->
+    <div class="tile">
+      <span class="lbl">favicon · 16 · 32</span>
+      <div style="display:flex; gap:20px; align-items:center">
+        <svg viewBox="0 0 16 16" width="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <rect x="5" y="5" width="2" height="2" fill="var(--grin)"/>
+          <rect x="9" y="5" width="2" height="2" fill="var(--grin)"/>
+          <rect x="4" y="9" width="1" height="1" fill="var(--grin)"/>
+          <rect x="11" y="9" width="1" height="1" fill="var(--grin)"/>
+          <rect x="5" y="10" width="6" height="1.6" fill="var(--grin)"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <circle cx="11" cy="12" r="2" fill="var(--grin)"/>
+          <circle cx="21" cy="12" r="2" fill="var(--grin)"/>
+          <path d="M 8 19 Q 16 27 24 19" fill="none" stroke="var(--grin)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+    <!-- Tone sample -->
+    <div class="tile wide" style="padding: 32px 40px">
+      <span class="lbl">tone · in the wild</span>
+      <div style="display:grid; grid-template-columns: 1fr auto; gap: 24px; align-items:center; width:100%">
+        <div>
+          <div style="font-size:28px; font-weight:500; letter-spacing:-0.02em; line-height:1.15">Hi — we're Good Business. <span style="color:var(--grin)">We like making things that work.</span></div>
+          <div style="margin-top:10px; color:var(--ink-3); font-size:13px">say hi → clara@goodbusiness.co</div>
+        </div>
+        <svg viewBox="0 0 200 140" width="160">
+          <circle cx="72" cy="54" r="8" fill="var(--grin)"/>
+          <circle cx="128" cy="54" r="8" fill="var(--grin)"/>
+          <path d="M 50 84 Q 100 130 150 84" fill="none" stroke="var(--grin)" stroke-width="12" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ 02 · GOOD ROBOT ══════════════════ -->
+<section class="dir" id="d-robot">
+  <div class="left">
+    <div class="num"><b>02</b> good robot</div>
+    <h2>A small, <em>polite</em> machine.</h2>
+    <p class="desc">A square-headed character — two pixel eyes, one horizontal mouth. Minimal. No cute. Says "we build technology, and it has a personality." Animates: eyes blink, mouth scans. Perfect for loaders, 404s, and avatars.</p>
+    <div class="swatch"><i style="background:var(--robot)"></i> sunflower · 0.82 L · 95 H</div>
+    <div class="chips"><span>character</span><span>animatable</span><span>404-friendly</span><span>proprietary</span></div>
+  </div>
+  <div class="stage">
+    <!-- HERO: robot + wordmark -->
+    <div class="tile hero">
+      <span class="lbl">primary · robot + wordmark</span>
+      <svg viewBox="0 0 780 260" class="robot-live" aria-label="Good Business robot">
+        <!-- robot head: rounded square, mono-style antenna -->
+        <g transform="translate(40,40)">
+          <!-- antenna -->
+          <line x1="90" y1="-10" x2="90" y2="14" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="90" cy="-14" r="6" fill="var(--robot)"/>
+          <!-- head body -->
+          <rect x="10" y="14" width="160" height="150" rx="18" fill="currentColor"/>
+          <!-- face plate inset -->
+          <rect x="26" y="46" width="128" height="90" rx="10" fill="var(--paper)"/>
+          <!-- eyes -->
+          <g fill="var(--ink)">
+            <rect class="eye l" x="54" y="74" width="16" height="20" rx="3"/>
+            <rect class="eye r" x="112" y="74" width="16" height="20" rx="3"/>
+          </g>
+          <!-- mouth scan bar -->
+          <rect class="mouth" x="58" y="112" width="50" height="8" rx="3" fill="var(--robot)"/>
+        </g>
+        <!-- wordmark -->
+        <text x="230" y="145" font-family="Geist" font-weight="800" font-size="96" letter-spacing="-0.04em" fill="currentColor">Good</text>
+        <text x="230" y="225" font-family="Geist" font-weight="500" font-size="56" letter-spacing="-0.02em" fill="var(--ink-2)">Business</text>
+      </svg>
+    </div>
+    <!-- Compact inline -->
+    <div class="tile">
+      <span class="lbl">inline · small</span>
+      <svg viewBox="0 0 360 120" width="88%">
+        <g transform="translate(14,14)">
+          <line x1="42" y1="-4" x2="42" y2="8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="42" cy="-6" r="3" fill="var(--robot)"/>
+          <rect x="8" y="8" width="72" height="68" rx="8" fill="currentColor"/>
+          <rect x="16" y="22" width="56" height="40" rx="5" fill="var(--paper)"/>
+          <rect x="26" y="34" width="7" height="9" rx="1.5" fill="var(--ink)"/>
+          <rect x="56" y="34" width="7" height="9" rx="1.5" fill="var(--ink)"/>
+          <rect x="28" y="50" width="22" height="4" rx="1.5" fill="var(--robot)"/>
+        </g>
+        <text x="110" y="62" font-family="Geist" font-weight="700" font-size="36" letter-spacing="-0.03em" fill="currentColor">Good Business</text>
+      </svg>
+    </div>
+    <!-- Glyph alone (animated) -->
+    <div class="tile inv">
+      <span class="lbl">glyph · live</span>
+      <svg viewBox="0 0 160 160" width="120" class="robot-live">
+        <g transform="translate(10,22)">
+          <line x1="70" y1="-8" x2="70" y2="6" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="70" cy="-12" r="5" fill="var(--robot)"/>
+          <rect x="10" y="6" width="120" height="108" rx="14" fill="currentColor"/>
+          <rect x="22" y="30" width="96" height="66" rx="8" fill="var(--ink)"/>
+          <rect x="44" y="52" width="12" height="16" rx="2.5" fill="var(--robot)" class="eye l"/>
+          <rect x="84" y="52" width="12" height="16" rx="2.5" fill="var(--robot)" class="eye r"/>
+          <rect x="48" y="80" width="38" height="6" rx="2" fill="var(--robot)" class="mouth"/>
+        </g>
+      </svg>
+      <span class="spec">animating</span>
+    </div>
+    <!-- App tile -->
+    <div class="tile">
+      <span class="lbl">app · ios squircle</span>
+      <div class="app-frame" style="background: var(--ink)">
+        <svg viewBox="0 0 100 100" width="78" class="robot-live">
+          <g transform="translate(8,20)">
+            <line x1="42" y1="-6" x2="42" y2="4" stroke="var(--paper)" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="42" cy="-8" r="3" fill="var(--robot)"/>
+            <rect x="4" y="4" width="76" height="64" rx="10" fill="var(--paper)"/>
+            <rect x="12" y="20" width="60" height="42" rx="6" fill="var(--ink)"/>
+            <rect x="26" y="34" width="8" height="11" rx="1.5" fill="var(--robot)" class="eye l"/>
+            <rect x="50" y="34" width="8" height="11" rx="1.5" fill="var(--robot)" class="eye r"/>
+            <rect x="30" y="52" width="24" height="4" rx="1.5" fill="var(--robot)" class="mouth"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <!-- Favicons -->
+    <div class="tile">
+      <span class="lbl">favicon · 16 · 32</span>
+      <div style="display:flex; gap:20px; align-items:center">
+        <svg viewBox="0 0 16 16" width="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <rect x="7" y="1" width="2" height="1" fill="var(--robot)"/>
+          <rect x="3" y="3" width="10" height="10" rx="1" fill="var(--paper)"/>
+          <rect x="5" y="6" width="2" height="2" fill="var(--ink)"/>
+          <rect x="9" y="6" width="2" height="2" fill="var(--ink)"/>
+          <rect x="6" y="10" width="4" height="1.4" fill="var(--robot)"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <line x1="16" y1="2" x2="16" y2="6" stroke="var(--paper)" stroke-width="1.6" stroke-linecap="round"/>
+          <circle cx="16" cy="2" r="1.4" fill="var(--robot)"/>
+          <rect x="6" y="6" width="20" height="20" rx="3" fill="var(--paper)"/>
+          <rect x="9" y="11" width="3" height="4" rx="0.8" fill="var(--ink)"/>
+          <rect x="20" y="11" width="3" height="4" rx="0.8" fill="var(--ink)"/>
+          <rect x="11" y="19" width="10" height="2" rx="0.8" fill="var(--robot)"/>
+        </svg>
+      </div>
+    </div>
+    <!-- Tone sample -->
+    <div class="tile wide" style="padding: 32px 40px">
+      <span class="lbl">tone · 404 / loader</span>
+      <div style="display:grid; grid-template-columns: auto 1fr; gap: 28px; align-items:center; width:100%">
+        <svg viewBox="0 0 160 160" width="120" class="robot-live">
+          <g transform="translate(10,22)">
+            <line x1="70" y1="-8" x2="70" y2="6" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="70" cy="-12" r="5" fill="var(--robot)"/>
+            <rect x="10" y="6" width="120" height="108" rx="14" fill="var(--ink)"/>
+            <rect x="22" y="30" width="96" height="66" rx="8" fill="var(--paper)"/>
+            <rect x="44" y="52" width="12" height="16" rx="2.5" fill="var(--ink)" class="eye l"/>
+            <rect x="84" y="52" width="12" height="16" rx="2.5" fill="var(--ink)" class="eye r"/>
+            <rect x="48" y="80" width="38" height="6" rx="2" fill="var(--robot)" class="mouth"/>
+          </g>
+        </svg>
+        <div>
+          <div style="font-size:32px; font-weight:500; letter-spacing:-0.02em; line-height:1.1">404. <span style="color:var(--ink-3)">We looked everywhere.</span></div>
+          <div style="margin-top:8px; color:var(--ink-3); font-size:13px">go home → goodbusiness.co</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ 03 · THE PORTAL ══════════════════ -->
+<section class="dir" id="d-portal">
+  <div class="left">
+    <div class="num"><b>03</b> the portal</div>
+    <h2>A cut. <em>Through anything.</em></h2>
+    <p class="desc">One filled circle with a diagonal slice cut through it, off-center. Reads as an aperture, a doorway, a ringed planet, a cursor through space. The slice is the brand device — it recurs in dividers, crops, photography. Simple to own, weird enough to be remembered.</p>
+    <div class="swatch"><i style="background:var(--portal)"></i> electric violet · 0.65 L · 305 H</div>
+    <div class="chips"><span>geometric</span><span>ownable shape</span><span>brand device</span><span>scales</span></div>
+  </div>
+  <div class="stage">
+    <!-- HERO -->
+    <div class="tile hero">
+      <span class="lbl">primary · portal + wordmark</span>
+      <svg viewBox="0 0 780 260" class="portal-live" aria-label="Good Business portal">
+        <defs>
+          <mask id="mask-slice">
+            <rect width="780" height="260" fill="white"/>
+            <!-- diagonal slice cut -->
+            <rect x="-20" y="128" width="260" height="16" transform="rotate(-28 110 130)" fill="black"/>
+          </mask>
+        </defs>
+        <g class="p-slice">
+          <circle cx="110" cy="130" r="94" fill="currentColor" mask="url(#mask-slice)"/>
+          <!-- accent slice overlay -->
+          <rect x="-20" y="126" width="260" height="5" transform="rotate(-28 110 130)" fill="var(--portal)"/>
+        </g>
+        <!-- wordmark -->
+        <text x="232" y="148" font-family="Geist" font-weight="800" font-size="96" letter-spacing="-0.04em" fill="currentColor">Good</text>
+        <text x="232" y="224" font-family="Geist" font-weight="500" font-size="56" letter-spacing="-0.02em" fill="var(--ink-2)">Business</text>
+      </svg>
+    </div>
+    <!-- Compact inline -->
+    <div class="tile">
+      <span class="lbl">inline · small</span>
+      <svg viewBox="0 0 360 120" width="88%">
+        <defs>
+          <mask id="mask-slice-sm">
+            <rect width="360" height="120" fill="white"/>
+            <rect x="-10" y="58" width="140" height="8" transform="rotate(-28 60 62)" fill="black"/>
+          </mask>
+        </defs>
+        <circle cx="60" cy="62" r="44" fill="currentColor" mask="url(#mask-slice-sm)"/>
+        <rect x="-10" y="58" width="140" height="2.5" transform="rotate(-28 60 62)" fill="var(--portal)"/>
+        <text x="128" y="78" font-family="Geist" font-weight="700" font-size="40" letter-spacing="-0.03em" fill="currentColor">Good Business</text>
+      </svg>
+    </div>
+    <!-- Glyph alone -->
+    <div class="tile inv">
+      <span class="lbl">glyph · standalone</span>
+      <svg viewBox="0 0 160 160" width="120">
+        <defs>
+          <mask id="mask-slice-g">
+            <rect width="160" height="160" fill="white"/>
+            <rect x="-10" y="74" width="190" height="12" transform="rotate(-28 80 80)" fill="black"/>
+          </mask>
+        </defs>
+        <circle cx="80" cy="80" r="58" fill="currentColor" mask="url(#mask-slice-g)"/>
+        <rect x="-10" y="74" width="190" height="4" transform="rotate(-28 80 80)" fill="var(--portal)"/>
+      </svg>
+      <span class="spec">120 × 120</span>
+    </div>
+    <!-- App tile -->
+    <div class="tile">
+      <span class="lbl">app · ios squircle</span>
+      <div class="app-frame" style="background: var(--portal)">
+        <svg viewBox="0 0 100 100" width="78">
+          <defs>
+            <mask id="mask-slice-app">
+              <rect width="100" height="100" fill="white"/>
+              <rect x="-10" y="46" width="120" height="9" transform="rotate(-28 50 50)" fill="black"/>
+            </mask>
+          </defs>
+          <circle cx="50" cy="50" r="36" fill="var(--paper)" mask="url(#mask-slice-app)"/>
+          <rect x="-10" y="46" width="120" height="3" transform="rotate(-28 50 50)" fill="var(--ink)"/>
+        </svg>
+      </div>
+    </div>
+    <!-- Favicons -->
+    <div class="tile">
+      <span class="lbl">favicon · 16 · 32</span>
+      <div style="display:flex; gap:20px; align-items:center">
+        <svg viewBox="0 0 16 16" width="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <circle cx="8" cy="8" r="5.5" fill="var(--paper)"/>
+          <rect x="1" y="7.2" width="14" height="1.6" transform="rotate(-28 8 8)" fill="var(--ink)"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <defs>
+            <mask id="mask-slice-fav">
+              <rect width="32" height="32" fill="white"/>
+              <rect x="-4" y="14.5" width="42" height="3" transform="rotate(-28 16 16)" fill="black"/>
+            </mask>
+          </defs>
+          <circle cx="16" cy="16" r="10" fill="var(--paper)" mask="url(#mask-slice-fav)"/>
+          <rect x="-4" y="14.5" width="42" height="1" transform="rotate(-28 16 16)" fill="var(--portal)"/>
+        </svg>
+      </div>
+    </div>
+    <!-- Brand device -->
+    <div class="tile wide" style="padding: 32px 40px; align-items:stretch">
+      <span class="lbl">device · the slice as system</span>
+      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:18px; width:100%; align-items:center">
+        <!-- section divider -->
+        <div style="display:flex; flex-direction:column; gap:6px">
+          <div class="mono">divider</div>
+          <div style="height:3px; background: linear-gradient(90deg, var(--ink) 0 60%, var(--portal) 60% 65%, var(--ink) 65% 100%); border-radius:2px"></div>
+        </div>
+        <!-- cropped photo placeholder -->
+        <div style="position:relative; aspect-ratio: 3/2; border-radius:8px; background: linear-gradient(135deg, oklch(0.72 0.04 250), oklch(0.4 0.05 250)); overflow:hidden">
+          <div style="position:absolute; inset:0; background: repeating-linear-gradient(135deg, transparent 0 14px, oklch(1 0 0 / 0.06) 14px 18px)"></div>
+          <div style="position:absolute; top:48%; left:-10%; right:-10%; height:6px; background:var(--portal); transform:rotate(-28deg)"></div>
+          <div class="mono" style="position:absolute; bottom:8px; left:10px; color:var(--paper)">photo · sliced</div>
+        </div>
+        <!-- pull quote -->
+        <div style="display:flex; gap:12px; align-items:start">
+          <svg width="10" style="flex-shrink:0" viewBox="0 0 10 80"><rect width="4" height="80" fill="var(--portal)"/></svg>
+          <div style="font-family:var(--serif); font-style:italic; font-size:22px; line-height:1.25; color:var(--ink-2)">
+            "They built the thing, and it worked on day one."
+            <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-3); margin-top:8px; font-style:normal">— client</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<aside class="tweaks" id="tweaksPanel" aria-hidden="true">
+  <header><span>Tweaks</span><span>T</span></header>
+  <div class="bd">
+    <div class="r">
+      <label>Background</label>
+      <div class="seg" id="bgSeg">
+        <button data-bg="paper" aria-pressed="true">Paper</button>
+        <button data-bg="ink" aria-pressed="false">Ink</button>
+      </div>
+    </div>
+    <div class="r">
+      <label>Focus</label>
+      <div class="seg" id="focusSeg">
+        <button data-focus="all" aria-pressed="true">All</button>
+        <button data-focus="grin">01</button>
+        <button data-focus="robot">02</button>
+        <button data-focus="portal">03</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+  const body = document.body;
+  function apply(t){
+    if (t.bg)    body.dataset.bg = t.bg;
+    if (t.focus) body.dataset.focus = t.focus;
+    document.querySelectorAll('#bg-tabs button, #bgSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.bg === body.dataset.bg));
+    document.querySelectorAll('#focusSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.focus === body.dataset.focus));
+  }
+  apply(TWEAKS);
+  function setKey(k,v){
+    const edits = {[k]: v};
+    apply({...TWEAKS, ...edits});
+    Object.assign(TWEAKS, edits);
+    try { window.parent.postMessage({type:'__edit_mode_set_keys', edits}, '*'); } catch(e){}
+  }
+  document.querySelectorAll('#bg-tabs button, #bgSeg button').forEach(b => b.addEventListener('click', ()=> setKey('bg', b.dataset.bg)));
+  document.querySelectorAll('#focusSeg button').forEach(b => b.addEventListener('click', ()=> setKey('focus', b.dataset.focus)));
+
+  const panel = document.getElementById('tweaksPanel');
+  let open = false;
+  function setOpen(v){ open = v; panel.classList.toggle('open', v); panel.setAttribute('aria-hidden', v ? 'false' : 'true'); }
+  window.addEventListener('message', (e)=>{
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode')   setOpen(true);
+    if (d.type === '__deactivate_edit_mode') setOpen(false);
+  });
+  try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(e){}
+  window.addEventListener('keydown', (e)=>{
+    const t = (e.target||{}).tagName;
+    if (['INPUT','TEXTAREA'].includes(t)) return;
+    if (e.key === 't' || e.key === 'T') setOpen(!open);
+  });
+</script>
+</body>
+</html>

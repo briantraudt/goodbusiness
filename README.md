@@ -1,42 +1,40 @@
 # goodbusinesshq.com
 
-The Good Business HQ web app — marketing site, training flows, and admin/client dashboards.
+Static rebrand landing site for Good Business HQ.
 
-## Stack
+## Structure
 
-Vite · React · TypeScript · Tailwind · shadcn/ui · Supabase (auth, database, edge functions).
+- `index.html` — the rebranded landing page (live site)
+- `design/` — design explorations: logo concepts (v1/v2/v3/v4), identity system, interactive HQ preview, UX standard
+- `design/screenshots/` — reference screenshots from the design process
+- `favicon.ico`, `robots.txt`, `sitemap.xml` — site metadata
 
-## Local development
-
-```sh
-npm install
-cp .env.example .env   # then fill in the values
-npm run dev            # http://localhost:8080
-```
-
-## Environment
-
-See `.env.example` for the full list. All current values are Vite-public (`VITE_*`) — they get baked into the client bundle and the Supabase key is the "publishable" (anon) one, which is designed to be exposed. Don't put real secrets in any `VITE_*` variable.
+Contact: hello@goodbusinesshq.com
 
 ## Deployment
 
-Hosted on Vercel. Every push to `main` ships to production; pull requests get a preview URL.
+Pure static site — no build step. Hosted on Vercel; pushes to `main` ship to production, PRs get preview URLs.
 
-Domain: [goodbusinesshq.com](https://goodbusinesshq.com).
+**Important (Vercel settings):** This replaced a Vite/React app. In the Vercel project dashboard, update:
+- **Framework Preset:** `Other` (was: Vite)
+- **Build Command:** leave empty (was: `npm run build`)
+- **Output Directory:** leave empty / `.` (was: `dist`)
 
-## Project layout
+The `vercel.json` in this repo handles the routing; the dashboard change is needed because Vercel caches the framework preset.
 
-```
-src/
-  pages/            top-level routes (marketing, dashboards, auth, training)
-  components/       shared UI
-  contexts/         React context providers
-  hooks/            shared hooks
-  integrations/     supabase client and adapters
-  lib/              small utilities
-  data/             static content
+## Previous app (recovering React code)
 
-supabase/
-  migrations/       SQL migrations
-  functions/        edge functions
+Before this rebrand, the repo hosted a Vite + React + TypeScript + Tailwind + Supabase app (training flows, admin/client dashboards). That code is preserved in git history.
+
+To browse or restore it:
+
+```sh
+# see the last commit before the rebrand
+git log --oneline main
+
+# restore a specific file from that commit
+git checkout <pre-rebrand-sha> -- path/to/file
+
+# or branch off the pre-rebrand state entirely
+git checkout -b restore-app <pre-rebrand-sha>
 ```

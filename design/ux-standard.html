@@ -1,0 +1,946 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>good business — ux standard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  const TWEAKS = /*EDITMODE-BEGIN*/{
+    "accent": "cobalt",
+    "density": "spacious",
+    "layout": "grid"
+  }/*EDITMODE-END*/;
+</script>
+<style>
+  :root{
+    /* cool, technical neutrals — not newspaper warm */
+    --bg:       oklch(0.985 0.003 250);
+    --bg-2:     oklch(0.965 0.004 250);
+    --bg-3:     oklch(0.945 0.005 250);
+    --ink:      oklch(0.18 0.015 250);
+    --ink-2:    oklch(0.42 0.012 250);
+    --ink-3:    oklch(0.62 0.008 250);
+    --ink-4:    oklch(0.78 0.006 250);
+    --rule:     oklch(0.90 0.006 250);
+    --rule-2:   oklch(0.82 0.008 250);
+
+    /* accents — matched chroma */
+    --acc-volt:    oklch(0.78 0.20 128);   /* electric lime-green */
+    --acc-cobalt:  oklch(0.55 0.20 255);   /* software blue */
+    --acc-amber:   oklch(0.78 0.16 75);
+    --acc-mag:     oklch(0.64 0.22 340);
+
+    --accent:     var(--acc-volt);
+    --accent-ink: oklch(0.18 0.05 128);
+
+    --radius: 4px;
+    --radius-lg: 6px;
+
+    --fs-mono: 12px;
+    --fs-body: 14px;
+    --fs-h2: 20px;
+    --fs-h1: clamp(28px, 3vw, 44px);
+    --fs-display: clamp(44px, 6vw, 84px);
+
+    --pad-x: clamp(24px, 4vw, 56px);
+    --pad-y: clamp(32px, 5vw, 72px);
+    --gap: 20px;
+
+    --mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, Menlo, monospace;
+    --sans: 'Geist', -apple-system, system-ui, sans-serif;
+  }
+  [data-density="compact"]{
+    --fs-body: 13px;
+    --fs-h1: clamp(22px, 2.4vw, 34px);
+    --fs-display: clamp(32px, 4.5vw, 60px);
+    --pad-x: clamp(20px, 3vw, 40px);
+    --pad-y: clamp(20px, 3vw, 48px);
+    --gap: 14px;
+  }
+  [data-accent="volt"]   { --accent: var(--acc-volt);   --accent-ink: oklch(0.18 0.05 128); }
+  [data-accent="cobalt"] { --accent: var(--acc-cobalt); --accent-ink: oklch(0.98 0.02 255); }
+  [data-accent="amber"]  { --accent: var(--acc-amber);  --accent-ink: oklch(0.18 0.05 75); }
+  [data-accent="mag"]    { --accent: var(--acc-mag);    --accent-ink: oklch(0.98 0.02 340); }
+
+  *{box-sizing:border-box}
+  html,body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--sans); font-size:var(--fs-body); line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    font-feature-settings:"ss01","cv01","cv11";
+  }
+  ::selection{background:var(--accent); color:var(--accent-ink)}
+  a{color:inherit}
+  button{font-family:inherit}
+
+  .mono{font-family:var(--mono); font-size:var(--fs-mono); letter-spacing:0.01em}
+  .caps{text-transform:uppercase; letter-spacing:0.06em}
+
+  /* ───────────────────────────────────────────────────────── */
+  /* CHROME — top bar shaped like a product window             */
+  /* ───────────────────────────────────────────────────────── */
+  .chrome{
+    position:sticky; top:0; z-index:40;
+    background: var(--bg);
+    border-bottom:1px solid var(--rule);
+  }
+  .chrome .bar{
+    display:grid; grid-template-columns: auto 1fr auto;
+    align-items:center; gap:24px;
+    padding: 10px var(--pad-x); height:48px;
+  }
+  .logo{display:flex; align-items:center; gap:10px}
+  .logo-glyph{
+    width:22px; height:22px; position:relative; flex:none;
+    background: var(--ink); border-radius: 5px;
+    display:grid; place-items:center;
+  }
+  .logo-glyph::before{
+    content:""; width:10px; height:10px; background:var(--accent);
+    border-radius: 2px;
+    transform: rotate(45deg);
+  }
+  .logo .word{font-weight:600; letter-spacing:-0.01em; font-size:15px}
+  .logo .word span{color:var(--ink-3); font-weight:400}
+
+  .url-bar{
+    justify-self:center;
+    width:min(560px, 100%);
+    display:flex; align-items:center; gap:8px;
+    padding: 6px 12px;
+    background: var(--bg-2); border:1px solid var(--rule);
+    border-radius: 999px; font-family:var(--mono); font-size:12px; color:var(--ink-2);
+  }
+  .url-bar .dot{width:6px; height:6px; border-radius:50%; background: var(--acc-volt); box-shadow:0 0 0 3px color-mix(in oklab, var(--acc-volt) 30%, transparent)}
+  .url-bar .path{color:var(--ink)}
+  .url-bar .kbd{margin-left:auto; color:var(--ink-3); border:1px solid var(--rule-2); padding:1px 6px; border-radius:3px; font-size:10.5px}
+
+  .chrome-actions{display:flex; align-items:center; gap:8px}
+  .chip{
+    display:inline-flex; align-items:center; gap:6px;
+    padding: 4px 8px; border:1px solid var(--rule-2); border-radius: 999px;
+    font-family:var(--mono); font-size:11px; color:var(--ink-2); background:var(--bg);
+  }
+  .chip .d{width:6px; height:6px; border-radius:50%; background:var(--accent)}
+
+  /* sub-bar: layout tabs */
+  .subbar{
+    display:flex; align-items:stretch; gap:0;
+    padding: 0 var(--pad-x);
+    border-top:1px solid var(--rule);
+    background: var(--bg-2);
+    font-family: var(--mono); font-size:11px; color:var(--ink-3);
+  }
+  .subbar .t{margin-right:auto; display:flex}
+  .subbar .t button{
+    background:transparent; border:none; border-right:1px solid var(--rule);
+    padding: 10px 16px; color: var(--ink-3); cursor:pointer;
+    font: inherit; letter-spacing: 0.02em;
+    position:relative;
+  }
+  .subbar .t button:first-child{border-left:1px solid var(--rule)}
+  .subbar .t button[aria-pressed="true"]{color:var(--ink); background:var(--bg)}
+  .subbar .t button[aria-pressed="true"]::after{
+    content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; background:var(--accent);
+  }
+  .subbar .meta{display:flex; align-items:center; gap:18px; padding: 10px 0}
+  .subbar .meta .sep{width:1px; height:12px; background:var(--rule-2)}
+
+  /* ───────────────────────────────────────────────────────── */
+  /* SCAFFOLD                                                  */
+  /* ───────────────────────────────────────────────────────── */
+  section{padding: var(--pad-y) var(--pad-x); border-bottom:1px solid var(--rule); position:relative}
+  .section-head{
+    display:grid; grid-template-columns: 220px 1fr; gap: 40px;
+    margin-bottom: 36px; align-items:start;
+  }
+  .section-head .tag{
+    font-family:var(--mono); font-size:11px; color:var(--ink-3); letter-spacing:0.06em; text-transform:uppercase;
+    display:flex; flex-direction:column; gap:6px;
+  }
+  .section-head .tag .num{color:var(--accent-ink); background:var(--accent); padding:2px 6px; border-radius:3px; display:inline-block; align-self:flex-start; font-size:10px}
+  .section-head h2{
+    margin:0; font-family:var(--sans); font-size:var(--fs-h1); font-weight:500; letter-spacing:-0.02em; line-height:1.05;
+  }
+  .section-head p{margin: 10px 0 0; color:var(--ink-2); max-width: 60ch}
+
+  /* ───────────────────────────────────────────────────────── */
+  /* HERO — product-hero with "status" + command input         */
+  /* ───────────────────────────────────────────────────────── */
+  .hero{padding: clamp(48px, 8vw, 104px) var(--pad-x) clamp(40px,6vw,80px)}
+  .hero-grid{display:grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items:end}
+  .hero h1{
+    margin:0; font-size: var(--fs-display); font-weight: 500;
+    letter-spacing: -0.035em; line-height: 0.98;
+  }
+  .hero h1 .mark{
+    display:inline-block; position:relative;
+    color: var(--ink);
+  }
+  .hero h1 .mark::after{
+    content:""; position:absolute; left:-2px; right:-2px; bottom: 6%;
+    height: 38%; background: var(--accent); z-index:-1; border-radius:2px;
+  }
+  .hero .lede{margin: 24px 0 0; color:var(--ink-2); font-size: 16px; max-width: 48ch}
+
+  .status-card{
+    border:1px solid var(--rule); border-radius: var(--radius-lg);
+    background: var(--bg); overflow:hidden;
+    box-shadow: 0 1px 0 0 var(--rule), 0 12px 32px -24px oklch(0 0 0 / 0.25);
+  }
+  .status-card > .hd{
+    display:flex; align-items:center; justify-content:space-between; gap:8px;
+    padding: 10px 14px; border-bottom:1px solid var(--rule); background: var(--bg-2);
+    font-family:var(--mono); font-size:11px; color:var(--ink-3);
+  }
+  .status-card .hd .dots{display:flex; gap:4px}
+  .status-card .hd .dots i{width:8px; height:8px; border-radius:50%; background:var(--rule-2); display:block}
+  .status-card .bd{display:grid; grid-template-columns: 1fr 1fr; gap:0}
+  .status-card .cell{
+    padding: 14px 16px; border-right:1px solid var(--rule); border-bottom:1px solid var(--rule);
+  }
+  .status-card .cell:nth-child(2n){border-right:none}
+  .status-card .cell:nth-last-child(-n+2){border-bottom:none}
+  .status-card .k{font-family:var(--mono); font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em}
+  .status-card .v{font-family:var(--mono); font-size:13px; margin-top:4px; color:var(--ink); display:flex; align-items:center; gap:8px}
+  .status-card .v .ok{width:6px;height:6px;border-radius:50%;background:var(--acc-volt); box-shadow:0 0 0 3px color-mix(in oklab, var(--acc-volt) 30%, transparent)}
+  .status-card .v .bar{flex:1; height:6px; background:var(--bg-3); border-radius:2px; position:relative; overflow:hidden}
+  .status-card .v .bar i{position:absolute; left:0; top:0; bottom:0; background:var(--accent); border-radius:2px}
+
+  /* ───────────────────────────────────────────────────────── */
+  /* PRINCIPLES                                                */
+  /* ───────────────────────────────────────────────────────── */
+  .principles{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+    border:1px solid var(--rule); border-radius: var(--radius-lg); overflow:hidden;
+    background: var(--bg);
+  }
+  .principle{
+    padding: 28px 24px 24px; position:relative;
+    border-right:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+    background:var(--bg);
+    transition: background .15s ease;
+  }
+  .principle:nth-child(3n){border-right:none}
+  .principle:nth-last-child(-n+3){border-bottom:none}
+  .principle:hover{background: var(--bg-2)}
+  .principle .n{
+    font-family:var(--mono); font-size:11px; color:var(--ink-3);
+    display:flex; align-items:center; gap:8px; margin-bottom: 18px;
+  }
+  .principle .n .pill{background:var(--ink); color:var(--bg); padding:2px 6px; border-radius:3px; font-weight:500}
+  .principle h3{
+    margin: 0 0 8px;
+    font-size: 20px; font-weight: 500; letter-spacing: -0.015em; line-height: 1.2;
+  }
+  .principle h3 em{font-style:normal; background: var(--accent); color:var(--accent-ink); padding: 0 4px; border-radius:3px}
+  .principle p{margin:0; color:var(--ink-2); font-size:14px; line-height:1.5}
+  .principle .foot{
+    margin-top: 18px; display:flex; align-items:center; justify-content:space-between;
+    font-family:var(--mono); font-size:10.5px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em;
+  }
+
+  /* layout=stack variant */
+  [data-layout="stack"] .principles{display:block; border:none; background:transparent}
+  [data-layout="stack"] .principle{
+    border:1px solid var(--rule); border-radius: var(--radius);
+    margin-bottom: 10px; padding: 16px 20px;
+    display:grid; grid-template-columns: 64px 1fr 1.2fr auto; gap: 24px; align-items:center;
+  }
+  [data-layout="stack"] .principle h3{font-size:16px; margin:0}
+  [data-layout="stack"] .principle p{font-size:13px}
+  [data-layout="stack"] .principle .foot{margin:0}
+  [data-layout="stack"] .principle .n{margin:0}
+
+  /* layout=console variant */
+  [data-layout="console"] .principles{
+    background:var(--bg); font-family:var(--mono); font-size:12.5px;
+    border:1px solid var(--rule); display:block; padding:0;
+  }
+  [data-layout="console"] .console-head{
+    padding: 10px 16px; border-bottom:1px solid var(--rule); background:var(--bg-2);
+    display:flex; gap:16px; font-family:var(--mono); font-size:11px; color:var(--ink-3);
+  }
+  [data-layout="console"] .console-head span b{color:var(--ink); font-weight:500}
+  [data-layout="console"] .principle{
+    display:grid; grid-template-columns: 34px 180px 1fr auto; gap:16px;
+    padding: 12px 16px; border:none; border-bottom:1px solid var(--rule);
+    align-items:baseline; background:var(--bg);
+  }
+  [data-layout="console"] .principle:last-child{border-bottom:none}
+  [data-layout="console"] .principle:hover{background:var(--bg-2)}
+  [data-layout="console"] .principle .n{margin:0; color:var(--ink-3)}
+  [data-layout="console"] .principle h3{font-family:var(--mono); font-size:12.5px; font-weight:500; margin:0; letter-spacing:0}
+  [data-layout="console"] .principle h3 em{background:transparent; color:var(--accent-ink); background:var(--accent); padding:1px 4px; border-radius:2px; font-style:normal}
+  [data-layout="console"] .principle p{font-family:var(--sans); font-size:13px; color:var(--ink-2); max-width:none}
+  [data-layout="console"] .principle .foot{font-size:10px}
+
+  /* ───────────────────────────────────────────────────────── */
+  /* TOKENS                                                    */
+  /* ───────────────────────────────────────────────────────── */
+  .token-grid{display:grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 20px}
+  .panel{
+    border:1px solid var(--rule); border-radius: var(--radius-lg); background:var(--bg);
+    overflow:hidden; display:flex; flex-direction:column;
+  }
+  .panel > header{
+    padding: 10px 14px; border-bottom:1px solid var(--rule); background: var(--bg-2);
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:var(--mono); font-size:11px; color:var(--ink-3);
+  }
+  .panel > header .ttl{color:var(--ink); font-weight:500}
+  .panel > .body{padding: 6px 0}
+
+  .sw{display:grid; grid-template-columns: 36px 1fr auto; gap:12px; align-items:center; padding:10px 14px; border-top:1px solid var(--rule)}
+  .panel > .body > .sw:first-child{border-top:none}
+  .sw .chip{width:36px; height:28px; border-radius:3px; border:1px solid var(--rule-2)}
+  .sw .n{font-size:13px; font-weight:500}
+  .sw .v{font-family:var(--mono); font-size:11px; color:var(--ink-3); text-align:right; line-height:1.4}
+
+  .type-rows .row{
+    display:grid; grid-template-columns: 84px 1fr auto; gap:16px; align-items:baseline;
+    padding: 12px 14px; border-top:1px solid var(--rule);
+  }
+  .type-rows .row:first-child{border-top:none}
+  .type-rows .lab{font-family:var(--mono); font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em}
+  .type-rows .meta{font-family:var(--mono); font-size:10px; color:var(--ink-3); text-align:right}
+  .type-rows .s.display{font-size:36px; letter-spacing:-0.03em; font-weight:500; line-height:1}
+  .type-rows .s.h1{font-size:24px; letter-spacing:-0.02em; font-weight:500; line-height:1.1}
+  .type-rows .s.body{font-size:14px}
+  .type-rows .s.mono{font-family:var(--mono); font-size:12.5px; color:var(--ink)}
+
+  .scale-row{display:grid; grid-template-columns: auto 1fr auto; gap:12px; align-items:center; padding:10px 14px; border-top:1px solid var(--rule); font-family:var(--mono); font-size:11.5px}
+  .panel > .body > .scale-row:first-child{border-top:none}
+  .scale-row .box{background:var(--ink); height:10px; border-radius:2px}
+
+  /* ───────────────────────────────────────────────────────── */
+  /* COMPONENTS                                                */
+  /* ───────────────────────────────────────────────────────── */
+  .comp-grid{display:grid; grid-template-columns: repeat(2, 1fr); gap: 20px}
+  .comp{display:flex; flex-direction:column}
+  .comp .stage{
+    min-height: 220px; padding: 28px 24px;
+    background:
+      linear-gradient(var(--bg), var(--bg)),
+      radial-gradient(circle at 1px 1px, var(--ink-4) 1px, transparent 0) 0 0 / 16px 16px;
+    background-blend-mode: multiply;
+    display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap;
+  }
+  .comp .notes{
+    padding: 10px 14px; border-top:1px solid var(--rule); background:var(--bg-2);
+    display:grid; grid-template-columns: 1fr 1fr; gap:6px;
+    font-family:var(--mono); font-size:10.5px; color:var(--ink-3);
+  }
+
+  /* Buttons */
+  .btn{
+    --h: 36px;
+    display:inline-flex; align-items:center; gap:8px;
+    height: var(--h); padding: 0 14px;
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    background: var(--ink); color: var(--bg);
+    border: 1px solid var(--ink); border-radius: var(--radius);
+    cursor:pointer; text-decoration:none;
+    box-shadow: 0 1px 0 0 oklch(0 0 0 / 0.08);
+    transition: transform .1s ease, background .1s ease, color .1s ease, box-shadow .1s ease;
+  }
+  .btn:hover{background: oklch(0.28 0.015 250)}
+  .btn:active{transform: translateY(1px); box-shadow:none}
+  .btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  .btn.secondary{background:var(--bg); color:var(--ink); border-color: var(--rule-2); box-shadow: 0 1px 0 0 var(--rule)}
+  .btn.secondary:hover{background:var(--bg-2); border-color: var(--ink)}
+  .btn.ghost{background:transparent; color:var(--ink-2); border-color:transparent; box-shadow:none}
+  .btn.ghost:hover{background:var(--bg-2); color:var(--ink)}
+  .btn.accent{background:var(--accent); color:var(--accent-ink); border-color: var(--accent); box-shadow: 0 1px 0 0 color-mix(in oklab, var(--accent) 50%, black)}
+  .btn.accent:hover{filter: brightness(0.96)}
+  .btn.danger{background: oklch(0.58 0.18 28); border-color: oklch(0.58 0.18 28); color: white}
+  .btn .kbd{font-family:var(--mono); font-size:10.5px; opacity:.7; margin-left:4px; padding:1px 5px; background:oklch(1 0 0 / 0.15); border-radius:3px}
+  .btn.secondary .kbd, .btn.ghost .kbd{background:var(--bg-3); color:var(--ink-3); opacity:1}
+  [data-density="compact"] .btn{--h:28px; font-size:12px; padding: 0 10px}
+
+  /* Nav — app shell */
+  .shell{
+    width:100%; max-width: 620px;
+    border:1px solid var(--rule); border-radius: var(--radius-lg); overflow:hidden;
+    background: var(--bg); font-size: 13px;
+    display:grid; grid-template-columns: 200px 1fr;
+    min-height: 300px;
+  }
+  .shell .sidebar{background: var(--bg-2); border-right:1px solid var(--rule); padding: 10px 8px; display:flex; flex-direction:column; gap:2px}
+  .shell .side-brand{display:flex; align-items:center; gap:8px; padding: 6px 8px 12px; border-bottom:1px solid var(--rule); margin-bottom:8px}
+  .shell .side-brand .glyph{width:18px; height:18px; background:var(--ink); border-radius:4px; display:grid; place-items:center}
+  .shell .side-brand .glyph::before{content:""; width:8px;height:8px; background:var(--accent); border-radius:2px; transform:rotate(45deg)}
+  .shell .side-brand .n{font-weight:600; font-size:13px; letter-spacing:-0.01em}
+  .shell .grp{font-family:var(--mono); font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.08em; padding: 10px 8px 4px}
+  .shell .item{display:flex; align-items:center; gap:8px; padding: 6px 8px; border-radius:4px; color:var(--ink-2); cursor:pointer}
+  .shell .item .ic{width:14px; height:14px; border:1.5px solid currentColor; border-radius:3px; opacity:.7; flex:none}
+  .shell .item:hover{background:var(--bg-3); color:var(--ink)}
+  .shell .item.active{background: var(--ink); color: var(--bg)}
+  .shell .item.active .ic{border-color: var(--accent); background:var(--accent); opacity:1}
+  .shell .item .kbd{margin-left:auto; font-family:var(--mono); font-size:10px; color:var(--ink-3); border:1px solid var(--rule-2); padding:0 4px; border-radius:2px}
+  .shell .item.active .kbd{color:var(--bg); border-color: oklch(1 0 0 / 0.25)}
+
+  .shell .main{display:flex; flex-direction:column}
+  .shell .topline{
+    display:flex; align-items:center; gap:10px; padding: 10px 14px; border-bottom:1px solid var(--rule);
+    font-family:var(--mono); font-size:11px; color:var(--ink-3);
+  }
+  .shell .topline .path b{color:var(--ink); font-weight:500}
+  .shell .topline .push{margin-left:auto; display:flex; align-items:center; gap:8px}
+  .shell .content{padding: 14px; font-size:13px; color:var(--ink-2); display:flex; flex-direction:column; gap:10px}
+  .shell .content .card{border:1px solid var(--rule); border-radius:4px; padding:10px 12px; background:var(--bg); display:flex; justify-content:space-between; align-items:center}
+  .shell .content .card b{font-weight:500; color:var(--ink)}
+  .shell .content .card .tag{font-family:var(--mono); font-size:10.5px; padding:2px 6px; border-radius:3px; background:var(--bg-2); color:var(--ink-3)}
+
+  /* Modal */
+  .modal-stage{
+    width:100%; min-height:260px; border-radius:var(--radius);
+    background:
+      linear-gradient(var(--bg-2), var(--bg-2)),
+      radial-gradient(circle at 1px 1px, var(--ink-4) 1px, transparent 0) 0 0 / 12px 12px;
+    background-blend-mode: multiply;
+    display:flex; align-items:center; justify-content:center; padding:20px;
+    border:1px solid var(--rule);
+  }
+  .modal{
+    width: min(420px, 100%);
+    background: var(--bg); border: 1px solid var(--rule);
+    border-radius: var(--radius-lg); overflow:hidden;
+    box-shadow: 0 1px 0 0 var(--rule), 0 24px 48px -16px oklch(0 0 0 / 0.18);
+  }
+  .modal .mh{display:flex; align-items:center; justify-content:space-between; padding: 12px 16px; border-bottom:1px solid var(--rule)}
+  .modal .mh .t{display:flex; align-items:center; gap:10px}
+  .modal .mh .ic{width:22px; height:22px; border-radius:50%; background: color-mix(in oklab, var(--acc-amber) 30%, transparent); color: oklch(0.35 0.15 75); display:grid; place-items:center; font-family:var(--mono); font-size:12px; font-weight:600}
+  .modal .mh .title{font-weight:500; font-size:14px}
+  .modal .mh .close{font-family:var(--mono); font-size:10.5px; color:var(--ink-3); background:var(--bg-2); border:1px solid var(--rule); padding: 2px 6px; border-radius:3px; cursor:pointer}
+  .modal .mb{padding: 14px 16px; color: var(--ink-2); font-size:13px}
+  .modal .mb .line{display:flex; justify-content:space-between; padding: 6px 0; border-top:1px dashed var(--rule); font-family:var(--mono); font-size:11.5px}
+  .modal .mb .line:first-of-type{border-top:none}
+  .modal .mb .line b{color:var(--ink); font-weight:500}
+  .modal .mf{display:flex; justify-content:space-between; align-items:center; padding: 10px 14px; border-top:1px solid var(--rule); background:var(--bg-2)}
+  .modal .mf .hint{font-family:var(--mono); font-size:10.5px; color:var(--ink-3)}
+  .modal .mf .actions{display:flex; gap:8px}
+
+  /* ───────────────────────────────────────────────────────── */
+  /* PATTERNS                                                  */
+  /* ───────────────────────────────────────────────────────── */
+  .patterns{display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px}
+  .pat{
+    border:1px solid var(--rule); border-radius: var(--radius-lg); background:var(--bg);
+    overflow:hidden; display:flex; flex-direction:column;
+  }
+  .pat .ph{padding: 12px 14px; border-bottom:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center; background:var(--bg-2)}
+  .pat .ph .t{font-weight:500; font-size:13px}
+  .pat .ph .n{font-family:var(--mono); font-size:10px; color:var(--ink-3)}
+  .pat .pb{padding: 14px; display:flex; flex-direction:column; gap:10px}
+  .pat .pb p{margin:0; font-size:13px; color:var(--ink-2)}
+  .pat .diagram{
+    border:1px solid var(--rule); border-radius: var(--radius); padding: 12px;
+    font-family:var(--mono); font-size:11px; color:var(--ink-2);
+    background:var(--bg-2); display:flex; flex-direction:column; gap:6px;
+  }
+  .pat .diagram .row{display:flex; align-items:center; gap:8px}
+  .pat .diagram .dot{width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 3px color-mix(in oklab, var(--accent) 30%, transparent); flex:none}
+  .pat .diagram .dot.idle{background:var(--ink-4); box-shadow:none}
+  .pat .diagram .dot.done{background:var(--acc-volt); box-shadow:0 0 0 3px color-mix(in oklab, var(--acc-volt) 28%, transparent)}
+  .pat .diagram .bar{flex:1; height:4px; background:var(--bg-3); border-radius:2px; overflow:hidden; position:relative}
+  .pat .diagram .bar i{position:absolute; left:0; top:0; bottom:0; background:var(--accent)}
+  .pat .diagram .toast{display:flex; align-items:center; justify-content:space-between; padding: 8px 10px; border:1px solid var(--rule); border-radius:4px; background:var(--bg)}
+  .pat .diagram .toast .u{font-family:var(--mono); font-size:10px; color:var(--accent-ink); background:var(--accent); padding:1px 6px; border-radius:3px; cursor:pointer}
+  .pat .diagram .why{display:flex; gap:6px; flex-wrap:wrap}
+  .pat .diagram .why span{font-family:var(--mono); font-size:10px; color:var(--ink-3); border:1px solid var(--rule); padding:2px 6px; border-radius:3px; background:var(--bg)}
+
+  /* ───────────────────────────────────────────────────────── */
+  /* FOOTER                                                    */
+  /* ───────────────────────────────────────────────────────── */
+  footer{
+    padding: 48px var(--pad-x);
+    display:grid; grid-template-columns: 1fr auto; gap: 32px; align-items:end;
+    background: var(--bg-2);
+  }
+  footer .big{font-size: clamp(28px, 3.2vw, 44px); font-weight:500; letter-spacing:-0.02em; line-height:1.05; max-width: 22ch; margin:0}
+  footer .big .mk{background:var(--accent); color:var(--accent-ink); padding: 0 6px; border-radius:3px}
+  footer .sign{font-family:var(--mono); font-size:11px; color:var(--ink-3); line-height:1.8; text-align:right}
+  footer .sign b{color:var(--ink); font-weight:500}
+
+  /* ───────────────────────────────────────────────────────── */
+  /* TWEAKS PANEL                                              */
+  /* ───────────────────────────────────────────────────────── */
+  .tweaks{
+    position: fixed; right: 16px; bottom: 16px; z-index: 60;
+    width: 280px; background: var(--bg); border:1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 1px 0 0 var(--rule), 0 20px 48px -12px oklch(0 0 0 / 0.25);
+    display:none; overflow:hidden;
+  }
+  .tweaks.open{display:block}
+  .tweaks header{display:flex; align-items:center; justify-content:space-between; padding: 10px 14px; border-bottom:1px solid var(--rule); background:var(--bg-2); font-family:var(--mono); font-size:11px; color:var(--ink-3)}
+  .tweaks header b{color:var(--ink); font-weight:500}
+  .tweaks .body{padding: 12px 14px}
+  .tweaks .row{display:flex; flex-direction:column; gap:6px; margin: 10px 0}
+  .tweaks label{font-family:var(--mono); font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em}
+  .tweaks .seg{display:flex; border:1px solid var(--rule); border-radius: var(--radius); overflow:hidden}
+  .tweaks .seg button{flex:1; padding: 6px 8px; background:transparent; border:none; font-size:12px; cursor:pointer; color:var(--ink-2); border-right:1px solid var(--rule)}
+  .tweaks .seg button:last-child{border-right:none}
+  .tweaks .seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+  .tweaks .chips{display:flex; gap:8px}
+  .tweaks .chips button{width: 26px; height:26px; border-radius: 50%; border:1px solid var(--rule); background:var(--c); cursor:pointer; padding:0; position:relative}
+  .tweaks .chips button[aria-pressed="true"]{box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--ink)}
+
+  @media (max-width: 900px){
+    .hero-grid{grid-template-columns: 1fr}
+    .section-head{grid-template-columns: 1fr}
+    .principles{grid-template-columns: 1fr}
+    .principle:nth-child(3n){border-right:1px solid var(--rule)}
+    .token-grid{grid-template-columns: 1fr}
+    .comp-grid{grid-template-columns: 1fr}
+    .patterns{grid-template-columns: 1fr}
+    .url-bar{display:none}
+    .shell{grid-template-columns: 1fr}
+    .shell .sidebar{display:none}
+    [data-layout="stack"] .principle{grid-template-columns: 1fr}
+    [data-layout="console"] .principle{grid-template-columns: 1fr}
+  }
+</style>
+</head>
+<body data-accent="volt" data-density="spacious" data-layout="console">
+
+<!-- ═════════════ CHROME ═════════════ -->
+<div class="chrome">
+  <div class="bar">
+    <div class="logo">
+      <span class="logo-glyph"></span>
+      <span class="word">Good Business <span>/ ux-standard</span></span>
+    </div>
+    <div class="url-bar">
+      <span class="dot"></span>
+      <span>gb.studio/</span><span class="path">standard</span>
+      <span class="kbd">⌘ K</span>
+    </div>
+    <div class="chrome-actions">
+      <span class="chip"><span class="d"></span>v0.1 · draft</span>
+      <button class="btn secondary">Share</button>
+    </div>
+  </div>
+  <div class="subbar">
+    <div class="t" id="layout-tabs" role="tablist">
+      <button data-layout="console" aria-pressed="true">Console</button>
+      <button data-layout="grid" aria-pressed="false">Grid</button>
+      <button data-layout="stack" aria-pressed="false">Stack</button>
+    </div>
+    <div class="meta">
+      <span>4 sections</span><span class="sep"></span>
+      <span>6 principles</span><span class="sep"></span>
+      <span>12 tokens</span><span class="sep"></span>
+      <span>press T for tweaks</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════ HERO ═════════════ -->
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="mono caps" style="color:var(--ink-3); margin-bottom:20px">01 / standard · internal</div>
+      <h1>
+        Build software people <span class="mark">actually want</span> to open tomorrow.
+      </h1>
+      <p class="lede">The UX standard for Good Business — an AI design &amp; build shop making B2B and B2C SaaS. Tokens, components, patterns, and principles in one place.</p>
+    </div>
+    <div class="status-card">
+      <div class="hd">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <span>system · ok</span>
+      </div>
+      <div class="bd">
+        <div class="cell">
+          <div class="k">Version</div>
+          <div class="v"><span class="ok"></span>0.1.0 · draft</div>
+        </div>
+        <div class="cell">
+          <div class="k">Principles</div>
+          <div class="v">06 / 06</div>
+        </div>
+        <div class="cell">
+          <div class="k">Coverage</div>
+          <div class="v"><span class="bar"><i style="width:68%"></i></span> 68%</div>
+        </div>
+        <div class="cell">
+          <div class="k">Last change</div>
+          <div class="v">2026-04-20</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════ PRINCIPLES ═════════════ -->
+<section id="principles">
+  <div class="section-head">
+    <div class="tag">
+      <span class="num">§ 01</span>
+      <span>Principles</span>
+    </div>
+    <div>
+      <h2>Six rules we hold every ship to.</h2>
+      <p>Short enough that leadership, design, and engineering all remember them by Friday.</p>
+    </div>
+  </div>
+
+  <div class="principles" id="principles-wrap">
+    <!-- console-layout header appears only when layout=console -->
+    <div class="console-head" style="display:none">
+      <span>#</span><span><b>id</b></span><span style="flex:1"><b>rule</b> — description</span><span><b>scope</b></span>
+    </div>
+
+    <article class="principle">
+      <div class="n"><span class="pill">01</span><span>onboarding · first-run</span></div>
+      <h3>Make the <em>first minute</em> the best minute.</h3>
+      <p>If a new user can't do one real thing in sixty seconds, the product has failed before it's begun.</p>
+      <div class="foot"><span>Scope · all surfaces</span><span>→</span></div>
+    </article>
+
+    <article class="principle">
+      <div class="n"><span class="pill">02</span><span>ai · transparency</span></div>
+      <h3>Show the work, <em>not</em> the magic.</h3>
+      <p>Every AI output ships inspectable, editable, and attributable — never a black box the user has to trust on faith.</p>
+      <div class="foot"><span>Scope · AI surfaces</span><span>→</span></div>
+    </article>
+
+    <article class="principle">
+      <div class="n"><span class="pill">03</span><span>interaction · hierarchy</span></div>
+      <h3>Every click is a <em>cost</em>.</h3>
+      <p>Default to the action the user came for. Hide the rest behind intent — menus, modals, or muscle memory.</p>
+      <div class="foot"><span>Scope · all surfaces</span><span>→</span></div>
+    </article>
+
+    <article class="principle">
+      <div class="n"><span class="pill">04</span><span>states · feedback</span></div>
+      <h3>Loud states, <em>quiet</em> chrome.</h3>
+      <p>Errors, progress, and empty states deserve real design attention. Navigation and containers do not.</p>
+      <div class="foot"><span>Scope · components</span><span>→</span></div>
+    </article>
+
+    <article class="principle">
+      <div class="n"><span class="pill">05</span><span>copy · voice</span></div>
+      <h3>Write like a <em>person</em>, not a product.</h3>
+      <p>Specific, direct, short. No exclamation marks, no "Oops!", no marketing copy leaking inside the app.</p>
+      <div class="foot"><span>Scope · all copy</span><span>→</span></div>
+    </article>
+
+    <article class="principle">
+      <div class="n"><span class="pill">06</span><span>craft · a11y</span></div>
+      <h3>Ship the <em>boring</em> polish.</h3>
+      <p>Focus rings, keyboard nav, empty states, offline. The work no one notices is the work that matters.</p>
+      <div class="foot"><span>Scope · all surfaces</span><span>→</span></div>
+    </article>
+  </div>
+</section>
+
+<!-- ═════════════ TOKENS ═════════════ -->
+<section id="tokens">
+  <div class="section-head">
+    <div class="tag">
+      <span class="num">§ 02</span>
+      <span>Tokens</span>
+    </div>
+    <div>
+      <h2>Colour, type, and space — the fixed points.</h2>
+      <p>Define once, reference everywhere. If it's not a token, you can't ship it.</p>
+    </div>
+  </div>
+
+  <div class="token-grid">
+    <div class="panel">
+      <header><span class="ttl">color/surface</span><span>oklch · 10</span></header>
+      <div class="body">
+        <div class="sw"><span class="chip" style="background:var(--bg)"></span><span class="n">bg</span><span class="v">0.985 0.003 250<br>--bg</span></div>
+        <div class="sw"><span class="chip" style="background:var(--bg-2)"></span><span class="n">bg.2</span><span class="v">0.965 0.004 250<br>--bg-2</span></div>
+        <div class="sw"><span class="chip" style="background:var(--bg-3)"></span><span class="n">bg.3</span><span class="v">0.945 0.005 250<br>--bg-3</span></div>
+        <div class="sw"><span class="chip" style="background:var(--ink)"></span><span class="n">ink</span><span class="v">0.180 0.015 250<br>--ink</span></div>
+        <div class="sw"><span class="chip" style="background:var(--ink-2)"></span><span class="n">ink.2</span><span class="v">0.420 0.012 250<br>--ink-2</span></div>
+        <div class="sw"><span class="chip" style="background:var(--ink-3)"></span><span class="n">ink.3</span><span class="v">0.620 0.008 250<br>--ink-3</span></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <header><span class="ttl">color/accent</span><span>oklch · matched</span></header>
+      <div class="body">
+        <div class="sw"><span class="chip" style="background:var(--acc-volt)"></span><span class="n">volt</span><span class="v">0.78 0.20 128</span></div>
+        <div class="sw"><span class="chip" style="background:var(--acc-cobalt)"></span><span class="n">cobalt</span><span class="v">0.55 0.20 255</span></div>
+        <div class="sw"><span class="chip" style="background:var(--acc-amber)"></span><span class="n">amber</span><span class="v">0.78 0.16 75</span></div>
+        <div class="sw"><span class="chip" style="background:var(--acc-mag)"></span><span class="n">magenta</span><span class="v">0.64 0.22 340</span></div>
+        <div class="sw"><span class="chip" style="background: oklch(0.58 0.18 28)"></span><span class="n">danger</span><span class="v">0.58 0.18 28</span></div>
+        <div class="sw"><span class="chip" style="background: var(--acc-volt)"></span><span class="n">success</span><span class="v">= volt</span></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <header><span class="ttl">space + radius</span><span>8pt base</span></header>
+      <div class="body">
+        <div class="scale-row"><span>1u</span><span class="box" style="width:8px"></span><span>8px</span></div>
+        <div class="scale-row"><span>2u</span><span class="box" style="width:16px"></span><span>16px</span></div>
+        <div class="scale-row"><span>3u</span><span class="box" style="width:24px"></span><span>24px</span></div>
+        <div class="scale-row"><span>5u</span><span class="box" style="width:40px"></span><span>40px</span></div>
+        <div class="scale-row"><span>8u</span><span class="box" style="width:64px"></span><span>64px</span></div>
+        <div class="scale-row"><span>radius</span><span class="box" style="width:28px; border-radius:4px"></span><span>4 / 6 px</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:20px">
+    <header><span class="ttl">type</span><span>Geist + Geist Mono</span></header>
+    <div class="body type-rows">
+      <div class="row"><span class="lab">display</span><span class="s display">Build good software.</span><span class="meta">Geist · 500 · -0.035em</span></div>
+      <div class="row"><span class="lab">h1</span><span class="s h1">Every click is a cost.</span><span class="meta">Geist · 500 · -0.02em</span></div>
+      <div class="row"><span class="lab">body</span><span class="s body">If a new user can't do one real thing in sixty seconds, the product has failed.</span><span class="meta">Geist · 400 · 14/1.5</span></div>
+      <div class="row"><span class="lab">mono</span><span class="s mono">// onboarding · first-run</span><span class="meta">Geist Mono · 400</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════ COMPONENTS ═════════════ -->
+<section id="components">
+  <div class="section-head">
+    <div class="tag">
+      <span class="num">§ 03</span>
+      <span>Components</span>
+    </div>
+    <div>
+      <h2>Buttons, navigation, and modal.</h2>
+      <p>The three surfaces that decide whether a product feels considered or cobbled-together.</p>
+    </div>
+  </div>
+
+  <div class="comp-grid">
+    <!-- Buttons -->
+    <div class="panel comp">
+      <header><span class="ttl">button</span><span>5 variants · 2 sizes</span></header>
+      <div class="stage">
+        <button class="btn accent">Run workflow <span class="kbd">↵</span></button>
+        <button class="btn">Save changes</button>
+        <button class="btn secondary">Cancel</button>
+        <button class="btn ghost">Discard</button>
+        <button class="btn danger">Delete</button>
+      </div>
+      <div class="notes">
+        <span>// height · 36 / 28</span><span>// radius · 4px</span>
+        <span>// focus · 2px accent ring</span><span>// one primary per view</span>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="panel comp">
+      <header><span class="ttl">modal</span><span>confirm · destructive</span></header>
+      <div class="stage" style="background:none; padding:20px">
+        <div class="modal-stage">
+          <div class="modal">
+            <div class="mh">
+              <div class="t">
+                <span class="ic">!</span>
+                <span class="title">Delete project "Harbor Lights"?</span>
+              </div>
+              <button class="close">ESC</button>
+            </div>
+            <div class="mb">
+              <div class="line"><span>Workspace</span><b>acme-co</b></div>
+              <div class="line"><span>Assets affected</span><b>42 files</b></div>
+              <div class="line"><span>Reversible</span><b style="color: oklch(0.55 0.18 28)">No</b></div>
+            </div>
+            <div class="mf">
+              <span class="hint">⌫ to cancel · ↵ to confirm</span>
+              <div class="actions">
+                <button class="btn secondary">Cancel</button>
+                <button class="btn danger">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <span>// width · 420px</span><span>// confirm · right-aligned</span>
+        <span>// destructive · danger fill</span><span>// ESC + ⌫ close</span>
+      </div>
+    </div>
+
+    <!-- App shell / navigation -->
+    <div class="panel comp" style="grid-column: span 2">
+      <header><span class="ttl">navigation · app shell</span><span>sidebar · command · path</span></header>
+      <div class="stage" style="justify-content:center">
+        <div class="shell">
+          <aside class="sidebar">
+            <div class="side-brand">
+              <span class="glyph"></span>
+              <span class="n">Good Business</span>
+            </div>
+            <div class="grp">Workspace</div>
+            <div class="item active"><span class="ic"></span> Overview <span class="kbd">G O</span></div>
+            <div class="item"><span class="ic"></span> Projects <span class="kbd">G P</span></div>
+            <div class="item"><span class="ic"></span> Clients <span class="kbd">G C</span></div>
+            <div class="item"><span class="ic"></span> Runs <span class="kbd">G R</span></div>
+            <div class="grp">Account</div>
+            <div class="item"><span class="ic"></span> Billing</div>
+            <div class="item"><span class="ic"></span> Settings <span class="kbd">,</span></div>
+          </aside>
+          <div class="main">
+            <div class="topline">
+              <span class="path">acme-co / <b>overview</b></span>
+              <div class="push">
+                <span class="chip"><span class="d"></span>live</span>
+                <button class="btn accent" style="--h:26px; padding:0 10px; font-size:11.5px">+ New project</button>
+              </div>
+            </div>
+            <div class="content">
+              <div class="card"><span><b>Harbor Lights</b> · client-facing site</span><span class="tag">in review</span></div>
+              <div class="card"><span><b>Pacer</b> · onboarding redesign</span><span class="tag">shipped</span></div>
+              <div class="card"><span><b>Trellis</b> · admin dashboard</span><span class="tag">draft</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <span>// keyboard-first</span><span>// 2 levels max</span>
+        <span>// path in top-line</span><span>// one primary per view</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════ PATTERNS ═════════════ -->
+<section id="patterns">
+  <div class="section-head">
+    <div class="tag">
+      <span class="num">§ 04</span>
+      <span>Patterns</span>
+    </div>
+    <div>
+      <h2>Three AI-surface patterns we reach for first.</h2>
+      <p>Reusable shapes for problems unique to AI products — inspection, progress, reversal.</p>
+    </div>
+  </div>
+
+  <div class="patterns">
+    <article class="pat">
+      <div class="ph"><span class="t">Inspectable output</span><span class="n">P01</span></div>
+      <div class="pb">
+        <p>Every generation ships with a "why" drawer: prompt, sources, model, edit path.</p>
+        <div class="diagram">
+          <div class="row"><span class="dot done"></span><span>generation · 1.2s</span></div>
+          <div class="why">
+            <span>prompt</span><span>gpt-5-mini</span><span>4 sources</span><span>edit →</span>
+          </div>
+        </div>
+      </div>
+    </article>
+    <article class="pat">
+      <div class="ph"><span class="t">Progress with meaning</span><span class="n">P02</span></div>
+      <div class="pb">
+        <p>Replace indeterminate spinners with named phases — reading · planning · writing.</p>
+        <div class="diagram">
+          <div class="row"><span class="dot done"></span><span style="color:var(--ink)">reading</span><span style="color:var(--ink-3); font-size:10px">0.6s</span></div>
+          <div class="row"><span class="dot"></span><span style="color:var(--ink)">planning</span><span class="bar"><i style="width:64%"></i></span></div>
+          <div class="row"><span class="dot idle"></span><span>writing</span></div>
+        </div>
+      </div>
+    </article>
+    <article class="pat">
+      <div class="ph"><span class="t">Undo-first actions</span><span class="n">P03</span></div>
+      <div class="pb">
+        <p>Reversible? Offer inline undo for 10s. Not buried in a menu, not hidden in a toast that fades.</p>
+        <div class="diagram">
+          <div class="toast">
+            <span><span style="color:var(--ink)">Moved 3 files to Archive</span></span>
+            <span class="u">Undo · 8s</span>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ═════════════ FOOTER ═════════════ -->
+<footer>
+  <p class="big">Ship it <span class="mk">quietly</span>. Make it good.</p>
+  <div class="sign">
+    <div><b>Good Business</b> · ux-standard@0.1.0</div>
+    <div>maintained by the studio</div>
+    <div>last touched · 2026-04-20</div>
+  </div>
+</footer>
+
+<!-- ═════════════ TWEAKS ═════════════ -->
+<aside class="tweaks" id="tweaksPanel" aria-hidden="true">
+  <header><span><b>Tweaks</b></span><span>T to close</span></header>
+  <div class="body">
+    <div class="row">
+      <label>Accent</label>
+      <div class="chips" id="accentChips">
+        <button data-accent="volt"   style="--c: var(--acc-volt)"   aria-pressed="true"  title="Volt"></button>
+        <button data-accent="cobalt" style="--c: var(--acc-cobalt)" aria-pressed="false" title="Cobalt"></button>
+        <button data-accent="amber"  style="--c: var(--acc-amber)"  aria-pressed="false" title="Amber"></button>
+        <button data-accent="mag"    style="--c: var(--acc-mag)"    aria-pressed="false" title="Magenta"></button>
+      </div>
+    </div>
+    <div class="row">
+      <label>Density</label>
+      <div class="seg" id="densitySeg">
+        <button data-density="spacious" aria-pressed="true">Spacious</button>
+        <button data-density="compact"  aria-pressed="false">Compact</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+  const body = document.body;
+  function apply(t){
+    if (t.accent)  body.dataset.accent  = t.accent;
+    if (t.density) body.dataset.density = t.density;
+    if (t.layout)  body.dataset.layout  = t.layout;
+    document.querySelectorAll('#accentChips button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.accent === body.dataset.accent));
+    document.querySelectorAll('#densitySeg button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.density === body.dataset.density));
+    document.querySelectorAll('#layout-tabs button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.layout === body.dataset.layout));
+    // console-layout header visibility
+    const ch = document.querySelector('.console-head');
+    if (ch) ch.style.display = (body.dataset.layout === 'console') ? 'flex' : 'none';
+  }
+  apply(TWEAKS);
+
+  function setKey(k,v){
+    const edits = {[k]: v};
+    apply({...TWEAKS, ...edits});
+    Object.assign(TWEAKS, edits);
+    try { window.parent.postMessage({type:'__edit_mode_set_keys', edits}, '*'); } catch(e){}
+  }
+  document.querySelectorAll('#layout-tabs button').forEach(b=> b.addEventListener('click', ()=> setKey('layout', b.dataset.layout)));
+  document.querySelectorAll('#accentChips button').forEach(b=> b.addEventListener('click', ()=> setKey('accent', b.dataset.accent)));
+  document.querySelectorAll('#densitySeg button').forEach(b=> b.addEventListener('click', ()=> setKey('density', b.dataset.density)));
+
+  const panel = document.getElementById('tweaksPanel');
+  let open = false;
+  function setOpen(v){ open = v; panel.classList.toggle('open', v); panel.setAttribute('aria-hidden', v ? 'false' : 'true'); }
+  window.addEventListener('message', (e)=>{
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode')   setOpen(true);
+    if (d.type === '__deactivate_edit_mode') setOpen(false);
+  });
+  try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(e){}
+  window.addEventListener('keydown', (e)=>{
+    if ((e.key === 't' || e.key === 'T') && !['INPUT','TEXTAREA'].includes((e.target||{}).tagName)) setOpen(!open);
+  });
+
+  document.querySelectorAll('.modal .close').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const m = b.closest('.modal');
+      m.style.transition='opacity .2s, transform .2s';
+      m.style.opacity = 0; m.style.transform='translateY(4px)';
+      setTimeout(()=>{ m.style.opacity=1; m.style.transform=''; }, 700);
+    });
+  });
+</script>
+</body>
+</html>

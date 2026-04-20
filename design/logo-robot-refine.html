@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Good Business — Robot, refined</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script>
+  const TWEAKS = /*EDITMODE-BEGIN*/{
+    "bg": "paper",
+    "combo": "teal-cream",
+    "mouth": "curl"
+  }/*EDITMODE-END*/;
+</script>
+<style>
+  :root{
+    --paper: oklch(0.985 0.003 250);
+    --paper-2: oklch(0.965 0.004 250);
+    --ink: oklch(0.14 0.015 250);
+    --ink-2: oklch(0.42 0.012 250);
+    --ink-3: oklch(0.62 0.008 250);
+    --rule: oklch(0.88 0.006 250);
+    --ac: oklch(0.82 0.17 95);
+    --body: var(--ink);
+    --sans: 'Geist', system-ui, sans-serif;
+    --mono: 'Geist Mono', ui-monospace, Menlo, monospace;
+    --serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  }
+  /* Body = robot chassis color, AC = accent for antenna bulb + mouth */
+  [data-combo="sunflower-ink"]   { --body: var(--ink); --ac: oklch(0.82 0.17 95); }
+  [data-combo="coral-ink"]       { --body: var(--ink); --ac: oklch(0.72 0.20 28); }
+  [data-combo="lime-ink"]        { --body: var(--ink); --ac: oklch(0.82 0.20 128); }
+  [data-combo="violet-cream"]    { --body: oklch(0.32 0.10 295); --ac: oklch(0.82 0.17 95); --paper: oklch(0.975 0.015 85); --paper-2: oklch(0.955 0.018 85); }
+  [data-combo="teal-cream"]      { --body: oklch(0.38 0.08 200); --ac: oklch(0.78 0.16 58); --paper: oklch(0.975 0.015 85); --paper-2: oklch(0.955 0.018 85); }
+  [data-combo="coral-cream"]     { --body: oklch(0.72 0.20 28); --ac: oklch(0.14 0.015 250); --paper: oklch(0.975 0.015 85); --paper-2: oklch(0.955 0.018 85); }
+  /* Blues */
+  [data-combo="navy-sunflower"]  { --body: oklch(0.30 0.09 254); --ac: oklch(0.82 0.17 95);  --paper: oklch(0.985 0.003 250); }
+  [data-combo="navy-coral"]      { --body: oklch(0.30 0.09 254); --ac: oklch(0.72 0.20 28);  --paper: oklch(0.975 0.015 85); }
+  [data-combo="cobalt-cream"]    { --body: oklch(0.42 0.18 258); --ac: oklch(0.82 0.17 95);  --paper: oklch(0.975 0.015 85); }
+  [data-combo="sky-ink"]         { --body: oklch(0.14 0.015 250); --ac: oklch(0.76 0.14 232); --paper: oklch(0.985 0.003 250); }
+  [data-combo="electric-cream"]  { --body: oklch(0.52 0.22 260); --ac: oklch(0.82 0.17 95);  --paper: oklch(0.975 0.015 85); }
+
+  [data-bg="ink"]{
+    --paper: oklch(0.12 0.015 250);
+    --paper-2: oklch(0.17 0.015 250);
+    --ink: oklch(0.98 0.003 250);
+    --ink-2: oklch(0.82 0.008 250);
+    --ink-3: oklch(0.62 0.010 250);
+    --rule: oklch(0.28 0.010 250);
+  }
+  [data-bg="ink"][data-combo="sunflower-ink"] { --body: var(--paper); }
+  [data-bg="ink"][data-combo="coral-ink"]     { --body: var(--paper); }
+  [data-bg="ink"][data-combo="lime-ink"]      { --body: var(--paper); }
+
+  *{box-sizing:border-box}
+  html,body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--mono); font-size:11px; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink-3)}
+
+  header.page{position:sticky; top:0; z-index:20; background:color-mix(in oklab, var(--paper) 92%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--rule); display:flex; align-items:center; justify-content:space-between; padding:14px 36px}
+  header.page .name{font-weight:600; letter-spacing:-0.01em}
+  header.page .name span{color:var(--ink-3); font-weight:400}
+  header.page .tabs{display:flex; border:1px solid var(--rule); border-radius:999px; padding:2px}
+  header.page .tabs button{background:transparent; border:none; padding:6px 12px; font:inherit; font-size:12px; color:var(--ink-3); cursor:pointer; border-radius:999px; font-family:inherit}
+  header.page .tabs button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+
+  .intro{padding: 60px 36px 16px; max-width:1100px}
+  .intro .kicker{font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-3); margin-bottom:12px}
+  .intro h1{margin:0; font-size: clamp(34px, 4vw, 60px); font-weight:500; letter-spacing:-0.03em; line-height:1.02}
+  .intro h1 em{font-family:var(--serif); font-style:italic; font-weight:400; color:var(--ink-2)}
+  .intro p{margin:14px 0 0; color:var(--ink-2); max-width:62ch; font-size:16px}
+
+  .row{border-top:1px solid var(--rule); padding: 36px 36px 44px; max-width:1500px; margin:0 auto}
+  .row .head{display:flex; justify-content:space-between; align-items:end; margin-bottom:22px; gap:24px}
+  .row .head h2{margin:0; font-size:22px; font-weight:500; letter-spacing:-0.015em}
+  .row .head h2 em{font-family:var(--serif); font-style:italic; color:var(--ink-3); font-weight:400}
+  .row .head .num{font-family:var(--mono); font-size:11px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.08em; display:inline-flex; gap:8px; align-items:center}
+  .row .head .num b{background:var(--ink); color:var(--paper); padding:2px 6px; border-radius:3px; font-weight:500}
+
+  .hero-card{border:1px solid var(--rule); border-radius:12px; background:var(--paper); min-height: 340px; display:grid; place-items:center; position:relative; padding: 48px}
+  .hero-card .lbl{position:absolute; top:16px; left:20px; font-family:var(--mono); font-size:10px; letter-spacing:0.06em; color:var(--ink-3); text-transform:uppercase}
+  .hero-card svg{width: min(720px, 86%); height:auto}
+
+  .grid{display:grid; gap:12px}
+  .g3{grid-template-columns: 1fr 1fr 1fr}
+  .g4{grid-template-columns: repeat(4,1fr)}
+  .g6{grid-template-columns: repeat(6,1fr)}
+
+  .tile{border:1px solid var(--rule); border-radius:10px; background:var(--paper); position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; min-height:200px; padding:24px; flex-direction:column; gap:14px}
+  .tile .lbl{position:absolute; top:10px; left:12px; font-family:var(--mono); font-size:10px; letter-spacing:0.06em; color:var(--ink-3); text-transform:uppercase}
+  .tile .spec{position:absolute; bottom:10px; left:12px; font-family:var(--mono); font-size:10px; letter-spacing:0.06em; color:var(--ink-3); text-transform:uppercase}
+  .tile .pick{position:absolute; top:10px; right:12px; font-family:var(--mono); font-size:10px; letter-spacing:0.06em; color:var(--ink-3); text-transform:uppercase; padding:3px 7px; border:1px solid var(--rule); border-radius:3px; cursor:pointer}
+  .tile.current .pick{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+
+  /* ROBOT ART: a reusable SVG with :root --body, --ac and a curly smile. */
+  @keyframes wink { 0%, 78%, 100% { transform: scaleY(1) } 82%, 88% { transform: scaleY(0.08) } }
+  .live .eye   { transform-origin: center }
+  .live .eye.r { animation: wink 3.6s infinite }
+
+  /* Show mouth based on [data-mouth] */
+  [data-mouth="curl"]    .mouth-flat { display: none }
+  [data-mouth="curl"]    .mouth-curl { display: inline }
+  [data-mouth="flat"]    .mouth-flat { display: inline }
+  [data-mouth="flat"]    .mouth-curl { display: none }
+  [data-mouth="grin"]    .mouth-flat, [data-mouth="grin"] .mouth-curl { display: none }
+  [data-mouth="grin"]    .mouth-grin { display: inline }
+  .mouth-grin { display: none }
+
+  .tweaks{position:fixed; right:16px; bottom:16px; z-index:60; width:280px; background:var(--paper); border:1px solid var(--rule); border-radius:8px; box-shadow:0 20px 48px -16px oklch(0 0 0 / 0.2); display:none}
+  .tweaks.open{display:block}
+  .tweaks header{padding:10px 14px; border-bottom:1px solid var(--rule); background:var(--paper-2); font-family:var(--mono); font-size:11px; color:var(--ink-3); display:flex; justify-content:space-between}
+  .tweaks .bd{padding:12px 14px}
+  .tweaks .r{display:flex; flex-direction:column; gap:6px; margin:10px 0}
+  .tweaks label{font-family:var(--mono); font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em}
+  .tweaks .seg{display:flex; border:1px solid var(--rule); border-radius:6px; overflow:hidden; flex-wrap:wrap}
+  .tweaks .seg button{flex:1; background:transparent; border:none; padding:6px 8px; font-size:12px; cursor:pointer; color:var(--ink-2); border-right:1px solid var(--rule); font-family:inherit}
+  .tweaks .seg button:last-child{border-right:none}
+  .tweaks .seg button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+
+  @media (max-width: 900px){ .g3, .g4, .g6 { grid-template-columns: 1fr 1fr } }
+</style>
+</head>
+<body data-bg="paper" data-combo="sunflower-ink" data-mouth="curl">
+
+<header class="page">
+  <div class="name">Good Business <span>/ robot · refinement</span></div>
+  <div class="tabs" id="bg-tabs">
+    <button data-bg="paper" aria-pressed="true">Paper</button>
+    <button data-bg="ink" aria-pressed="false">Ink</button>
+  </div>
+  <span class="mono">T · tweak mouth + combo</span>
+</header>
+
+<section class="intro">
+  <div class="kicker">§ robot · v2 · curl the mouth</div>
+  <h1>A smile. <em>A proper smile.</em></h1>
+  <p>The mouth now curls. Pick the color combo that feels most Good Business: sunflower + ink (current), coral + ink, lime + ink, or a cream-paper palette with violet, teal, or coral chassis. Click a tile to set it as the current combo.</p>
+</section>
+
+<!-- HERO using current combo -->
+<section class="row">
+  <div class="head">
+    <div class="num"><b>01</b> current</div>
+    <h2>Primary lockup · <em>smiling.</em></h2>
+  </div>
+  <div class="hero-card">
+    <span class="lbl">live · blinking + scanning</span>
+    <svg viewBox="0 0 820 280" class="live" aria-label="Good Business robot">
+      <g transform="translate(44,40)">
+        <!-- antenna -->
+        <line x1="95" y1="-12" x2="95" y2="18" stroke="var(--body)" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="95" cy="-18" r="7" fill="var(--ac)"/>
+        <!-- head -->
+        <rect x="8" y="18" width="174" height="162" rx="22" fill="var(--body)"/>
+        <!-- face plate -->
+        <rect x="26" y="52" width="138" height="96" rx="12" fill="var(--paper)"/>
+        <!-- eyes -->
+        <g fill="var(--body)">
+          <rect class="eye l" x="56" y="80" width="18" height="22" rx="3.5"/>
+          <rect class="eye r" x="116" y="80" width="18" height="22" rx="3.5"/>
+        </g>
+        <!-- smile: a proper curl (path) -->
+        <path class="mouth-curl" d="M 62 120 Q 95 142 128 120" fill="none" stroke="var(--ac)" stroke-width="9" stroke-linecap="round"/>
+        <!-- flat (scan) alt -->
+        <rect class="mouth-flat" x="62" y="122" width="66" height="9" rx="3.5" fill="var(--ac)"/>
+        <!-- grin alt: open -->
+        <path class="mouth-grin" d="M 62 120 Q 95 150 128 120 Z" fill="var(--ac)" stroke="var(--ac)" stroke-width="9" stroke-linejoin="round"/>
+        <!-- ear/knobs -->
+        <circle cx="0" cy="80" r="5" fill="var(--body)"/>
+        <circle cx="0" cy="110" r="5" fill="var(--body)"/>
+        <circle cx="190" cy="80" r="5" fill="var(--body)"/>
+        <circle cx="190" cy="110" r="5" fill="var(--body)"/>
+      </g>
+      <!-- wordmark -->
+      <text x="252" y="156" font-family="Geist" font-weight="800" font-size="104" letter-spacing="-0.04em" fill="currentColor">Good</text>
+      <text x="252" y="240" font-family="Geist" font-weight="500" font-size="60" letter-spacing="-0.02em" fill="var(--ink-2)">Business</text>
+    </svg>
+  </div>
+</section>
+
+<!-- MOUTH VARIANTS -->
+<section class="row">
+  <div class="head">
+    <div class="num"><b>02</b> mouth studies</div>
+    <h2>Same robot, <em>three moods.</em></h2>
+  </div>
+  <div class="grid g3">
+    <!-- curl -->
+    <div class="tile" onclick="setKey('mouth','curl')">
+      <span class="lbl">curl · smile (recommended)</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <path d="M 54 108 Q 85 130 116 108" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec">mood: warm · approachable</span>
+    </div>
+    <!-- flat -->
+    <div class="tile" onclick="setKey('mouth','flat')">
+      <span class="lbl">flat · scanner</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <rect x="54" y="114" width="62" height="8" rx="3" fill="var(--ac)"/>
+        </g>
+      </svg>
+      <span class="spec">mood: neutral · working</span>
+    </div>
+    <!-- grin -->
+    <div class="tile" onclick="setKey('mouth','grin')">
+      <span class="lbl">grin · open</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <path d="M 54 108 Q 85 138 116 108 Z" fill="var(--ac)" stroke="var(--ac)" stroke-width="8" stroke-linejoin="round"/>
+        </g>
+      </svg>
+      <span class="spec">mood: excited · hello</span>
+    </div>
+  </div>
+</section>
+
+<!-- COLOR COMBOS — each shows the hero in that combo -->
+<section class="row">
+  <div class="head">
+    <div class="num"><b>03</b> color combos</div>
+    <h2>Pick the one that's <em>unmistakably you.</em> Click to set.</h2>
+  </div>
+  <div class="grid g3">
+
+    <!-- Sunflower on ink -->
+    <div class="tile" id="combo-sunflower-ink" style="--body: oklch(0.14 0.015 250); --ac: oklch(0.82 0.17 95); --paper: oklch(0.985 0.003 250)" onclick="setKey('combo','sunflower-ink')">
+      <span class="lbl">sunflower · ink</span>
+      <span class="pick">use</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <path d="M 54 108 Q 85 130 116 108" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec">your current</span>
+    </div>
+
+    <!-- Coral on ink -->
+    <div class="tile" style="--body: oklch(0.14 0.015 250); --ac: oklch(0.72 0.20 28); --paper: oklch(0.985 0.003 250)" onclick="setKey('combo','coral-ink')">
+      <span class="lbl">coral · ink</span>
+      <span class="pick">use</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <path d="M 54 108 Q 85 130 116 108" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec">warmer · bolder</span>
+    </div>
+
+    <!-- Lime on ink -->
+    <div class="tile" style="--body: oklch(0.14 0.015 250); --ac: oklch(0.82 0.20 128); --paper: oklch(0.985 0.003 250)" onclick="setKey('combo','lime-ink')">
+      <span class="lbl">lime · ink</span>
+      <span class="pick">use</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <path d="M 54 108 Q 85 130 116 108" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec">tech-forward · fresh</span>
+    </div>
+
+    <!-- Violet chassis · cream -->
+    <div class="tile" style="--body: oklch(0.32 0.10 295); --ac: oklch(0.82 0.17 95); --paper: oklch(0.975 0.015 85)" onclick="setKey('combo','violet-cream')">
+      <span class="lbl">violet · cream · sunflower</span>
+      <span class="pick">use</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <path d="M 54 108 Q 85 130 116 108" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec">dreamier · creative-studio</span>
+    </div>
+
+    <!-- Teal chassis · cream -->
+    <div class="tile" style="--body: oklch(0.38 0.08 200); --ac: oklch(0.78 0.16 58); --paper: oklch(0.975 0.015 85)" onclick="setKey('combo','teal-cream')">
+      <span class="lbl">teal · cream · amber</span>
+      <span class="pick">use</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <path d="M 54 108 Q 85 130 116 108" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec">editorial · considered</span>
+    </div>
+
+    <!-- Navy · paper · sunflower -->
+    <div class="tile" style="--body: oklch(0.30 0.09 254); --ac: oklch(0.82 0.17 95); --paper: oklch(0.985 0.003 250)" onclick="setKey('combo','navy-sunflower')">
+      <span class="lbl">navy · paper · sunflower</span>
+      <span class="pick">use</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <path d="M 54 108 Q 85 130 116 108" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec">trustworthy · warm accent</span>
+    </div>
+
+    <!-- Navy · cream · coral -->
+    <div class="tile" style="--body: oklch(0.30 0.09 254); --ac: oklch(0.72 0.20 28); --paper: oklch(0.975 0.015 85)" onclick="setKey('combo','navy-coral')">
+      <span class="lbl">navy · cream · coral</span>
+      <span class="pick">use</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <path d="M 54 108 Q 85 130 116 108" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec">editorial · confident</span>
+    </div>
+
+    <!-- Cobalt chassis · cream -->
+    <div class="tile" id="combo-cobalt-cream" style="--body: oklch(0.42 0.18 258); --ac: oklch(0.82 0.17 95); --paper: oklch(0.975 0.015 85)" onclick="setKey('combo','cobalt-cream')">
+      <span class="lbl">cobalt · cream · sunflower</span>
+      <span class="pick">use</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <path d="M 54 108 Q 85 130 116 108" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec">★ my new pick · punchy + optimistic</span>
+    </div>
+
+    <!-- Sky on ink -->
+    <div class="tile" style="--body: oklch(0.14 0.015 250); --ac: oklch(0.76 0.14 232); --paper: oklch(0.985 0.003 250)" onclick="setKey('combo','sky-ink')">
+      <span class="lbl">sky · ink · paper</span>
+      <span class="pick">use</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <path d="M 54 108 Q 85 130 116 108" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec">cool · technical</span>
+    </div>
+
+    <!-- Electric blue on cream -->
+    <div class="tile" style="--body: oklch(0.52 0.22 260); --ac: oklch(0.82 0.17 95); --paper: oklch(0.975 0.015 85)" onclick="setKey('combo','electric-cream')">
+      <span class="lbl">electric · cream · sunflower</span>
+      <span class="pick">use</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <path d="M 54 108 Q 85 130 116 108" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec">loud · challenger</span>
+    </div>
+
+    <!-- Coral chassis · cream -->
+    <div class="tile" style="--body: oklch(0.72 0.20 28); --ac: oklch(0.14 0.015 250); --paper: oklch(0.975 0.015 85)" onclick="setKey('combo','coral-cream')">
+      <span class="lbl">coral · cream · ink</span>
+      <span class="pick">use</span>
+      <svg viewBox="0 0 200 200" width="150" class="live">
+        <g transform="translate(15,25)">
+          <line x1="85" y1="-10" x2="85" y2="16" stroke="var(--body)" stroke-width="6" stroke-linecap="round"/>
+          <circle cx="85" cy="-15" r="6" fill="var(--ac)"/>
+          <rect x="4" y="16" width="162" height="148" rx="20" fill="var(--body)"/>
+          <rect x="22" y="48" width="126" height="90" rx="10" fill="var(--paper)"/>
+          <rect x="48" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye l"/>
+          <rect x="106" y="72" width="16" height="20" rx="3" fill="var(--body)" class="eye r"/>
+          <path d="M 54 108 Q 85 130 116 108" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec">loud · unforgettable</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- RECOMMENDATION -->
+<section class="row">
+  <div class="head">
+    <div class="num"><b>04</b> my pick</div>
+    <h2>Coral on cream, <em>ink smile.</em></h2>
+  </div>
+  <div class="hero-card" style="--body: oklch(0.42 0.18 258); --ac: oklch(0.82 0.17 95); --paper: oklch(0.975 0.015 85); background: oklch(0.975 0.015 85)">
+    <span class="lbl">cobalt chassis · cream page · sunflower smile</span>
+    <svg viewBox="0 0 820 280" class="live">
+      <g transform="translate(44,40)">
+        <line x1="95" y1="-12" x2="95" y2="18" stroke="var(--body)" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="95" cy="-18" r="7" fill="var(--ac)"/>
+        <rect x="8" y="18" width="174" height="162" rx="22" fill="var(--body)"/>
+        <rect x="26" y="52" width="138" height="96" rx="12" fill="var(--paper)"/>
+        <rect x="56" y="80" width="18" height="22" rx="3.5" fill="var(--body)" class="eye l"/>
+        <rect x="116" y="80" width="18" height="22" rx="3.5" fill="var(--body)" class="eye r"/>
+        <path d="M 62 120 Q 95 142 128 120" fill="none" stroke="var(--ac)" stroke-width="9" stroke-linecap="round"/>
+        <circle cx="0" cy="80" r="5" fill="var(--body)"/>
+        <circle cx="0" cy="110" r="5" fill="var(--body)"/>
+        <circle cx="190" cy="80" r="5" fill="var(--body)"/>
+        <circle cx="190" cy="110" r="5" fill="var(--body)"/>
+      </g>
+      <text x="252" y="156" font-family="Geist" font-weight="800" font-size="104" letter-spacing="-0.04em" fill="oklch(0.14 0.015 250)">Good</text>
+      <text x="252" y="240" font-family="Geist" font-weight="500" font-size="60" letter-spacing="-0.02em" fill="oklch(0.42 0.012 250)">Business</text>
+    </svg>
+  </div>
+  <p style="max-width:62ch; color:var(--ink-2); margin-top:18px"><strong>Cobalt chassis, cream page, sunflower smile.</strong> Blue is trustworthy but most fintech/SaaS palettes die at dusty navy — cobalt is <em style="font-family:var(--serif)">alive</em>. The sunflower smile turns it warm instead of corporate, and the cream page (not stark white) keeps the whole thing feeling handmade rather than stock. It reads as optimistic, competent, and human — a robot you'd actually want to work with.</p>
+</section>
+
+<aside class="tweaks" id="tweaksPanel" aria-hidden="true">
+  <header><span>Tweaks</span><span>T</span></header>
+  <div class="bd">
+    <div class="r">
+      <label>Background</label>
+      <div class="seg" id="bgSeg">
+        <button data-bg="paper" aria-pressed="true">Paper</button>
+        <button data-bg="ink" aria-pressed="false">Ink</button>
+      </div>
+    </div>
+    <div class="r">
+      <label>Mouth</label>
+      <div class="seg" id="mouthSeg">
+        <button data-mouth="curl" aria-pressed="true">Smile</button>
+        <button data-mouth="flat">Flat</button>
+        <button data-mouth="grin">Grin</button>
+      </div>
+    </div>
+    <div class="r">
+      <label>Combo</label>
+      <div class="seg" id="comboSeg" style="display:grid; grid-template-columns: 1fr 1fr; gap:0">
+        <button data-combo="cobalt-cream" aria-pressed="false">Cobalt ★</button>
+        <button data-combo="navy-sunflower">Navy · sun</button>
+        <button data-combo="navy-coral">Navy · coral</button>
+        <button data-combo="sky-ink">Sky · ink</button>
+        <button data-combo="electric-cream">Electric</button>
+        <button data-combo="sunflower-ink" aria-pressed="true">Sunflower</button>
+        <button data-combo="coral-ink">Coral</button>
+        <button data-combo="lime-ink">Lime</button>
+        <button data-combo="violet-cream">Violet</button>
+        <button data-combo="teal-cream">Teal</button>
+        <button data-combo="coral-cream">Coral cream</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+  const body = document.body;
+  function apply(t){
+    if (t.bg)    body.dataset.bg = t.bg;
+    if (t.combo) body.dataset.combo = t.combo;
+    if (t.mouth) body.dataset.mouth = t.mouth;
+    document.querySelectorAll('#bg-tabs button, #bgSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.bg === body.dataset.bg));
+    document.querySelectorAll('#mouthSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mouth === body.dataset.mouth));
+    document.querySelectorAll('#comboSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.combo === body.dataset.combo));
+    document.querySelectorAll('.tile').forEach(t => t.classList.toggle('current', t.id === 'combo-' + body.dataset.combo));
+  }
+  function setKey(k,v){
+    const edits = {[k]: v};
+    apply({...TWEAKS, ...edits});
+    Object.assign(TWEAKS, edits);
+    try { window.parent.postMessage({type:'__edit_mode_set_keys', edits}, '*'); } catch(e){}
+  }
+  window.setKey = setKey;
+  apply(TWEAKS);
+  document.querySelectorAll('#bg-tabs button, #bgSeg button').forEach(b => b.addEventListener('click', ()=> setKey('bg', b.dataset.bg)));
+  document.querySelectorAll('#mouthSeg button').forEach(b => b.addEventListener('click', ()=> setKey('mouth', b.dataset.mouth)));
+  document.querySelectorAll('#comboSeg button').forEach(b => b.addEventListener('click', ()=> setKey('combo', b.dataset.combo)));
+
+  const panel = document.getElementById('tweaksPanel');
+  let open = false;
+  function setOpen(v){ open = v; panel.classList.toggle('open', v); panel.setAttribute('aria-hidden', v ? 'false' : 'true'); }
+  window.addEventListener('message', (e)=>{
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode')   setOpen(true);
+    if (d.type === '__deactivate_edit_mode') setOpen(false);
+  });
+  try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(e){}
+  window.addEventListener('keydown', (e)=>{
+    const t = (e.target||{}).tagName;
+    if (['INPUT','TEXTAREA'].includes(t)) return;
+    if (e.key === 't' || e.key === 'T') setOpen(!open);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Good Business — Identity System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script>
+  const TWEAKS = /*EDITMODE-BEGIN*/{
+    "amberPunch": 0.18,
+    "tealDepth": 0.38,
+    "bg": "cream"
+  }/*EDITMODE-END*/;
+</script>
+<style>
+  :root{
+    --cream: oklch(0.975 0.015 85);
+    --cream-2: oklch(0.955 0.018 85);
+    --cream-3: oklch(0.92 0.02 85);
+    --teal: oklch(0.38 0.08 200);
+    --teal-deep: oklch(0.28 0.08 200);
+    --amber: oklch(0.78 0.16 58);
+    --ink: oklch(0.18 0.02 220);
+    --ink-2: oklch(0.42 0.02 220);
+    --ink-3: oklch(0.62 0.015 220);
+    --rule: oklch(0.88 0.015 85);
+
+    --paper: var(--cream);
+    --paper-2: var(--cream-2);
+
+    --sans: 'Geist', system-ui, sans-serif;
+    --mono: 'Geist Mono', ui-monospace, Menlo, monospace;
+    --serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  }
+  [data-bg="ink"]{
+    --paper: oklch(0.14 0.02 220);
+    --paper-2: oklch(0.18 0.02 220);
+    --ink: oklch(0.97 0.01 85);
+    --ink-2: oklch(0.82 0.015 85);
+    --ink-3: oklch(0.62 0.015 85);
+    --rule: oklch(0.28 0.02 220);
+    --cream: oklch(0.18 0.02 220);
+    --cream-2: oklch(0.22 0.02 220);
+    --cream-3: oklch(0.28 0.02 220);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--mono); font-size:11px; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink-3)}
+
+  header.page{position:sticky; top:0; z-index:30; background:color-mix(in oklab, var(--paper) 92%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--rule); display:flex; align-items:center; justify-content:space-between; padding:14px 36px}
+  header.page .name{font-weight:600; letter-spacing:-0.01em; display:flex; align-items:center; gap:12px}
+  header.page .name svg{height:28px; width:auto}
+  header.page .name span{color:var(--ink-3); font-weight:400; font-family:var(--serif); font-style:italic; font-size:16px}
+  header.page .tabs{display:flex; border:1px solid var(--rule); border-radius:999px; padding:2px}
+  header.page .tabs button{background:transparent; border:none; padding:6px 12px; font:inherit; font-size:12px; color:var(--ink-3); cursor:pointer; border-radius:999px; font-family:inherit}
+  header.page .tabs button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+
+  .intro{padding: 72px 36px 28px; max-width:1200px}
+  .intro .kicker{font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-3); margin-bottom:16px; display:flex; align-items:center; gap:10px}
+  .intro .kicker .dot{width:6px; height:6px; border-radius:50%; background:var(--amber)}
+  .intro h1{margin:0; font-size: clamp(40px, 5vw, 84px); font-weight:500; letter-spacing:-0.035em; line-height:0.98; color:var(--teal)}
+  .intro h1 em{font-family:var(--serif); font-style:italic; font-weight:400; color:var(--ink-2)}
+  .intro .sub{margin:22px 0 0; color:var(--ink-2); max-width:68ch; font-size:18px; line-height:1.5}
+  .intro .sub em{font-family:var(--serif); font-style:italic; color:var(--teal)}
+
+  .palette-strip{display:flex; gap:8px; margin-top:36px; max-width:760px}
+  .palette-strip .chip{flex:1; border:1px solid var(--rule); border-radius:8px; padding:12px 14px; background:var(--paper); position:relative; overflow:hidden}
+  .palette-strip .chip .sw{width:100%; aspect-ratio: 3/1; border-radius:5px; margin-bottom:10px}
+  .palette-strip .chip .nm{font-size:12px; font-weight:500; letter-spacing:-0.01em}
+  .palette-strip .chip .hx{font-family:var(--mono); font-size:10px; color:var(--ink-3); letter-spacing:0.04em; text-transform:uppercase}
+
+  section.row{border-top:1px solid var(--rule); padding: 48px 36px 56px; max-width:1600px; margin:0 auto}
+  section.row .head{display:flex; justify-content:space-between; align-items:end; margin-bottom:28px; gap:24px; flex-wrap:wrap}
+  section.row .head h2{margin:0; font-size:26px; font-weight:500; letter-spacing:-0.02em; color:var(--teal)}
+  section.row .head h2 em{font-family:var(--serif); font-style:italic; color:var(--ink-3); font-weight:400}
+  section.row .head .num{font-family:var(--mono); font-size:11px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.08em; display:inline-flex; gap:8px; align-items:center}
+  section.row .head .num b{background:var(--teal); color:var(--paper); padding:2px 7px; border-radius:3px; font-weight:500}
+  section.row .head .caption{font-family:var(--serif); font-style:italic; color:var(--ink-2); font-size:17px; max-width:40ch}
+
+  .card{border:1px solid var(--rule); border-radius:12px; background:var(--paper); position:relative; overflow:hidden}
+  .card .lbl{position:absolute; top:14px; left:16px; font-family:var(--mono); font-size:10px; letter-spacing:0.06em; color:var(--ink-3); text-transform:uppercase; z-index:2}
+  .card .spec{position:absolute; bottom:14px; left:16px; font-family:var(--mono); font-size:10px; letter-spacing:0.06em; color:var(--ink-3); text-transform:uppercase; z-index:2}
+  .card .spec em{font-family:var(--serif); font-style:italic; text-transform:none; letter-spacing:0; color:var(--ink-2)}
+
+  .grid{display:grid; gap:14px}
+  .g2{grid-template-columns: 1fr 1fr}
+  .g3{grid-template-columns: 1.2fr 1fr 1fr}
+  .g4{grid-template-columns: repeat(4, 1fr)}
+  .g5{grid-template-columns: repeat(5, 1fr)}
+
+  /* — HERO lockup card — */
+  .hero-card{min-height: 440px; display:grid; place-items:center; padding: 60px 60px; background: var(--cream); border-color: var(--cream-3)}
+  [data-bg="ink"] .hero-card{background: var(--paper-2); border-color: var(--rule)}
+  .hero-card svg.main{width: min(820px, 94%); height:auto}
+
+  /* the robot grows / changes composition between tiles */
+  .bot-card{min-height: 260px; display:flex; align-items:center; justify-content:center; padding: 32px}
+  .bot-stack{min-height: 320px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap: 14px; padding: 32px}
+
+  /* Favicon / app-icon */
+  .fav{width:96px; height:96px; border-radius:22px; background:var(--teal); display:grid; place-items:center; box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--teal) 70%, black)}
+  .fav.sm{width:48px; height:48px; border-radius:12px}
+  .fav.xs{width:28px; height:28px; border-radius:7px}
+  .fav.xxs{width:16px; height:16px; border-radius:4px}
+  .fav svg{display:block; width:72%; height:72%}
+  .fav-row{display:flex; align-items:end; gap:22px}
+  .fav-row .lbl-below{font-family:var(--mono); font-size:10px; color:var(--ink-3); margin-top:8px; text-align:center; letter-spacing:0.06em; text-transform:uppercase}
+  .fav-wrap{display:flex; flex-direction:column; align-items:center}
+
+  /* App tile */
+  .app-tile{width:180px; height:180px; border-radius:38px; background:var(--teal); display:grid; place-items:center; box-shadow: 0 20px 40px -20px oklch(0.28 0.08 200 / 0.6), inset 0 0 0 1px oklch(0.28 0.08 200)}
+  .app-tile svg{width:70%; height:70%}
+
+  /* Clear space */
+  .clear-card{min-height: 340px; padding: 40px; display:grid; place-items:center}
+  .clear-diagram{position:relative; display:inline-grid; place-items:center}
+  .clear-diagram .gridlines{position:absolute; inset:-60px; pointer-events:none}
+  .clear-diagram .x{position:absolute; font-family:var(--mono); font-size:10px; color:var(--ink-3); letter-spacing:0.04em; text-transform:uppercase; background:var(--paper); padding:2px 6px; border:1px solid var(--rule); border-radius:3px}
+
+  /* Don'ts */
+  .dont-card{min-height: 220px; padding: 36px; display:grid; place-items:center; position:relative}
+  .dont-card:after{content:""; position:absolute; inset:0; pointer-events:none}
+  .dont-card.no:after{background: linear-gradient(to top left, transparent calc(50% - 1px), oklch(0.72 0.20 28) calc(50% - 1px) calc(50% + 1px), transparent calc(50% + 1px))}
+  .dont-card .tag{position:absolute; top:14px; right:16px; font-family:var(--mono); font-size:10px; letter-spacing:0.06em; color: oklch(0.72 0.20 28); padding:3px 7px; border:1px solid currentColor; border-radius:3px; text-transform:uppercase}
+  .dont-card.yes .tag{color: var(--teal)}
+  .dont-card.yes:after{display:none}
+
+  /* Type spec */
+  .type-card{padding: 36px; min-height: 300px}
+  .type-card .tspec{display:flex; gap:18px; color:var(--ink-3); font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:18px}
+  .type-card .tspec b{color:var(--ink); font-weight:500}
+  .type-card .sample{font-family:var(--sans); color:var(--teal); letter-spacing:-0.035em; font-weight:800; font-size: clamp(60px, 9vw, 140px); line-height:0.92}
+  .type-card .sample em{font-family:var(--serif); font-style:italic; font-weight:400; color:var(--ink-2); letter-spacing:-0.01em}
+  .type-card .caption{color:var(--ink-2); font-family:var(--serif); font-style:italic; margin-top:14px; font-size:18px}
+
+  /* Stationery */
+  .business-card{aspect-ratio: 1.75 / 1; background: var(--cream-2); border-radius:10px; padding: 28px; display:flex; flex-direction:column; justify-content:space-between; border:1px solid var(--cream-3); position:relative; overflow:hidden; min-height: 200px}
+  .business-card .t{display:flex; justify-content:space-between; align-items:start}
+  .business-card .bn{font-family:var(--mono); font-size:10px; color:var(--ink-3); letter-spacing:0.08em; text-transform:uppercase}
+  .business-card .nm{font-size:22px; font-weight:500; letter-spacing:-0.02em; color:var(--ink)}
+  .business-card .role{font-family:var(--serif); font-style:italic; color:var(--ink-2); margin-top:4px}
+  .business-card .ctx{color:var(--ink-2); font-family:var(--mono); font-size:10px; letter-spacing:0.04em; text-transform:uppercase}
+  .business-card svg.mk{height:36px; width:auto}
+
+  /* Browser mock */
+  .browser{background:var(--cream-2); border-radius:10px; border:1px solid var(--cream-3); overflow:hidden; min-height: 340px}
+  .browser .bar{display:flex; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid var(--cream-3); background:var(--cream)}
+  .browser .bar .dots{display:flex; gap:6px}
+  .browser .bar .dots i{display:block; width:10px; height:10px; border-radius:50%; background:var(--cream-3)}
+  .browser .bar .url{font-family:var(--mono); font-size:10px; color:var(--ink-3); background:var(--cream-2); padding:4px 10px; border-radius:4px; flex:1; max-width:420px}
+  .browser .bd{padding: 40px 40px 56px}
+  .browser nav{display:flex; justify-content:space-between; align-items:center; margin-bottom:48px}
+  .browser nav svg{height:26px}
+  .browser nav .links{display:flex; gap:28px; color:var(--ink-2); font-size:13px}
+  .browser nav .cta{background:var(--teal); color:var(--cream); font-size:13px; padding:8px 14px; border-radius:7px; font-weight:500}
+  .browser h3{margin:0; font-size: clamp(30px, 3.8vw, 52px); letter-spacing:-0.03em; font-weight:500; color:var(--teal); max-width:16ch; line-height: 1.02}
+  .browser h3 em{font-family:var(--serif); font-style:italic; color:var(--amber); font-weight:400}
+  .browser p{color:var(--ink-2); max-width:46ch; margin-top:16px; font-size:15px}
+
+  /* Motion */
+  @keyframes wink { 0%, 78%, 100% { transform: scaleY(1) } 82%, 88% { transform: scaleY(0.08) } }
+  .live .eye.r { transform-origin: center; transform-box: fill-box; animation: wink 3.6s infinite }
+
+  /* Tweaks */
+  .tweaks{position:fixed; right:16px; bottom:16px; z-index:60; width:280px; background:var(--paper); border:1px solid var(--rule); border-radius:8px; box-shadow:0 20px 48px -16px oklch(0 0 0 / 0.2); display:none}
+  .tweaks.open{display:block}
+  .tweaks header{padding:10px 14px; border-bottom:1px solid var(--rule); background:var(--paper-2); font-family:var(--mono); font-size:11px; color:var(--ink-3); display:flex; justify-content:space-between}
+  .tweaks .bd{padding:12px 14px}
+  .tweaks .r{display:flex; flex-direction:column; gap:6px; margin:10px 0}
+  .tweaks label{font-family:var(--mono); font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em; display:flex; justify-content:space-between}
+  .tweaks input[type=range]{width:100%}
+  .tweaks .seg{display:flex; border:1px solid var(--rule); border-radius:6px; overflow:hidden}
+  .tweaks .seg button{flex:1; background:transparent; border:none; padding:6px 8px; font-size:12px; cursor:pointer; color:var(--ink-2); border-right:1px solid var(--rule); font-family:inherit}
+  .tweaks .seg button:last-child{border-right:none}
+  .tweaks .seg button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+
+  @media (max-width: 1100px){ .g3, .g4, .g5 { grid-template-columns: 1fr 1fr } }
+  @media (max-width: 700px){ .g2, .g3, .g4, .g5 { grid-template-columns: 1fr } }
+</style>
+</head>
+<body data-bg="cream">
+
+<!-- ====== REUSABLE ROBOT (via <use> can't recolor cleanly across instances, so we render inline each time with currentColor) ====== -->
+
+<header class="page">
+  <div class="name">
+    <!-- small mark in header -->
+    <svg viewBox="0 0 140 36" aria-hidden="true">
+      <g transform="translate(2,6)">
+        <line x1="14" y1="-2" x2="14" y2="3" stroke="var(--teal)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="14" cy="-4" r="2" fill="var(--amber)"/>
+        <rect x="1" y="3" width="26" height="24" rx="4" fill="var(--teal)"/>
+        <rect x="4.5" y="8" width="19" height="14" rx="2" fill="var(--cream)"/>
+        <rect x="8" y="12" width="3" height="4" rx="0.6" fill="var(--teal)"/>
+        <rect x="16" y="12" width="3" height="4" rx="0.6" fill="var(--teal)"/>
+        <path d="M 8.5 17.5 Q 14 20.5 19.5 17.5" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+      </g>
+      <text x="36" y="25" font-family="Geist" font-weight="700" font-size="18" letter-spacing="-0.03em" fill="var(--ink)">Good Business</text>
+    </svg>
+    <span>identity system · v1</span>
+  </div>
+  <div class="tabs" id="bg-tabs">
+    <button data-bg="cream" aria-pressed="true">Cream</button>
+    <button data-bg="ink" aria-pressed="false">Ink</button>
+  </div>
+  <span class="mono">press T · tweak system</span>
+</header>
+
+<!-- ========= INTRO ========= -->
+<section class="intro">
+  <div class="kicker"><span class="dot"></span>§ identity · deep teal · amber · cream</div>
+  <h1>A robot you'd <em>actually want</em><br>to work with.</h1>
+  <p class="sub">One character, one smile, one wink. Deep teal chassis, cream page, sunflower-amber accent. The system below is everything you need to ship: lockups, clear-space, favicons, app tile, stationery, type, do/don't, and motion.</p>
+
+  <div class="palette-strip">
+    <div class="chip"><div class="sw" style="background: oklch(0.38 0.08 200)"></div><div class="nm">Deep Teal</div><div class="hx">#1E4A4E · oklch(0.38 0.08 200) · chassis</div></div>
+    <div class="chip"><div class="sw" style="background: oklch(0.78 0.16 58)"></div><div class="nm">Sunflower Amber</div><div class="hx">#F0A23B · oklch(0.78 0.16 58) · smile + signal</div></div>
+    <div class="chip"><div class="sw" style="background: oklch(0.975 0.015 85); border:1px solid var(--rule)"></div><div class="nm">Cream Paper</div><div class="hx">#FAF4E6 · oklch(0.975 0.015 85) · canvas</div></div>
+    <div class="chip"><div class="sw" style="background: oklch(0.18 0.02 220)"></div><div class="nm">Graphite Ink</div><div class="hx">#1C2126 · oklch(0.18 0.02 220) · body text</div></div>
+  </div>
+</section>
+
+<!-- ========= 01 · PRIMARY LOCKUP ========= -->
+<section class="row">
+  <div class="head">
+    <div class="num"><b>01</b> primary lockup</div>
+    <h2>The face, the name, <em>the wink.</em></h2>
+    <div class="caption">Chassis left, wordmark right. Wink on a 3.6s cadence so it reads as a personality, not a glitch.</div>
+  </div>
+  <div class="card hero-card">
+    <span class="lbl">primary · horizontal lockup</span>
+    <svg viewBox="0 0 820 280" class="main live" aria-label="Good Business">
+      <g transform="translate(44,40)">
+        <line x1="95" y1="-12" x2="95" y2="18" stroke="var(--teal)" stroke-width="7" stroke-linecap="round"/>
+        <circle cx="95" cy="-18" r="7" fill="var(--amber)"/>
+        <rect x="8" y="18" width="174" height="162" rx="22" fill="var(--teal)"/>
+        <rect x="26" y="52" width="138" height="96" rx="12" fill="var(--cream)"/>
+        <rect x="56" y="80" width="18" height="22" rx="3.5" fill="var(--teal)" class="eye l"/>
+        <rect x="116" y="80" width="18" height="22" rx="3.5" fill="var(--teal)" class="eye r"/>
+        <path d="M 62 120 Q 95 142 128 120" fill="none" stroke="var(--amber)" stroke-width="9" stroke-linecap="round"/>
+        <circle cx="0" cy="80" r="5" fill="var(--teal)"/>
+        <circle cx="0" cy="110" r="5" fill="var(--teal)"/>
+        <circle cx="190" cy="80" r="5" fill="var(--teal)"/>
+        <circle cx="190" cy="110" r="5" fill="var(--teal)"/>
+      </g>
+      <text x="252" y="156" font-family="Geist" font-weight="800" font-size="104" letter-spacing="-0.04em" fill="var(--teal)">Good</text>
+      <text x="252" y="240" font-family="Geist" font-weight="500" font-size="60" letter-spacing="-0.02em" fill="var(--ink-2)">Business</text>
+    </svg>
+    <span class="spec"><em>minimum</em> 120px · <em>clear-space</em> 1× eye-height</span>
+  </div>
+</section>
+
+<!-- ========= 02 · LOCKUP VARIANTS (retuned) ========= -->
+<section class="row">
+  <div class="head">
+    <div class="num"><b>02</b> lockup variants</div>
+    <h2>Horizontal, stacked, <em>glyph-only.</em></h2>
+    <div class="caption">Bot height ≈ 1.3× wordmark cap-height. Baselines align. That's the rule.</div>
+  </div>
+  <div class="grid g3">
+    <!-- Horizontal · tuned: bot scaled to match cap-height of "Good Business" -->
+    <div class="card bot-card" style="padding: 44px 32px">
+      <span class="lbl">horizontal · standard</span>
+      <svg viewBox="0 0 520 120" width="100%" class="live" style="max-width: 440px">
+        <!-- bot: viewBox baseline aligned with text baseline at y=88 -->
+        <g transform="translate(14,14)">
+          <line x1="48" y1="-6" x2="48" y2="6" stroke="var(--teal)" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="48" cy="-9" r="3.8" fill="var(--amber)"/>
+          <rect x="4" y="6" width="88" height="82" rx="12" fill="var(--teal)"/>
+          <rect x="13" y="23" width="70" height="50" rx="7" fill="var(--cream)"/>
+          <rect x="28" y="37" width="10" height="12" rx="2" fill="var(--teal)" class="eye l"/>
+          <rect x="58" y="37" width="10" height="12" rx="2" fill="var(--teal)" class="eye r"/>
+          <path d="M 30 58 Q 48 71 66 58" fill="none" stroke="var(--amber)" stroke-width="5" stroke-linecap="round"/>
+        </g>
+        <!-- wordmark baseline at y=88, cap-height ~ 62 → bot height 94 ≈ 1.3x cap -->
+        <text x="122" y="88" font-family="Geist" font-weight="700" font-size="68" letter-spacing="-0.035em" fill="var(--teal)">Good Business</text>
+      </svg>
+      <span class="spec"><em>use for</em> web nav · email · footer</span>
+    </div>
+
+    <!-- Stacked · tuned: bot ~2× wordmark cap-height, tight gap -->
+    <div class="card bot-stack" style="gap: 10px; padding: 36px 32px 32px">
+      <span class="lbl">stacked · centered</span>
+      <svg viewBox="0 0 140 140" width="108" class="live">
+        <g transform="translate(24,22)">
+          <line x1="46" y1="-8" x2="46" y2="6" stroke="var(--teal)" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="46" cy="-11" r="4" fill="var(--amber)"/>
+          <rect x="0" y="6" width="92" height="86" rx="13" fill="var(--teal)"/>
+          <rect x="10" y="24" width="72" height="52" rx="7" fill="var(--cream)"/>
+          <rect x="26" y="39" width="10" height="12" rx="2" fill="var(--teal)" class="eye l"/>
+          <rect x="56" y="39" width="10" height="12" rx="2" fill="var(--teal)" class="eye r"/>
+          <path d="M 28 60 Q 46 73 64 60" fill="none" stroke="var(--amber)" stroke-width="5" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <div style="text-align:center; font-family:var(--sans); font-weight:700; font-size:28px; letter-spacing:-0.03em; color:var(--teal); line-height:1">Good Business</div>
+      <span class="spec"><em>use for</em> hero · app splash · card</span>
+    </div>
+
+    <!-- Glyph only -->
+    <div class="card bot-card" style="padding: 36px">
+      <span class="lbl">glyph · character only</span>
+      <svg viewBox="0 0 160 160" width="148" class="live">
+        <g transform="translate(28,22)">
+          <line x1="52" y1="-10" x2="52" y2="8" stroke="var(--teal)" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="52" cy="-14" r="5" fill="var(--amber)"/>
+          <rect x="0" y="8" width="104" height="100" rx="15" fill="var(--teal)"/>
+          <rect x="11" y="30" width="82" height="60" rx="9" fill="var(--cream)"/>
+          <rect x="29" y="47" width="12" height="14" rx="2.2" fill="var(--teal)" class="eye l"/>
+          <rect x="63" y="47" width="12" height="14" rx="2.2" fill="var(--teal)" class="eye r"/>
+          <path d="M 32 72 Q 52 87 72 72" fill="none" stroke="var(--amber)" stroke-width="6" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec"><em>use for</em> avatar · sticker · product</span>
+    </div>
+  </div>
+
+  <!-- IN-NAV PREVIEW: the horizontal lockup at actual header size -->
+  <div class="card" style="margin-top: 14px; padding: 0; overflow:hidden">
+    <div style="padding: 10px 16px; border-bottom:1px solid var(--rule); display:flex; justify-content:space-between; align-items:center; background: var(--paper-2)">
+      <span class="mono" style="font-size:10px">live preview · header at 72px · cream bg</span>
+      <span class="mono" style="font-size:10px">actual size</span>
+    </div>
+    <div style="background: var(--cream); padding: 0">
+      <nav style="display:flex; align-items:center; justify-content:space-between; padding: 20px 36px; height: 72px">
+        <!-- Header-scale lockup: bot 34px, wordmark ~22px cap -->
+        <svg viewBox="0 0 220 40" height="32" class="live" aria-label="Good Business">
+          <g transform="translate(2,4)">
+            <line x1="16" y1="-2" x2="16" y2="2" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="16" cy="-4" r="1.8" fill="var(--amber)"/>
+            <rect x="1" y="2" width="30" height="28" rx="4.2" fill="var(--teal)"/>
+            <rect x="4.5" y="7.6" width="23" height="17" rx="2.4" fill="var(--cream)"/>
+            <rect x="9" y="12" width="3.4" height="4.2" rx="0.7" fill="var(--teal)" class="eye l"/>
+            <rect x="19" y="12" width="3.4" height="4.2" rx="0.7" fill="var(--teal)" class="eye r"/>
+            <path d="M 10 20 Q 16 23.5 22 20" fill="none" stroke="var(--amber)" stroke-width="1.7" stroke-linecap="round"/>
+          </g>
+          <text x="40" y="24" font-family="Geist" font-weight="700" font-size="20" letter-spacing="-0.03em" fill="var(--teal)">Good Business</text>
+        </svg>
+        <div style="display:flex; gap:32px; color:var(--ink-2); font-size:14px">
+          <span>Work</span><span>About</span><span>Journal</span><span>Contact</span>
+        </div>
+      </nav>
+    </div>
+    <div style="padding: 10px 16px; border-top:1px solid var(--rule); background: var(--paper-2)">
+      <span class="mono" style="font-size:10px">rule · bot-height = 1.55× wordmark cap-height · baselines align · 8px gap</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========= 03 · FAVICON + SCALE ========= -->
+<section class="row">
+  <div class="head">
+    <div class="num"><b>03</b> favicon · scale rail</div>
+    <h2>Recognizable from <em>512 to 16.</em></h2>
+    <div class="caption">At tiny sizes the antenna drops and the smile thickens. The face is always legible.</div>
+  </div>
+  <div class="card" style="padding: 40px; display:flex; align-items:end; justify-content:center; gap: 48px; flex-wrap:wrap; min-height: 260px">
+    <div class="fav-wrap">
+      <div class="fav" style="width:128px; height:128px; border-radius:28px">
+        <svg viewBox="0 0 120 120" class="live">
+          <g transform="translate(6,18)">
+            <line x1="54" y1="-8" x2="54" y2="6" stroke="var(--cream)" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="54" cy="-12" r="5" fill="var(--amber)"/>
+            <rect x="4" y="6" width="100" height="90" rx="14" fill="var(--teal)" stroke="var(--cream)" stroke-width="2"/>
+            <rect x="14" y="26" width="80" height="56" rx="8" fill="var(--cream)"/>
+            <rect x="31" y="42" width="11" height="13" rx="2" fill="var(--teal)" class="eye l"/>
+            <rect x="65" y="42" width="11" height="13" rx="2" fill="var(--teal)" class="eye r"/>
+            <path d="M 34 64 Q 54 78 74 64" fill="none" stroke="var(--amber)" stroke-width="6" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+      <div class="lbl-below">128 · icon</div>
+    </div>
+    <div class="fav-wrap">
+      <div class="fav">
+        <svg viewBox="0 0 120 120" class="live">
+          <g transform="translate(6,18)">
+            <line x1="54" y1="-8" x2="54" y2="6" stroke="var(--cream)" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="54" cy="-12" r="5" fill="var(--amber)"/>
+            <rect x="4" y="6" width="100" height="90" rx="14" fill="var(--teal)" stroke="var(--cream)" stroke-width="2"/>
+            <rect x="14" y="26" width="80" height="56" rx="8" fill="var(--cream)"/>
+            <rect x="31" y="42" width="11" height="13" rx="2" fill="var(--teal)" class="eye l"/>
+            <rect x="65" y="42" width="11" height="13" rx="2" fill="var(--teal)" class="eye r"/>
+            <path d="M 34 64 Q 54 78 74 64" fill="none" stroke="var(--amber)" stroke-width="6" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+      <div class="lbl-below">96 · tab</div>
+    </div>
+    <div class="fav-wrap">
+      <div class="fav sm">
+        <svg viewBox="0 0 120 120">
+          <g transform="translate(6,18)">
+            <rect x="4" y="6" width="100" height="90" rx="14" fill="var(--teal)" stroke="var(--cream)" stroke-width="2"/>
+            <rect x="14" y="26" width="80" height="56" rx="8" fill="var(--cream)"/>
+            <rect x="31" y="42" width="11" height="13" rx="2" fill="var(--teal)"/>
+            <rect x="65" y="42" width="11" height="13" rx="2" fill="var(--teal)"/>
+            <path d="M 34 64 Q 54 78 74 64" fill="none" stroke="var(--amber)" stroke-width="7" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+      <div class="lbl-below">48 · dock</div>
+    </div>
+    <div class="fav-wrap">
+      <div class="fav xs">
+        <svg viewBox="0 0 120 120">
+          <g transform="translate(6,18)">
+            <rect x="4" y="6" width="100" height="90" rx="14" fill="var(--teal)"/>
+            <rect x="14" y="26" width="80" height="56" rx="8" fill="var(--cream)"/>
+            <rect x="31" y="42" width="11" height="13" rx="2" fill="var(--teal)"/>
+            <rect x="65" y="42" width="11" height="13" rx="2" fill="var(--teal)"/>
+            <path d="M 32 64 Q 54 80 76 64" fill="none" stroke="var(--amber)" stroke-width="8" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+      <div class="lbl-below">28 · nav</div>
+    </div>
+    <div class="fav-wrap">
+      <div class="fav xxs">
+        <svg viewBox="0 0 120 120">
+          <g transform="translate(6,18)">
+            <rect x="4" y="6" width="100" height="90" rx="14" fill="var(--teal)"/>
+            <rect x="14" y="26" width="80" height="56" rx="8" fill="var(--cream)"/>
+            <rect x="31" y="42" width="11" height="13" rx="2" fill="var(--teal)"/>
+            <rect x="65" y="42" width="11" height="13" rx="2" fill="var(--teal)"/>
+            <path d="M 28 64 Q 54 84 80 64" fill="none" stroke="var(--amber)" stroke-width="11" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+      <div class="lbl-below">16 · favicon</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= 04 · CLEAR SPACE ========= -->
+<section class="row">
+  <div class="head">
+    <div class="num"><b>04</b> clear space</div>
+    <h2>One <em>eye-height</em> of air around the mark.</h2>
+    <div class="caption">Use the eye-window as the measurement unit. If something else is closer than one, it's too close.</div>
+  </div>
+  <div class="card clear-card">
+    <span class="lbl">clear-space diagram · x = eye-window height</span>
+    <div class="clear-diagram">
+      <svg viewBox="0 0 540 280" width="560" class="live">
+        <!-- dashed clear-space box -->
+        <rect x="20" y="20" width="500" height="240" fill="none" stroke="var(--ink-3)" stroke-dasharray="4 5" stroke-width="1"/>
+        <!-- unit x indicators -->
+        <line x1="20" y1="12" x2="52" y2="12" stroke="var(--amber)" stroke-width="2"/>
+        <text x="26" y="9" font-family="Geist Mono" font-size="9" fill="var(--ink-3)" letter-spacing="0.06em">X</text>
+        <line x1="488" y1="12" x2="520" y2="12" stroke="var(--amber)" stroke-width="2"/>
+        <text x="494" y="9" font-family="Geist Mono" font-size="9" fill="var(--ink-3)" letter-spacing="0.06em">X</text>
+
+        <g transform="translate(64,72)">
+          <line x1="70" y1="-10" x2="70" y2="8" stroke="var(--teal)" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="70" cy="-14" r="5" fill="var(--amber)"/>
+          <rect x="4" y="8" width="136" height="124" rx="16" fill="var(--teal)"/>
+          <rect x="18" y="36" width="108" height="72" rx="10" fill="var(--cream)"/>
+          <rect x="40" y="58" width="14" height="16" rx="2.5" fill="var(--teal)" class="eye l"/>
+          <rect x="88" y="58" width="14" height="16" rx="2.5" fill="var(--teal)" class="eye r"/>
+          <path d="M 44 84 Q 72 104 100 84" fill="none" stroke="var(--amber)" stroke-width="7" stroke-linecap="round"/>
+        </g>
+        <text x="240" y="140" font-family="Geist" font-weight="800" font-size="56" letter-spacing="-0.03em" fill="var(--teal)">Good</text>
+        <text x="240" y="194" font-family="Geist" font-weight="500" font-size="34" letter-spacing="-0.02em" fill="var(--ink-2)">Business</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ========= 05 · DO / DON'T ========= -->
+<section class="row">
+  <div class="head">
+    <div class="num"><b>05</b> do · don't</div>
+    <h2>How <em>not</em> to use the mark.</h2>
+    <div class="caption">The character has personality — protect it. These are the ways it breaks.</div>
+  </div>
+  <div class="grid g4">
+    <div class="card dont-card yes">
+      <span class="tag">Do</span>
+      <svg viewBox="0 0 180 140" width="140" class="live">
+        <g transform="translate(34,18)">
+          <line x1="56" y1="-8" x2="56" y2="8" stroke="var(--teal)" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="56" cy="-12" r="5" fill="var(--amber)"/>
+          <rect x="0" y="8" width="112" height="102" rx="14" fill="var(--teal)"/>
+          <rect x="12" y="30" width="88" height="62" rx="9" fill="var(--cream)"/>
+          <rect x="31" y="48" width="12" height="14" rx="2" fill="var(--teal)" class="eye l"/>
+          <rect x="69" y="48" width="12" height="14" rx="2" fill="var(--teal)" class="eye r"/>
+          <path d="M 34 72 Q 56 88 78 72" fill="none" stroke="var(--amber)" stroke-width="6.5" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <div class="card dont-card no">
+      <span class="tag">Don't</span>
+      <!-- stretched -->
+      <svg viewBox="0 0 240 120" width="200">
+        <g transform="translate(54,14)">
+          <rect x="0" y="8" width="150" height="80" rx="10" fill="var(--teal)"/>
+          <rect x="12" y="22" width="126" height="48" rx="6" fill="var(--cream)"/>
+          <rect x="40" y="36" width="14" height="10" rx="2" fill="var(--teal)"/>
+          <rect x="96" y="36" width="14" height="10" rx="2" fill="var(--teal)"/>
+          <path d="M 42 56 Q 75 70 108 56" fill="none" stroke="var(--amber)" stroke-width="5" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec" style="position:absolute; bottom:12px; left:16px"><em>never</em> stretch</span>
+    </div>
+    <div class="card dont-card no">
+      <span class="tag">Don't</span>
+      <!-- wrong colors -->
+      <svg viewBox="0 0 180 140" width="140">
+        <g transform="translate(34,18)">
+          <line x1="56" y1="-8" x2="56" y2="8" stroke="oklch(0.72 0.20 28)" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="56" cy="-12" r="5" fill="oklch(0.62 0.22 300)"/>
+          <rect x="0" y="8" width="112" height="102" rx="14" fill="oklch(0.72 0.20 28)"/>
+          <rect x="12" y="30" width="88" height="62" rx="9" fill="var(--cream)"/>
+          <rect x="31" y="48" width="12" height="14" rx="2" fill="oklch(0.72 0.20 28)"/>
+          <rect x="69" y="48" width="12" height="14" rx="2" fill="oklch(0.72 0.20 28)"/>
+          <path d="M 34 72 Q 56 88 78 72" fill="none" stroke="oklch(0.62 0.22 300)" stroke-width="6.5" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec" style="position:absolute; bottom:12px; left:16px"><em>never</em> recolor</span>
+    </div>
+    <div class="card dont-card no">
+      <span class="tag">Don't</span>
+      <!-- rotated -->
+      <svg viewBox="0 0 180 140" width="140" style="transform: rotate(-18deg)">
+        <g transform="translate(34,18)">
+          <line x1="56" y1="-8" x2="56" y2="8" stroke="var(--teal)" stroke-width="5" stroke-linecap="round"/>
+          <circle cx="56" cy="-12" r="5" fill="var(--amber)"/>
+          <rect x="0" y="8" width="112" height="102" rx="14" fill="var(--teal)"/>
+          <rect x="12" y="30" width="88" height="62" rx="9" fill="var(--cream)"/>
+          <rect x="31" y="48" width="12" height="14" rx="2" fill="var(--teal)"/>
+          <rect x="69" y="48" width="12" height="14" rx="2" fill="var(--teal)"/>
+          <path d="M 34 72 Q 56 88 78 72" fill="none" stroke="var(--amber)" stroke-width="6.5" stroke-linecap="round"/>
+        </g>
+      </svg>
+      <span class="spec" style="position:absolute; bottom:12px; left:16px"><em>never</em> rotate</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========= 06 · TYPE ========= -->
+<section class="row">
+  <div class="head">
+    <div class="num"><b>06</b> type</div>
+    <h2>Geist for <em>steady</em>, Instrument Serif for <em>soul.</em></h2>
+    <div class="caption">Geist 800 carries the wordmark. Instrument Serif italic is the editorial voice used for emphasis and captions.</div>
+  </div>
+  <div class="grid g2">
+    <div class="card type-card">
+      <span class="lbl">wordmark · display</span>
+      <div class="tspec"><span>Geist · <b>800</b></span><span>-4% letter</span><span>0.92 line</span></div>
+      <div class="sample">Good&nbsp;Business</div>
+      <div class="caption">Compressed to one line, chunky and optimistic. Never outline, never shadow.</div>
+    </div>
+    <div class="card type-card">
+      <span class="lbl">editorial · italic voice</span>
+      <div class="tspec"><span>Instrument Serif · <b>italic</b></span><span>-1% letter</span><span>1.05 line</span></div>
+      <div class="sample" style="font-size: clamp(40px, 5vw, 72px); line-height: 1.05">Work that's<br><em>honestly better.</em></div>
+      <div class="caption">Used in headlines, captions, and quoted voice. Never for UI labels or buttons.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= 07 · IN THE WILD ========= -->
+<section class="row">
+  <div class="head">
+    <div class="num"><b>07</b> in the wild</div>
+    <h2>How it <em>actually</em> shows up.</h2>
+    <div class="caption">Stationery, an app tile, and the product's front door.</div>
+  </div>
+  <div class="grid g3">
+    <!-- Business card -->
+    <div class="card business-card">
+      <div class="t">
+        <svg viewBox="0 0 140 36" class="mk" aria-hidden="true">
+          <g transform="translate(2,6)">
+            <line x1="14" y1="-2" x2="14" y2="3" stroke="var(--teal)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="14" cy="-4" r="2" fill="var(--amber)"/>
+            <rect x="1" y="3" width="26" height="24" rx="4" fill="var(--teal)"/>
+            <rect x="4.5" y="8" width="19" height="14" rx="2" fill="var(--cream)"/>
+            <rect x="8" y="12" width="3" height="4" rx="0.6" fill="var(--teal)"/>
+            <rect x="16" y="12" width="3" height="4" rx="0.6" fill="var(--teal)"/>
+            <path d="M 8.5 17.5 Q 14 20.5 19.5 17.5" fill="none" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+          </g>
+          <text x="36" y="25" font-family="Geist" font-weight="700" font-size="18" letter-spacing="-0.03em" fill="var(--ink)">Good Business</text>
+        </svg>
+        <span class="bn">04</span>
+      </div>
+      <div>
+        <div class="nm">Theo Marshak</div>
+        <div class="role">Founder · the one who answers</div>
+      </div>
+      <div class="ctx">theo@goodbusiness.co · 415 · 555 · 0184</div>
+    </div>
+
+    <!-- App tile -->
+    <div class="card bot-stack">
+      <span class="lbl">app tile · iOS</span>
+      <div class="app-tile">
+        <svg viewBox="0 0 120 120" class="live">
+          <g transform="translate(6,18)">
+            <line x1="54" y1="-8" x2="54" y2="6" stroke="var(--cream)" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="54" cy="-12" r="5" fill="var(--amber)"/>
+            <rect x="4" y="6" width="100" height="90" rx="14" fill="var(--teal)" stroke="var(--cream)" stroke-width="2"/>
+            <rect x="14" y="26" width="80" height="56" rx="8" fill="var(--cream)"/>
+            <rect x="31" y="42" width="11" height="13" rx="2" fill="var(--teal)" class="eye l"/>
+            <rect x="65" y="42" width="11" height="13" rx="2" fill="var(--teal)" class="eye r"/>
+            <path d="M 34 64 Q 54 78 74 64" fill="none" stroke="var(--amber)" stroke-width="6.5" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+      <div style="font-family:var(--sans); font-weight:500; font-size:13px; color:var(--ink); margin-top:8px">Good Business</div>
+      <span class="spec"><em>radius</em> 22% · <em>padding</em> 15%</span>
+    </div>
+
+    <!-- Browser -->
+    <div class="card browser" style="grid-column: span 1">
+      <div class="bar">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="url">goodbusiness.co</div>
+      </div>
+      <div class="bd">
+        <nav>
+          <svg viewBox="0 0 160 32" height="26" class="live">
+            <g transform="translate(2,5)">
+              <line x1="13" y1="-1" x2="13" y2="4" stroke="var(--teal)" stroke-width="1.8" stroke-linecap="round"/>
+              <circle cx="13" cy="-3" r="1.8" fill="var(--amber)"/>
+              <rect x="1" y="4" width="24" height="22" rx="3.5" fill="var(--teal)"/>
+              <rect x="4" y="9" width="18" height="12" rx="1.8" fill="var(--cream)"/>
+              <rect x="7" y="12" width="2.5" height="3.5" rx="0.5" fill="var(--teal)" class="eye l"/>
+              <rect x="14.5" y="12" width="2.5" height="3.5" rx="0.5" fill="var(--teal)" class="eye r"/>
+              <path d="M 7.5 17 Q 13 19.5 18.5 17" fill="none" stroke="var(--amber)" stroke-width="1.3" stroke-linecap="round"/>
+            </g>
+            <text x="32" y="22" font-family="Geist" font-weight="700" font-size="16" letter-spacing="-0.03em" fill="var(--ink)">Good Business</text>
+          </svg>
+          <div class="links"><span>Work</span><span>About</span><span>Journal</span></div>
+          <div class="cta">Get in touch</div>
+        </nav>
+        <h3>We build software <em>that feels handmade</em>.</h3>
+        <p>Small teams of senior builders. No offshoring, no junior churn. If it ships from us, we wrote it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========= 08 · MOTION ========= -->
+<section class="row">
+  <div class="head">
+    <div class="num"><b>08</b> motion</div>
+    <h2>One wink, <em>every 3.6 seconds.</em></h2>
+    <div class="caption">The only animation. Right eye only, ~200ms squash. Pauses when reduced-motion is requested.</div>
+  </div>
+  <div class="card" style="padding: 60px; display:grid; place-items:center; min-height: 320px">
+    <svg viewBox="0 0 260 200" width="320" class="live">
+      <g transform="translate(60,32)">
+        <line x1="70" y1="-10" x2="70" y2="8" stroke="var(--teal)" stroke-width="5.5" stroke-linecap="round"/>
+        <circle cx="70" cy="-14" r="5.5" fill="var(--amber)"/>
+        <rect x="0" y="8" width="140" height="128" rx="18" fill="var(--teal)"/>
+        <rect x="14" y="36" width="112" height="74" rx="10" fill="var(--cream)"/>
+        <rect x="40" y="58" width="14" height="16" rx="2.5" fill="var(--teal)" class="eye l"/>
+        <rect x="90" y="58" width="14" height="16" rx="2.5" fill="var(--teal)" class="eye r"/>
+        <path d="M 44 84 Q 72 104 100 84" fill="none" stroke="var(--amber)" stroke-width="7" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- ========= Tweaks ========= -->
+<aside class="tweaks" id="tweaksPanel" aria-hidden="true">
+  <header><span>Tweaks</span><span>T</span></header>
+  <div class="bd">
+    <div class="r">
+      <label>Background</label>
+      <div class="seg" id="bgSeg">
+        <button data-bg="cream" aria-pressed="true">Cream</button>
+        <button data-bg="ink">Ink</button>
+      </div>
+    </div>
+    <div class="r">
+      <label>Amber punch · <span id="amberPunchVal">0.18</span></label>
+      <input id="amberPunch" type="range" min="0.10" max="0.24" step="0.01" value="0.18">
+    </div>
+    <div class="r">
+      <label>Teal depth · <span id="tealDepthVal">0.38</span></label>
+      <input id="tealDepth" type="range" min="0.28" max="0.48" step="0.01" value="0.38">
+    </div>
+  </div>
+</aside>
+
+<script>
+  const body = document.body;
+  const root = document.documentElement;
+
+  function apply(t){
+    if (t.bg) body.dataset.bg = t.bg;
+    root.style.setProperty('--amber', `oklch(0.78 ${t.amberPunch} 58)`);
+    root.style.setProperty('--teal', `oklch(${t.tealDepth} 0.08 200)`);
+    document.getElementById('amberPunchVal').textContent = (+t.amberPunch).toFixed(2);
+    document.getElementById('tealDepthVal').textContent = (+t.tealDepth).toFixed(2);
+    document.getElementById('amberPunch').value = t.amberPunch;
+    document.getElementById('tealDepth').value = t.tealDepth;
+    document.querySelectorAll('#bg-tabs button, #bgSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.bg === body.dataset.bg));
+  }
+  function setKey(k,v){
+    const edits = {[k]: v};
+    Object.assign(TWEAKS, edits);
+    apply(TWEAKS);
+    try { window.parent.postMessage({type:'__edit_mode_set_keys', edits}, '*'); } catch(e){}
+  }
+  apply(TWEAKS);
+
+  document.querySelectorAll('#bg-tabs button, #bgSeg button').forEach(b => b.addEventListener('click', ()=> setKey('bg', b.dataset.bg)));
+  document.getElementById('amberPunch').addEventListener('input', e => setKey('amberPunch', +e.target.value));
+  document.getElementById('tealDepth').addEventListener('input', e => setKey('tealDepth', +e.target.value));
+
+  const panel = document.getElementById('tweaksPanel');
+  let open = false;
+  function setOpen(v){ open = v; panel.classList.toggle('open', v); panel.setAttribute('aria-hidden', v ? 'false' : 'true'); }
+  window.addEventListener('message', (e)=>{
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode')   setOpen(true);
+    if (d.type === '__deactivate_edit_mode') setOpen(false);
+  });
+  try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(e){}
+  window.addEventListener('keydown', (e)=>{
+    const t = (e.target||{}).tagName;
+    if (['INPUT','TEXTAREA'].includes(t)) return;
+    if (e.key === 't' || e.key === 'T') setOpen(!open);
+  });
+</script>
+</body>
+</html>

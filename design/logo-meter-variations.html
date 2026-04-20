@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Good Business — Meter Variations</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  const TWEAKS = /*EDITMODE-BEGIN*/{
+    "bg": "paper",
+    "accent": "volt"
+  }/*EDITMODE-END*/;
+</script>
+<style>
+  :root{
+    --paper: oklch(0.985 0.003 250);
+    --paper-2: oklch(0.965 0.004 250);
+    --ink: oklch(0.16 0.015 250);
+    --ink-2: oklch(0.42 0.012 250);
+    --ink-3: oklch(0.62 0.008 250);
+    --rule: oklch(0.88 0.006 250);
+
+    --c-volt:   oklch(0.78 0.20 128);
+    --c-cobalt: oklch(0.58 0.17 255);
+    --c-amber:  oklch(0.70 0.16 70);
+    --c-red:    oklch(0.58 0.17 28);
+    --c-ink:    oklch(0.18 0.01 250);
+
+    --ac: var(--c-volt);
+    --sans: 'Geist', -apple-system, system-ui, sans-serif;
+    --mono: 'Geist Mono', ui-monospace, Menlo, monospace;
+  }
+  [data-bg="ink"]{
+    --paper: oklch(0.16 0.015 250);
+    --paper-2: oklch(0.21 0.015 250);
+    --ink: oklch(0.98 0.003 250);
+    --ink-2: oklch(0.82 0.008 250);
+    --ink-3: oklch(0.62 0.010 250);
+    --rule: oklch(0.32 0.010 250);
+  }
+  [data-accent="volt"]   { --ac: var(--c-volt); }
+  [data-accent="cobalt"] { --ac: var(--c-cobalt); }
+  [data-accent="amber"]  { --ac: var(--c-amber); }
+  [data-accent="red"]    { --ac: var(--c-red); }
+  [data-accent="ink"]    { --ac: var(--c-ink); }
+
+  *{box-sizing:border-box}
+  html,body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--mono); font-size:11px; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink-3)}
+
+  header.page{
+    position:sticky; top:0; z-index:20; background:color-mix(in oklab, var(--paper) 92%, transparent); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--rule);
+    display:flex; align-items:center; justify-content:space-between; padding:14px 36px;
+  }
+  header.page .mark{display:flex; align-items:center; gap:10px}
+  header.page .mark .g{width:22px; height:22px; display:grid; place-items:center}
+  header.page .mark .g svg{width:100%; height:100%}
+  header.page .mark .name{font-weight:600; letter-spacing:-0.01em}
+  header.page .mark .name span{color:var(--ink-3); font-weight:400}
+  header.page .tabs{display:flex; border:1px solid var(--rule); border-radius:999px; overflow:hidden; padding:2px}
+  header.page .tabs button{background:transparent; border:none; padding:6px 12px; font:inherit; font-size:12px; color:var(--ink-3); cursor:pointer; border-radius:999px; font-family:inherit}
+  header.page .tabs button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+
+  .intro{padding: 48px 36px 20px; max-width:1100px}
+  .intro h1{margin:0 0 6px; font-size: clamp(28px, 3vw, 44px); font-weight:500; letter-spacing:-0.025em; line-height:1.05}
+  .intro h1 em{font-style:normal; color:var(--ink-3)}
+  .intro p{margin:8px 0 0; color:var(--ink-2); max-width:62ch}
+
+  .row{
+    border-top: 1px solid var(--rule);
+    padding: 40px 36px 48px;
+    display:grid; grid-template-columns: 1fr 1.4fr; gap: 36px; align-items:start;
+  }
+  .row .meta{display:flex; flex-direction:column; gap:8px; position:sticky; top:80px}
+  .row .num{display:inline-flex; align-items:center; gap:10px; font-family:var(--mono); font-size:11px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.08em}
+  .row .num b{background:var(--ink); color:var(--paper); padding:2px 6px; border-radius:3px; font-weight:500}
+  .row h2{margin:4px 0 0; font-size: clamp(24px, 2.2vw, 34px); font-weight:500; letter-spacing:-0.02em; line-height:1.1}
+  .row h2 em{font-style:normal; color:var(--ink-3)}
+  .row .desc{color:var(--ink-2); margin: 4px 0 0; max-width: 44ch}
+  .row .chips{display:flex; gap:6px; flex-wrap:wrap; margin-top: 10px}
+  .row .chips span{font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-3); border:1px solid var(--rule); padding:3px 7px; border-radius:3px}
+
+  .stage{display:grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 12px}
+  .tile{
+    border:1px solid var(--rule); border-radius: 8px; background: var(--paper);
+    position:relative; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    min-height: 210px;
+  }
+  .tile .lbl{position:absolute; top:10px; left:12px; font-family:var(--mono); font-size:10px; letter-spacing:0.06em; color:var(--ink-3); text-transform:uppercase}
+  .tile.big{grid-column: 1 / 2; grid-row: 1 / span 2; min-height: 432px; padding: 30px}
+  .tile.big > svg{width: 92%; height: auto; max-height: 78%; display:block}
+  .tile.inv{background: var(--ink); color: var(--paper)}
+
+  footer{padding: 40px 36px; border-top:1px solid var(--rule); display:flex; justify-content:space-between; gap:24px; align-items:end; background:var(--paper-2)}
+  footer p{margin:0; font-size: clamp(22px, 2.2vw, 32px); font-weight:500; letter-spacing:-0.02em; max-width:36ch}
+  footer .sign{font-family:var(--mono); font-size:11px; color:var(--ink-3); line-height:1.8; text-align:right}
+
+  .tweaks{position:fixed; right:16px; bottom:16px; z-index:60; width:260px; background:var(--paper); border:1px solid var(--rule); border-radius:8px; box-shadow:0 20px 48px -16px oklch(0 0 0 / 0.2); display:none}
+  .tweaks.open{display:block}
+  .tweaks header{padding:10px 14px; border-bottom:1px solid var(--rule); background:var(--paper-2); font-family:var(--mono); font-size:11px; color:var(--ink-3); display:flex; justify-content:space-between}
+  .tweaks .bd{padding:12px 14px}
+  .tweaks .r{display:flex; flex-direction:column; gap:6px; margin:10px 0}
+  .tweaks label{font-family:var(--mono); font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em}
+  .tweaks .swatches{display:flex; gap:8px}
+  .tweaks .swatches button{width:26px; height:26px; border-radius:50%; border:1px solid var(--rule); background:var(--c); cursor:pointer; padding:0}
+  .tweaks .swatches button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--paper), 0 0 0 3px var(--ink)}
+
+  @media (max-width: 900px){
+    .row{grid-template-columns: 1fr}
+    .row .meta{position:static}
+    .stage{grid-template-columns: 1fr 1fr}
+    .tile.big{grid-column: 1 / -1; grid-row: auto; min-height: 280px}
+  }
+</style>
+</head>
+<body data-bg="paper" data-accent="volt">
+
+<header class="page">
+  <div class="mark">
+    <span class="g">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="13" width="6" height="8" fill="currentColor"/>
+        <rect x="11" y="5" width="6" height="16" fill="currentColor"/>
+        <rect x="3" y="13" width="6" height="2" fill="var(--ac)"/>
+        <rect x="11" y="5" width="6" height="2" fill="var(--ac)"/>
+      </svg>
+    </span>
+    <span class="name">Good Business <span>/ meter · variations</span></span>
+  </div>
+  <div class="tabs" id="bg-tabs">
+    <button data-bg="paper" aria-pressed="true">Paper</button>
+    <button data-bg="ink" aria-pressed="false">Ink</button>
+  </div>
+  <span class="mono">3 variations · press T</span>
+</header>
+
+<section class="intro">
+  <div class="mono" style="margin-bottom:8px">§ 00 · round 04 · lock-down</div>
+  <h1>The <em>Meter.</em> Three takes.</h1>
+  <p>Growth, measurement, ROI — what any good vendor should be about. Three variations on the same core idea so you can pick the flavor, then we lock it and push the full template.</p>
+</section>
+
+<!-- ═══════════ 01 · CLASSIC METER ═══════════ -->
+<section class="row">
+  <div class="meta">
+    <span class="num"><b>01</b> classic · two-bar</span>
+    <h2>The <em>original.</em></h2>
+    <p class="desc">Short + tall. Accent caps on both. The most restrained read — confident, corporate, quietly ambitious. This is the one in your screenshot.</p>
+    <div class="chips"><span>2 bars</span><span>accent caps</span><span>minimal</span></div>
+  </div>
+  <div class="stage">
+    <div class="tile big">
+      <span class="lbl">wordmark · primary</span>
+      <svg viewBox="0 0 640 180" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(60,40)">
+          <rect x="0" y="50" width="26" height="50" fill="currentColor"/>
+          <rect x="34" y="0" width="26" height="100" fill="currentColor"/>
+          <rect x="0" y="50" width="26" height="8" fill="var(--ac)"/>
+          <rect x="34" y="0" width="26" height="8" fill="var(--ac)"/>
+        </g>
+        <text x="160" y="110" font-family="Geist" font-weight="700" font-size="64" letter-spacing="-0.035em" fill="currentColor">Good Business</text>
+        <text x="160" y="136" font-family="Geist Mono" font-size="11" letter-spacing="3" fill="currentColor" opacity="0.55">PRODUCTS CALIBRATED FOR USE</text>
+      </svg>
+    </div>
+
+    <div class="tile">
+      <span class="lbl">glyph</span>
+      <svg viewBox="0 0 160 160" width="60%">
+        <g transform="translate(44,30)">
+          <rect x="0" y="60" width="30" height="50" fill="currentColor"/>
+          <rect x="42" y="0" width="30" height="110" fill="currentColor"/>
+          <rect x="0" y="60" width="30" height="9" fill="var(--ac)"/>
+          <rect x="42" y="0" width="30" height="9" fill="var(--ac)"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="tile inv">
+      <span class="lbl" style="color:color-mix(in oklab, currentColor 65%, transparent)">avatar · 256</span>
+      <div style="width:118px; height:118px; border-radius:50%; border:2px solid currentColor; display:grid; place-items:center">
+        <svg viewBox="0 0 100 100" width="56">
+          <g transform="translate(22,18)">
+            <rect x="0" y="38" width="22" height="30" fill="currentColor"/>
+            <rect x="32" y="0" width="22" height="68" fill="currentColor"/>
+            <rect x="0" y="38" width="22" height="6" fill="var(--ac)"/>
+            <rect x="32" y="0" width="22" height="6" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tile">
+      <span class="lbl">favicon · 16 / 32</span>
+      <div style="display:flex; gap:18px; align-items:center">
+        <svg viewBox="0 0 16 16" width="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <rect x="4" y="8" width="3" height="5" fill="var(--paper)"/>
+          <rect x="9" y="3" width="3" height="10" fill="var(--paper)"/>
+          <rect x="4" y="8" width="3" height="1" fill="var(--ac)"/>
+          <rect x="9" y="3" width="3" height="1" fill="var(--ac)"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <rect x="8" y="16" width="6" height="10" fill="var(--paper)"/>
+          <rect x="18" y="6" width="6" height="20" fill="var(--paper)"/>
+          <rect x="8" y="16" width="6" height="2" fill="var(--ac)"/>
+          <rect x="18" y="6" width="6" height="2" fill="var(--ac)"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tile">
+      <span class="lbl">app tile · 128</span>
+      <div style="width:128px; height:128px; border-radius:22px; background:var(--paper); border:1px solid var(--rule); display:grid; place-items:center; box-shadow: 0 2px 0 var(--rule), 0 16px 40px -12px oklch(0 0 0 / 0.18)">
+        <svg viewBox="0 0 100 100" width="72">
+          <g transform="translate(20,14)">
+            <rect x="0" y="40" width="24" height="36" fill="var(--ink)"/>
+            <rect x="36" y="0" width="24" height="76" fill="var(--ink)"/>
+            <rect x="0" y="40" width="24" height="7" fill="var(--ac)"/>
+            <rect x="36" y="0" width="24" height="7" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 02 · THREE-STEP ASCENSION ═══════════ -->
+<section class="row">
+  <div class="meta">
+    <span class="num"><b>02</b> ascension · three-step</span>
+    <h2><em>Three</em> steps up.</h2>
+    <p class="desc">Small · medium · large. More explicit growth motion — reads as a trajectory, not just a comparison. The accent still caps only the tallest bar (the payoff).</p>
+    <div class="chips"><span>3 bars</span><span>S · M · L</span><span>trajectory</span></div>
+  </div>
+  <div class="stage">
+    <div class="tile big">
+      <span class="lbl">wordmark · primary</span>
+      <svg viewBox="0 0 640 180" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(50,30)">
+          <rect x="0" y="75" width="22" height="35" fill="currentColor"/>
+          <rect x="28" y="45" width="22" height="65" fill="currentColor"/>
+          <rect x="56" y="0" width="22" height="110" fill="currentColor"/>
+          <rect x="0" y="75" width="22" height="7" fill="var(--ac)"/>
+          <rect x="28" y="45" width="22" height="7" fill="var(--ac)"/>
+          <rect x="56" y="0" width="22" height="7" fill="var(--ac)"/>
+        </g>
+        <text x="170" y="110" font-family="Geist" font-weight="700" font-size="64" letter-spacing="-0.035em" fill="currentColor">Good Business</text>
+        <text x="170" y="136" font-family="Geist Mono" font-size="11" letter-spacing="3" fill="currentColor" opacity="0.55">COMPOUND WHAT WORKS</text>
+      </svg>
+    </div>
+
+    <div class="tile">
+      <span class="lbl">glyph</span>
+      <svg viewBox="0 0 160 160" width="66%">
+        <g transform="translate(22,28)">
+          <rect x="0" y="70" width="30" height="40" fill="currentColor"/>
+          <rect x="38" y="38" width="30" height="72" fill="currentColor"/>
+          <rect x="76" y="0" width="30" height="110" fill="currentColor"/>
+          <rect x="0" y="70" width="30" height="8" fill="var(--ac)"/>
+          <rect x="38" y="38" width="30" height="8" fill="var(--ac)"/>
+          <rect x="76" y="0" width="30" height="8" fill="var(--ac)"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="tile inv">
+      <span class="lbl" style="color:color-mix(in oklab, currentColor 65%, transparent)">avatar · 256</span>
+      <div style="width:118px; height:118px; border-radius:50%; border:2px solid currentColor; display:grid; place-items:center">
+        <svg viewBox="0 0 100 100" width="68">
+          <g transform="translate(14,22)">
+            <rect x="0" y="40" width="18" height="26" fill="currentColor"/>
+            <rect x="24" y="20" width="18" height="46" fill="currentColor"/>
+            <rect x="48" y="0" width="18" height="66" fill="currentColor"/>
+            <rect x="0" y="40" width="18" height="5" fill="var(--ac)"/>
+            <rect x="24" y="20" width="18" height="5" fill="var(--ac)"/>
+            <rect x="48" y="0" width="18" height="5" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tile">
+      <span class="lbl">favicon · 16 / 32</span>
+      <div style="display:flex; gap:18px; align-items:center">
+        <svg viewBox="0 0 16 16" width="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <rect x="2" y="10" width="3" height="3" fill="var(--paper)"/>
+          <rect x="6.5" y="7" width="3" height="6" fill="var(--paper)"/>
+          <rect x="11" y="3" width="3" height="10" fill="var(--paper)"/>
+          <rect x="2" y="10" width="3" height="1" fill="var(--ac)"/>
+          <rect x="6.5" y="7" width="3" height="1" fill="var(--ac)"/>
+          <rect x="11" y="3" width="3" height="1" fill="var(--ac)"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <rect x="5" y="19" width="5" height="8" fill="var(--paper)"/>
+          <rect x="13.5" y="13" width="5" height="14" fill="var(--paper)"/>
+          <rect x="22" y="6" width="5" height="21" fill="var(--paper)"/>
+          <rect x="5" y="19" width="5" height="2" fill="var(--ac)"/>
+          <rect x="13.5" y="13" width="5" height="2" fill="var(--ac)"/>
+          <rect x="22" y="6" width="5" height="2" fill="var(--ac)"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tile">
+      <span class="lbl">app tile · 128</span>
+      <div style="width:128px; height:128px; border-radius:22px; background:var(--paper); border:1px solid var(--rule); display:grid; place-items:center; box-shadow: 0 2px 0 var(--rule), 0 16px 40px -12px oklch(0 0 0 / 0.18)">
+        <svg viewBox="0 0 100 100" width="82">
+          <g transform="translate(10,14)">
+            <rect x="0" y="48" width="22" height="28" fill="var(--ink)"/>
+            <rect x="28" y="24" width="22" height="52" fill="var(--ink)"/>
+            <rect x="56" y="0" width="22" height="76" fill="var(--ink)"/>
+            <rect x="0" y="48" width="22" height="6" fill="var(--ac)"/>
+            <rect x="28" y="24" width="22" height="6" fill="var(--ac)"/>
+            <rect x="56" y="0" width="22" height="6" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 03 · ARROW-METER ═══════════ -->
+<section class="row">
+  <div class="meta">
+    <span class="num"><b>03</b> arrow · directional</span>
+    <h2>The tall bar <em>points up.</em></h2>
+    <p class="desc">Same two-bar base; the tall one gets a chevron cap instead of a flat accent. Most directional read — "up and to the right" without ever drawing an arrow.</p>
+    <div class="chips"><span>2 bars</span><span>chevron tip</span><span>directional</span></div>
+  </div>
+  <div class="stage">
+    <div class="tile big">
+      <span class="lbl">wordmark · primary</span>
+      <svg viewBox="0 0 640 180" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(60,30)">
+          <!-- short bar -->
+          <rect x="0" y="60" width="26" height="60" fill="currentColor"/>
+          <rect x="0" y="60" width="26" height="8" fill="var(--ac)"/>
+          <!-- tall bar with chevron tip -->
+          <path d="M 34 14 L 47 0 L 60 14 L 60 120 L 34 120 Z" fill="currentColor"/>
+          <!-- accent chevron cap -->
+          <path d="M 34 14 L 47 0 L 60 14 L 60 22 L 47 9 L 34 22 Z" fill="var(--ac)"/>
+        </g>
+        <text x="160" y="110" font-family="Geist" font-weight="700" font-size="64" letter-spacing="-0.035em" fill="currentColor">Good Business</text>
+        <text x="160" y="136" font-family="Geist Mono" font-size="11" letter-spacing="3" fill="currentColor" opacity="0.55">UP AND TO THE RIGHT</text>
+      </svg>
+    </div>
+
+    <div class="tile">
+      <span class="lbl">glyph</span>
+      <svg viewBox="0 0 160 160" width="60%">
+        <g transform="translate(40,20)">
+          <rect x="0" y="60" width="30" height="60" fill="currentColor"/>
+          <rect x="0" y="60" width="30" height="9" fill="var(--ac)"/>
+          <path d="M 42 16 L 57 0 L 72 16 L 72 120 L 42 120 Z" fill="currentColor"/>
+          <path d="M 42 16 L 57 0 L 72 16 L 72 26 L 57 11 L 42 26 Z" fill="var(--ac)"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="tile inv">
+      <span class="lbl" style="color:color-mix(in oklab, currentColor 65%, transparent)">avatar · 256</span>
+      <div style="width:118px; height:118px; border-radius:50%; border:2px solid currentColor; display:grid; place-items:center">
+        <svg viewBox="0 0 100 100" width="56">
+          <g transform="translate(22,18)">
+            <rect x="0" y="36" width="22" height="34" fill="currentColor"/>
+            <rect x="0" y="36" width="22" height="6" fill="var(--ac)"/>
+            <path d="M 32 10 L 43 0 L 54 10 L 54 70 L 32 70 Z" fill="currentColor"/>
+            <path d="M 32 10 L 43 0 L 54 10 L 54 17 L 43 7 L 32 17 Z" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tile">
+      <span class="lbl">favicon · 16 / 32</span>
+      <div style="display:flex; gap:18px; align-items:center">
+        <svg viewBox="0 0 16 16" width="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <rect x="4" y="8" width="3" height="5" fill="var(--paper)"/>
+          <rect x="4" y="8" width="3" height="1" fill="var(--ac)"/>
+          <path d="M 9 4 L 10.5 2.5 L 12 4 L 12 13 L 9 13 Z" fill="var(--paper)"/>
+          <path d="M 9 4 L 10.5 2.5 L 12 4 L 12 5 L 10.5 3.5 L 9 5 Z" fill="var(--ac)"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <rect x="8" y="16" width="6" height="10" fill="var(--paper)"/>
+          <rect x="8" y="16" width="6" height="2" fill="var(--ac)"/>
+          <path d="M 18 8 L 21 5 L 24 8 L 24 26 L 18 26 Z" fill="var(--paper)"/>
+          <path d="M 18 8 L 21 5 L 24 8 L 24 10 L 21 7 L 18 10 Z" fill="var(--ac)"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tile">
+      <span class="lbl">app tile · 128</span>
+      <div style="width:128px; height:128px; border-radius:22px; background:var(--paper); border:1px solid var(--rule); display:grid; place-items:center; box-shadow: 0 2px 0 var(--rule), 0 16px 40px -12px oklch(0 0 0 / 0.18)">
+        <svg viewBox="0 0 100 100" width="72">
+          <g transform="translate(18,14)">
+            <rect x="0" y="40" width="24" height="36" fill="var(--ink)"/>
+            <rect x="0" y="40" width="24" height="7" fill="var(--ac)"/>
+            <path d="M 38 12 L 50 0 L 62 12 L 62 76 L 38 76 Z" fill="var(--ink)"/>
+            <path d="M 38 12 L 50 0 L 62 12 L 62 20 L 50 8 L 38 20 Z" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Pick one (or tell me to mix) and I'll lock the standard + logo + exports.</p>
+  <div class="sign">
+    <div>Good Business · meter variations</div>
+    <div>v0.4 · 2026-04-20</div>
+  </div>
+</footer>
+
+<aside class="tweaks" id="tweaksPanel" aria-hidden="true">
+  <header><span>Tweaks</span><span>T to close</span></header>
+  <div class="bd">
+    <div class="r">
+      <label>Background</label>
+      <div style="display:flex; border:1px solid var(--rule); border-radius:6px; overflow:hidden">
+        <button data-bg="paper" style="flex:1; background:transparent; border:none; padding:6px 8px; font-size:12px; cursor:pointer; color:var(--ink-2); border-right:1px solid var(--rule); font-family:inherit" aria-pressed="true">Paper</button>
+        <button data-bg="ink" style="flex:1; background:transparent; border:none; padding:6px 8px; font-size:12px; cursor:pointer; color:var(--ink-2); font-family:inherit" aria-pressed="false">Ink</button>
+      </div>
+    </div>
+    <div class="r">
+      <label>Accent</label>
+      <div class="swatches" id="accentChips">
+        <button data-accent="volt"   style="--c: var(--c-volt)"   aria-pressed="true"></button>
+        <button data-accent="cobalt" style="--c: var(--c-cobalt)" aria-pressed="false"></button>
+        <button data-accent="amber"  style="--c: var(--c-amber)"  aria-pressed="false"></button>
+        <button data-accent="red"    style="--c: var(--c-red)"    aria-pressed="false"></button>
+        <button data-accent="ink"    style="--c: var(--c-ink)"    aria-pressed="false"></button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+  const body = document.body;
+  function apply(t){
+    if (t.bg)     body.dataset.bg     = t.bg;
+    if (t.accent) body.dataset.accent = t.accent;
+    document.querySelectorAll('#bg-tabs button, .tweaks [data-bg]').forEach(b => b.setAttribute('aria-pressed', b.dataset.bg === body.dataset.bg));
+    document.querySelectorAll('#accentChips button').forEach(b => b.setAttribute('aria-pressed', b.dataset.accent === body.dataset.accent));
+  }
+  apply(TWEAKS);
+  function setKey(k,v){
+    const edits = {[k]: v};
+    apply({...TWEAKS, ...edits});
+    Object.assign(TWEAKS, edits);
+    try { window.parent.postMessage({type:'__edit_mode_set_keys', edits}, '*'); } catch(e){}
+  }
+  document.querySelectorAll('#bg-tabs button, .tweaks [data-bg]').forEach(b => b.addEventListener('click', ()=> setKey('bg', b.dataset.bg)));
+  document.querySelectorAll('#accentChips button').forEach(b => b.addEventListener('click', ()=> setKey('accent', b.dataset.accent)));
+
+  const panel = document.getElementById('tweaksPanel');
+  let open = false;
+  function setOpen(v){ open = v; panel.classList.toggle('open', v); panel.setAttribute('aria-hidden', v ? 'false' : 'true'); }
+  window.addEventListener('message', (e)=>{
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode')   setOpen(true);
+    if (d.type === '__deactivate_edit_mode') setOpen(false);
+  });
+  try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(e){}
+  window.addEventListener('keydown', (e)=>{
+    if ((e.key === 't' || e.key === 'T') && !['INPUT','TEXTAREA'].includes((e.target||{}).tagName)) setOpen(!open);
+  });
+</script>
+</body>
+</html>

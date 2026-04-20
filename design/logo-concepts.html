@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Good Business — Logo Concepts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  const TWEAKS = /*EDITMODE-BEGIN*/{
+    "bg": "paper",
+    "scale": "medium"
+  }/*EDITMODE-END*/;
+</script>
+<style>
+  :root{
+    --paper: oklch(0.985 0.003 250);
+    --paper-2: oklch(0.965 0.004 250);
+    --ink: oklch(0.16 0.015 250);
+    --ink-2: oklch(0.42 0.012 250);
+    --ink-3: oklch(0.62 0.008 250);
+    --ink-4: oklch(0.82 0.006 250);
+    --rule: oklch(0.88 0.006 250);
+
+    /* reserved single accent per-concept; all ~same L/C, only hue varies */
+    --c1: oklch(0.58 0.17 28);    /* stamp red */
+    --c2: oklch(0.58 0.17 255);   /* bracket cobalt */
+    --c3: oklch(0.78 0.20 128);   /* meter volt */
+    --c4: oklch(0.58 0.17 155);   /* ledger green */
+    --c5: oklch(0.58 0.17 70);    /* aperture amber */
+
+    --sans: 'Geist', -apple-system, system-ui, sans-serif;
+    --mono: 'Geist Mono', ui-monospace, Menlo, monospace;
+    --serif: 'Fraunces', 'Times New Roman', serif;
+  }
+  [data-bg="ink"]{
+    --paper: oklch(0.16 0.015 250);
+    --paper-2: oklch(0.21 0.015 250);
+    --ink: oklch(0.98 0.003 250);
+    --ink-2: oklch(0.82 0.008 250);
+    --ink-3: oklch(0.62 0.010 250);
+    --ink-4: oklch(0.42 0.010 250);
+    --rule: oklch(0.32 0.010 250);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--mono); font-size:11px; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink-3)}
+
+  header.page{
+    position:sticky; top:0; z-index:20; background:color-mix(in oklab, var(--paper) 92%, transparent); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--rule);
+    display:flex; align-items:center; justify-content:space-between; padding:14px 36px;
+  }
+  header.page .mark{display:flex; align-items:center; gap:10px}
+  header.page .mark .glyph{width:20px; height:20px; border-radius:4px; background:var(--ink); display:grid; place-items:center}
+  header.page .mark .glyph::before{content:""; width:8px; height:8px; background:var(--paper); border-radius:2px; transform:rotate(45deg)}
+  header.page .mark .name{font-weight:600; letter-spacing:-0.01em}
+  header.page .mark .name span{color:var(--ink-3); font-weight:400}
+
+  header.page .tabs{display:flex; border:1px solid var(--rule); border-radius:999px; overflow:hidden; padding:2px}
+  header.page .tabs button{background:transparent; border:none; padding:6px 12px; font:inherit; font-size:12px; color:var(--ink-3); cursor:pointer; border-radius:999px}
+  header.page .tabs button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+
+  .intro{padding: 56px 36px 24px; max-width: 1200px}
+  .intro h1{margin:0 0 6px; font-size: clamp(32px, 3.4vw, 52px); font-weight:500; letter-spacing:-0.025em; line-height:1.05}
+  .intro h1 em{font-style:normal; color:var(--ink-3)}
+  .intro p{margin:8px 0 0; color:var(--ink-2); max-width: 64ch}
+  .intro .kv{display:flex; gap:28px; margin-top:22px; flex-wrap:wrap}
+  .intro .kv div{display:flex; flex-direction:column; gap:2px}
+  .intro .kv .k{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-3)}
+  .intro .kv .v{font-size:13px; color:var(--ink)}
+
+  .concept{
+    border-top: 1px solid var(--rule);
+    padding: 48px 36px 64px;
+  }
+  .concept .hd{
+    display:grid; grid-template-columns: 1fr 1fr; gap: 36px; align-items:end; margin-bottom: 28px;
+  }
+  .concept .hd .left{display:flex; flex-direction:column; gap:10px}
+  .concept .hd .num{
+    display:inline-flex; align-items:center; gap:10px; font-family:var(--mono); font-size:11px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.08em;
+  }
+  .concept .hd .num b{background:var(--ink); color:var(--paper); padding:2px 6px; border-radius:3px; font-weight:500}
+  .concept .hd h2{margin:0; font-size: clamp(26px, 2.2vw, 36px); font-weight:500; letter-spacing:-0.02em}
+  .concept .hd h2 em{font-style:normal; color:var(--ink-3)}
+  .concept .hd .right{color:var(--ink-2); font-size:15px; max-width:56ch; justify-self:end}
+
+  .grid{
+    display:grid;
+    grid-template-columns: 2.2fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 12px;
+  }
+  .tile{
+    border:1px solid var(--rule); border-radius: 8px; background: var(--paper);
+    position:relative; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .tile .lbl{
+    position:absolute; top:10px; left:12px;
+    font-family:var(--mono); font-size:10px; letter-spacing:0.06em; color:var(--ink-3); text-transform:uppercase;
+  }
+  .tile .sub{
+    position:absolute; bottom:10px; left:12px; right:12px;
+    font-family:var(--mono); font-size:10px; color:var(--ink-3); display:flex; justify-content:space-between;
+  }
+  .tile.wordmark{grid-row: 1 / span 2; min-height: 360px}
+  .tile.glyph{min-height: 175px}
+  .tile.avatar{min-height: 175px; background: var(--paper-2)}
+  .tile.favicon{min-height: 175px}
+  .tile.app{min-height: 175px}
+
+  .tile.card{
+    grid-column: 1 / -1;
+    min-height: 240px;
+    padding: 24px;
+    display:flex; align-items:stretch; justify-content:stretch;
+    background:
+      radial-gradient(circle at 1px 1px, var(--ink-4) 1px, transparent 0) 0 0 / 16px 16px,
+      var(--paper-2);
+  }
+  .tile.card .card-inner{
+    width: 100%; background: var(--paper); border:1px solid var(--rule); border-radius:6px;
+    display:grid; grid-template-columns: 1.2fr 1fr; gap:0;
+    box-shadow: 0 2px 0 0 var(--rule), 0 24px 48px -20px oklch(0 0 0 / 0.18);
+  }
+  .tile.card .face-a, .tile.card .face-b{padding: 22px 26px; display:flex; flex-direction:column; justify-content:space-between}
+  .tile.card .face-b{border-left:1px dashed var(--rule)}
+  .tile.card .name{font-weight:500; letter-spacing:-0.01em; font-size:15px}
+  .tile.card .role{font-family:var(--mono); font-size:10.5px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em; margin-top:4px}
+  .tile.card .contact{font-family:var(--mono); font-size:11px; color:var(--ink-2); line-height:1.6}
+  .tile.card .contact b{color:var(--ink); font-weight:500}
+
+  .legend{display:flex; align-items:center; gap:8px; margin-top: 18px; font-family:var(--mono); font-size:10.5px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em}
+  .legend .dot{width:10px; height:10px; border-radius:2px}
+
+  /* Scale tweak */
+  [data-scale="small"] .concept{padding: 32px 36px 48px}
+  [data-scale="large"] .concept{padding: 72px 36px 96px}
+
+  footer{
+    padding: 48px 36px; border-top:1px solid var(--rule);
+    display:flex; align-items:end; justify-content:space-between; gap:24px; background:var(--paper-2);
+  }
+  footer .big{font-size: clamp(24px, 2.6vw, 36px); font-weight:500; letter-spacing:-0.02em; max-width:30ch; margin:0}
+  footer .sign{font-family:var(--mono); font-size:11px; color:var(--ink-3); line-height:1.8; text-align:right}
+
+  /* Tweaks */
+  .tweaks{
+    position:fixed; right:16px; bottom:16px; z-index:60; width:260px;
+    background:var(--paper); border:1px solid var(--rule); border-radius:8px;
+    box-shadow: 0 20px 48px -16px oklch(0 0 0 / 0.2); display:none;
+  }
+  .tweaks.open{display:block}
+  .tweaks header{padding:10px 14px; border-bottom:1px solid var(--rule); background:var(--paper-2); font-family:var(--mono); font-size:11px; color:var(--ink-3); display:flex; justify-content:space-between}
+  .tweaks .bd{padding:12px 14px}
+  .tweaks .row{display:flex; flex-direction:column; gap:6px; margin:10px 0}
+  .tweaks label{font-family:var(--mono); font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em}
+  .tweaks .seg{display:flex; border:1px solid var(--rule); border-radius:6px; overflow:hidden}
+  .tweaks .seg button{flex:1; padding:6px 8px; background:transparent; border:none; font-size:12px; cursor:pointer; color:var(--ink-2); border-right:1px solid var(--rule); font-family:inherit}
+  .tweaks .seg button:last-child{border-right:none}
+  .tweaks .seg button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+
+  @media (max-width: 900px){
+    .concept .hd{grid-template-columns: 1fr}
+    .grid{grid-template-columns: 1fr 1fr}
+    .tile.wordmark{grid-row: auto; grid-column: 1 / -1; min-height: 240px}
+    .tile.card{grid-template-columns: 1fr}
+    .tile.card .face-b{border-left:none; border-top:1px dashed var(--rule)}
+  }
+
+  /* ─────────── concept-specific styling helpers ─────────── */
+  .wm{display:flex; align-items:center; justify-content:center}
+</style>
+</head>
+<body data-bg="paper" data-scale="medium">
+
+<header class="page">
+  <div class="mark">
+    <span class="glyph"></span>
+    <span class="name">Good Business <span>/ logo concepts</span></span>
+  </div>
+  <div class="tabs" id="bg-tabs">
+    <button data-bg="paper" aria-pressed="true">Paper</button>
+    <button data-bg="ink" aria-pressed="false">Ink</button>
+  </div>
+  <span class="mono">5 concepts · v0.1 · press T</span>
+</header>
+
+<section class="intro">
+  <div class="mono" style="margin-bottom:8px">§ 00 · brief</div>
+  <h1>Five marks for Good Business. <em>No AI slop, no Lucide.</em></h1>
+  <p>Technical-precise, confident-modern, warm-human. Every concept is drawn from geometric primitives, holds up at 16px, and survives on a business card. Palette is disciplined: ink on paper, with a single reserved accent per concept.</p>
+  <div class="kv">
+    <div><span class="k">Type</span><span class="v">Geist · Fraunces · Geist Mono</span></div>
+    <div><span class="k">Ink</span><span class="v">oklch(0.16 0.015 250)</span></div>
+    <div><span class="k">Accent</span><span class="v">matched L/C · hue rotates per concept</span></div>
+    <div><span class="k">Min size</span><span class="v">16 px</span></div>
+  </div>
+</section>
+
+<!-- ════════════════════ CONCEPT 01 — STAMP ════════════════════ -->
+<section class="concept" style="--ac: var(--c1)">
+  <div class="hd">
+    <div class="left">
+      <span class="num"><b>01</b> stamp · seal · notarized</span>
+      <h2>A <em>good stamp.</em></h2>
+    </div>
+    <div class="right">Approval made visible. A circular seal with the wordmark set along the arc and a bitten date/mark at the center — the way a contract gets certified. Feels like craft, trust, and a little defiance.</div>
+  </div>
+
+  <div class="grid">
+    <!-- Wordmark -->
+    <div class="tile wordmark">
+      <span class="lbl">wordmark</span>
+      <div class="wm">
+        <svg viewBox="0 0 560 160" width="82%" xmlns="http://www.w3.org/2000/svg" aria-label="Good Business stamp wordmark">
+          <g transform="translate(80,80)">
+            <!-- seal -->
+            <circle cx="0" cy="0" r="62" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="0" cy="0" r="54" fill="none" stroke="currentColor" stroke-width="0.75"/>
+            <!-- tick marks -->
+            <g stroke="currentColor" stroke-width="1">
+              <line x1="0" y1="-62" x2="0" y2="-58"/>
+              <line x1="62" y1="0" x2="58" y2="0"/>
+              <line x1="0" y1="62" x2="0" y2="58"/>
+              <line x1="-62" y1="0" x2="-58" y2="0"/>
+              <line x1="43.8" y1="-43.8" x2="41" y2="-41"/>
+              <line x1="43.8" y1="43.8" x2="41" y2="41"/>
+              <line x1="-43.8" y1="43.8" x2="-41" y2="41"/>
+              <line x1="-43.8" y1="-43.8" x2="-41" y2="-41"/>
+            </g>
+            <!-- arc text -->
+            <defs>
+              <path id="stamp-arc-top" d="M -46,0 A 46,46 0 0 1 46,0"/>
+              <path id="stamp-arc-bot" d="M -46,4 A 46,46 0 0 0 46,4"/>
+            </defs>
+            <text font-family="Geist Mono" font-size="9.5" letter-spacing="4" fill="currentColor">
+              <textPath href="#stamp-arc-top" startOffset="50%" text-anchor="middle">GOOD · BUSINESS</textPath>
+            </text>
+            <text font-family="Geist Mono" font-size="8" letter-spacing="3" fill="currentColor" opacity="0.55">
+              <textPath href="#stamp-arc-bot" startOffset="50%" text-anchor="middle">EST · AUSTIN · MMXXV</textPath>
+            </text>
+            <!-- center mark: a minimal "✓" in the accent -->
+            <g transform="translate(0,-2)">
+              <path d="M -14,-2 L -4,8 L 16,-12" fill="none" stroke="var(--ac)" stroke-width="4" stroke-linecap="square" stroke-linejoin="miter"/>
+            </g>
+          </g>
+          <!-- wordmark -->
+          <g transform="translate(180,95)" fill="currentColor" font-family="Fraunces" font-weight="500" font-size="62" letter-spacing="-0.015em">
+            <text>Good Business</text>
+          </g>
+          <text x="180" y="118" font-family="Geist Mono" font-size="10" letter-spacing="3" fill="currentColor" opacity="0.55">AI · DESIGN · BUILD STUDIO</text>
+        </svg>
+      </div>
+      <span class="sub"><span>wordmark · primary lockup</span><span>1.00×</span></span>
+    </div>
+
+    <!-- Glyph: the seal alone -->
+    <div class="tile glyph">
+      <span class="lbl">glyph</span>
+      <svg viewBox="0 0 160 160" width="78%" xmlns="http://www.w3.org/2000/svg">
+        <g transform="translate(80,80)" stroke="currentColor" fill="none">
+          <circle r="62" stroke-width="2"/>
+          <circle r="54" stroke-width="0.75"/>
+          <g stroke-width="1">
+            <line x1="0" y1="-62" x2="0" y2="-58"/><line x1="62" y1="0" x2="58" y2="0"/>
+            <line x1="0" y1="62" x2="0" y2="58"/><line x1="-62" y1="0" x2="-58" y2="0"/>
+          </g>
+          <defs><path id="s1-top" d="M -46,0 A 46,46 0 0 1 46,0"/></defs>
+          <text font-family="Geist Mono" font-size="10" letter-spacing="4" fill="currentColor" stroke="none">
+            <textPath href="#s1-top" startOffset="50%" text-anchor="middle">GOOD · BUSINESS</textPath>
+          </text>
+          <path d="M -14,-2 L -4,8 L 16,-12" fill="none" stroke="var(--ac)" stroke-width="4" stroke-linecap="square"/>
+        </g>
+      </svg>
+      <span class="sub"><span>glyph · seal only</span><span>solo-safe</span></span>
+    </div>
+
+    <!-- Avatar -->
+    <div class="tile avatar">
+      <span class="lbl">avatar · 256</span>
+      <div style="width:112px; height:112px; border-radius:50%; background: var(--ink); display:grid; place-items:center; color: var(--paper)">
+        <svg viewBox="0 0 100 100" width="88" height="88">
+          <g transform="translate(50,50)" stroke="currentColor" fill="none">
+            <circle r="38" stroke-width="1.5"/>
+            <circle r="32" stroke-width="0.6"/>
+            <defs><path id="s1-av" d="M -26,0 A 26,26 0 0 1 26,0"/></defs>
+            <text font-family="Geist Mono" font-size="7" letter-spacing="3" fill="currentColor" stroke="none">
+              <textPath href="#s1-av" startOffset="50%" text-anchor="middle">GOOD · BUSINESS</textPath>
+            </text>
+            <path d="M -9,-1 L -2,5 L 10,-8" stroke="var(--ac)" stroke-width="2.5" stroke-linecap="square"/>
+          </g>
+        </svg>
+      </div>
+      <span class="sub"><span>round · inverse</span><span>social</span></span>
+    </div>
+
+    <!-- Favicon / App -->
+    <div class="tile favicon">
+      <span class="lbl">favicon · 16 / 32</span>
+      <div style="display:flex; gap:18px; align-items:end">
+        <svg viewBox="0 0 16 16" width="32" height="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <rect x="3" y="3" width="10" height="10" fill="none" stroke="var(--paper)" stroke-width="1"/>
+          <path d="M6 8 L7.5 9.5 L10 6.5" fill="none" stroke="var(--ac)" stroke-width="1.5"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64" height="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <circle cx="16" cy="16" r="11" fill="none" stroke="var(--paper)" stroke-width="1.4"/>
+          <circle cx="16" cy="16" r="9" fill="none" stroke="var(--paper)" stroke-width="0.5" opacity="0.6"/>
+          <path d="M11.5 15.5 L14.5 18.5 L20.5 12.5" fill="none" stroke="var(--ac)" stroke-width="2" stroke-linecap="square"/>
+        </svg>
+      </div>
+      <span class="sub"><span>solid tile</span><span>16 · 32 · 64</span></span>
+    </div>
+
+    <div class="tile app">
+      <span class="lbl">app tile · 128</span>
+      <div style="width:128px; height:128px; border-radius:22px; background: var(--ink); display:grid; place-items:center; box-shadow: 0 2px 0 color-mix(in oklab, var(--ink) 40%, black), 0 16px 40px -12px oklch(0 0 0 / 0.35)">
+        <svg viewBox="0 0 100 100" width="84" height="84">
+          <g transform="translate(50,50)" fill="none" stroke="var(--paper)">
+            <circle r="38" stroke-width="1.4"/>
+            <circle r="32" stroke-width="0.6" opacity="0.6"/>
+            <path d="M -10,-2 L -2,6 L 12,-10" stroke="var(--ac)" stroke-width="3" stroke-linecap="square"/>
+          </g>
+        </svg>
+      </div>
+      <span class="sub"><span>ios / macos</span><span>rounded · 22</span></span>
+    </div>
+
+    <!-- Business card -->
+    <div class="tile card">
+      <span class="lbl">business card · 3.5 × 2in</span>
+      <div class="card-inner">
+        <div class="face-a" style="background:var(--ink); color:var(--paper)">
+          <svg viewBox="0 0 100 100" width="72" height="72">
+            <g transform="translate(50,50)" fill="none" stroke="currentColor">
+              <circle r="38" stroke-width="1.4"/>
+              <circle r="32" stroke-width="0.5" opacity="0.6"/>
+              <defs><path id="s1-c" d="M -26,0 A 26,26 0 0 1 26,0"/></defs>
+              <text font-family="Geist Mono" font-size="7" letter-spacing="3" fill="currentColor" stroke="none">
+                <textPath href="#s1-c" startOffset="50%" text-anchor="middle">GOOD · BUSINESS</textPath>
+              </text>
+              <path d="M -9,-1 L -2,5 L 10,-8" stroke="var(--ac)" stroke-width="2.5" stroke-linecap="square"/>
+            </g>
+          </svg>
+          <div>
+            <div style="font-family:Fraunces; font-size:22px; font-weight:500; letter-spacing:-0.01em">Good Business</div>
+            <div class="role" style="color:color-mix(in oklab, currentColor 65%, transparent)">AI · Design · Build</div>
+          </div>
+        </div>
+        <div class="face-b">
+          <div>
+            <div class="name">Brian Traudt</div>
+            <div class="role">Founder</div>
+          </div>
+          <div class="contact">
+            <div><b>brian</b>@goodbusinesshq.com</div>
+            <div>+1 512 · · ·  · · · ·</div>
+            <div>goodbusinesshq.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="legend"><span class="dot" style="background:var(--c1)"></span>Accent · oklch 0.58 0.17 28 (seal red)</div>
+</section>
+
+<!-- ════════════════════ CONCEPT 02 — BRACKET ════════════════════ -->
+<section class="concept" style="--ac: var(--c2)">
+  <div class="hd">
+    <div class="left">
+      <span class="num"><b>02</b> bracket · notation · engineered</span>
+      <h2>[ <em>good business</em> ]</h2>
+    </div>
+    <div class="right">A typographer's bracket mark. Engineered, quietly witty — the name is <em>literally</em> bracketed. The glyph is a single bracket pair that doubles as a B. Confident and technical without being cold.</div>
+  </div>
+
+  <div class="grid">
+    <!-- Wordmark -->
+    <div class="tile wordmark">
+      <span class="lbl">wordmark</span>
+      <svg viewBox="0 0 720 160" width="84%" xmlns="http://www.w3.org/2000/svg">
+        <g fill="currentColor">
+          <!-- left bracket -->
+          <path d="M 60 40 L 40 40 L 40 120 L 60 120" fill="none" stroke="currentColor" stroke-width="6"/>
+          <!-- right bracket -->
+          <path d="M 660 40 L 680 40 L 680 120 L 660 120" fill="none" stroke="currentColor" stroke-width="6"/>
+          <!-- wordmark -->
+          <text x="90" y="100" font-family="Geist" font-weight="500" font-size="70" letter-spacing="-0.035em">good business</text>
+          <!-- cursor + accent -->
+          <rect x="620" y="46" width="8" height="68" fill="var(--ac)">
+            <animate attributeName="opacity" values="1;0;1" dur="1.1s" repeatCount="indefinite"/>
+          </rect>
+        </g>
+        <text x="90" y="128" font-family="Geist Mono" font-size="11" letter-spacing="3" fill="currentColor" opacity="0.55">AI · DESIGN · BUILD · SINCE 2025</text>
+      </svg>
+      <span class="sub"><span>wordmark · primary</span><span>1.00×</span></span>
+    </div>
+
+    <!-- Glyph -->
+    <div class="tile glyph">
+      <span class="lbl">glyph · [gb]</span>
+      <svg viewBox="0 0 160 160" width="66%">
+        <g fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square">
+          <path d="M 50 30 L 30 30 L 30 130 L 50 130"/>
+          <path d="M 110 30 L 130 30 L 130 130 L 110 130"/>
+        </g>
+        <text x="80" y="95" text-anchor="middle" font-family="Geist" font-weight="600" font-size="56" letter-spacing="-0.05em" fill="currentColor">gb</text>
+        <rect x="80" y="40" width="3" height="18" fill="var(--ac)" transform="translate(-1.5,0)" opacity="0"/>
+      </svg>
+      <span class="sub"><span>monogram</span><span>1:1</span></span>
+    </div>
+
+    <!-- Avatar -->
+    <div class="tile avatar">
+      <span class="lbl">avatar · 256</span>
+      <div style="width:112px; height:112px; border-radius:50%; background:var(--ink); display:grid; place-items:center">
+        <svg viewBox="0 0 100 100" width="80" height="80">
+          <g fill="none" stroke="var(--paper)" stroke-width="4.5" stroke-linecap="square">
+            <path d="M 36 22 L 22 22 L 22 78 L 36 78"/>
+            <path d="M 64 22 L 78 22 L 78 78 L 64 78"/>
+          </g>
+          <text x="50" y="60" text-anchor="middle" font-family="Geist" font-weight="600" font-size="32" letter-spacing="-0.05em" fill="var(--paper)">gb</text>
+        </svg>
+      </div>
+      <span class="sub"><span>round · inverse</span><span>social</span></span>
+    </div>
+
+    <div class="tile favicon">
+      <span class="lbl">favicon · 16 / 32</span>
+      <div style="display:flex; gap:18px; align-items:end">
+        <svg viewBox="0 0 16 16" width="32" height="32">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <path d="M 5 3 L 3 3 L 3 13 L 5 13 M 11 3 L 13 3 L 13 13 L 11 13" stroke="var(--paper)" stroke-width="1.4" fill="none"/>
+          <rect x="7.5" y="5" width="1" height="6" fill="var(--ac)"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64" height="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <g fill="none" stroke="var(--paper)" stroke-width="2" stroke-linecap="square">
+            <path d="M 11 8 L 8 8 L 8 24 L 11 24"/>
+            <path d="M 21 8 L 24 8 L 24 24 L 21 24"/>
+          </g>
+          <text x="16" y="20" text-anchor="middle" font-family="Geist" font-weight="600" font-size="12" letter-spacing="-0.05em" fill="var(--paper)">gb</text>
+        </svg>
+      </div>
+      <span class="sub"><span>solid · inverse</span><span>16 · 32</span></span>
+    </div>
+
+    <div class="tile app">
+      <span class="lbl">app tile · 128</span>
+      <div style="width:128px; height:128px; border-radius:22px; background: var(--paper); border:1px solid var(--rule); display:grid; place-items:center; box-shadow: 0 2px 0 var(--rule), 0 16px 40px -12px oklch(0 0 0 / 0.18)">
+        <svg viewBox="0 0 100 100" width="88" height="88">
+          <g fill="none" stroke="var(--ink)" stroke-width="5" stroke-linecap="square">
+            <path d="M 36 22 L 22 22 L 22 78 L 36 78"/>
+            <path d="M 64 22 L 78 22 L 78 78 L 64 78"/>
+          </g>
+          <text x="50" y="60" text-anchor="middle" font-family="Geist" font-weight="600" font-size="34" letter-spacing="-0.05em" fill="var(--ink)">gb</text>
+          <rect x="48.5" y="28" width="3" height="10" fill="var(--ac)"/>
+        </svg>
+      </div>
+      <span class="sub"><span>on-paper</span><span>ios · macos</span></span>
+    </div>
+
+    <div class="tile card">
+      <span class="lbl">business card · 3.5 × 2in</span>
+      <div class="card-inner">
+        <div class="face-a">
+          <svg viewBox="0 0 160 60" width="80%">
+            <g fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="square">
+              <path d="M 16 10 L 8 10 L 8 50 L 16 50"/>
+              <path d="M 144 10 L 152 10 L 152 50 L 144 50"/>
+            </g>
+            <text x="20" y="42" font-family="Geist" font-weight="500" font-size="32" letter-spacing="-0.035em" fill="var(--ink)">good business</text>
+          </svg>
+          <div class="role">AI · Design · Build Studio</div>
+        </div>
+        <div class="face-b">
+          <div>
+            <div class="name">Brian Traudt</div>
+            <div class="role">Founder</div>
+          </div>
+          <div class="contact">
+            <div><b>brian</b>@goodbusinesshq.com</div>
+            <div>goodbusinesshq.com</div>
+            <div style="color:var(--ac)">[ we build it good ]</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="legend"><span class="dot" style="background:var(--c2)"></span>Accent · oklch 0.58 0.17 255 (cobalt)</div>
+</section>
+
+<!-- ════════════════════ CONCEPT 03 — METER ════════════════════ -->
+<section class="concept" style="--ac: var(--c3)">
+  <div class="hd">
+    <div class="left">
+      <span class="num"><b>03</b> meter · signal · measured</span>
+      <h2>A <em>quality meter.</em></h2>
+    </div>
+    <div class="right">Two bars — a short one rising to a tall one — that reads as measurement, growth, and calibration. Says "we measure what good looks like" without resorting to chart clichés. Works as small as a favicon.</div>
+  </div>
+
+  <div class="grid">
+    <div class="tile wordmark">
+      <span class="lbl">wordmark</span>
+      <svg viewBox="0 0 640 160" width="82%">
+        <!-- glyph -->
+        <g transform="translate(60,40)">
+          <rect x="0" y="50" width="22" height="40" fill="currentColor"/>
+          <rect x="30" y="0" width="22" height="90" fill="currentColor"/>
+          <rect x="0" y="50" width="22" height="6" fill="var(--ac)"/>
+          <rect x="30" y="0" width="22" height="6" fill="var(--ac)"/>
+        </g>
+        <!-- wordmark -->
+        <text x="150" y="100" font-family="Geist" font-weight="600" font-size="62" letter-spacing="-0.035em" fill="currentColor">Good Business</text>
+        <text x="150" y="125" font-family="Geist Mono" font-size="10" letter-spacing="3" fill="currentColor" opacity="0.55">PRODUCTS CALIBRATED FOR USE</text>
+      </svg>
+      <span class="sub"><span>wordmark · primary</span><span>1.00×</span></span>
+    </div>
+
+    <div class="tile glyph">
+      <span class="lbl">glyph · meter</span>
+      <svg viewBox="0 0 160 160" width="64%">
+        <g transform="translate(40,30)">
+          <rect x="0" y="60" width="30" height="50" fill="currentColor"/>
+          <rect x="50" y="0" width="30" height="110" fill="currentColor"/>
+          <rect x="0" y="60" width="30" height="8" fill="var(--ac)"/>
+          <rect x="50" y="0" width="30" height="8" fill="var(--ac)"/>
+        </g>
+      </svg>
+      <span class="sub"><span>monogram</span><span>short · tall</span></span>
+    </div>
+
+    <div class="tile avatar">
+      <span class="lbl">avatar · 256</span>
+      <div style="width:112px; height:112px; border-radius:50%; background:var(--ink); display:grid; place-items:center">
+        <svg viewBox="0 0 100 100" width="64" height="64">
+          <g transform="translate(22,16)">
+            <rect x="0" y="38" width="22" height="32" fill="var(--paper)"/>
+            <rect x="34" y="0" width="22" height="70" fill="var(--paper)"/>
+            <rect x="0" y="38" width="22" height="6" fill="var(--ac)"/>
+            <rect x="34" y="0" width="22" height="6" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+      <span class="sub"><span>round · inverse</span><span>social</span></span>
+    </div>
+
+    <div class="tile favicon">
+      <span class="lbl">favicon · 16 / 32</span>
+      <div style="display:flex; gap:18px; align-items:end">
+        <svg viewBox="0 0 16 16" width="32" height="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <rect x="4" y="8" width="3" height="5" fill="var(--paper)"/>
+          <rect x="9" y="3" width="3" height="10" fill="var(--paper)"/>
+          <rect x="4" y="8" width="3" height="1" fill="var(--ac)"/>
+          <rect x="9" y="3" width="3" height="1" fill="var(--ac)"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64" height="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <rect x="8" y="16" width="6" height="10" fill="var(--paper)"/>
+          <rect x="18" y="6" width="6" height="20" fill="var(--paper)"/>
+          <rect x="8" y="16" width="6" height="2" fill="var(--ac)"/>
+          <rect x="18" y="6" width="6" height="2" fill="var(--ac)"/>
+        </svg>
+      </div>
+      <span class="sub"><span>solid</span><span>16 · 32</span></span>
+    </div>
+
+    <div class="tile app">
+      <span class="lbl">app tile · 128</span>
+      <div style="width:128px; height:128px; border-radius:22px; background:var(--paper); border:1px solid var(--rule); display:grid; place-items:center; box-shadow: 0 2px 0 var(--rule), 0 16px 40px -12px oklch(0 0 0 / 0.18)">
+        <svg viewBox="0 0 100 100" width="80" height="80">
+          <g transform="translate(20,14)">
+            <rect x="0" y="40" width="24" height="36" fill="var(--ink)"/>
+            <rect x="36" y="0" width="24" height="76" fill="var(--ink)"/>
+            <rect x="0" y="40" width="24" height="7" fill="var(--ac)"/>
+            <rect x="36" y="0" width="24" height="7" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+      <span class="sub"><span>on paper</span><span>rounded</span></span>
+    </div>
+
+    <div class="tile card">
+      <span class="lbl">business card · 3.5 × 2in</span>
+      <div class="card-inner">
+        <div class="face-a">
+          <svg viewBox="0 0 160 64" width="78%">
+            <rect x="8" y="28" width="14" height="24" fill="var(--ink)"/>
+            <rect x="28" y="8" width="14" height="44" fill="var(--ink)"/>
+            <rect x="8" y="28" width="14" height="4" fill="var(--ac)"/>
+            <rect x="28" y="8" width="14" height="4" fill="var(--ac)"/>
+            <text x="52" y="44" font-family="Geist" font-weight="600" font-size="24" letter-spacing="-0.03em" fill="var(--ink)">Good Business</text>
+          </svg>
+          <div class="role">Products calibrated for use</div>
+        </div>
+        <div class="face-b">
+          <div>
+            <div class="name">Brian Traudt</div>
+            <div class="role">Founder</div>
+          </div>
+          <div class="contact">
+            <div><b>brian</b>@goodbusinesshq.com</div>
+            <div>goodbusinesshq.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="legend"><span class="dot" style="background:var(--c3)"></span>Accent · oklch 0.78 0.20 128 (volt) — reserved for "signal"</div>
+</section>
+
+<!-- ════════════════════ CONCEPT 04 — LEDGER CHECK ════════════════════ -->
+<section class="concept" style="--ac: var(--c4)">
+  <div class="hd">
+    <div class="left">
+      <span class="num"><b>04</b> ledger · tick · hand-struck</span>
+      <h2>A <em>good check</em> in a bordered field.</h2>
+    </div>
+    <div class="right">"Good Business" = the business of marking things done right. A squared field with a slightly-imperfect, hand-struck check — warm and human without being crafty. The imperfection is the brand.</div>
+  </div>
+
+  <div class="grid">
+    <div class="tile wordmark">
+      <span class="lbl">wordmark</span>
+      <svg viewBox="0 0 640 160" width="82%">
+        <g transform="translate(40,30)">
+          <rect x="0" y="0" width="100" height="100" fill="none" stroke="currentColor" stroke-width="3"/>
+          <path d="M 20 54 L 42 76 L 86 24" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="square" stroke-linejoin="miter"/>
+        </g>
+        <text x="170" y="100" font-family="Fraunces" font-weight="500" font-size="66" letter-spacing="-0.015em" fill="currentColor">Good Business</text>
+        <text x="170" y="128" font-family="Geist Mono" font-size="10" letter-spacing="3" fill="currentColor" opacity="0.55">MARKED DONE · MARKED WELL</text>
+      </svg>
+      <span class="sub"><span>wordmark · serif edition</span><span>1.00×</span></span>
+    </div>
+
+    <div class="tile glyph">
+      <span class="lbl">glyph</span>
+      <svg viewBox="0 0 160 160" width="66%">
+        <rect x="25" y="25" width="110" height="110" fill="none" stroke="currentColor" stroke-width="4"/>
+        <path d="M 45 88 L 70 112 L 118 46" fill="none" stroke="var(--ac)" stroke-width="11" stroke-linecap="square" stroke-linejoin="miter"/>
+      </svg>
+      <span class="sub"><span>field + tick</span><span>solo-safe</span></span>
+    </div>
+
+    <div class="tile avatar">
+      <span class="lbl">avatar · 256</span>
+      <div style="width:112px; height:112px; border-radius:50%; background:var(--ink); display:grid; place-items:center">
+        <svg viewBox="0 0 100 100" width="68" height="68">
+          <rect x="10" y="10" width="80" height="80" fill="none" stroke="var(--paper)" stroke-width="2.5"/>
+          <path d="M 24 54 L 40 70 L 74 28" fill="none" stroke="var(--ac)" stroke-width="8" stroke-linecap="square"/>
+        </svg>
+      </div>
+      <span class="sub"><span>round · inverse</span><span>social</span></span>
+    </div>
+
+    <div class="tile favicon">
+      <span class="lbl">favicon · 16 / 32</span>
+      <div style="display:flex; gap:18px; align-items:end">
+        <svg viewBox="0 0 16 16" width="32" height="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <rect x="3" y="3" width="10" height="10" fill="none" stroke="var(--paper)"/>
+          <path d="M 5 8 L 7 10 L 11 5" fill="none" stroke="var(--ac)" stroke-width="1.6" stroke-linecap="square"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64" height="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <rect x="6" y="6" width="20" height="20" fill="none" stroke="var(--paper)" stroke-width="1.6"/>
+          <path d="M 10 17 L 14 21 L 23 10" fill="none" stroke="var(--ac)" stroke-width="2.6" stroke-linecap="square"/>
+        </svg>
+      </div>
+      <span class="sub"><span>solid</span><span>16 · 32</span></span>
+    </div>
+
+    <div class="tile app">
+      <span class="lbl">app tile · 128</span>
+      <div style="width:128px; height:128px; border-radius:22px; background:var(--paper); border:1px solid var(--rule); display:grid; place-items:center; box-shadow: 0 2px 0 var(--rule), 0 16px 40px -12px oklch(0 0 0 / 0.18)">
+        <svg viewBox="0 0 100 100" width="86" height="86">
+          <rect x="14" y="14" width="72" height="72" fill="none" stroke="var(--ink)" stroke-width="3.5"/>
+          <path d="M 28 58 L 44 74 L 78 30" fill="none" stroke="var(--ac)" stroke-width="9" stroke-linecap="square"/>
+        </svg>
+      </div>
+      <span class="sub"><span>on paper</span><span>rounded</span></span>
+    </div>
+
+    <div class="tile card">
+      <span class="lbl">business card · 3.5 × 2in</span>
+      <div class="card-inner">
+        <div class="face-a">
+          <svg viewBox="0 0 180 72" width="72%">
+            <rect x="6" y="10" width="52" height="52" fill="none" stroke="var(--ink)" stroke-width="2"/>
+            <path d="M 18 38 L 30 50 L 52 20" fill="none" stroke="var(--ac)" stroke-width="5.5" stroke-linecap="square"/>
+            <text x="72" y="48" font-family="Fraunces" font-weight="500" font-size="26" letter-spacing="-0.015em" fill="var(--ink)">Good Business</text>
+          </svg>
+          <div class="role">Marked done · marked well</div>
+        </div>
+        <div class="face-b">
+          <div>
+            <div class="name">Brian Traudt</div>
+            <div class="role">Founder</div>
+          </div>
+          <div class="contact">
+            <div><b>brian</b>@goodbusinesshq.com</div>
+            <div>goodbusinesshq.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="legend"><span class="dot" style="background:var(--c4)"></span>Accent · oklch 0.58 0.17 155 (ledger green)</div>
+</section>
+
+<!-- ════════════════════ CONCEPT 05 — APERTURE ════════════════════ -->
+<section class="concept" style="--ac: var(--c5)">
+  <div class="hd">
+    <div class="left">
+      <span class="num"><b>05</b> aperture · lens · gb</span>
+      <h2>An <em>aperture</em> that resolves to gb.</h2>
+    </div>
+    <div class="right">A precise geometric lens — overlapping ellipses that, at a glance, read as a lowercase <em>gb</em> monogram. Warm curves, technical construction. Scales from favicon to billboard without losing character.</div>
+  </div>
+
+  <div class="grid">
+    <div class="tile wordmark">
+      <span class="lbl">wordmark</span>
+      <svg viewBox="0 0 640 160" width="82%">
+        <g transform="translate(40,30)">
+          <!-- aperture: two overlapping circles -->
+          <circle cx="40" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="6"/>
+          <circle cx="72" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="6"/>
+          <!-- stem that makes the g tail -->
+          <path d="M 40 50 L 40 100 L 58 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square"/>
+          <!-- accent dot -->
+          <circle cx="56" cy="50" r="6" fill="var(--ac)"/>
+        </g>
+        <text x="180" y="100" font-family="Geist" font-weight="400" font-size="70" letter-spacing="-0.04em" fill="currentColor">good business</text>
+        <text x="180" y="128" font-family="Geist Mono" font-size="10" letter-spacing="3" fill="currentColor" opacity="0.55">A STUDIO FOR WHAT IS WORTH BUILDING</text>
+      </svg>
+      <span class="sub"><span>wordmark · primary</span><span>1.00×</span></span>
+    </div>
+
+    <div class="tile glyph">
+      <span class="lbl">glyph · gb aperture</span>
+      <svg viewBox="0 0 160 160" width="66%">
+        <g transform="translate(20,30)">
+          <circle cx="40" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="8"/>
+          <circle cx="80" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="8"/>
+          <path d="M 40 50 L 40 108 L 62 108" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="square"/>
+          <circle cx="60" cy="50" r="7" fill="var(--ac)"/>
+        </g>
+      </svg>
+      <span class="sub"><span>monogram</span><span>gb lens</span></span>
+    </div>
+
+    <div class="tile avatar">
+      <span class="lbl">avatar · 256</span>
+      <div style="width:112px; height:112px; border-radius:50%; background:var(--ink); display:grid; place-items:center">
+        <svg viewBox="0 0 100 100" width="76" height="76">
+          <g transform="translate(14,22)">
+            <circle cx="26" cy="30" r="24" fill="none" stroke="var(--paper)" stroke-width="5"/>
+            <circle cx="46" cy="30" r="24" fill="none" stroke="var(--paper)" stroke-width="5"/>
+            <path d="M 26 30 L 26 62 L 38 62" fill="none" stroke="var(--paper)" stroke-width="5" stroke-linecap="square"/>
+            <circle cx="36" cy="30" r="4" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+      <span class="sub"><span>round · inverse</span><span>social</span></span>
+    </div>
+
+    <div class="tile favicon">
+      <span class="lbl">favicon · 16 / 32</span>
+      <div style="display:flex; gap:18px; align-items:end">
+        <svg viewBox="0 0 16 16" width="32" height="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <circle cx="6" cy="8" r="3.2" fill="none" stroke="var(--paper)" stroke-width="1.2"/>
+          <circle cx="10" cy="8" r="3.2" fill="none" stroke="var(--paper)" stroke-width="1.2"/>
+          <path d="M 6 8 L 6 13 L 8 13" fill="none" stroke="var(--paper)" stroke-width="1.2"/>
+          <circle cx="8" cy="8" r="1" fill="var(--ac)"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64" height="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <circle cx="12" cy="15" r="7" fill="none" stroke="var(--paper)" stroke-width="2.2"/>
+          <circle cx="20" cy="15" r="7" fill="none" stroke="var(--paper)" stroke-width="2.2"/>
+          <path d="M 12 15 L 12 25 L 16 25" fill="none" stroke="var(--paper)" stroke-width="2.2" stroke-linecap="square"/>
+          <circle cx="16" cy="15" r="1.8" fill="var(--ac)"/>
+        </svg>
+      </div>
+      <span class="sub"><span>solid</span><span>16 · 32</span></span>
+    </div>
+
+    <div class="tile app">
+      <span class="lbl">app tile · 128</span>
+      <div style="width:128px; height:128px; border-radius:22px; background:var(--ink); display:grid; place-items:center; box-shadow: 0 2px 0 color-mix(in oklab, var(--ink) 40%, black), 0 16px 40px -12px oklch(0 0 0 / 0.35)">
+        <svg viewBox="0 0 100 100" width="82" height="82">
+          <g transform="translate(14,22)">
+            <circle cx="26" cy="30" r="24" fill="none" stroke="var(--paper)" stroke-width="5.5"/>
+            <circle cx="46" cy="30" r="24" fill="none" stroke="var(--paper)" stroke-width="5.5"/>
+            <path d="M 26 30 L 26 64 L 40 64" fill="none" stroke="var(--paper)" stroke-width="5.5" stroke-linecap="square"/>
+            <circle cx="36" cy="30" r="4.5" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+      <span class="sub"><span>ink tile</span><span>rounded 22</span></span>
+    </div>
+
+    <div class="tile card">
+      <span class="lbl">business card · 3.5 × 2in</span>
+      <div class="card-inner">
+        <div class="face-a" style="background:var(--ink); color:var(--paper)">
+          <svg viewBox="0 0 110 62" width="72">
+            <g transform="translate(2,6)">
+              <circle cx="22" cy="26" r="20" fill="none" stroke="currentColor" stroke-width="4"/>
+              <circle cx="38" cy="26" r="20" fill="none" stroke="currentColor" stroke-width="4"/>
+              <path d="M 22 26 L 22 54 L 32 54" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="square"/>
+              <circle cx="30" cy="26" r="4" fill="var(--ac)"/>
+            </g>
+          </svg>
+          <div>
+            <div style="font-family:Geist; font-size:20px; font-weight:500; letter-spacing:-0.035em">good business</div>
+            <div class="role" style="color:color-mix(in oklab, currentColor 65%, transparent)">A studio for what is worth building</div>
+          </div>
+        </div>
+        <div class="face-b">
+          <div>
+            <div class="name">Brian Traudt</div>
+            <div class="role">Founder</div>
+          </div>
+          <div class="contact">
+            <div><b>brian</b>@goodbusinesshq.com</div>
+            <div>goodbusinesshq.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="legend"><span class="dot" style="background:var(--c5)"></span>Accent · oklch 0.58 0.17 70 (aperture amber)</div>
+</section>
+
+<footer>
+  <p class="big">Pick one and I'll push it — exports, specs, and the website lockup.</p>
+  <div class="sign">
+    <div>Good Business · logo concepts</div>
+    <div>v0.1 · 2026-04-20</div>
+    <div>made by the studio</div>
+  </div>
+</footer>
+
+<aside class="tweaks" id="tweaksPanel" aria-hidden="true">
+  <header><span>Tweaks</span><span>T to close</span></header>
+  <div class="bd">
+    <div class="row">
+      <label>Background</label>
+      <div class="seg" id="bgSeg">
+        <button data-bg="paper" aria-pressed="true">Paper</button>
+        <button data-bg="ink" aria-pressed="false">Ink</button>
+      </div>
+    </div>
+    <div class="row">
+      <label>Section scale</label>
+      <div class="seg" id="scaleSeg">
+        <button data-scale="small" aria-pressed="false">S</button>
+        <button data-scale="medium" aria-pressed="true">M</button>
+        <button data-scale="large" aria-pressed="false">L</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+  const body = document.body;
+  function apply(t){
+    if (t.bg)    body.dataset.bg = t.bg;
+    if (t.scale) body.dataset.scale = t.scale;
+    document.querySelectorAll('#bg-tabs button, #bgSeg button').forEach(b=> b.setAttribute('aria-pressed', b.dataset.bg === body.dataset.bg));
+    document.querySelectorAll('#scaleSeg button').forEach(b=> b.setAttribute('aria-pressed', b.dataset.scale === body.dataset.scale));
+  }
+  apply(TWEAKS);
+  function setKey(k,v){
+    const edits = {[k]: v};
+    apply({...TWEAKS, ...edits});
+    Object.assign(TWEAKS, edits);
+    try { window.parent.postMessage({type:'__edit_mode_set_keys', edits}, '*'); } catch(e){}
+  }
+  document.querySelectorAll('#bg-tabs button').forEach(b=> b.addEventListener('click', ()=> setKey('bg', b.dataset.bg)));
+  document.querySelectorAll('#bgSeg button').forEach(b=> b.addEventListener('click', ()=> setKey('bg', b.dataset.bg)));
+  document.querySelectorAll('#scaleSeg button').forEach(b=> b.addEventListener('click', ()=> setKey('scale', b.dataset.scale)));
+
+  const panel = document.getElementById('tweaksPanel');
+  let open = false;
+  function setOpen(v){ open = v; panel.classList.toggle('open', v); panel.setAttribute('aria-hidden', v ? 'false' : 'true'); }
+  window.addEventListener('message', (e)=>{
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode')   setOpen(true);
+    if (d.type === '__deactivate_edit_mode') setOpen(false);
+  });
+  try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(e){}
+  window.addEventListener('keydown', (e)=>{
+    if ((e.key === 't' || e.key === 'T') && !['INPUT','TEXTAREA'].includes((e.target||{}).tagName)) setOpen(!open);
+  });
+</script>
+</body>
+</html>

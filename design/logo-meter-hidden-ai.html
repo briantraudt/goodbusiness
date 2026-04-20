@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Good Business — Meter / Hidden AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  const TWEAKS = /*EDITMODE-BEGIN*/{
+    "bg": "paper",
+    "reveal": "off"
+  }/*EDITMODE-END*/;
+</script>
+<style>
+  :root{
+    --paper: oklch(0.985 0.003 250);
+    --paper-2: oklch(0.965 0.004 250);
+    --ink: oklch(0.16 0.015 250);
+    --ink-2: oklch(0.42 0.012 250);
+    --ink-3: oklch(0.62 0.008 250);
+    --rule: oklch(0.88 0.006 250);
+    --ac: oklch(0.78 0.20 128);
+    --hi: oklch(0.58 0.17 28);
+    --sans: 'Geist', system-ui, sans-serif;
+    --mono: 'Geist Mono', ui-monospace, Menlo, monospace;
+  }
+  [data-bg="ink"]{
+    --paper: oklch(0.16 0.015 250);
+    --paper-2: oklch(0.21 0.015 250);
+    --ink: oklch(0.98 0.003 250);
+    --ink-2: oklch(0.82 0.008 250);
+    --ink-3: oklch(0.62 0.010 250);
+    --rule: oklch(0.32 0.010 250);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); font-size:14px; line-height:1.5; -webkit-font-smoothing:antialiased}
+  .mono{font-family:var(--mono); font-size:11px; letter-spacing:0.04em; text-transform:uppercase; color:var(--ink-3)}
+
+  header.page{position:sticky; top:0; z-index:20; background:color-mix(in oklab, var(--paper) 92%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--rule); display:flex; align-items:center; justify-content:space-between; padding:14px 36px}
+  header.page .name{font-weight:600; letter-spacing:-0.01em}
+  header.page .name span{color:var(--ink-3); font-weight:400}
+  header.page .tabs{display:flex; border:1px solid var(--rule); border-radius:999px; padding:2px}
+  header.page .tabs button{background:transparent; border:none; padding:6px 12px; font:inherit; font-size:12px; color:var(--ink-3); cursor:pointer; border-radius:999px; font-family:inherit}
+  header.page .tabs button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+
+  .intro{padding: 44px 36px 12px; max-width:1100px}
+  .intro h1{margin:0 0 6px; font-size: clamp(28px, 3vw, 42px); font-weight:500; letter-spacing:-0.025em; line-height:1.05}
+  .intro h1 em{font-style:normal; color:var(--ink-3)}
+  .intro p{margin:8px 0 0; color:var(--ink-2); max-width:64ch}
+
+  .row{border-top: 1px solid var(--rule); padding: 36px 36px 44px; display:grid; grid-template-columns: 1fr 1.4fr; gap: 36px; align-items:start}
+  .row .meta{display:flex; flex-direction:column; gap:8px; position:sticky; top:80px}
+  .row .num{display:inline-flex; align-items:center; gap:10px; font-family:var(--mono); font-size:11px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.08em}
+  .row .num b{background:var(--ink); color:var(--paper); padding:2px 6px; border-radius:3px; font-weight:500}
+  .row h2{margin:4px 0 0; font-size: clamp(22px, 2vw, 30px); font-weight:500; letter-spacing:-0.02em; line-height:1.15}
+  .row h2 em{font-style:normal; color:var(--ink-3)}
+  .row .desc{color:var(--ink-2); margin: 4px 0 0; max-width: 46ch}
+  .row .sub{color:var(--ink-3); font-size:12.5px; max-width:46ch; margin-top:4px}
+  .row .chips{display:flex; gap:6px; flex-wrap:wrap; margin-top:10px}
+  .row .chips span{font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-3); border:1px solid var(--rule); padding:3px 7px; border-radius:3px}
+
+  .stage{display:grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 12px}
+  .tile{border:1px solid var(--rule); border-radius: 8px; background: var(--paper); position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; min-height: 200px}
+  .tile .lbl{position:absolute; top:10px; left:12px; font-family:var(--mono); font-size:10px; letter-spacing:0.06em; color:var(--ink-3); text-transform:uppercase}
+  .tile.big{grid-column: 1 / 2; grid-row: 1 / span 2; min-height: 416px; padding: 30px}
+  .tile.big > svg{width: 92%; height: auto; max-height: 78%; display:block}
+  .tile.inv{background: var(--ink); color: var(--paper)}
+
+  /* reveal highlights */
+  [data-reveal="on"] .reveal{stroke: var(--hi); stroke-width:2; stroke-dasharray: 3 3; fill:none}
+  [data-reveal="off"] .reveal{display:none}
+
+  footer{padding: 36px; border-top:1px solid var(--rule); display:flex; justify-content:space-between; gap:24px; align-items:end; background:var(--paper-2)}
+  footer p{margin:0; font-size: clamp(20px, 2vw, 28px); font-weight:500; letter-spacing:-0.02em; max-width:38ch}
+  footer .sign{font-family:var(--mono); font-size:11px; color:var(--ink-3); line-height:1.8; text-align:right}
+
+  .tweaks{position:fixed; right:16px; bottom:16px; z-index:60; width:240px; background:var(--paper); border:1px solid var(--rule); border-radius:8px; box-shadow:0 20px 48px -16px oklch(0 0 0 / 0.2); display:none}
+  .tweaks.open{display:block}
+  .tweaks header{padding:10px 14px; border-bottom:1px solid var(--rule); background:var(--paper-2); font-family:var(--mono); font-size:11px; color:var(--ink-3); display:flex; justify-content:space-between}
+  .tweaks .bd{padding:12px 14px}
+  .tweaks .r{display:flex; flex-direction:column; gap:6px; margin:10px 0}
+  .tweaks label{font-family:var(--mono); font-size:10px; color:var(--ink-3); text-transform:uppercase; letter-spacing:0.06em}
+  .tweaks .seg{display:flex; border:1px solid var(--rule); border-radius:6px; overflow:hidden}
+  .tweaks .seg button{flex:1; background:transparent; border:none; padding:6px 8px; font-size:12px; cursor:pointer; color:var(--ink-2); border-right:1px solid var(--rule); font-family:inherit}
+  .tweaks .seg button:last-child{border-right:none}
+  .tweaks .seg button[aria-pressed="true"]{background:var(--ink); color:var(--paper)}
+
+  @media (max-width: 900px){
+    .row{grid-template-columns: 1fr}
+    .row .meta{position:static}
+    .stage{grid-template-columns: 1fr 1fr}
+    .tile.big{grid-column: 1/-1; grid-row:auto; min-height:260px}
+  }
+</style>
+</head>
+<body data-bg="paper" data-reveal="off">
+
+<header class="page">
+  <div class="name">Good Business <span>/ meter · hidden AI</span></div>
+  <div class="tabs" id="bg-tabs">
+    <button data-bg="paper" aria-pressed="true">Paper</button>
+    <button data-bg="ink" aria-pressed="false">Ink</button>
+  </div>
+  <span class="mono">4 comps · press T</span>
+</header>
+
+<section class="intro">
+  <div class="mono" style="margin-bottom:8px">§ subliminal · 4 comps</div>
+  <h1>Hide <em>AI</em> inside the meter.</h1>
+  <p>Same meter you chose. Four ways to sneak "AI" into the glyph — subtle to overt. Toggle <b>Reveal</b> in Tweaks (or press R) to see the hidden letters highlighted.</p>
+</section>
+
+<!-- ═══════════ 01 · GAP SHIFT (A|I) ═══════════ -->
+<section class="row">
+  <div class="meta">
+    <span class="num"><b>01</b> gap shift · widened kerning</span>
+    <h2>Wider gap → reads as <em>A · I.</em></h2>
+    <p class="desc">The short + tall bars stay, but the spacing is tuned so the silhouette reads as two letters. Still a meter first, letters second.</p>
+    <p class="sub">Subtlety: ★★★★★ — most people see growth, a few see AI.</p>
+    <div class="chips"><span>2 bars</span><span>wider kerning</span><span>subliminal</span></div>
+  </div>
+  <div class="stage">
+    <div class="tile big">
+      <span class="lbl">wordmark · primary</span>
+      <svg viewBox="0 0 640 180">
+        <g transform="translate(50,30)">
+          <!-- A: short bar -->
+          <rect x="0" y="50" width="26" height="60" fill="currentColor"/>
+          <rect x="0" y="50" width="26" height="8" fill="var(--ac)"/>
+          <!-- I: tall bar -->
+          <rect x="54" y="0" width="26" height="110" fill="currentColor"/>
+          <rect x="54" y="0" width="26" height="8" fill="var(--ac)"/>
+          <!-- reveal -->
+          <g class="reveal">
+            <path d="M -4 112 L 13 46 L 30 112 M 0 86 L 26 86" />
+            <path d="M 50 -4 L 84 -4 M 50 114 L 84 114 M 67 -4 L 67 114"/>
+          </g>
+        </g>
+        <text x="170" y="110" font-family="Geist" font-weight="700" font-size="64" letter-spacing="-0.035em" fill="currentColor">Good Business</text>
+        <text x="170" y="136" font-family="Geist Mono" font-size="11" letter-spacing="3" fill="currentColor" opacity="0.55">PRODUCTS CALIBRATED FOR USE</text>
+      </svg>
+    </div>
+    <div class="tile">
+      <span class="lbl">glyph</span>
+      <svg viewBox="0 0 160 160" width="60%">
+        <g transform="translate(34,25)">
+          <rect x="0" y="60" width="32" height="70" fill="currentColor"/>
+          <rect x="0" y="60" width="32" height="10" fill="var(--ac)"/>
+          <rect x="66" y="0" width="32" height="130" fill="currentColor"/>
+          <rect x="66" y="0" width="32" height="10" fill="var(--ac)"/>
+        </g>
+      </svg>
+    </div>
+    <div class="tile inv">
+      <span class="lbl" style="color:color-mix(in oklab, currentColor 65%, transparent)">avatar</span>
+      <div style="width:118px; height:118px; border-radius:50%; border:2px solid currentColor; display:grid; place-items:center">
+        <svg viewBox="0 0 100 100" width="62">
+          <g transform="translate(20,15)">
+            <rect x="0" y="40" width="20" height="40" fill="currentColor"/>
+            <rect x="0" y="40" width="20" height="6" fill="var(--ac)"/>
+            <rect x="40" y="0" width="20" height="80" fill="currentColor"/>
+            <rect x="40" y="0" width="20" height="6" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="tile">
+      <span class="lbl">favicon · 16 / 32</span>
+      <div style="display:flex; gap:18px; align-items:center">
+        <svg viewBox="0 0 16 16" width="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <rect x="3" y="8" width="3" height="5" fill="var(--paper)"/>
+          <rect x="3" y="8" width="3" height="1" fill="var(--ac)"/>
+          <rect x="10" y="3" width="3" height="10" fill="var(--paper)"/>
+          <rect x="10" y="3" width="3" height="1" fill="var(--ac)"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <rect x="6" y="16" width="6" height="10" fill="var(--paper)"/>
+          <rect x="6" y="16" width="6" height="2" fill="var(--ac)"/>
+          <rect x="20" y="6" width="6" height="20" fill="var(--paper)"/>
+          <rect x="20" y="6" width="6" height="2" fill="var(--ac)"/>
+        </svg>
+      </div>
+    </div>
+    <div class="tile">
+      <span class="lbl">app tile · 128</span>
+      <div style="width:128px; height:128px; border-radius:22px; background:var(--paper); border:1px solid var(--rule); display:grid; place-items:center; box-shadow: 0 2px 0 var(--rule), 0 16px 40px -12px oklch(0 0 0 / 0.18)">
+        <svg viewBox="0 0 100 100" width="78">
+          <g transform="translate(14,14)">
+            <rect x="0" y="40" width="24" height="36" fill="var(--ink)"/>
+            <rect x="0" y="40" width="24" height="7" fill="var(--ac)"/>
+            <rect x="48" y="0" width="24" height="76" fill="var(--ink)"/>
+            <rect x="48" y="0" width="24" height="7" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 02 · SERIFED (a · i) ═══════════ -->
+<section class="row">
+  <div class="meta">
+    <span class="num"><b>02</b> serifed · lowercase a · i</span>
+    <h2>The dot becomes the <em>i.</em></h2>
+    <p class="desc">A slim top serif on the short bar makes it read as lowercase "a". On the tall bar, the accent cap reads as the tittle on "i". Still meter-first; letters emerge at certain sizes.</p>
+    <p class="sub">Subtlety: ★★★★ — warmer, more human. Plays well at type-scale.</p>
+    <div class="chips"><span>serif detail</span><span>ac dot = tittle</span><span>lowercase</span></div>
+  </div>
+  <div class="stage">
+    <div class="tile big">
+      <span class="lbl">wordmark · primary</span>
+      <svg viewBox="0 0 640 180">
+        <g transform="translate(50,30)">
+          <!-- lowercase a: short bar with top-left hooking serif -->
+          <rect x="0" y="50" width="26" height="60" fill="currentColor"/>
+          <rect x="-6" y="44" width="14" height="6" fill="currentColor"/>
+          <rect x="0" y="50" width="26" height="8" fill="var(--ac)"/>
+          <!-- lowercase i: gap between dot (accent cap) and stem -->
+          <rect x="46" y="0" width="26" height="10" fill="var(--ac)"/>
+          <rect x="46" y="18" width="26" height="92" fill="currentColor"/>
+          <!-- reveal -->
+          <g class="reveal">
+            <ellipse cx="13" cy="78" rx="22" ry="28"/>
+            <path d="M 46 -4 L 72 -4 M 59 16 L 59 114"/>
+          </g>
+        </g>
+        <text x="160" y="110" font-family="Geist" font-weight="700" font-size="64" letter-spacing="-0.035em" fill="currentColor">Good Business</text>
+        <text x="160" y="136" font-family="Geist Mono" font-size="11" letter-spacing="3" fill="currentColor" opacity="0.55">PRODUCTS CALIBRATED FOR USE</text>
+      </svg>
+    </div>
+    <div class="tile">
+      <span class="lbl">glyph</span>
+      <svg viewBox="0 0 160 160" width="60%">
+        <g transform="translate(30,22)">
+          <rect x="0" y="60" width="32" height="68" fill="currentColor"/>
+          <rect x="-8" y="52" width="17" height="8" fill="currentColor"/>
+          <rect x="0" y="60" width="32" height="10" fill="var(--ac)"/>
+          <rect x="60" y="0" width="32" height="12" fill="var(--ac)"/>
+          <rect x="60" y="22" width="32" height="106" fill="currentColor"/>
+        </g>
+      </svg>
+    </div>
+    <div class="tile inv">
+      <span class="lbl" style="color:color-mix(in oklab, currentColor 65%, transparent)">avatar</span>
+      <div style="width:118px; height:118px; border-radius:50%; border:2px solid currentColor; display:grid; place-items:center">
+        <svg viewBox="0 0 100 100" width="62">
+          <g transform="translate(18,14)">
+            <rect x="0" y="42" width="22" height="38" fill="currentColor"/>
+            <rect x="-5" y="36" width="10" height="6" fill="currentColor"/>
+            <rect x="0" y="42" width="22" height="6" fill="var(--ac)"/>
+            <rect x="40" y="0" width="22" height="8" fill="var(--ac)"/>
+            <rect x="40" y="14" width="22" height="66" fill="currentColor"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="tile">
+      <span class="lbl">favicon · 16 / 32</span>
+      <div style="display:flex; gap:18px; align-items:center">
+        <svg viewBox="0 0 16 16" width="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <rect x="3" y="8" width="3" height="5" fill="var(--paper)"/>
+          <rect x="2" y="7" width="2" height="1" fill="var(--paper)"/>
+          <rect x="3" y="8" width="3" height="1" fill="var(--ac)"/>
+          <rect x="10" y="3" width="3" height="2" fill="var(--ac)"/>
+          <rect x="10" y="6" width="3" height="7" fill="var(--paper)"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <rect x="6" y="16" width="6" height="10" fill="var(--paper)"/>
+          <rect x="4" y="14" width="4" height="2" fill="var(--paper)"/>
+          <rect x="6" y="16" width="6" height="2" fill="var(--ac)"/>
+          <rect x="20" y="6" width="6" height="3" fill="var(--ac)"/>
+          <rect x="20" y="12" width="6" height="14" fill="var(--paper)"/>
+        </svg>
+      </div>
+    </div>
+    <div class="tile">
+      <span class="lbl">app tile · 128</span>
+      <div style="width:128px; height:128px; border-radius:22px; background:var(--paper); border:1px solid var(--rule); display:grid; place-items:center; box-shadow: 0 2px 0 var(--rule), 0 16px 40px -12px oklch(0 0 0 / 0.18)">
+        <svg viewBox="0 0 100 100" width="78">
+          <g transform="translate(14,12)">
+            <rect x="0" y="40" width="24" height="36" fill="var(--ink)"/>
+            <rect x="-6" y="34" width="13" height="6" fill="var(--ink)"/>
+            <rect x="0" y="40" width="24" height="7" fill="var(--ac)"/>
+            <rect x="48" y="0" width="24" height="10" fill="var(--ac)"/>
+            <rect x="48" y="18" width="24" height="58" fill="var(--ink)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 03 · NOTCHED (A with crossbar) ═══════════ -->
+<section class="row">
+  <div class="meta">
+    <span class="num"><b>03</b> notched · A-crossbar</span>
+    <h2>The short bar gets a <em>crossbar.</em></h2>
+    <p class="desc">A horizontal notch across the middle of the short bar is the crossbar of capital A. The tall bar stays plain I. Overt to anyone looking for it; invisible at favicon sizes.</p>
+    <p class="sub">Subtlety: ★★★ — the one your clients will notice.</p>
+    <div class="chips"><span>crossbar notch</span><span>A · I</span><span>moderate</span></div>
+  </div>
+  <div class="stage">
+    <div class="tile big">
+      <span class="lbl">wordmark · primary</span>
+      <svg viewBox="0 0 640 180">
+        <g transform="translate(50,30)">
+          <!-- A with crossbar notch -->
+          <rect x="0" y="50" width="26" height="60" fill="currentColor"/>
+          <rect x="0" y="50" width="26" height="8" fill="var(--ac)"/>
+          <rect x="0" y="76" width="26" height="5" fill="var(--paper)"/>
+          <!-- I -->
+          <rect x="44" y="0" width="26" height="110" fill="currentColor"/>
+          <rect x="44" y="0" width="26" height="8" fill="var(--ac)"/>
+          <g class="reveal">
+            <path d="M -4 114 L 13 46 L 30 114 M 3 80 L 23 80"/>
+            <path d="M 44 -4 L 70 -4 M 44 114 L 70 114 M 57 -4 L 57 114"/>
+          </g>
+        </g>
+        <text x="150" y="110" font-family="Geist" font-weight="700" font-size="64" letter-spacing="-0.035em" fill="currentColor">Good Business</text>
+        <text x="150" y="136" font-family="Geist Mono" font-size="11" letter-spacing="3" fill="currentColor" opacity="0.55">PRODUCTS CALIBRATED FOR USE</text>
+      </svg>
+    </div>
+    <div class="tile">
+      <span class="lbl">glyph</span>
+      <svg viewBox="0 0 160 160" width="60%">
+        <g transform="translate(32,25)">
+          <rect x="0" y="60" width="32" height="70" fill="currentColor"/>
+          <rect x="0" y="60" width="32" height="10" fill="var(--ac)"/>
+          <rect x="0" y="92" width="32" height="6" fill="var(--paper)"/>
+          <rect x="56" y="0" width="32" height="130" fill="currentColor"/>
+          <rect x="56" y="0" width="32" height="10" fill="var(--ac)"/>
+        </g>
+      </svg>
+    </div>
+    <div class="tile inv">
+      <span class="lbl" style="color:color-mix(in oklab, currentColor 65%, transparent)">avatar</span>
+      <div style="width:118px; height:118px; border-radius:50%; border:2px solid currentColor; display:grid; place-items:center">
+        <svg viewBox="0 0 100 100" width="62">
+          <g transform="translate(20,15)">
+            <rect x="0" y="40" width="20" height="40" fill="currentColor"/>
+            <rect x="0" y="40" width="20" height="6" fill="var(--ac)"/>
+            <rect x="0" y="58" width="20" height="4" fill="var(--ink)"/>
+            <rect x="36" y="0" width="20" height="80" fill="currentColor"/>
+            <rect x="36" y="0" width="20" height="6" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="tile">
+      <span class="lbl">favicon · 16 / 32</span>
+      <div style="display:flex; gap:18px; align-items:center">
+        <svg viewBox="0 0 16 16" width="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <rect x="3" y="8" width="3" height="5" fill="var(--paper)"/>
+          <rect x="3" y="8" width="3" height="1" fill="var(--ac)"/>
+          <rect x="10" y="3" width="3" height="10" fill="var(--paper)"/>
+          <rect x="10" y="3" width="3" height="1" fill="var(--ac)"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <rect x="6" y="16" width="6" height="10" fill="var(--paper)"/>
+          <rect x="6" y="16" width="6" height="2" fill="var(--ac)"/>
+          <rect x="6" y="20" width="6" height="1.4" fill="var(--ink)"/>
+          <rect x="20" y="6" width="6" height="20" fill="var(--paper)"/>
+          <rect x="20" y="6" width="6" height="2" fill="var(--ac)"/>
+        </svg>
+      </div>
+    </div>
+    <div class="tile">
+      <span class="lbl">app tile · 128</span>
+      <div style="width:128px; height:128px; border-radius:22px; background:var(--paper); border:1px solid var(--rule); display:grid; place-items:center; box-shadow: 0 2px 0 var(--rule), 0 16px 40px -12px oklch(0 0 0 / 0.18)">
+        <svg viewBox="0 0 100 100" width="78">
+          <g transform="translate(14,14)">
+            <rect x="0" y="40" width="24" height="36" fill="var(--ink)"/>
+            <rect x="0" y="40" width="24" height="7" fill="var(--ac)"/>
+            <rect x="0" y="54" width="24" height="4" fill="var(--paper)"/>
+            <rect x="44" y="0" width="24" height="76" fill="var(--ink)"/>
+            <rect x="44" y="0" width="24" height="7" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 04 · TRIANGULAR A (slanted short bar) ═══════════ -->
+<section class="row">
+  <div class="meta">
+    <span class="num"><b>04</b> triangular · A silhouette</span>
+    <h2>The short bar becomes a <em>triangle.</em></h2>
+    <p class="desc">Slanting the short bar's top edge turns it into a proper A silhouette. Reads as "A · I" very clearly — and also as a tiny mountain rising beside a tower. Most overt.</p>
+    <p class="sub">Subtlety: ★★ — the one everyone will notice. Use if you want AI up-front.</p>
+    <div class="chips"><span>slanted cap</span><span>A · I</span><span>overt</span></div>
+  </div>
+  <div class="stage">
+    <div class="tile big">
+      <span class="lbl">wordmark · primary</span>
+      <svg viewBox="0 0 640 180">
+        <g transform="translate(50,30)">
+          <!-- A as triangle-capped bar -->
+          <path d="M 0 110 L 0 66 L 26 40 L 26 110 Z" fill="currentColor"/>
+          <path d="M 0 66 L 26 40 L 26 48 L 0 74 Z" fill="var(--ac)"/>
+          <!-- I -->
+          <rect x="46" y="0" width="26" height="110" fill="currentColor"/>
+          <rect x="46" y="0" width="26" height="8" fill="var(--ac)"/>
+        </g>
+        <text x="150" y="110" font-family="Geist" font-weight="700" font-size="64" letter-spacing="-0.035em" fill="currentColor">Good Business</text>
+        <text x="150" y="136" font-family="Geist Mono" font-size="11" letter-spacing="3" fill="currentColor" opacity="0.55">PRODUCTS CALIBRATED FOR USE</text>
+      </svg>
+    </div>
+    <div class="tile">
+      <span class="lbl">glyph</span>
+      <svg viewBox="0 0 160 160" width="60%">
+        <g transform="translate(32,25)">
+          <path d="M 0 130 L 0 76 L 32 46 L 32 130 Z" fill="currentColor"/>
+          <path d="M 0 76 L 32 46 L 32 56 L 0 86 Z" fill="var(--ac)"/>
+          <rect x="56" y="0" width="32" height="130" fill="currentColor"/>
+          <rect x="56" y="0" width="32" height="10" fill="var(--ac)"/>
+        </g>
+      </svg>
+    </div>
+    <div class="tile inv">
+      <span class="lbl" style="color:color-mix(in oklab, currentColor 65%, transparent)">avatar</span>
+      <div style="width:118px; height:118px; border-radius:50%; border:2px solid currentColor; display:grid; place-items:center">
+        <svg viewBox="0 0 100 100" width="62">
+          <g transform="translate(20,15)">
+            <path d="M 0 80 L 0 48 L 20 32 L 20 80 Z" fill="currentColor"/>
+            <path d="M 0 48 L 20 32 L 20 38 L 0 54 Z" fill="var(--ac)"/>
+            <rect x="36" y="0" width="20" height="80" fill="currentColor"/>
+            <rect x="36" y="0" width="20" height="6" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="tile">
+      <span class="lbl">favicon · 16 / 32</span>
+      <div style="display:flex; gap:18px; align-items:center">
+        <svg viewBox="0 0 16 16" width="32" style="image-rendering:pixelated">
+          <rect width="16" height="16" fill="var(--ink)"/>
+          <path d="M 3 13 L 3 9 L 6 7 L 6 13 Z" fill="var(--paper)"/>
+          <rect x="10" y="3" width="3" height="10" fill="var(--paper)"/>
+          <rect x="10" y="3" width="3" height="1" fill="var(--ac)"/>
+        </svg>
+        <svg viewBox="0 0 32 32" width="64">
+          <rect width="32" height="32" rx="6" fill="var(--ink)"/>
+          <path d="M 6 26 L 6 18 L 12 14 L 12 26 Z" fill="var(--paper)"/>
+          <path d="M 6 18 L 12 14 L 12 16 L 6 20 Z" fill="var(--ac)"/>
+          <rect x="20" y="6" width="6" height="20" fill="var(--paper)"/>
+          <rect x="20" y="6" width="6" height="2" fill="var(--ac)"/>
+        </svg>
+      </div>
+    </div>
+    <div class="tile">
+      <span class="lbl">app tile · 128</span>
+      <div style="width:128px; height:128px; border-radius:22px; background:var(--paper); border:1px solid var(--rule); display:grid; place-items:center; box-shadow: 0 2px 0 var(--rule), 0 16px 40px -12px oklch(0 0 0 / 0.18)">
+        <svg viewBox="0 0 100 100" width="78">
+          <g transform="translate(14,14)">
+            <path d="M 0 76 L 0 46 L 24 28 L 24 76 Z" fill="var(--ink)"/>
+            <path d="M 0 46 L 24 28 L 24 34 L 0 52 Z" fill="var(--ac)"/>
+            <rect x="44" y="0" width="24" height="76" fill="var(--ink)"/>
+            <rect x="44" y="0" width="24" height="7" fill="var(--ac)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Which level of subtle? Toggle <b>Reveal</b> in Tweaks to see the hidden letters.</p>
+  <div class="sign">
+    <div>Good Business · hidden AI</div>
+    <div>v0.5 · 2026-04-20</div>
+  </div>
+</footer>
+
+<aside class="tweaks" id="tweaksPanel" aria-hidden="true">
+  <header><span>Tweaks</span><span>T · R</span></header>
+  <div class="bd">
+    <div class="r">
+      <label>Background</label>
+      <div class="seg" id="bgSeg">
+        <button data-bg="paper" aria-pressed="true">Paper</button>
+        <button data-bg="ink" aria-pressed="false">Ink</button>
+      </div>
+    </div>
+    <div class="r">
+      <label>Reveal hidden letters</label>
+      <div class="seg" id="revealSeg">
+        <button data-reveal="off" aria-pressed="true">Off</button>
+        <button data-reveal="on" aria-pressed="false">On</button>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<script>
+  const body = document.body;
+  function apply(t){
+    if (t.bg)     body.dataset.bg = t.bg;
+    if (t.reveal) body.dataset.reveal = t.reveal;
+    document.querySelectorAll('#bg-tabs button, #bgSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.bg === body.dataset.bg));
+    document.querySelectorAll('#revealSeg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.reveal === body.dataset.reveal));
+  }
+  apply(TWEAKS);
+  function setKey(k,v){
+    const edits = {[k]: v};
+    apply({...TWEAKS, ...edits});
+    Object.assign(TWEAKS, edits);
+    try { window.parent.postMessage({type:'__edit_mode_set_keys', edits}, '*'); } catch(e){}
+  }
+  document.querySelectorAll('#bg-tabs button, #bgSeg button').forEach(b => b.addEventListener('click', ()=> setKey('bg', b.dataset.bg)));
+  document.querySelectorAll('#revealSeg button').forEach(b => b.addEventListener('click', ()=> setKey('reveal', b.dataset.reveal)));
+
+  const panel = document.getElementById('tweaksPanel');
+  let open = false;
+  function setOpen(v){ open = v; panel.classList.toggle('open', v); panel.setAttribute('aria-hidden', v ? 'false' : 'true'); }
+  window.addEventListener('message', (e)=>{
+    const d = e.data || {};
+    if (d.type === '__activate_edit_mode')   setOpen(true);
+    if (d.type === '__deactivate_edit_mode') setOpen(false);
+  });
+  try { window.parent.postMessage({type:'__edit_mode_available'}, '*'); } catch(e){}
+  window.addEventListener('keydown', (e)=>{
+    const t = (e.target||{}).tagName;
+    if (['INPUT','TEXTAREA'].includes(t)) return;
+    if (e.key === 't' || e.key === 'T') setOpen(!open);
+    if (e.key === 'r' || e.key === 'R') setKey('reveal', body.dataset.reveal === 'on' ? 'off' : 'on');
+  });
+</script>
+</body>
+</html>
