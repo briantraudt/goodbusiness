@@ -5,7 +5,7 @@
 const ESC = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
 const escapeHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ESC[c]);
 
-const TO = 'brian@goodbusinesshq.com';
+const TO = 'briantraudt@gmail.com';
 const FROM = 'Good Business <hello@goodbusinesshq.com>';
 
 export default async function handler(req, res) {
