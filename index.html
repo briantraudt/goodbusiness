@@ -75,13 +75,11 @@
   .brand{
     display:inline-flex;
     align-items:center;
-    gap:12px;
     font-weight:800;
     letter-spacing:-.04em;
     font-size:22px;
   }
 
-  .brand svg{width:38px;height:38px;flex:0 0 auto}
   .nav-links{display:flex;align-items:center;gap:28px;color:var(--muted);font-size:14px;font-weight:650}
   .nav-links a:hover{color:var(--teal)}
   .nav-actions{display:flex;align-items:center;gap:10px}
@@ -194,33 +192,30 @@
 
   .bot-stage{
     position:relative;
-    min-height:540px;
+    min-height:500px;
     display:grid;
     place-items:center;
   }
+  .bot-stage:before{
+    content:"";
+    position:absolute;
+    width:min(430px, 86%);
+    aspect-ratio:1;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(240,162,59,.12), transparent 68%);
+  }
   .orbit{
     position:absolute;
-    inset:42px 14px 28px;
+    inset:54px 34px 42px;
     border:1px solid var(--line);
     border-radius:50%;
     transform:rotate(-10deg);
-    background:rgba(255,250,240,.22);
+    background:rgba(255,250,240,.16);
   }
-  .orbit:before,.orbit:after{
-    content:"";
-    position:absolute;
-    width:14px;
-    height:14px;
-    border-radius:50%;
-    background:var(--coral);
-    box-shadow:0 0 0 8px rgba(223,101,72,.12);
-  }
-  .orbit:before{left:16%;top:9%}
-  .orbit:after{right:12%;bottom:14%;background:var(--blue);box-shadow:0 0 0 8px rgba(56,105,232,.12)}
 
   .robot-wrap{
     position:relative;
-    width:min(460px, 100%);
+    width:min(430px, 100%);
     aspect-ratio:1;
     display:grid;
     place-items:center;
@@ -252,57 +247,7 @@
   .live .eye-r{transform-origin:center;transform-box:fill-box;animation:blink 4.1s infinite}
   .scan-line{animation:scan 3.4s ease-in-out infinite}
   .antenna-glow{animation:pulse 2.6s ease-in-out infinite;transform-origin:center}
-
-  .signal-card,
-  .status-card{
-    position:absolute;
-    z-index:3;
-    border:1px solid var(--line);
-    background:rgba(255,250,240,.84);
-    box-shadow:var(--shadow);
-    backdrop-filter:blur(16px);
-    border-radius:8px;
-  }
-  .signal-card{
-    left:-8px;
-    top:100px;
-    width:184px;
-    padding:13px;
-  }
-  .status-card{
-    right:0;
-    bottom:96px;
-    width:206px;
-    padding:14px;
-  }
   .mini-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--quiet);font-weight:700}
-  .signal-bars{display:grid;grid-template-columns:repeat(5, 1fr);gap:5px;align-items:end;height:48px;margin-top:12px}
-  .signal-bars i{display:block;border-radius:4px 4px 2px 2px;background:var(--teal)}
-  .signal-bars i:nth-child(1){height:22px;background:var(--mint)}
-  .signal-bars i:nth-child(2){height:34px;background:var(--amber)}
-  .signal-bars i:nth-child(3){height:44px;background:var(--coral)}
-  .signal-bars i:nth-child(4){height:30px;background:var(--blue)}
-  .signal-bars i:nth-child(5){height:39px;background:var(--teal)}
-  .status-card strong{display:block;margin-top:7px;font-size:18px;letter-spacing:-.04em}
-  .status-card p{color:var(--muted);font-size:13px;margin-top:4px}
-
-  .cost-card{
-    position:absolute;
-    z-index:4;
-    left:30px;
-    bottom:42px;
-    width:210px;
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:14px;
-    background:rgba(255,250,240,.9);
-    box-shadow:var(--shadow);
-    backdrop-filter:blur(16px);
-  }
-  .cost-card strong{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;font-size:24px;letter-spacing:-.05em}
-  .cost-card strong span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--quiet);font-weight:700}
-  .cost-meter{height:9px;border-radius:999px;background:var(--paper-2);overflow:hidden;margin-top:12px;border:1px solid var(--line)}
-  .cost-meter i{display:block;width:38%;height:100%;background:linear-gradient(90deg,var(--mint),var(--amber));border-radius:999px}
 
   .section{padding:104px 0;border-bottom:1px solid var(--line)}
   .section.alt{background:rgba(255,250,240,.42)}
@@ -431,53 +376,6 @@
     white-space:nowrap;
   }
 
-  .lab{
-    display:grid;
-    grid-template-columns:.92fr 1.08fr;
-    gap:18px;
-    align-items:stretch;
-  }
-  .lab-copy{
-    background:var(--teal);
-    color:var(--paper);
-    border-radius:8px;
-    padding:36px;
-    min-height:480px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-  }
-  .lab-copy h2{color:var(--paper);font-size:clamp(38px, 4.2vw, 62px)}
-  .lab-copy h2 em{color:var(--amber)}
-  .lab-copy p{color:rgba(255,250,240,.78);font-size:18px;max-width:38ch;margin-top:22px}
-  .lab-board{
-    border:1px solid var(--line);
-    border-radius:8px;
-    background:var(--paper);
-    padding:18px;
-    display:grid;
-    grid-template-rows:auto 1fr;
-    min-height:480px;
-  }
-  .board-bar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:0 0 14px;margin-bottom:16px}
-  .dots{display:flex;gap:7px}.dots i{width:10px;height:10px;border-radius:50%;background:var(--coral)}.dots i:nth-child(2){background:var(--amber)}.dots i:nth-child(3){background:var(--mint)}
-  .board-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .tile{
-    border:1px solid var(--line);
-    border-radius:8px;
-    background:rgba(251,245,232,.55);
-    padding:18px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    min-height:142px;
-  }
-  .tile:nth-child(2){background:rgba(183,217,189,.28)}
-  .tile:nth-child(3){background:rgba(240,162,59,.18)}
-  .tile:nth-child(4){background:rgba(56,105,232,.10)}
-  .tile b{font-size:20px;letter-spacing:-.04em}
-  .tile span{color:var(--muted);font-size:14px;margin-top:8px}
-
   .process{
     display:grid;
     grid-template-columns:repeat(4, minmax(0, 1fr));
@@ -556,17 +454,13 @@
   @media (max-width: 960px){
     .nav-links{display:none}
     .hero{min-height:auto;padding:48px 0 36px}
-    .hero-grid,.lab,.economics,.final-grid{grid-template-columns:1fr}
+    .hero-grid,.economics,.final-grid{grid-template-columns:1fr}
     .bot-stage{min-height:430px;order:-1}
-    .signal-card{left:0;top:44px}
-    .status-card{right:0;bottom:36px}
-    .cost-card{left:18px;bottom:18px}
     .proof-row,.capability-grid,.process{grid-template-columns:1fr}
     .step{border-right:0;border-bottom:1px solid var(--line);min-height:210px}
     .step:last-child{border-bottom:0}
     .section-head{display:grid;margin-bottom:28px}
     .section{padding:74px 0}
-    .lab-copy,.lab-board{min-height:auto}
     .economics-panel,.route-board{min-height:auto}
     .route-row{grid-template-columns:1fr}
     .route-row code{width:fit-content}
@@ -575,7 +469,7 @@
   @media (max-width: 620px){
     .wrap{width:min(100% - 28px, 1180px)}
     .nav{min-height:68px}
-    .brand{font-size:18px}.brand svg{width:34px;height:34px}
+    .brand{font-size:18px}
     .nav-actions .btn{min-height:40px;padding:0 13px}
     .hero{padding:22px 0 22px}
     .hero-grid{gap:18px}
@@ -586,11 +480,9 @@
     .hero-note{display:none}
     .proof-row{display:none}
     .bot-stage{min-height:218px}
-    .signal-card,.status-card,.cost-card{display:none}
     .robot-wrap{width:205px}
     .orbit{display:none}
     .capability{min-height:290px;padding:22px}
-    .board-grid{grid-template-columns:1fr}
     .modal-card{padding:28px 22px}
     .price-readout{grid-template-columns:1fr}
   }
@@ -607,21 +499,11 @@
 <header class="site-header">
   <div class="wrap nav">
     <a class="brand" href="/" aria-label="Good Business home">
-      <svg viewBox="0 0 44 44" class="live" aria-hidden="true">
-        <line x1="22" y1="5" x2="22" y2="11" stroke="var(--teal)" stroke-width="2.8" stroke-linecap="round"/>
-        <circle class="antenna-glow" cx="22" cy="4" r="3.5" fill="var(--amber)"/>
-        <rect x="7" y="11" width="30" height="27" rx="7" fill="var(--teal)"/>
-        <rect x="12" y="17" width="20" height="15" rx="4" fill="var(--paper)"/>
-        <rect x="16" y="21" width="4" height="5" rx="1.2" fill="var(--teal)"/>
-        <rect class="eye-r" x="24" y="21" width="4" height="5" rx="1.2" fill="var(--teal)"/>
-        <path d="M16 29 Q22 33 28 29" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"/>
-      </svg>
       <span>Good Business</span>
     </a>
     <nav class="nav-links" aria-label="Primary navigation">
       <a href="#work">Work</a>
       <a href="#adoption">Adoption</a>
-      <a href="#lab">Studio</a>
       <a href="#process">Process</a>
     </nav>
     <div class="nav-actions">
@@ -651,10 +533,6 @@
 
       <div class="bot-stage" aria-label="Good Business robot mascot">
         <div class="orbit"></div>
-        <div class="signal-card">
-          <div class="mini-label">User check</div>
-          <div class="signal-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-        </div>
         <div class="robot-wrap">
           <div class="robot-shadow"></div>
           <svg class="hero-robot live" viewBox="0 0 360 360" role="img" aria-label="A smiling Good Business robot">
@@ -672,21 +550,7 @@
             <rect class="eye-r" x="209" y="164" width="27" height="35" rx="7" fill="var(--teal-dark)"/>
             <path d="M125 225 Q180 266 235 225" fill="none" stroke="var(--amber)" stroke-width="14" stroke-linecap="round"/>
             <rect class="scan-line" x="118" y="141" width="124" height="4" rx="2" fill="var(--blue)" opacity=".45"/>
-            <circle cx="48" cy="168" r="7" fill="var(--teal-dark)"/>
-            <circle cx="48" cy="218" r="7" fill="var(--teal-dark)"/>
-            <circle cx="312" cy="168" r="7" fill="var(--teal-dark)"/>
-            <circle cx="312" cy="218" r="7" fill="var(--teal-dark)"/>
           </svg>
-        </div>
-        <div class="status-card">
-          <div class="mini-label">Robot status</div>
-          <strong>Ready to build.</strong>
-          <p>Turning a good idea into something people can use.</p>
-        </div>
-        <div class="cost-card">
-          <div class="mini-label">Product check</div>
-          <strong>Clear <span>by design</span></strong>
-          <div class="cost-meter" aria-hidden="true"><i></i></div>
         </div>
       </div>
     </div>
@@ -779,31 +643,6 @@
     </div>
   </section>
 
-  <section class="section alt" id="lab">
-    <div class="wrap lab">
-      <div class="lab-copy">
-        <div>
-          <div class="eyebrow" style="color:var(--amber)">Studio mode</div>
-          <h2>Sharp design. Practical builds.</h2>
-          <p>Good product work is more than good-looking screens. We help decide what to build, how it should work, and how to get it shipped without overcomplicating it.</p>
-        </div>
-        <button class="btn hot" type="button" data-open-contact>Bring us the rough idea →</button>
-      </div>
-      <div class="lab-board" aria-label="Good Business studio board">
-        <div class="board-bar">
-          <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
-          <div class="mini-label">gb/workbench</div>
-        </div>
-        <div class="board-grid">
-          <div class="tile"><b>Prototype the hard part</b><span>Test the interaction, model behavior, or workflow that matters most.</span></div>
-          <div class="tile"><b>Design the daily use</b><span>Shape navigation, states, forms, edge cases, and repeated workflows.</span></div>
-          <div class="tile"><b>Build the real thing</b><span>Connect data, auth, billing, notifications, deployment, analytics, and cost-aware AI calls.</span></div>
-          <div class="tile"><b>Polish what people notice</b><span>Improve copy, speed, empty states, onboarding, and the small details that make software feel good.</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="section" id="process">
     <div class="wrap">
       <div class="section-head">
@@ -840,15 +679,6 @@
 <footer>
   <div class="wrap foot">
     <a class="brand" href="/" aria-label="Good Business home">
-      <svg viewBox="0 0 44 44" class="live" aria-hidden="true">
-        <line x1="22" y1="5" x2="22" y2="11" stroke="var(--paper)" stroke-width="2.8" stroke-linecap="round"/>
-        <circle cx="22" cy="4" r="3.5" fill="var(--amber)"/>
-        <rect x="7" y="11" width="30" height="27" rx="7" fill="var(--paper)"/>
-        <rect x="12" y="17" width="20" height="15" rx="4" fill="var(--ink)"/>
-        <rect x="16" y="21" width="4" height="5" rx="1.2" fill="var(--paper)"/>
-        <rect class="eye-r" x="24" y="21" width="4" height="5" rx="1.2" fill="var(--paper)"/>
-        <path d="M16 29 Q22 33 28 29" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"/>
-      </svg>
       <span>Good Business</span>
     </a>
     <div class="foot-meta">
