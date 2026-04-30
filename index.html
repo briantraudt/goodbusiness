@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Good Business — AI, mobile, and enterprise software studio</title>
+<title>Good Business — Beautiful AI products that make business sense</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Good Business designs and builds AI products, mobile apps, and enterprise software with the care of a product studio and the taste of a design team.">
+<meta name="description" content="Good Business designs and builds beautiful AI products, mobile apps, and enterprise software with strong product taste and sensible AI economics.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -38,6 +38,7 @@
     background:
       linear-gradient(90deg, rgba(31,83,87,.05) 1px, transparent 1px) 0 0 / 72px 72px,
       linear-gradient(180deg, rgba(31,83,87,.05) 1px, transparent 1px) 0 0 / 72px 72px,
+      radial-gradient(ellipse at 78% 8%, rgba(240,162,59,.18), transparent 34%),
       var(--cream);
     color:var(--ink);
     font-family:var(--sans);
@@ -109,7 +110,7 @@
     min-height:auto;
     display:grid;
     align-items:center;
-    padding:62px 0 38px;
+    padding:44px 0 34px;
     border-bottom:1px solid var(--line);
   }
 
@@ -138,7 +139,7 @@
   h1{
     margin-top:22px;
     max-width:11ch;
-    font-size:clamp(58px, 8.3vw, 118px);
+    font-size:clamp(56px, 7.8vw, 106px);
     line-height:.88;
     letter-spacing:-.075em;
     font-weight:900;
@@ -165,7 +166,7 @@
     grid-template-columns:repeat(3, minmax(0, 1fr));
     gap:12px;
     max-width:650px;
-    margin-top:46px;
+    margin-top:30px;
   }
 
   .proof{
@@ -177,9 +178,20 @@
   .proof b{display:block;font-size:20px;letter-spacing:-.04em}
   .proof span{display:block;margin-top:4px;color:var(--quiet);font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
 
+  .hero-note{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:18px;
+    color:var(--muted);
+    font-size:14px;
+  }
+  .hero-note strong{color:var(--teal-dark)}
+  .spark-dot{width:9px;height:9px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 7px rgba(240,162,59,.14)}
+
   .bot-stage{
     position:relative;
-    min-height:620px;
+    min-height:540px;
     display:grid;
     place-items:center;
   }
@@ -271,6 +283,24 @@
   .status-card strong{display:block;margin-top:7px;font-size:18px;letter-spacing:-.04em}
   .status-card p{color:var(--muted);font-size:13px;margin-top:4px}
 
+  .cost-card{
+    position:absolute;
+    z-index:4;
+    left:30px;
+    bottom:42px;
+    width:210px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:14px;
+    background:rgba(255,250,240,.9);
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(16px);
+  }
+  .cost-card strong{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;font-size:24px;letter-spacing:-.05em}
+  .cost-card strong span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--quiet);font-weight:700}
+  .cost-meter{height:9px;border-radius:999px;background:var(--paper-2);overflow:hidden;margin-top:12px;border:1px solid var(--line)}
+  .cost-meter i{display:block;width:38%;height:100%;background:linear-gradient(90deg,var(--mint),var(--amber));border-radius:999px}
+
   .section{padding:104px 0;border-bottom:1px solid var(--line)}
   .section.alt{background:rgba(255,250,240,.42)}
   .section-head{display:flex;align-items:end;justify-content:space-between;gap:36px;margin-bottom:38px}
@@ -324,6 +354,79 @@
   .stack-lines i:nth-child(3){width:48%;background:var(--coral)}
   .mobile-frame{width:64px;height:92px;border:7px solid var(--teal);border-radius:18px;background:var(--paper);position:relative}
   .mobile-frame:after{content:"";position:absolute;left:14px;right:14px;bottom:8px;height:5px;border-radius:99px;background:var(--amber)}
+
+  .economics{
+    display:grid;
+    grid-template-columns:.92fr 1.08fr;
+    gap:18px;
+    align-items:stretch;
+  }
+  .economics-panel{
+    position:relative;
+    overflow:hidden;
+    min-height:520px;
+    border:1px solid color-mix(in oklab, var(--teal) 55%, var(--line));
+    border-radius:8px;
+    background:
+      linear-gradient(135deg, rgba(240,162,59,.13), transparent 32%),
+      var(--teal-dark);
+    color:var(--paper);
+    padding:34px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .economics-panel h2{color:var(--paper)}
+  .economics-panel h2 em{color:var(--amber)}
+  .economics-panel p{max-width:42ch;color:rgba(255,250,240,.76);font-size:18px;margin-top:20px}
+  .price-readout{
+    border:1px solid rgba(255,250,240,.18);
+    border-radius:8px;
+    background:rgba(255,250,240,.06);
+    padding:18px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  .price-readout div{border-left:2px solid var(--amber);padding-left:12px}
+  .price-readout b{display:block;color:var(--paper);font-size:26px;letter-spacing:-.05em}
+  .price-readout span{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,250,240,.58)}
+  .route-board{
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--paper);
+    padding:18px;
+    min-height:520px;
+    display:grid;
+    gap:12px;
+  }
+  .route-row{
+    display:grid;
+    grid-template-columns:138px 1fr auto;
+    gap:14px;
+    align-items:center;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:16px;
+    background:rgba(251,245,232,.55);
+  }
+  .route-row:nth-child(2){background:rgba(183,217,189,.22)}
+  .route-row:nth-child(3){background:rgba(240,162,59,.16)}
+  .route-row:nth-child(4){background:rgba(56,105,232,.09)}
+  .route-row b{font-size:18px;letter-spacing:-.035em}
+  .route-row p{color:var(--muted);font-size:14px}
+  .route-row code{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--teal);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 9px;
+    background:var(--paper);
+    white-space:nowrap;
+  }
 
   .lab{
     display:grid;
@@ -403,7 +506,7 @@
     color:var(--paper);
   }
   .final-grid{display:grid;grid-template-columns:1fr auto;gap:38px;align-items:center}
-  .final h2{color:var(--paper);max-width:780px}
+  .final h2{color:var(--paper);max-width:840px}
   .final h2 em{color:var(--amber)}
   .final p{margin-top:20px;color:rgba(255,250,240,.72);font-size:18px;max-width:580px}
   .final .btn.light{color:var(--paper);border-color:rgba(255,250,240,.24);background:rgba(255,250,240,.08)}
@@ -450,16 +553,20 @@
   @media (max-width: 960px){
     .nav-links{display:none}
     .hero{min-height:auto;padding:48px 0 36px}
-    .hero-grid,.lab,.final-grid{grid-template-columns:1fr}
+    .hero-grid,.lab,.economics,.final-grid{grid-template-columns:1fr}
     .bot-stage{min-height:430px;order:-1}
     .signal-card{left:0;top:44px}
     .status-card{right:0;bottom:36px}
+    .cost-card{left:18px;bottom:18px}
     .proof-row,.capability-grid,.process{grid-template-columns:1fr}
     .step{border-right:0;border-bottom:1px solid var(--line);min-height:210px}
     .step:last-child{border-bottom:0}
     .section-head{display:grid;margin-bottom:28px}
     .section{padding:74px 0}
     .lab-copy,.lab-board{min-height:auto}
+    .economics-panel,.route-board{min-height:auto}
+    .route-row{grid-template-columns:1fr}
+    .route-row code{width:fit-content}
   }
 
   @media (max-width: 620px){
@@ -467,19 +574,21 @@
     .nav{min-height:68px}
     .brand{font-size:18px}.brand svg{width:34px;height:34px}
     .nav-actions .btn{min-height:40px;padding:0 13px}
-    .hero{padding:30px 0 24px}
-    .hero-grid{gap:24px}
-    h1{margin-top:16px;font-size:48px;max-width:10ch}
+    .hero{padding:22px 0 22px}
+    .hero-grid{gap:18px}
+    h1{margin-top:14px;font-size:44px;max-width:10ch}
     .hero-copy,.lead,.final p{font-size:16px}
     .hero-actions .btn{width:100%}
+    .hero-note{display:none}
     .proof-row{display:none}
-    .bot-stage{min-height:248px}
-    .signal-card,.status-card{display:none}
-    .robot-wrap{width:222px}
+    .bot-stage{min-height:218px}
+    .signal-card,.status-card,.cost-card{display:none}
+    .robot-wrap{width:205px}
     .orbit{display:none}
     .capability{min-height:290px;padding:22px}
     .board-grid{grid-template-columns:1fr}
     .modal-card{padding:28px 22px}
+    .price-readout{grid-template-columns:1fr}
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -507,6 +616,7 @@
     </a>
     <nav class="nav-links" aria-label="Primary navigation">
       <a href="#work">Work</a>
+      <a href="#economics">AI Economics</a>
       <a href="#lab">Studio</a>
       <a href="#process">Process</a>
     </nav>
@@ -520,17 +630,18 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <div class="eyebrow">Software studio for ambitious teams</div>
-        <h1>Make the weird thing <em>work.</em></h1>
-        <p class="hero-copy">Good Business designs and builds AI products, mobile apps, and internal platforms that feel unusually thoughtful from the first click to the thousandth.</p>
+        <div class="eyebrow">Design-led AI product studio</div>
+        <h1>Cool AI. Real product. <em>Sensible bills.</em></h1>
+        <p class="hero-copy">Good Business designs and builds AI products, mobile apps, and internal platforms that look expensive, feel inevitable, and are engineered to avoid runaway model costs.</p>
         <div class="hero-actions">
           <button type="button" class="btn dark" data-open-contact>Tell us what you’re building →</button>
-          <a class="btn light" href="#work">See the build menu</a>
+          <a class="btn light" href="#economics">See how we control cost</a>
         </div>
+        <div class="hero-note"><span class="spark-dot" aria-hidden="true"></span><span><strong>Prototype fast.</strong> Route models intelligently. Ship the parts users actually feel.</span></div>
         <div class="proof-row" aria-label="Good Business capabilities">
-          <div class="proof"><b>AI</b><span>agents · rag · workflows</span></div>
-          <div class="proof"><b>Mobile</b><span>ios · android · launch</span></div>
-          <div class="proof"><b>Ops</b><span>dashboards · tools · teams</span></div>
+          <div class="proof"><b>AI</b><span>agents · rag · routing</span></div>
+          <div class="proof"><b>Design</b><span>brand · ux · polish</span></div>
+          <div class="proof"><b>Ops</b><span>dashboards · cost controls</span></div>
         </div>
       </div>
 
@@ -568,6 +679,11 @@
           <strong>Blinking. Thinking.</strong>
           <p>Currently turning “what if” into something shippable.</p>
         </div>
+        <div class="cost-card">
+          <div class="mini-label">AI spend posture</div>
+          <strong>Lean <span>by design</span></strong>
+          <div class="cost-meter" aria-hidden="true"><i></i></div>
+        </div>
       </div>
     </div>
   </section>
@@ -579,7 +695,7 @@
           <div class="eyebrow">What we build</div>
           <h2>Three lanes. One standard: <em>make it feel inevitable.</em></h2>
         </div>
-        <p class="lead">We like hard product problems with a little electricity in them: ambiguous enough to need taste, concrete enough to ship.</p>
+        <p class="lead">We like hard product problems with a little electricity in them: ambiguous enough to need taste, concrete enough to ship, measurable enough to justify the investment.</p>
       </div>
 
       <div class="capability-grid">
@@ -592,7 +708,7 @@
           </div>
           <div>
             <h3>AI that behaves like product.</h3>
-            <p>Model-powered features, copilots, automations, and agentic workflows designed around real user trust.</p>
+            <p>Model-powered features, copilots, automations, and agentic workflows with routing, fallbacks, and cost telemetry built in.</p>
           </div>
         </article>
         <article class="capability">
@@ -621,13 +737,51 @@
     </div>
   </section>
 
+  <section class="section alt" id="economics">
+    <div class="wrap economics">
+      <div class="economics-panel">
+        <div>
+          <div class="eyebrow" style="color:var(--amber)">AI economics</div>
+          <h2>The magic should feel expensive. <em>The system shouldn’t be.</em></h2>
+          <p>The difference between a clever AI demo and a real AI business is discipline: choosing the right model for the right moment, caching the boring parts, and measuring value per request.</p>
+        </div>
+        <div class="price-readout" aria-label="AI cost principles">
+          <div><b>80/20</b><span>cheap model first</span></div>
+          <div><b>0 waste</b><span>cache + guardrails</span></div>
+        </div>
+      </div>
+      <div class="route-board" aria-label="AI routing examples">
+        <div class="route-row">
+          <code>Classify</code>
+          <div><b>Small model, fast answer</b><p>Use lightweight inference for labels, routing, extraction, and simple decisions.</p></div>
+          <span class="chip">low cost</span>
+        </div>
+        <div class="route-row">
+          <code>Retrieve</code>
+          <div><b>Ground before generating</b><p>Search the source of truth first so the expensive call has less guessing to do.</p></div>
+          <span class="chip">less drift</span>
+        </div>
+        <div class="route-row">
+          <code>Generate</code>
+          <div><b>Spend where users notice</b><p>Use stronger models for moments that shape trust, judgment, or delight.</p></div>
+          <span class="chip">high value</span>
+        </div>
+        <div class="route-row">
+          <code>Observe</code>
+          <div><b>Measure the real unit cost</b><p>Track latency, token spend, error rates, conversion, and human save-time.</p></div>
+          <span class="chip">operator view</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section alt" id="lab">
     <div class="wrap lab">
       <div class="lab-copy">
         <div>
           <div class="eyebrow" style="color:var(--amber)">Studio mode</div>
-          <h2>We design like artists and ship like adults.</h2>
-          <p>The useful part of a product studio is not just making screens. It is compressing uncertainty until the next build step becomes obvious.</p>
+          <h2>Art-level care. Operator-level discipline.</h2>
+          <p>The useful part of a product studio is not just making screens. It is compressing uncertainty until the next build step becomes obvious, affordable, and worth shipping.</p>
         </div>
         <button class="btn hot" type="button" data-open-contact>Bring us a messy idea →</button>
       </div>
@@ -639,7 +793,7 @@
         <div class="board-grid">
           <div class="tile"><b>Prototype the strange part</b><span>Find the interaction, model behavior, or workflow that makes the product worth building.</span></div>
           <div class="tile"><b>Design the everyday part</b><span>Shape navigation, states, forms, edge cases, and the rhythm of repeated use.</span></div>
-          <div class="tile"><b>Build the real thing</b><span>Connect data, auth, billing, notifications, deployment, analytics, and the operational bits.</span></div>
+          <div class="tile"><b>Build the real thing</b><span>Connect data, auth, billing, notifications, deployment, analytics, and cost-aware AI calls.</span></div>
           <div class="tile"><b>Tune until it sings</b><span>Polish copy, latency, empty states, onboarding, and all the tiny moments people feel.</span></div>
         </div>
       </div>
@@ -653,12 +807,12 @@
           <div class="eyebrow">How it works</div>
           <h2>A practical path from <em>idea</em> to launch.</h2>
         </div>
-        <p class="lead">Small enough to move quickly, rigorous enough that the product doesn’t turn fragile when people start using it.</p>
+        <p class="lead">Small enough to move quickly, rigorous enough that the product doesn’t turn fragile or expensive when people start using it.</p>
       </div>
       <div class="process">
         <article class="step"><div class="index">Week 0</div><div><h3>Map the truth</h3><p>Goals, constraints, users, data, risks, and what has to feel magical.</p></div></article>
         <article class="step"><div class="index">Week 1</div><div><h3>Make the first shape</h3><p>A prototype or product slice that proves the experience can work.</p></div></article>
-        <article class="step"><div class="index">Build</div><div><h3>Ship the system</h3><p>Production code, integrations, responsive UI, and the operational foundation.</p></div></article>
+        <article class="step"><div class="index">Build</div><div><h3>Ship the system</h3><p>Production code, integrations, responsive UI, model routing, and the operational foundation.</p></div></article>
         <article class="step"><div class="index">Launch</div><div><h3>Keep improving</h3><p>Instrumentation, feedback loops, release polish, and the next meaningful iteration.</p></div></article>
       </div>
     </div>
@@ -668,8 +822,8 @@
     <div class="wrap final-grid">
       <div>
         <div class="eyebrow" style="color:var(--amber)">Let’s talk</div>
-        <h2>Got a product that needs a little more <em>spark?</em></h2>
-        <p>Send the rough version. A paragraph, a deck, a half-formed instinct. We can work with that.</p>
+        <h2>Got an AI idea that should feel <em>unfairly good?</em></h2>
+        <p>Send the rough version. A paragraph, a deck, a half-formed instinct. We’ll help turn it into something beautiful, useful, and economically sane.</p>
       </div>
       <div class="hero-actions">
         <button type="button" class="btn hot" data-open-contact>Start a conversation →</button>
