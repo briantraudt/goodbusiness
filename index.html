@@ -2,258 +2,697 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Good Business — We build things that make life more meaningful</title>
+<title>Good Business — AI, mobile, and enterprise software studio</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="We design and build software that feels impossible in the best way — products with the ambition and polish to make people do a double take.">
+<meta name="description" content="Good Business designs and builds AI products, mobile apps, and enterprise software with the care of a product studio and the taste of a design team.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root{
-    --cream: #FAFAF7;
-    --cream-2: #F2F2EE;
-    --cream-3: #E5E5E0;
-    --teal: #111111;
-    --teal-2: #000000;
-    --amber: #2E6BE6;
-    --ink: #0E0E0E;
-    --ink-2: #4A4A4A;
-    --ink-3: #8A8A86;
-    --rule: #E0E0DA;
-    --sans: 'Geist', system-ui, sans-serif;
-    --mono: 'Geist Mono', ui-monospace, Menlo, monospace;
-    --serif: 'Instrument Serif', ui-serif, Georgia, serif;
+    color-scheme: light;
+    --cream:#fbf5e8;
+    --paper:#fffaf0;
+    --paper-2:#f3ead8;
+    --ink:#182226;
+    --muted:#5f665f;
+    --quiet:#8e8a80;
+    --line:#dfd4bd;
+    --teal:#1f5357;
+    --teal-dark:#12363a;
+    --amber:#f0a23b;
+    --coral:#df6548;
+    --blue:#3869e8;
+    --mint:#b7d9bd;
+    --shadow:0 34px 90px rgba(31, 83, 87, .16);
+    --sans:"Geist", system-ui, sans-serif;
+    --mono:"Geist Mono", ui-monospace, Menlo, monospace;
+    --serif:"Instrument Serif", ui-serif, Georgia, serif;
   }
+
   *{box-sizing:border-box}
-  html,body{margin:0; background:var(--cream); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased}
-  a{color:inherit; text-decoration:none}
-  button{font-family:inherit; font-size:inherit; color:inherit; background:transparent; border:none; cursor:pointer; padding:0}
-  .container{max-width:1240px; margin:0 auto; padding: 0 32px}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      linear-gradient(90deg, rgba(31,83,87,.05) 1px, transparent 1px) 0 0 / 72px 72px,
+      linear-gradient(180deg, rgba(31,83,87,.05) 1px, transparent 1px) 0 0 / 72px 72px,
+      var(--cream);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
 
-  /* Header */
-  header.site{position:sticky; top:0; z-index:40; background: color-mix(in oklab, var(--cream) 90%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule)}
-  header.site .inner{display:flex; align-items:center; justify-content:space-between; padding: 18px 32px; max-width:1240px; margin:0 auto}
-  header.site nav{display:flex; gap:28px; color:var(--ink-2); font-size:14px; font-weight:500}
-  header.site nav a:hover{color:var(--teal)}
-  header.site .cta{background:var(--teal); color:var(--cream); padding:9px 16px; border-radius:8px; font-size:13px; font-weight:500; display:inline-flex; align-items:center; gap:6px}
-  header.site .cta:hover{background:var(--teal-2)}
+  a{color:inherit;text-decoration:none}
+  button,input,textarea{font:inherit}
+  button{border:0;background:transparent;color:inherit;cursor:pointer}
+  .wrap{width:min(1180px, calc(100% - 44px));margin:0 auto}
 
-  .logo-lockup{display:flex; align-items:center; gap:10px}
-  .logo-lockup svg{height:32px; width:auto}
-  .logo-lockup .wm{font-weight:700; font-size:20px; letter-spacing:-0.03em; color:var(--teal)}
+  .skip{position:absolute;left:-999px;top:12px;background:var(--ink);color:var(--paper);padding:10px 14px;border-radius:8px;z-index:1000}
+  .skip:focus{left:12px}
 
-  /* Hero */
-  .hero{position:relative; padding: 120px 0 80px; overflow:hidden; background: var(--cream)}
-  .hero .inner{position:relative; display:grid; grid-template-columns: 1.15fr 1fr; gap: 60px; align-items:center; max-width:1240px; margin:0 auto; padding: 0 32px}
-  .hero .kicker{font-family:var(--mono); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--teal); margin-bottom:24px; display:inline-flex; align-items:center; gap:10px}
-  .hero .kicker .d{width:6px; height:6px; border-radius:50%; background:var(--amber)}
-  .hero h1{margin:0; font-size: clamp(46px, 6vw, 88px); font-weight:500; letter-spacing:-0.035em; line-height:0.98; color:var(--teal)}
-  .hero h1 em{font-family:var(--serif); font-style:italic; font-weight:400; color:var(--amber)}
-  .hero .sub{margin-top:26px; font-size:19px; color:var(--ink-2); max-width:52ch; line-height:1.5}
-  .hero .actions{margin-top:36px; display:flex; gap:14px; flex-wrap:wrap}
-  .btn{display:inline-flex; align-items:center; gap:8px; padding:14px 22px; border-radius:10px; font-weight:500; font-size:15px; cursor:pointer; transition: all 0.15s}
-  .btn.primary{background:var(--teal); color:var(--cream)}
-  .btn.primary:hover{background:var(--teal-2)}
-  .btn.ghost{background:transparent; color:var(--teal); border:1px solid var(--rule)}
-  .btn.ghost:hover{border-color:var(--teal); background:rgba(17,17,17,0.04)}
+  .site-header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    border-bottom:1px solid color-mix(in oklab, var(--line) 78%, transparent);
+    background:color-mix(in oklab, var(--cream) 86%, transparent);
+    backdrop-filter:blur(18px);
+  }
 
-  /* Robot hero illustration */
-  .hero-bot{display:flex; align-items:center; justify-content:center; position:relative}
-  .hero-bot svg{width: 100%; max-width: 440px; height:auto}
-  @keyframes wink { 0%, 78%, 100% { transform: scaleY(1) } 82%, 88% { transform: scaleY(0.08) } }
-  .live .eye.r { transform-origin: center; transform-box: fill-box; animation: wink 3.6s infinite }
-  @keyframes floaty { 0%,100%{ transform: translateY(0) } 50% { transform: translateY(-8px) } }
-  .floaty { animation: floaty 4s ease-in-out infinite }
+  .nav{
+    min-height:76px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:22px;
+  }
 
-  /* Section rhythm */
-  section.sec{padding: 96px 0; position:relative}
-  section.sec.tight{padding: 72px 0}
-  section.sec.cream-2{background: var(--cream-2)}
+  .brand{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    font-weight:800;
+    letter-spacing:-.04em;
+    font-size:22px;
+  }
 
-  .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); font-weight:500; margin-bottom:18px; display:inline-flex; align-items:center; gap:10px}
-  .eyebrow:before{content:""; width:18px; height:1px; background: currentColor}
-  h2{margin:0; font-size: clamp(32px, 4vw, 54px); font-weight:500; letter-spacing:-0.025em; line-height:1.05; color:var(--teal); max-width:18ch}
-  h2 em{font-family:var(--serif); font-style:italic; font-weight:400; color:var(--amber)}
-  .lead{margin-top:18px; font-size:18px; color:var(--ink-2); max-width:52ch; line-height:1.55}
+  .brand svg{width:38px;height:38px;flex:0 0 auto}
+  .nav-links{display:flex;align-items:center;gap:28px;color:var(--muted);font-size:14px;font-weight:650}
+  .nav-links a:hover{color:var(--teal)}
+  .nav-actions{display:flex;align-items:center;gap:10px}
 
-  /* How We Help — 3 pillars */
-  .pillars{display:grid; grid-template-columns: repeat(3, 1fr); gap:20px; margin-top:56px}
-  .pillar{background: var(--cream); border:1px solid var(--rule); border-radius:16px; padding: 40px 32px; display:flex; flex-direction:column; gap:14px; transition: all 0.2s}
-  .pillar:hover{border-color: var(--teal); transform: translateY(-2px); box-shadow: 0 20px 40px -24px rgba(17,17,17,0.2)}
-  .pillar .num{font-family:var(--mono); font-size:11px; color:var(--ink-3); letter-spacing:0.08em; text-transform:uppercase}
-  .pillar h3{margin:0; font-size:26px; font-weight:600; letter-spacing:-0.02em; color:var(--teal)}
-  .pillar p{margin:0; color:var(--ink-2); font-size:15px; line-height:1.55}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    min-height:46px;
+    padding:0 18px;
+    border-radius:10px;
+    font-weight:750;
+    font-size:14px;
+    transition:transform .18s ease, background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
+  }
+  .btn:hover{transform:translateY(-1px)}
+  .btn.dark{background:var(--ink);color:var(--paper);box-shadow:0 16px 32px rgba(24,34,38,.14)}
+  .btn.dark:hover{background:var(--teal-dark)}
+  .btn.light{background:rgba(255,250,240,.64);border:1px solid var(--line);color:var(--ink)}
+  .btn.light:hover{border-color:var(--teal);background:var(--paper)}
+  .btn.hot{background:var(--amber);color:var(--teal-dark)}
+  .btn.hot:hover{background:#ffb84d}
 
-  /* CTA block */
-  .final-cta{background: var(--teal); color: var(--cream); padding: 96px 0; text-align:center; position:relative; overflow:hidden}
-  .final-cta:before{content:""; position:absolute; inset:0; background:
-    radial-gradient(ellipse at 50% 0%, rgba(46,107,230,0.18), transparent 60%)}
-  .final-cta .inner{position:relative; max-width:720px; margin:0 auto; padding:0 32px}
-  .final-cta h2{color:var(--cream); margin:0 auto 36px; max-width:none; line-height:1.1; font-size: clamp(30px, 3.2vw, 44px)}
-  .final-cta h2 em{color: var(--amber)}
-  .final-cta .eyebrow{color: var(--amber)}
-  .final-cta p{margin:16px auto 24px; color: rgba(250,250,247,0.8); font-size:17px; max-width:52ch}
-  .final-cta .btn{background: var(--amber); color: var(--cream); font-weight:600}
-  .final-cta .btn:hover{background:#1F4BFF}
+  .hero{
+    min-height:auto;
+    display:grid;
+    align-items:center;
+    padding:62px 0 38px;
+    border-bottom:1px solid var(--line);
+  }
 
-  /* Footer */
-  footer.site.mini{background: var(--ink); color: rgba(250,250,247,0.6); padding: 32px 0}
-  footer.site.mini .inner{max-width:1240px; margin:0 auto; padding: 0 32px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap}
-  footer.site.mini .foot-meta{display:flex; gap:10px; font-family:var(--mono); font-size:11px; letter-spacing:0.06em; text-transform:uppercase; color:rgba(250,250,247,0.55); align-items:center}
-  footer.site.mini .foot-meta a:hover{color:var(--amber)}
+  .hero-grid{
+    display:grid;
+    grid-template-columns:minmax(0, 1.03fr) minmax(380px, .83fr);
+    gap:58px;
+    align-items:center;
+  }
 
-  /* Contact modal */
-  .modal{position:fixed; inset:0; z-index:100; display:none; place-items:center; padding:20px}
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--mono);
+    font-size:11px;
+    line-height:1;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    color:var(--teal);
+    font-weight:700;
+  }
+  .eyebrow:before{content:"";width:28px;height:2px;background:currentColor}
+
+  h1,h2,h3,p{margin:0}
+  h1{
+    margin-top:22px;
+    max-width:11ch;
+    font-size:clamp(58px, 8.3vw, 118px);
+    line-height:.88;
+    letter-spacing:-.075em;
+    font-weight:900;
+  }
+  h1 em,h2 em,.script{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:400;
+    letter-spacing:-.035em;
+  }
+  h1 em{color:var(--blue)}
+
+  .hero-copy{
+    margin-top:28px;
+    max-width:620px;
+    color:var(--muted);
+    font-size:clamp(18px, 1.6vw, 22px);
+    line-height:1.5;
+  }
+
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:34px}
+  .proof-row{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:12px;
+    max-width:650px;
+    margin-top:46px;
+  }
+
+  .proof{
+    border:1px solid var(--line);
+    background:rgba(255,250,240,.56);
+    border-radius:8px;
+    padding:14px 15px;
+  }
+  .proof b{display:block;font-size:20px;letter-spacing:-.04em}
+  .proof span{display:block;margin-top:4px;color:var(--quiet);font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+
+  .bot-stage{
+    position:relative;
+    min-height:620px;
+    display:grid;
+    place-items:center;
+  }
+  .orbit{
+    position:absolute;
+    inset:42px 14px 28px;
+    border:1px solid var(--line);
+    border-radius:50%;
+    transform:rotate(-10deg);
+    background:rgba(255,250,240,.22);
+  }
+  .orbit:before,.orbit:after{
+    content:"";
+    position:absolute;
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:var(--coral);
+    box-shadow:0 0 0 8px rgba(223,101,72,.12);
+  }
+  .orbit:before{left:16%;top:9%}
+  .orbit:after{right:12%;bottom:14%;background:var(--blue);box-shadow:0 0 0 8px rgba(56,105,232,.12)}
+
+  .robot-wrap{
+    position:relative;
+    width:min(460px, 100%);
+    aspect-ratio:1;
+    display:grid;
+    place-items:center;
+    isolation:isolate;
+  }
+
+  .robot-shadow{
+    position:absolute;
+    width:70%;
+    height:30px;
+    bottom:34px;
+    background:rgba(18,54,58,.18);
+    filter:blur(18px);
+    border-radius:50%;
+  }
+
+  .hero-robot{
+    position:relative;
+    z-index:2;
+    width:92%;
+    filter:drop-shadow(0 34px 30px rgba(18,54,58,.16));
+    animation:float 5.8s ease-in-out infinite;
+  }
+
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}
+  @keyframes blink{0%,72%,100%{transform:scaleY(1)}76%,82%{transform:scaleY(.08)}}
+  @keyframes scan{0%,100%{transform:translateX(-18px);opacity:.35}50%{transform:translateX(18px);opacity:.85}}
+  @keyframes pulse{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:1;transform:scale(1.12)}}
+  .live .eye-r{transform-origin:center;transform-box:fill-box;animation:blink 4.1s infinite}
+  .scan-line{animation:scan 3.4s ease-in-out infinite}
+  .antenna-glow{animation:pulse 2.6s ease-in-out infinite;transform-origin:center}
+
+  .signal-card,
+  .status-card{
+    position:absolute;
+    z-index:3;
+    border:1px solid var(--line);
+    background:rgba(255,250,240,.84);
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(16px);
+    border-radius:8px;
+  }
+  .signal-card{
+    left:-8px;
+    top:100px;
+    width:184px;
+    padding:13px;
+  }
+  .status-card{
+    right:0;
+    bottom:96px;
+    width:206px;
+    padding:14px;
+  }
+  .mini-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--quiet);font-weight:700}
+  .signal-bars{display:grid;grid-template-columns:repeat(5, 1fr);gap:5px;align-items:end;height:48px;margin-top:12px}
+  .signal-bars i{display:block;border-radius:4px 4px 2px 2px;background:var(--teal)}
+  .signal-bars i:nth-child(1){height:22px;background:var(--mint)}
+  .signal-bars i:nth-child(2){height:34px;background:var(--amber)}
+  .signal-bars i:nth-child(3){height:44px;background:var(--coral)}
+  .signal-bars i:nth-child(4){height:30px;background:var(--blue)}
+  .signal-bars i:nth-child(5){height:39px;background:var(--teal)}
+  .status-card strong{display:block;margin-top:7px;font-size:18px;letter-spacing:-.04em}
+  .status-card p{color:var(--muted);font-size:13px;margin-top:4px}
+
+  .section{padding:104px 0;border-bottom:1px solid var(--line)}
+  .section.alt{background:rgba(255,250,240,.42)}
+  .section-head{display:flex;align-items:end;justify-content:space-between;gap:36px;margin-bottom:38px}
+  h2{
+    font-size:clamp(38px, 5vw, 72px);
+    max-width:760px;
+    line-height:.95;
+    letter-spacing:-.065em;
+    font-weight:850;
+  }
+  h2 em{color:var(--blue)}
+  .lead{max-width:500px;color:var(--muted);font-size:18px;line-height:1.55}
+
+  .capability-grid{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:18px;
+  }
+  .capability{
+    position:relative;
+    min-height:330px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--paper);
+    padding:28px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .capability .num{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--quiet)}
+  .capability h3{font-size:30px;line-height:1;letter-spacing:-.045em}
+  .capability p{color:var(--muted);font-size:15px}
+  .cap-visual{height:96px;display:flex;align-items:end;gap:8px}
+  .chip{
+    display:inline-flex;
+    align-items:center;
+    min-height:30px;
+    padding:0 10px;
+    border-radius:6px;
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    border:1px solid var(--line);
+    background:rgba(251,245,232,.7);
+  }
+  .stack-lines{display:grid;gap:8px;width:100%}
+  .stack-lines i{display:block;height:12px;border-radius:99px;background:var(--teal)}
+  .stack-lines i:nth-child(2){width:72%;background:var(--amber)}
+  .stack-lines i:nth-child(3){width:48%;background:var(--coral)}
+  .mobile-frame{width:64px;height:92px;border:7px solid var(--teal);border-radius:18px;background:var(--paper);position:relative}
+  .mobile-frame:after{content:"";position:absolute;left:14px;right:14px;bottom:8px;height:5px;border-radius:99px;background:var(--amber)}
+
+  .lab{
+    display:grid;
+    grid-template-columns:.92fr 1.08fr;
+    gap:18px;
+    align-items:stretch;
+  }
+  .lab-copy{
+    background:var(--teal);
+    color:var(--paper);
+    border-radius:8px;
+    padding:36px;
+    min-height:480px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .lab-copy h2{color:var(--paper);font-size:clamp(38px, 4.2vw, 62px)}
+  .lab-copy h2 em{color:var(--amber)}
+  .lab-copy p{color:rgba(255,250,240,.78);font-size:18px;max-width:38ch;margin-top:22px}
+  .lab-board{
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--paper);
+    padding:18px;
+    display:grid;
+    grid-template-rows:auto 1fr;
+    min-height:480px;
+  }
+  .board-bar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:0 0 14px;margin-bottom:16px}
+  .dots{display:flex;gap:7px}.dots i{width:10px;height:10px;border-radius:50%;background:var(--coral)}.dots i:nth-child(2){background:var(--amber)}.dots i:nth-child(3){background:var(--mint)}
+  .board-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .tile{
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:rgba(251,245,232,.55);
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    min-height:142px;
+  }
+  .tile:nth-child(2){background:rgba(183,217,189,.28)}
+  .tile:nth-child(3){background:rgba(240,162,59,.18)}
+  .tile:nth-child(4){background:rgba(56,105,232,.10)}
+  .tile b{font-size:20px;letter-spacing:-.04em}
+  .tile span{color:var(--muted);font-size:14px;margin-top:8px}
+
+  .process{
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0, 1fr));
+    gap:0;
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow:hidden;
+    background:var(--paper);
+  }
+  .step{
+    min-height:260px;
+    padding:24px;
+    border-right:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .step:last-child{border-right:0}
+  .step .index{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--quiet)}
+  .step h3{font-size:25px;letter-spacing:-.045em;line-height:1}
+  .step p{font-size:14px;color:var(--muted)}
+
+  .final{
+    padding:102px 0;
+    background:
+      linear-gradient(135deg, rgba(240,162,59,.18), transparent 28%),
+      linear-gradient(315deg, rgba(56,105,232,.14), transparent 32%),
+      var(--ink);
+    color:var(--paper);
+  }
+  .final-grid{display:grid;grid-template-columns:1fr auto;gap:38px;align-items:center}
+  .final h2{color:var(--paper);max-width:780px}
+  .final h2 em{color:var(--amber)}
+  .final p{margin-top:20px;color:rgba(255,250,240,.72);font-size:18px;max-width:580px}
+  .final .btn.light{color:var(--paper);border-color:rgba(255,250,240,.24);background:rgba(255,250,240,.08)}
+
+  footer{
+    background:var(--ink);
+    color:rgba(255,250,240,.64);
+    padding:30px 0;
+  }
+  .foot{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .foot .brand{color:var(--paper);font-size:18px}
+  .foot-meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+  .foot-meta a:hover{color:var(--amber)}
+
+  .modal{position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:20px}
   .modal.open{display:grid}
-  .modal .backdrop{position:absolute; inset:0; background:rgba(17,17,17,0.55); backdrop-filter:blur(6px); animation: mfadein 0.18s ease}
-  .modal .card{position:relative; background:var(--cream); border:1px solid var(--rule); border-radius:16px; padding:40px; max-width:520px; width:100%; box-shadow:0 24px 60px -20px rgba(0,0,0,0.35); animation: mslidein 0.22s cubic-bezier(0.2, 0.8, 0.2, 1)}
-  @keyframes mfadein { from { opacity:0 } to { opacity:1 } }
-  @keyframes mslidein { from { opacity:0; transform: translateY(12px) } to { opacity:1; transform: translateY(0) } }
-  .modal .close{position:absolute; top:14px; right:14px; width:32px; height:32px; display:grid; place-items:center; border-radius:8px; color:var(--ink-3); font-size:20px; line-height:1}
-  .modal .close:hover{background:var(--cream-2); color:var(--teal)}
-  .modal .eyebrow{margin-bottom:14px}
-  .modal h3{margin:0 0 22px; font-size:26px; font-weight:500; letter-spacing:-0.02em; color:var(--teal); line-height:1.15}
-  .modal h3 em{font-family:var(--serif); font-style:italic; font-weight:400; color:var(--amber)}
-  .modal form{display:flex; flex-direction:column; gap:14px}
-  .modal label{display:flex; flex-direction:column; gap:6px; font-family:var(--mono); font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-3); font-weight:500}
-  .modal input, .modal textarea{font-family:var(--sans); font-size:15px; color:var(--ink); background:#fff; border:1px solid var(--rule); border-radius:8px; padding:11px 13px; width:100%; box-sizing:border-box; transition: border-color 0.15s, box-shadow 0.15s; text-transform:none; letter-spacing:0}
-  .modal input:focus, .modal textarea:focus{outline:none; border-color:var(--teal); box-shadow: 0 0 0 3px rgba(17,17,17,0.08)}
-  .modal textarea{min-height:110px; resize:vertical; line-height:1.5}
-  .modal .submit{margin-top:8px; background:var(--teal); color:var(--cream); padding:13px 20px; border-radius:10px; font-size:15px; font-weight:500; display:inline-flex; align-items:center; justify-content:center; gap:8px; transition: background 0.15s}
-  .modal .submit:hover{background:var(--amber)}
-  .modal .submit[disabled]{opacity:0.7; cursor:default}
-  .modal .submit[disabled]:hover{background:var(--teal)}
-  .modal .form-error{margin:0; color:#B42318; font-family:var(--mono); font-size:12px; letter-spacing:0.04em}
-  .modal .success{padding:28px 8px 8px; text-align:center}
-  .modal .success h4{margin:0 0 10px; font-size:22px; font-weight:500; letter-spacing:-0.015em; color:var(--teal)}
-  .modal .success h4 em{font-family:var(--serif); font-style:italic; font-weight:400; color:var(--amber)}
-  .modal .success p{margin:0; color:var(--ink-2); font-size:15px; line-height:1.55}
+  .backdrop{position:absolute;inset:0;background:rgba(24,34,38,.54);backdrop-filter:blur(8px)}
+  .modal-card{
+    position:relative;
+    width:min(540px, 100%);
+    border:1px solid var(--line);
+    border-radius:10px;
+    background:var(--paper);
+    box-shadow:0 34px 90px rgba(0,0,0,.25);
+    padding:34px;
+  }
+  .close{position:absolute;right:16px;top:14px;width:34px;height:34px;border-radius:8px;color:var(--quiet);font-size:24px;line-height:1}
+  .close:hover{background:var(--paper-2);color:var(--ink)}
+  .modal h3{margin-top:14px;font-size:34px;line-height:1;letter-spacing:-.05em}
+  .modal h3 em{font-family:var(--serif);font-weight:400;color:var(--blue)}
+  form{display:grid;gap:14px;margin-top:26px}
+  label{display:grid;gap:7px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--quiet);font-weight:700}
+  input,textarea{width:100%;border:1px solid var(--line);border-radius:8px;background:#fffdfa;color:var(--ink);padding:12px 13px;text-transform:none;letter-spacing:0}
+  textarea{min-height:120px;resize:vertical;line-height:1.5}
+  input:focus,textarea:focus{outline:0;border-color:var(--teal);box-shadow:0 0 0 3px rgba(31,83,87,.12)}
+  .submit{margin-top:6px;width:100%}
+  .form-error{margin:0;color:#b42318;font-family:var(--mono);font-size:12px;letter-spacing:.04em}
+  .success{text-align:center;padding:26px 4px 10px}
+  .success h4{margin:0 0 10px;font-size:28px;letter-spacing:-.04em}
+  .success h4 em{font-family:var(--serif);font-weight:400;color:var(--blue)}
+  .success p{color:var(--muted)}
   body.modal-open{overflow:hidden}
 
-  @media (max-width: 900px){
-    .hero{padding: 64px 0 56px}
-    .hero .inner{grid-template-columns: 1fr; gap: 40px}
-    .hero-bot{order: -1}
-    .hero-bot svg{max-width: 240px}
-    .hero h1{font-size: 44px}
-    .hero .sub{font-size: 16px}
-    .hero .actions{flex-direction: column; align-items: stretch}
-    .hero .actions .btn{justify-content: center}
-    .pillars{grid-template-columns: 1fr; gap: 14px; margin-top: 36px}
-    .pillar{padding: 28px 24px}
-    section.sec{padding: 64px 0}
-    section.sec.tight{padding: 48px 0}
-    h2{font-size: 34px; max-width: none}
-    .lead{font-size: 16px}
-    header.site .inner{padding: 14px 18px}
-    .modal .card{padding: 28px 24px}
-    .container{padding: 0 22px}
-    .final-cta{padding: 72px 0}
-    .final-cta .btn{width: 100%; justify-content: center}
-    footer.site.mini .inner{flex-direction: column; align-items: flex-start; gap: 14px; padding: 0 22px}
-    footer.site.mini .foot-meta{flex-wrap: wrap; gap: 6px}
+  @media (max-width: 960px){
+    .nav-links{display:none}
+    .hero{min-height:auto;padding:48px 0 36px}
+    .hero-grid,.lab,.final-grid{grid-template-columns:1fr}
+    .bot-stage{min-height:430px;order:-1}
+    .signal-card{left:0;top:44px}
+    .status-card{right:0;bottom:36px}
+    .proof-row,.capability-grid,.process{grid-template-columns:1fr}
+    .step{border-right:0;border-bottom:1px solid var(--line);min-height:210px}
+    .step:last-child{border-bottom:0}
+    .section-head{display:grid;margin-bottom:28px}
+    .section{padding:74px 0}
+    .lab-copy,.lab-board{min-height:auto}
+  }
+
+  @media (max-width: 620px){
+    .wrap{width:min(100% - 28px, 1180px)}
+    .nav{min-height:68px}
+    .brand{font-size:18px}.brand svg{width:34px;height:34px}
+    .nav-actions .btn{min-height:40px;padding:0 13px}
+    .hero{padding:30px 0 24px}
+    .hero-grid{gap:24px}
+    h1{margin-top:16px;font-size:48px;max-width:10ch}
+    .hero-copy,.lead,.final p{font-size:16px}
+    .hero-actions .btn{width:100%}
+    .proof-row{display:none}
+    .bot-stage{min-height:248px}
+    .signal-card,.status-card{display:none}
+    .robot-wrap{width:222px}
+    .orbit{display:none}
+    .capability{min-height:290px;padding:22px}
+    .board-grid{grid-template-columns:1fr}
+    .modal-card{padding:28px 22px}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
   }
 </style>
 </head>
 <body>
+<a class="skip" href="#main">Skip to content</a>
 
-<!-- HEADER -->
-<header class="site">
-  <div class="inner">
-    <a class="logo-lockup" href="/">
-      <svg viewBox="0 0 40 40" class="live" aria-hidden="true">
-        <g transform="translate(3,7)">
-          <line x1="17" y1="-2" x2="17" y2="3" stroke="var(--teal)" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="17" cy="-4" r="2" fill="var(--amber)"/>
-          <rect x="1" y="3" width="32" height="28" rx="4.5" fill="var(--teal)"/>
-          <rect x="5" y="8" width="24" height="17" rx="2.5" fill="var(--cream)"/>
-          <rect x="10" y="13" width="3.2" height="4" rx="0.7" fill="var(--teal)" class="eye l"/>
-          <rect x="20" y="13" width="3.2" height="4" rx="0.7" fill="var(--teal)" class="eye r"/>
-          <path d="M 10.5 19.5 Q 17 23 23.5 19.5" fill="none" stroke="var(--amber)" stroke-width="1.7" stroke-linecap="round"/>
-        </g>
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="brand" href="/" aria-label="Good Business home">
+      <svg viewBox="0 0 44 44" class="live" aria-hidden="true">
+        <line x1="22" y1="5" x2="22" y2="11" stroke="var(--teal)" stroke-width="2.8" stroke-linecap="round"/>
+        <circle class="antenna-glow" cx="22" cy="4" r="3.5" fill="var(--amber)"/>
+        <rect x="7" y="11" width="30" height="27" rx="7" fill="var(--teal)"/>
+        <rect x="12" y="17" width="20" height="15" rx="4" fill="var(--paper)"/>
+        <rect x="16" y="21" width="4" height="5" rx="1.2" fill="var(--teal)"/>
+        <rect class="eye-r" x="24" y="21" width="4" height="5" rx="1.2" fill="var(--teal)"/>
+        <path d="M16 29 Q22 33 28 29" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"/>
       </svg>
-      <span class="wm">Good Business</span>
+      <span>Good Business</span>
     </a>
-    <button type="button" class="cta" data-open-contact>Get in touch →</button>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="#work">Work</a>
+      <a href="#lab">Studio</a>
+      <a href="#process">Process</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="btn dark" type="button" data-open-contact>Start a project →</button>
+    </div>
   </div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="inner">
-    <div>
-      <h1>We build things that <em>make life more meaningful.</em></h1>
-      <p class="sub">We design and build software that feels impossible in the best way — products with the ambition and polish to make people do a double take.</p>
-      <div class="actions">
-        <button type="button" class="btn primary" data-open-contact>Start a conversation →</button>
-        <a href="#how" class="btn ghost">See what we build</a>
+<main id="main">
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">Software studio for ambitious teams</div>
+        <h1>Make the weird thing <em>work.</em></h1>
+        <p class="hero-copy">Good Business designs and builds AI products, mobile apps, and internal platforms that feel unusually thoughtful from the first click to the thousandth.</p>
+        <div class="hero-actions">
+          <button type="button" class="btn dark" data-open-contact>Tell us what you’re building →</button>
+          <a class="btn light" href="#work">See the build menu</a>
+        </div>
+        <div class="proof-row" aria-label="Good Business capabilities">
+          <div class="proof"><b>AI</b><span>agents · rag · workflows</span></div>
+          <div class="proof"><b>Mobile</b><span>ios · android · launch</span></div>
+          <div class="proof"><b>Ops</b><span>dashboards · tools · teams</span></div>
+        </div>
+      </div>
+
+      <div class="bot-stage" aria-label="Good Business robot mascot">
+        <div class="orbit"></div>
+        <div class="signal-card">
+          <div class="mini-label">Build signal</div>
+          <div class="signal-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="robot-wrap">
+          <div class="robot-shadow"></div>
+          <svg class="hero-robot live" viewBox="0 0 360 360" role="img" aria-label="A smiling Good Business robot">
+            <defs>
+              <linearGradient id="faceGlow" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0" stop-color="#fffaf0"/>
+                <stop offset="1" stop-color="#f2ead8"/>
+              </linearGradient>
+            </defs>
+            <line x1="180" y1="46" x2="180" y2="88" stroke="var(--teal-dark)" stroke-width="10" stroke-linecap="round"/>
+            <circle class="antenna-glow" cx="180" cy="38" r="15" fill="var(--amber)"/>
+            <rect x="58" y="86" width="244" height="216" rx="42" fill="var(--teal)"/>
+            <rect x="86" y="128" width="188" height="132" rx="24" fill="url(#faceGlow)"/>
+            <rect x="124" y="164" width="27" height="35" rx="7" fill="var(--teal-dark)"/>
+            <rect class="eye-r" x="209" y="164" width="27" height="35" rx="7" fill="var(--teal-dark)"/>
+            <path d="M125 225 Q180 266 235 225" fill="none" stroke="var(--amber)" stroke-width="14" stroke-linecap="round"/>
+            <rect class="scan-line" x="118" y="141" width="124" height="4" rx="2" fill="var(--blue)" opacity=".45"/>
+            <circle cx="48" cy="168" r="7" fill="var(--teal-dark)"/>
+            <circle cx="48" cy="218" r="7" fill="var(--teal-dark)"/>
+            <circle cx="312" cy="168" r="7" fill="var(--teal-dark)"/>
+            <circle cx="312" cy="218" r="7" fill="var(--teal-dark)"/>
+          </svg>
+        </div>
+        <div class="status-card">
+          <div class="mini-label">Robot status</div>
+          <strong>Blinking. Thinking.</strong>
+          <p>Currently turning “what if” into something shippable.</p>
+        </div>
       </div>
     </div>
-    <div class="hero-bot floaty">
-      <svg viewBox="0 0 320 320" class="live" aria-label="Good Business robot">
-        <g transform="translate(64,64)">
-          <line x1="96" y1="-18" x2="96" y2="22" stroke="var(--teal)" stroke-width="8" stroke-linecap="round"/>
-          <circle cx="96" cy="-24" r="8" fill="var(--amber)"/>
-          <rect x="0" y="22" width="192" height="172" rx="26" fill="var(--teal)"/>
-          <rect x="20" y="58" width="152" height="108" rx="14" fill="var(--cream)"/>
-          <rect x="54" y="90" width="20" height="24" rx="4" fill="var(--teal)" class="eye l"/>
-          <rect x="118" y="90" width="20" height="24" rx="4" fill="var(--teal)" class="eye r"/>
-          <path d="M 58 138 Q 96 164 134 138" fill="none" stroke="var(--amber)" stroke-width="11" stroke-linecap="round"/>
-        </g>
+  </section>
+
+  <section class="section" id="work">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">What we build</div>
+          <h2>Three lanes. One standard: <em>make it feel inevitable.</em></h2>
+        </div>
+        <p class="lead">We like hard product problems with a little electricity in them: ambiguous enough to need taste, concrete enough to ship.</p>
+      </div>
+
+      <div class="capability-grid">
+        <article class="capability">
+          <div class="num">01 · Artificial intelligence</div>
+          <div class="cap-visual">
+            <span class="chip">LLM UX</span>
+            <span class="chip">RAG</span>
+            <span class="chip">Agents</span>
+          </div>
+          <div>
+            <h3>AI that behaves like product.</h3>
+            <p>Model-powered features, copilots, automations, and agentic workflows designed around real user trust.</p>
+          </div>
+        </article>
+        <article class="capability">
+          <div class="num">02 · Mobile products</div>
+          <div class="cap-visual">
+            <div class="mobile-frame"></div>
+            <div class="mobile-frame" style="height:72px;border-color:var(--coral)"></div>
+            <div class="mobile-frame" style="height:84px;border-color:var(--blue)"></div>
+          </div>
+          <div>
+            <h3>Apps people keep opening.</h3>
+            <p>Native-quality mobile experiences with clean flows, fast feedback, and a launch plan that does not wobble.</p>
+          </div>
+        </article>
+        <article class="capability">
+          <div class="num">03 · Enterprise systems</div>
+          <div class="cap-visual">
+            <div class="stack-lines" aria-hidden="true"><i></i><i></i><i></i></div>
+          </div>
+          <div>
+            <h3>Tools that fit the room.</h3>
+            <p>Dashboards, portals, and operating systems for teams whose work is too specific for generic SaaS.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="lab">
+    <div class="wrap lab">
+      <div class="lab-copy">
+        <div>
+          <div class="eyebrow" style="color:var(--amber)">Studio mode</div>
+          <h2>We design like artists and ship like adults.</h2>
+          <p>The useful part of a product studio is not just making screens. It is compressing uncertainty until the next build step becomes obvious.</p>
+        </div>
+        <button class="btn hot" type="button" data-open-contact>Bring us a messy idea →</button>
+      </div>
+      <div class="lab-board" aria-label="Good Business studio board">
+        <div class="board-bar">
+          <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="mini-label">gb/workbench</div>
+        </div>
+        <div class="board-grid">
+          <div class="tile"><b>Prototype the strange part</b><span>Find the interaction, model behavior, or workflow that makes the product worth building.</span></div>
+          <div class="tile"><b>Design the everyday part</b><span>Shape navigation, states, forms, edge cases, and the rhythm of repeated use.</span></div>
+          <div class="tile"><b>Build the real thing</b><span>Connect data, auth, billing, notifications, deployment, analytics, and the operational bits.</span></div>
+          <div class="tile"><b>Tune until it sings</b><span>Polish copy, latency, empty states, onboarding, and all the tiny moments people feel.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">How it works</div>
+          <h2>A practical path from <em>idea</em> to launch.</h2>
+        </div>
+        <p class="lead">Small enough to move quickly, rigorous enough that the product doesn’t turn fragile when people start using it.</p>
+      </div>
+      <div class="process">
+        <article class="step"><div class="index">Week 0</div><div><h3>Map the truth</h3><p>Goals, constraints, users, data, risks, and what has to feel magical.</p></div></article>
+        <article class="step"><div class="index">Week 1</div><div><h3>Make the first shape</h3><p>A prototype or product slice that proves the experience can work.</p></div></article>
+        <article class="step"><div class="index">Build</div><div><h3>Ship the system</h3><p>Production code, integrations, responsive UI, and the operational foundation.</p></div></article>
+        <article class="step"><div class="index">Launch</div><div><h3>Keep improving</h3><p>Instrumentation, feedback loops, release polish, and the next meaningful iteration.</p></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="final" id="contact">
+    <div class="wrap final-grid">
+      <div>
+        <div class="eyebrow" style="color:var(--amber)">Let’s talk</div>
+        <h2>Got a product that needs a little more <em>spark?</em></h2>
+        <p>Send the rough version. A paragraph, a deck, a half-formed instinct. We can work with that.</p>
+      </div>
+      <div class="hero-actions">
+        <button type="button" class="btn hot" data-open-contact>Start a conversation →</button>
+        <a class="btn light" href="mailto:hello@goodbusinesshq.com">Email directly</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="/" aria-label="Good Business home">
+      <svg viewBox="0 0 44 44" class="live" aria-hidden="true">
+        <line x1="22" y1="5" x2="22" y2="11" stroke="var(--paper)" stroke-width="2.8" stroke-linecap="round"/>
+        <circle cx="22" cy="4" r="3.5" fill="var(--amber)"/>
+        <rect x="7" y="11" width="30" height="27" rx="7" fill="var(--paper)"/>
+        <rect x="12" y="17" width="20" height="15" rx="4" fill="var(--ink)"/>
+        <rect x="16" y="21" width="4" height="5" rx="1.2" fill="var(--paper)"/>
+        <rect class="eye-r" x="24" y="21" width="4" height="5" rx="1.2" fill="var(--paper)"/>
+        <path d="M16 29 Q22 33 28 29" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"/>
       </svg>
-    </div>
-  </div>
-</section>
-
-<!-- HOW WE HELP -->
-<section class="sec" id="how">
-  <div class="container">
-    <div class="eyebrow">What we build</div>
-    <h2>Three things we <em>build well.</em></h2>
-    <div class="pillars">
-      <div class="pillar">
-        <h3>01 · AI</h3>
-        <p>AI-enabled products built to ship, not demo. LLM integrations, RAG pipelines, agentic workflows, and custom model deployments — wired into real product surfaces.</p>
-      </div>
-      <div class="pillar">
-        <h3>02 · Mobile</h3>
-        <p>Native iOS and Android apps built for the long haul. Thoughtful UX, reliable performance, and release pipelines you can trust.</p>
-      </div>
-      <div class="pillar">
-        <h3>03 · Enterprise</h3>
-        <p>Internal tools, dashboards, and workflow platforms for teams that need software to match how they actually work — not the other way around.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FINAL CTA -->
-<section class="final-cta" id="contact">
-  <div class="inner">
-    <div class="eyebrow">Let's talk</div>
-    <h2>Got something to build?<br><em>Tell us about it.</em></h2>
-    <button type="button" class="btn" data-open-contact>Start a conversation →</button>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="site mini">
-  <div class="inner">
-    <div class="logo-lockup">
-      <svg viewBox="0 0 40 40" class="live" aria-hidden="true">
-        <g transform="translate(3,7)">
-          <line x1="17" y1="-2" x2="17" y2="3" stroke="var(--cream)" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="17" cy="-4" r="2" fill="var(--amber)"/>
-          <rect x="1" y="3" width="32" height="28" rx="4.5" fill="var(--cream)"/>
-          <rect x="5" y="8" width="24" height="17" rx="2.5" fill="var(--teal)"/>
-          <rect x="10" y="13" width="3.2" height="4" rx="0.7" fill="var(--cream)" class="eye l"/>
-          <rect x="20" y="13" width="3.2" height="4" rx="0.7" fill="var(--cream)" class="eye r"/>
-          <path d="M 10.5 19.5 Q 17 23 23.5 19.5" fill="none" stroke="var(--amber)" stroke-width="1.7" stroke-linecap="round"/>
-        </g>
-      </svg>
-      <span class="wm" style="color:var(--cream)">Good Business</span>
-    </div>
+      <span>Good Business</span>
+    </a>
     <div class="foot-meta">
       <span>Austin, TX</span>
       <span>·</span>
@@ -264,13 +703,12 @@
   </div>
 </footer>
 
-<!-- CONTACT MODAL -->
 <div class="modal" id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" hidden>
   <div class="backdrop" data-close-contact></div>
-  <div class="card">
+  <div class="modal-card">
     <button type="button" class="close" data-close-contact aria-label="Close">×</button>
-    <div class="eyebrow">Let's talk</div>
-    <h3 id="contact-modal-title">Tell us about <em>what you're building.</em></h3>
+    <div class="eyebrow">Project signal</div>
+    <h3 id="contact-modal-title">Tell us about <em>what you’re building.</em></h3>
     <form id="contact-form" novalidate>
       <label>Name
         <input type="text" name="name" autocomplete="name" required>
@@ -281,7 +719,7 @@
       <label>What are you building?
         <textarea name="message" rows="4" required></textarea>
       </label>
-      <button type="submit" class="submit">Send →</button>
+      <button type="submit" class="btn dark submit">Send the signal →</button>
     </form>
   </div>
 </div>
@@ -300,6 +738,7 @@
       document.body.classList.add('modal-open');
       setTimeout(() => { const f = modal.querySelector('input'); if (f) f.focus(); }, 60);
     }
+
     function close(){
       modal.classList.remove('open');
       document.body.classList.remove('modal-open');
@@ -312,7 +751,7 @@
       if (e.key === 'Escape' && modal.classList.contains('open')) close();
     });
 
-    const card = modal.querySelector('.card');
+    const card = modal.querySelector('.modal-card');
     const submitBtn = form.querySelector('.submit');
 
     function showError(msg){
@@ -383,6 +822,5 @@
     });
   })();
 </script>
-
 </body>
 </html>
