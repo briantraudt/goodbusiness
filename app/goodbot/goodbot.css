@@ -3,6 +3,10 @@
   padding: 28px;
 }
 
+.goodbot-shell.has-mission {
+  padding-top: 20px;
+}
+
 .goodbot-topbar {
   width: min(1120px, 100%);
   margin: 0 auto;
@@ -98,6 +102,12 @@
   align-items: center;
   gap: 24px;
   padding: 36px 0 24px;
+}
+
+.goodbot-hero.is-compact {
+  min-height: 0;
+  width: min(1120px, 100%);
+  padding: 28px 0 14px;
 }
 
 .eyebrow {
@@ -204,7 +214,11 @@
 
 .support-workbench {
   grid-template-columns: 1fr;
-  margin-top: 12px;
+  margin-top: 10px;
+}
+
+.has-mission .support-workbench {
+  margin-top: 14px;
 }
 
 .auth-panel {
@@ -558,6 +572,49 @@
   border: 1px solid transparent;
   box-shadow: 0 34px 90px rgba(31, 83, 87, 0.12);
   opacity: 0.9;
+}
+
+.mission-bar {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #ffffff;
+  padding: 16px 18px;
+  box-shadow: 0 18px 48px rgba(31, 83, 87, 0.07);
+  text-align: left;
+}
+
+.mission-bar span {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--teal);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mission-bar p {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 800;
+  line-height: 1.16;
+}
+
+.mission-bar button {
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--teal);
+  padding: 0 14px;
+  font-weight: 850;
+  cursor: pointer;
 }
 
 .goal-form label,
@@ -1199,6 +1256,14 @@
   .goodbot-topbar,
   .missions-heading {
     flex-direction: column;
+  }
+
+  .mission-bar {
+    grid-template-columns: 1fr;
+  }
+
+  .mission-bar button {
+    width: 100%;
   }
 
   .context-heading,

@@ -543,19 +543,20 @@ export default function GoodBotClient() {
   const showExecutionBanner = executionState !== "idle" && (Boolean(status) || isSubmitting || Boolean(goalId && !status));
   const heroTitle = canUseGoodBot ? "Make it happen." : "GoodBot";
   const heroSubcopy = canUseGoodBot ? "" : "Sign in to save your missions.";
+  const hasMissionInFlight = Boolean(goalId || status || isSubmitting);
 
   return (
-    <main className="goodbot-shell">
+    <main className={`goodbot-shell ${hasMissionInFlight ? "has-mission" : ""}`}>
       <TopBar session={session} authState={authState} onSignOut={signOut} />
 
-      <section className={`goodbot-hero ${canUseGoodBot ? "with-intake" : ""}`}>
+      <section className={`goodbot-hero ${canUseGoodBot ? "with-intake" : ""} ${hasMissionInFlight ? "is-compact" : ""}`}>
         {!canUseGoodBot ? (
           <div className="goodbot-copy">
             <h1>{heroTitle}</h1>
             <p className="subcopy">{heroSubcopy}</p>
           </div>
         ) : null}
-        {canUseGoodBot ? (
+        {canUseGoodBot && !hasMissionInFlight ? (
           <form onSubmit={submitGoal} className="goal-form hero-goal-form">
             <div className={`wish-bot ${executionState === "executing" ? "is-executing" : ""}`} aria-hidden="true">
               <span className="wish-bot-antenna" />
@@ -578,6 +579,17 @@ export default function GoodBotClient() {
             </button>
             {error ? <p className="error">{error}</p> : null}
           </form>
+        ) : null}
+        {canUseGoodBot && hasMissionInFlight ? (
+          <div className="mission-bar">
+            <div>
+              <span>Current Mission</span>
+              <p>{status?.goal.goal || goal || "GoodBot is starting..."}</p>
+            </div>
+            <button type="button" onClick={startNewMission}>
+              New Mission
+            </button>
+          </div>
         ) : null}
       </section>
 
