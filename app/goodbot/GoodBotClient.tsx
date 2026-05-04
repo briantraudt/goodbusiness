@@ -541,8 +541,8 @@ export default function GoodBotClient() {
     ? buildRightPanelState(status, activeStep, activeStepIndex)
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
   const showExecutionBanner = executionState !== "idle" && (Boolean(status) || isSubmitting || Boolean(goalId && !status));
-  const heroTitle = canUseGoodBot ? "Give GoodBot a mission." : "GoodBot";
-  const heroSubcopy = canUseGoodBot ? "Tell it the outcome. It handles the work." : "Sign in to save your missions and let GoodBot handle the work.";
+  const heroTitle = canUseGoodBot ? "What should GoodBot make happen?" : "GoodBot";
+  const heroSubcopy = canUseGoodBot ? "Say the outcome. GoodBot starts moving." : "Sign in to save your missions and let GoodBot handle the work.";
 
   return (
     <main className="goodbot-shell">
@@ -564,13 +564,13 @@ export default function GoodBotClient() {
               aria-label="GoodBot mission"
             />
             <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Starting GoodBot…" : "Let GoodBot handle it"}
+              {isSubmitting ? "Starting GoodBot…" : "Make it happen"}
             </button>
-            <p className="approval-note">Nothing is posted or sent without your approval.</p>
+            <p className="approval-note">Nothing goes public without your approval.</p>
             <ul className="promise-list">
-              <li>Builds your landing page</li>
-              <li>Creates content</li>
-              <li>Tells you what to approve</li>
+              <li>Plans the path</li>
+              <li>Prepares the assets</li>
+              <li>Returns when you’re needed</li>
             </ul>
             {error ? <p className="error">{error}</p> : null}
           </form>
@@ -640,7 +640,7 @@ export default function GoodBotClient() {
         <ContextPanel context={status.context} saving={contextSaving} onAction={contextAction} />
       ) : null}
 
-      {authState === "signed_in" ? (
+      {authState === "signed_in" && (missionsLoading || missions.length > 0) ? (
         <MissionHistory
           missions={missions}
           selectedGoalId={goalId}
