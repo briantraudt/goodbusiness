@@ -112,6 +112,33 @@ type MissionSummary = {
   signups: number;
 };
 
+type GoodBotContext = {
+  product_name: string | null;
+  headline?: string | null;
+  subheadline?: string | null;
+  value_prop: string | null;
+  audience: string | null;
+  features: string[];
+  tone: string | null;
+  differentiators: string[];
+  pricing?: string | null;
+  risks?: string[];
+  confidence: "low" | "medium" | "high";
+};
+
+type GoodBotContextRecord = {
+  id: string;
+  goal_id: string;
+  source_type: "website" | "user_input";
+  status: "pending_confirmation" | "confirmed";
+  extracted_json: GoodBotContext;
+  raw_text: string | null;
+  questions: string[];
+  answers: Record<string, string>;
+  confirmed_at: string | null;
+  created_at: string;
+};
+
 type StatusResponse = {
   goal: { id: string; goal: string; target_value: number; status: string; app_name?: string | null };
   steps: Step[];
@@ -121,6 +148,7 @@ type StatusResponse = {
   distribution_events: DistributionEvent[];
   landing_page_variants: LandingPageVariant[];
   recommendations: Recommendation[];
+  context: GoodBotContextRecord | null;
   attribution: {
     by_asset: AttributionRow[];
     by_variant: AttributionRow[];
@@ -148,6 +176,7 @@ export default function GoodBotClient() {
   const [authPassword, setAuthPassword] = useState("");
   const [missions, setMissions] = useState<MissionSummary[]>([]);
   const [missionsLoading, setMissionsLoading] = useState(false);
+  const [contextSaving, setContextSaving] = useState(false);
   const goalInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
@@ -334,6 +363,31 @@ export default function GoodBotClient() {
       });
       if (statusResponse.ok) setStatus(await statusResponse.json());
     }
+  }
+
+  async function contextAction(input: { action: "confirm" | "edit"; context?: Partial<GoodBotContext>; answers?: Record<string, string> }) {
+    if (!goalId) return;
+    setContextSaving(true);
+    setError(null);
+    const response = await fetch(`/api/goodbot/context/${goalId}`, {
+      method: "PATCH",
+      headers: buildApiHeaders(session, accessToken, { "Content-Type": "application/json" }),
+      body: JSON.stringify(input)
+    });
+    const payload = await response.json().catch(() => ({}));
+    setContextSaving(false);
+    if (!response.ok) {
+      setError(payload.error || "GoodBot could not save context.");
+      return;
+    }
+    const statusResponse = await fetch(`/api/goodbot/status/${goalId}`, {
+      headers: buildApiHeaders(session, accessToken)
+    });
+    if (statusResponse.ok) {
+      setStatus(await statusResponse.json());
+      setLastUpdatedAt(new Date());
+    }
+    if (session) await loadMissions(session.access_token);
   }
 
   async function signIn(event: FormEvent<HTMLFormElement>) {
@@ -524,6 +578,10 @@ export default function GoodBotClient() {
           {nextRecommendation ? <p className="operator-note">I found the best next move.</p> : null}
         </div>
       </section> : null}
+
+      {status?.context && canUseGoodBot ? (
+        <ContextPanel context={status.context} saving={contextSaving} onAction={contextAction} />
+      ) : null}
 
       {authState === "signed_in" ? (
         <MissionHistory
@@ -795,6 +853,135 @@ function MissionHistory({
           ))}
         </ol>
       ) : null}
+    </section>
+  );
+}
+
+function ContextPanel({
+  context,
+  saving,
+  onAction
+}: {
+  context: GoodBotContextRecord;
+  saving: boolean;
+  onAction: (input: { action: "confirm" | "edit"; context?: Partial<GoodBotContext>; answers?: Record<string, string> }) => void;
+}) {
+  const extracted = context.extracted_json;
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState({
+    product_name: extracted.product_name || "",
+    audience: extracted.audience || "",
+    value_prop: extracted.value_prop || "",
+    features: extracted.features.join("\n"),
+    differentiators: extracted.differentiators.join("\n"),
+    tone: extracted.tone || ""
+  });
+  const [answers, setAnswers] = useState<Record<string, string>>(context.answers || {});
+
+  useEffect(() => {
+    setDraft({
+      product_name: extracted.product_name || "",
+      audience: extracted.audience || "",
+      value_prop: extracted.value_prop || "",
+      features: extracted.features.join("\n"),
+      differentiators: extracted.differentiators.join("\n"),
+      tone: extracted.tone || ""
+    });
+    setAnswers(context.answers || {});
+  }, [context.id, context.created_at]);
+
+  const draftContext = {
+    product_name: draft.product_name || null,
+    audience: draft.audience || null,
+    value_prop: draft.value_prop || null,
+    features: draft.features.split("\n").map((item) => item.trim()).filter(Boolean),
+    differentiators: draft.differentiators.split("\n").map((item) => item.trim()).filter(Boolean),
+    tone: draft.tone || null,
+    confidence: extracted.confidence
+  };
+
+  return (
+    <section className="context-panel">
+      <div className="context-heading">
+        <div>
+          <p className="status-label">What I Understand</p>
+          <h2>I looked at your {context.source_type === "website" ? "site" : "mission"}. Here’s what I understand:</h2>
+        </div>
+        <span data-status={context.status}>{context.status === "confirmed" ? "Confirmed" : "Needs confirmation"}</span>
+      </div>
+
+      {editing ? (
+        <div className="context-edit-grid">
+          <label>
+            Product
+            <input value={draft.product_name} onChange={(event) => setDraft({ ...draft, product_name: event.target.value })} />
+          </label>
+          <label>
+            Who it’s for
+            <input value={draft.audience} onChange={(event) => setDraft({ ...draft, audience: event.target.value })} />
+          </label>
+          <label className="wide">
+            What it does / why it matters
+            <textarea value={draft.value_prop} onChange={(event) => setDraft({ ...draft, value_prop: event.target.value })} />
+          </label>
+          <label>
+            Features
+            <textarea value={draft.features} onChange={(event) => setDraft({ ...draft, features: event.target.value })} />
+          </label>
+          <label>
+            Differentiators
+            <textarea value={draft.differentiators} onChange={(event) => setDraft({ ...draft, differentiators: event.target.value })} />
+          </label>
+        </div>
+      ) : (
+        <dl className="context-summary">
+          <div>
+            <dt>Product</dt>
+            <dd>{extracted.product_name || "Unknown"}</dd>
+          </div>
+          <div>
+            <dt>Who it’s for</dt>
+            <dd>{extracted.audience || "Not clear yet"}</dd>
+          </div>
+          <div>
+            <dt>What it does</dt>
+            <dd>{extracted.value_prop || extracted.headline || "Not clear yet"}</dd>
+          </div>
+          <div>
+            <dt>Why it matters</dt>
+            <dd>{extracted.differentiators[0] || extracted.features[0] || "Needs your clarification"}</dd>
+          </div>
+        </dl>
+      )}
+
+      {context.status !== "confirmed" && context.questions.length ? (
+        <div className="context-questions">
+          {context.questions.map((question) => (
+            <label key={question}>
+              {question}
+              <input value={answers[question] || ""} onChange={(event) => setAnswers({ ...answers, [question]: event.target.value })} />
+            </label>
+          ))}
+        </div>
+      ) : null}
+
+      <div className="context-actions">
+        {editing ? (
+          <button type="button" onClick={() => {
+            onAction({ action: "edit", context: draftContext, answers });
+            setEditing(false);
+          }} disabled={saving}>
+            {saving ? "Saving..." : "Save edits"}
+          </button>
+        ) : (
+          <button type="button" onClick={() => onAction({ action: "confirm", answers })} disabled={saving || context.status === "confirmed"}>
+            {context.status === "confirmed" ? "Looks right" : saving ? "Confirming..." : "Looks right"}
+          </button>
+        )}
+        <button type="button" onClick={() => setEditing(!editing)} disabled={saving}>
+          {editing ? "Cancel" : "Edit"}
+        </button>
+      </div>
     </section>
   );
 }

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { generateJson } from "./llm";
-import { goalToPlanPrompt } from "./prompts";
-import type { ExecutionPlan, GoalObject } from "./types";
+import { goalContextToPlanPrompt } from "./prompts";
+import type { ExecutionPlan, GoalObject, GoodBotContext } from "./types";
 
 const planSchema = z.object({
   rationale: z.string().min(1),
@@ -32,26 +32,31 @@ export function parseGoal(rawGoal: string): GoalObject {
   };
 }
 
-export async function createPlan(goal: GoalObject): Promise<ExecutionPlan> {
-  const fallback = deterministicPlan(goal);
-  const generated = await generateJson<ExecutionPlan>(goalToPlanPrompt(goal), fallback);
+export async function createPlan(goal: GoalObject, context: GoodBotContext): Promise<ExecutionPlan> {
+  if (!hasUsableContext(context)) {
+    throw new Error("GoodBot needs confirmed product context before it can plan execution.");
+  }
+  const fallback = deterministicPlan(goal, context);
+  const generated = await generateJson<ExecutionPlan>(goalContextToPlanPrompt(goal, context), fallback);
   const parsed = planSchema.safeParse(generated);
   return parsed.success ? parsed.data : fallback;
 }
 
-function deterministicPlan(goal: GoalObject): ExecutionPlan {
+function deterministicPlan(goal: GoalObject, context: GoodBotContext): ExecutionPlan {
+  const product = context.product_name || goal.app_name || "the product";
+  const audience = context.audience || goal.audience || "the target audience";
   return {
-    rationale: `Create a focused acquisition loop for ${goal.target_value} users: landing page, content, publishing, and metric tracking.`,
+    rationale: `Create a focused acquisition loop for ${product}: explain the value to ${audience}, prepare content, publish approved assets, and track signups.`,
     steps: [
       {
         step_type: "create_landing_page",
-        title: "Create acquisition landing page",
-        input: { variant: "v1" }
+        title: `Create ${product} acquisition landing page`,
+        input: { variant: "v1", context_required: true }
       },
       {
         step_type: "generate_content",
-        title: "Generate 5 LinkedIn posts and 2 blog posts",
-        input: { linkedin_posts: 5, blog_posts: 2 }
+        title: `Generate content for ${audience}`,
+        input: { linkedin_posts: 5, blog_posts: 2, context_required: true }
       },
       {
         step_type: "publish_content",
@@ -65,6 +70,18 @@ function deterministicPlan(goal: GoalObject): ExecutionPlan {
       }
     ]
   };
+}
+
+export function hasUsableContext(context: GoodBotContext | null | undefined) {
+  return Boolean(
+    context &&
+      context.product_name &&
+      context.value_prop &&
+      context.audience &&
+      Array.isArray(context.features) &&
+      context.features.length > 0 &&
+      context.confidence !== "low"
+  );
 }
 
 function inferAppName(rawGoal: string) {

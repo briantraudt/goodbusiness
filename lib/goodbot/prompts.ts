@@ -1,4 +1,4 @@
-import type { GoalObject } from "./types";
+import type { GoalObject, GoodBotContext } from "./types";
 
 export const SYSTEM_SCOPE = `
 You are GoodBot, an autonomous outcome engine for one V1 domain only:
@@ -45,12 +45,75 @@ Rules:
 `.trim();
 }
 
-export function landingPagePrompt(goal: GoalObject) {
+export function goalContextToPlanPrompt(goal: GoalObject, context: GoodBotContext) {
   return `
 ${SYSTEM_SCOPE}
 
-Generate acquisition landing-page copy for this web app goal:
-${JSON.stringify(goal, null, 2)}
+Create a compact execution plan for this goal and confirmed product context:
+${JSON.stringify({ goal, context }, null, 2)}
+
+Return JSON only:
+{
+  "rationale": "one sentence",
+  "steps": [
+    {
+      "step_type": "create_landing_page",
+      "title": "Create acquisition landing page",
+      "input": {}
+    }
+  ]
+}
+
+Rules:
+- Context is mandatory. If product_name, value_prop, or audience is missing, make the rationale say context is insufficient and still return the fixed deterministic step shell.
+- Include exactly these step types in this order: create_landing_page, generate_content, publish_content, track_metrics.
+- Every title/input should reference the real product, audience, or use case.
+- generate_content must request 5 LinkedIn posts and 2 simple blog posts.
+- No vague steps.
+`.trim();
+}
+
+export function contextExtractionPrompt(input: { goal: GoalObject; sourceType: string; url?: string | null; rawText: string }) {
+  return `
+You are extracting product context for GoodBot before it plans user-acquisition work.
+
+Goal:
+${JSON.stringify(input.goal, null, 2)}
+
+Source type: ${input.sourceType}
+Source URL: ${input.url || "none"}
+
+Raw source text:
+${input.rawText.slice(0, 12000)}
+
+Return JSON only:
+{
+  "product_name": "name or null",
+  "headline": "homepage headline or null",
+  "subheadline": "homepage subheadline or null",
+  "value_prop": "specific value proposition or null",
+  "audience": "specific target user or null",
+  "features": ["concrete visible features"],
+  "tone": "plain description of tone",
+  "differentiators": ["specific reasons this product is different"],
+  "pricing": "pricing if visible or null",
+  "risks": ["why someone may not sign up"],
+  "confidence": "low" | "medium" | "high"
+}
+
+Rules:
+- Do not invent facts.
+- Prefer concrete nouns from the source.
+- If the site is vague, use null and confidence low.
+`.trim();
+}
+
+export function landingPagePrompt(goal: GoalObject, context: GoodBotContext) {
+  return `
+${SYSTEM_SCOPE}
+
+Generate acquisition landing-page copy for this confirmed product context:
+${JSON.stringify({ goal, context }, null, 2)}
 
 Return JSON only:
 {
@@ -59,15 +122,20 @@ Return JSON only:
   "cta": "short button text",
   "bullets": ["3 concrete reasons to join"]
 }
+
+Rules:
+- Use the product name, real value proposition, audience, and concrete features.
+- Avoid generic phrases like "transform your workflow", "revolutionize productivity", and "streamline everything".
+- The headline must name a specific outcome or use case.
 `.trim();
 }
 
-export function contentPrompt(goal: GoalObject) {
+export function contentPrompt(goal: GoalObject, context: GoodBotContext) {
   return `
 ${SYSTEM_SCOPE}
 
-Generate content for this acquisition goal:
-${JSON.stringify(goal, null, 2)}
+Generate content for this confirmed product context:
+${JSON.stringify({ goal, context }, null, 2)}
 
 Return JSON only:
 {
@@ -87,6 +155,9 @@ Rules:
 - Exactly 2 blog posts.
 - Include email_drafts only if requested in the execution input.
 - Tie every piece of content to the landing page CTA.
+- Use concrete language from the context: product_name, value_prop, audience, features, tone, and differentiators.
+- Every asset must reference an actual use case or feature.
+- Do not use generic SaaS filler, including "transform your workflow", "revolutionize productivity", "unlock your potential", or "seamless solution".
 `.trim();
 }
 

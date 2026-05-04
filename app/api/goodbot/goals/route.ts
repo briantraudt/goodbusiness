@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { enqueueFirstPendingStep } from "@/lib/goodbot/executors";
-import { createPlan, parseGoal } from "@/lib/goodbot/planner";
+import { gatherAndStoreContext, hasMeaningfulDescription, extractUrlFromGoal } from "@/lib/goodbot/context";
+import { parseGoal } from "@/lib/goodbot/planner";
 import { createGoalAccessToken, enforceRateLimit, getGoodBotBaseUrl, hashToken, readClientIp, requireAuthenticatedUser } from "@/lib/goodbot/security";
 import { getSupabaseAdmin } from "@/lib/goodbot/supabase";
 
@@ -72,10 +72,15 @@ export async function POST(request: Request) {
   });
   if (!rateLimit.ok) return rateLimit.response;
 
+  if (!extractUrlFromGoal(parsed.data.goal) && !hasMeaningfulDescription(parsed.data.goal)) {
+    return NextResponse.json({ error: "I need a bit more detail to generate high-quality work. Include your website URL or describe who the product is for and what outcome it delivers." }, { status: 400 });
+  }
+
+  const parsedGoal = parseGoal(parsed.data.goal);
   const accessToken = createGoalAccessToken();
   const goalObject = {
-    ...parseGoal(parsed.data.goal),
-    app_name: parsed.data.app_name || parseGoal(parsed.data.goal).app_name,
+    ...parsedGoal,
+    app_name: parsed.data.app_name || parsedGoal.app_name,
     audience: parsed.data.audience || null,
     positioning: parsed.data.positioning || null
   };
@@ -92,6 +97,7 @@ export async function POST(request: Request) {
       positioning: goalObject.positioning,
       is_demo: Boolean(parsed.data.demo_mode),
       user_id: auth.user.id,
+      status: "paused",
       access_token_hash: hashToken(accessToken)
     })
     .select("*")
@@ -101,40 +107,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: goalError.message }, { status: 500 });
   }
 
-  const plan = await createPlan(goalObject);
-  const { data: planRow, error: planError } = await supabase
-    .from("plans")
-    .insert({
-      goal_id: goal.id,
-      rationale: plan.rationale,
-      plan_json: plan.steps
-    })
-    .select("id")
-    .single();
-
-  if (planError) {
-    return NextResponse.json({ error: planError.message }, { status: 500 });
-  }
-
-  const { error: stepsError } = await supabase.from("steps").insert(
-    plan.steps.map((step, index) => ({
-      goal_id: goal.id,
-      plan_id: planRow.id,
-      position: index + 1,
-      step_type: step.step_type,
-      title: step.title,
-      input: step.input
-    }))
-  );
-
-  if (stepsError) {
-    return NextResponse.json({ error: stepsError.message }, { status: 500 });
-  }
-
+  let context;
   try {
-    await enqueueFirstPendingStep(goal.id);
+    context = await gatherAndStoreContext(goal.id, goalObject, parsed.data.goal);
   } catch (error) {
-    console.error("GoodBot job enqueue failed", error);
+    const message = error instanceof Error ? error.message : "GoodBot could not gather context.";
+    await supabase.from("goals").update({ status: "failed" }).eq("id", goal.id);
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 
   const statusUrl = `/api/goodbot/status/${goal.id}?access_token=${encodeURIComponent(accessToken)}`;
@@ -144,6 +123,8 @@ export async function POST(request: Request) {
     goal_id: goal.id,
     access_token: accessToken,
     goal: goalObject,
+    context_required: true,
+    context,
     status_url: statusUrl,
     landing_page_url: `/goodbot/landing/${goal.id}`,
     absolute_landing_page_url: `${baseUrl}/goodbot/landing/${goal.id}`

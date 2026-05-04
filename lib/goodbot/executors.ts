@@ -2,7 +2,8 @@ import { z } from "zod";
 import { contentPrompt, landingPagePrompt } from "./prompts";
 import { getSupabaseAdmin } from "./supabase";
 import { generateJson } from "./llm";
-import type { GoalObject, GoalRecord, GoodBotJobRecord, LandingPageRecord, PlanStep, RecommendationRecord, StepOutput, StepRecord } from "./types";
+import { getConfirmedContext } from "./context";
+import type { GoalObject, GoalRecord, GoodBotContext, GoodBotJobRecord, LandingPageRecord, PlanStep, RecommendationRecord, StepOutput, StepRecord } from "./types";
 
 const landingSchema = z.object({
   headline: z.string().min(1),
@@ -367,15 +368,16 @@ async function runStep(goal: GoalRecord, step: StepRecord): Promise<StepOutput> 
 export async function createLandingPage(goal: GoalRecord, input: Record<string, unknown> = {}): Promise<StepOutput> {
   const supabase = getSupabaseAdmin();
   const goalObject = toGoalObject(goal);
+  const context = await getConfirmedContext(goal.id);
   const isVariant = Boolean(input.variant_reason || input.variant);
   const variantReason = String(input.variant_reason || input.variant || (isVariant ? "Generated from feedback loop." : "Initial generated landing page."));
   const fallback = {
-    headline: isVariant ? `Try ${goal.app_name || "this app"} with less friction` : `Get early access to ${goal.app_name || "this app"}`,
-    subheadline: `A focused way for ${goal.audience || "busy teams"} to solve the problem behind: ${goal.goal}`,
+    headline: isVariant ? `${context.product_name} for ${context.audience}` : `${context.product_name}: ${specificOutcome(context)}`,
+    subheadline: context.value_prop || `A focused way for ${context.audience || "the right users"} to solve the problem behind: ${goal.goal}`,
     cta: isVariant ? "Get early access" : "Join the early list",
-    bullets: ["Built for a specific workflow", "Simple onboarding", "Early users shape the roadmap"]
+    bullets: context.features.slice(0, 3).length >= 3 ? context.features.slice(0, 3) : [context.value_prop || "Specific product value", ...context.features, "Early users shape the roadmap"].slice(0, 3)
   };
-  const generated = await generateJson(landingPagePrompt(goalObject), fallback);
+  const generated = await generateJson(landingPagePrompt(goalObject, context), fallback);
   const copy = landingSchema.safeParse(generated).success ? landingSchema.parse(generated) : fallback;
   const slug = `${slugify(goal.app_name || "goodbot-app")}-${goal.id.slice(0, 8)}`;
 
@@ -465,6 +467,7 @@ export async function createLandingPage(goal: GoalRecord, input: Record<string, 
 export async function generateContent(goal: GoalRecord, input: Record<string, unknown>): Promise<StepOutput> {
   const supabase = getSupabaseAdmin();
   const goalObject = toGoalObject(goal);
+  const context = await getConfirmedContext(goal.id);
   const linkedinCount = Number(input.linkedin_posts ?? 5);
   const blogCount = Number(input.blog_posts ?? 2);
   const emailCount = Number(input.email_drafts ?? 0);
@@ -477,20 +480,33 @@ export async function generateContent(goal: GoalRecord, input: Record<string, un
       title: `LinkedIn acquisition post ${index + 1}`,
       body: sourceAsset
         ? `For ${goal.audience || "early users"}: ${extractHook(sourceAsset.body)}\n\n${extractPain(sourceAsset.body)}\n\nIf this sounds familiar, join the early list for ${goal.app_name || "this app"} and help shape what ships next.`
-        : `We are looking for early users for ${goal.app_name || "a focused web app"}. Goal: ${goal.goal}. Join the early list and help shape what ships next.`
+        : `${context.product_name} is looking for ${context.audience} who want ${context.value_prop}.\n\n${context.features[0] || "The product is built around a specific workflow."}\n\nIf this is the problem you are solving now, join the early list.`
     })),
     blog_posts: Array.from({ length: blogCount }, (_, index) => ({
-      title: `${goal.app_name || "GoodBot"} acquisition note ${index + 1}`,
-      body: `This is a simple launch note for ${goal.app_name || "the app"}.\n\nThe goal is clear: ${goal.goal}.\n\nWe are inviting early users who feel this problem and want a practical product shaped around their workflow. Join the early list to get access and updates.`
+      title: `${context.product_name} for ${context.audience}: launch note ${index + 1}`,
+      body: `${context.product_name} is built for ${context.audience}.\n\nThe core promise is simple: ${context.value_prop}.\n\nWhat it does:\n${context.features.map((feature) => `- ${feature}`).join("\n")}\n\nWhy it matters: ${context.differentiators[0] || "the product is focused on a concrete use case instead of generic software sprawl"}.\n\nWe are inviting early users who feel this problem now. Join the early list to get access and shape what ships next.`
     })),
     email_drafts: Array.from({ length: emailCount }, (_, index) => ({
       title: `${goal.app_name || "GoodBot"} early access email ${index + 1}`,
       body: `Subject: Early access for ${goal.app_name || "our app"}\n\nHi,\n\nI am inviting a small group of early users to try ${goal.app_name || "our app"}.\n\nThe goal: ${goal.goal}.\n\nIf this sounds relevant, join the early list here: /goodbot/landing/${goal.id}\n\nThanks.`
     }))
   };
-  const generated = await generateJson(buildContentPrompt(goalObject, input, sourceAsset), fallback);
+  let generated = await generateJson(buildContentPrompt(goalObject, context, input, sourceAsset), fallback);
   const parsed = contentSchema.safeParse(generated);
-  const content = parsed.success ? parsed.data : fallback;
+  let content = parsed.success ? parsed.data : fallback;
+  if (!contentPassesQuality(content, context)) {
+    generated = await generateJson(`${buildContentPrompt(goalObject, context, input, sourceAsset)}
+
+Quality failure from previous draft: the copy was too generic.
+Regenerate with stricter specificity:
+- Mention ${context.product_name}.
+- Mention ${context.audience}.
+- Include at least one actual feature: ${context.features.join(", ")}.
+- Name the concrete use case and outcome.
+- Avoid generic SaaS claims.`, fallback);
+    const retryParsed = contentSchema.safeParse(generated);
+    content = retryParsed.success && contentPassesQuality(retryParsed.data, context) ? retryParsed.data : fallback;
+  }
 
   const rows = [
     ...content.linkedin_posts.slice(0, linkedinCount).map((post) => ({
@@ -594,10 +610,11 @@ async function fetchSourceAsset(goalId: string, sourceAssetId: string) {
 
 function buildContentPrompt(
   goal: GoalObject,
+  context: GoodBotContext,
   input: Record<string, unknown>,
   sourceAsset: { id: string; title: string | null; body: string; content_type: string; channel: string } | null
 ) {
-  const basePrompt = contentPrompt(goal);
+  const basePrompt = contentPrompt(goal, context);
   if (!sourceAsset) return basePrompt;
 
   return `${basePrompt}
@@ -618,6 +635,26 @@ Generate ${Number(input.linkedin_posts ?? 3)} LinkedIn posts that intentionally 
 - Same tone and directness.
 
 Return JSON only in the original schema. Do not mention that you mirrored the source asset.`;
+}
+
+function contentPassesQuality(content: z.infer<typeof contentSchema>, context: GoodBotContext) {
+  const productTerms = [context.product_name, context.audience, ...context.features.slice(0, 3)]
+    .filter(Boolean)
+    .map((term) => String(term).toLowerCase());
+  const genericPhrases = ["transform your workflow", "revolutionize", "unlock your potential", "seamless solution", "streamline everything"];
+  const assets = [...content.linkedin_posts, ...content.blog_posts, ...content.email_drafts];
+  if (!assets.length) return false;
+  return assets.every((asset) => {
+    const text = `${asset.title} ${asset.body}`.toLowerCase();
+    const hasSpecificTerm = productTerms.some((term) => term.length > 3 && text.includes(term.slice(0, Math.min(term.length, 32))));
+    const hasGenericPhrase = genericPhrases.some((phrase) => text.includes(phrase));
+    return hasSpecificTerm && !hasGenericPhrase;
+  });
+}
+
+function specificOutcome(context: GoodBotContext) {
+  if (context.value_prop) return context.value_prop.replace(/[.。]$/, "");
+  return `built for ${context.audience || "a specific user"}`;
 }
 
 function extractHook(body: string) {

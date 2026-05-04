@@ -8,6 +8,33 @@ export type GoalObject = {
   positioning?: string | null;
 };
 
+export type GoodBotContext = {
+  product_name: string | null;
+  value_prop: string | null;
+  audience: string | null;
+  features: string[];
+  tone: string | null;
+  differentiators: string[];
+  headline?: string | null;
+  subheadline?: string | null;
+  pricing?: string | null;
+  risks?: string[];
+  confidence: "low" | "medium" | "high";
+};
+
+export type GoodBotContextRecord = {
+  id: string;
+  goal_id: string;
+  source_type: "website" | "user_input";
+  status: "pending_confirmation" | "confirmed";
+  extracted_json: GoodBotContext;
+  raw_text: string | null;
+  questions: string[];
+  answers: Record<string, string>;
+  confirmed_at: string | null;
+  created_at: string;
+};
+
 export type StepType = "create_landing_page" | "generate_content" | "publish_content" | "track_metrics";
 export type StepStatus = "pending" | "running" | "completed" | "failed" | "skipped";
 export type ApprovalStatus = "pending" | "approved" | "rejected";

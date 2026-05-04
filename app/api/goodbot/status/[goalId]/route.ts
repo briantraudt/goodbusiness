@@ -26,7 +26,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
     { data: jobs },
     { data: distributionEvents },
     { data: landingPageVariants },
-    { data: recommendations }
+    { data: recommendations },
+    { data: context }
   ] = await Promise.all([
     supabase.from("goals").select("id,goal,target_metric,target_value,timeframe,status,domain,app_name,audience,positioning,is_demo,created_at,updated_at").eq("id", goalId).single(),
     supabase.from("steps").select("id,title,step_type,status,output,error,position,created_at,updated_at").eq("goal_id", goalId).order("position"),
@@ -46,7 +47,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
     supabase.from("goodbot_jobs").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(20),
     supabase.from("distribution_events").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }),
     supabase.from("landing_page_variants").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }),
-    supabase.from("goodbot_recommendations").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(10)
+    supabase.from("goodbot_recommendations").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(10),
+    supabase.from("goodbot_context").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(1).maybeSingle()
   ]);
 
   if (goalError) {
@@ -65,6 +67,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
     distribution_events: distributionEvents ?? [],
     landing_page_variants: landingPageVariants ?? [],
     recommendations: recommendations ?? [],
+    context,
     attribution: {
       by_asset: rollup(metrics ?? [], contentAssets ?? [], "content_asset_id"),
       by_variant: rollup(metrics ?? [], landingPageVariants ?? [], "landing_page_variant_id"),
