@@ -86,6 +86,20 @@ type Job = {
 
 type Notification = { id: string; message: string; created_at: string; notification_type: string };
 
+type Recommendation = {
+  id: string;
+  goal_id: string;
+  recommendation_type: string;
+  title: string;
+  rationale: string;
+  confidence: "low" | "medium" | "high";
+  status: "pending" | "approved" | "rejected" | "executed";
+  input: Record<string, unknown>;
+  output: Record<string, unknown>;
+  created_at: string;
+  executed_at: string | null;
+};
+
 type StatusResponse = {
   goal: { id: string; goal: string; target_value: number; status: string; app_name?: string | null };
   steps: Step[];
@@ -94,6 +108,7 @@ type StatusResponse = {
   landing_pages: LandingPage[];
   distribution_events: DistributionEvent[];
   landing_page_variants: LandingPageVariant[];
+  recommendations: Recommendation[];
   attribution: {
     by_asset: AttributionRow[];
     by_variant: AttributionRow[];
@@ -214,6 +229,29 @@ export default function GoodBotClient() {
     }
   }
 
+  async function recommendationAction(recommendation: Recommendation, action: "approve" | "reject") {
+    const response = await fetch(`/api/goodbot/recommendations/${recommendation.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action })
+    });
+
+    if (!response.ok) {
+      const payload = await response.json().catch(() => ({}));
+      setError(payload.error || "Recommendation update failed.");
+      return;
+    }
+
+    if (action === "approve") {
+      fetch("/api/cron/goodbot-jobs", { method: "POST" }).catch(() => undefined);
+    }
+
+    if (goalId) {
+      const statusResponse = await fetch(`/api/goodbot/status/${goalId}`);
+      if (statusResponse.ok) setStatus(await statusResponse.json());
+    }
+  }
+
   async function copyText(text: string) {
     await navigator.clipboard.writeText(text);
   }
@@ -223,6 +261,7 @@ export default function GoodBotClient() {
   const completedSteps = status?.steps.filter((step) => step.status === "completed") ?? [];
   const distributionProof = status?.distribution_events ?? [];
   const variantPerformance = status?.landing_page_variants ?? [];
+  const nextRecommendation = status?.recommendations.find((recommendation) => recommendation.status === "pending") ?? null;
   const activity = buildActivity(status);
 
   return (
@@ -278,11 +317,21 @@ export default function GoodBotClient() {
               Copy Landing Page Link
             </button>
           ) : null}
+          {nextRecommendation ? <p className="operator-note">I found the best next move.</p> : null}
         </div>
       </section>
 
       {status ? (
         <section className="operator-sections">
+          <section>
+            <p className="status-label">Next Move</p>
+            {nextRecommendation ? (
+              <RecommendationCard recommendation={nextRecommendation} onAction={recommendationAction} />
+            ) : (
+              <p className="empty">No recommendation is waiting. I am watching the loop for the next bottleneck.</p>
+            )}
+          </section>
+
           <section>
             <p className="status-label">What I’ve Done</p>
             <ol className="steps">
@@ -386,6 +435,43 @@ export default function GoodBotClient() {
       ) : null}
     </main>
   );
+}
+
+function RecommendationCard({
+  recommendation,
+  onAction
+}: {
+  recommendation: Recommendation;
+  onAction: (recommendation: Recommendation, action: "approve" | "reject") => void;
+}) {
+  return (
+    <article className="recommendation-card">
+      <div>
+        <h3>{recommendation.title}</h3>
+        <p>{recommendation.rationale}</p>
+        <small>
+          Confidence: {recommendation.confidence} / {recommendationLabel(recommendation.recommendation_type)}
+        </small>
+      </div>
+      <div className="action-row">
+        <button type="button" onClick={() => onAction(recommendation, "approve")}>
+          Do it
+        </button>
+        <button type="button" onClick={() => onAction(recommendation, "reject")}>
+          Not now
+        </button>
+      </div>
+    </article>
+  );
+}
+
+function recommendationLabel(type: string) {
+  if (type === "approve_share_first_asset") return "distribution blocker";
+  if (type === "create_distribution_copy") return "stronger copy";
+  if (type === "create_landing_page_variant") return "conversion blocker";
+  if (type === "create_similar_posts") return "winning angle";
+  if (type === "keep_winning_variant") return "variant winner";
+  return "next move";
 }
 
 function DistributionProofRow({
@@ -548,6 +634,16 @@ function buildActivity(status: StatusResponse | null) {
       id: `notification-${notification.id}`,
       label: notification.message,
       date: notification.created_at
+    })),
+    ...status.recommendations.map((recommendation) => ({
+      id: `recommendation-${recommendation.id}`,
+      label:
+        recommendation.status === "executed"
+          ? `Executed next move: ${recommendation.title}.`
+          : recommendation.status === "rejected"
+            ? `Skipped next move: ${recommendation.title}.`
+            : `Recommended next move: ${recommendation.title}.`,
+      date: recommendation.executed_at || recommendation.created_at
     })),
     ...status.distribution_events.map((event) => ({
       id: `distribution-${event.id}`,

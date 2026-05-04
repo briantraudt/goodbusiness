@@ -14,7 +14,8 @@ export async function GET(_: Request, { params }: { params: Promise<{ goalId: st
     { data: landingPages },
     { data: jobs },
     { data: distributionEvents },
-    { data: landingPageVariants }
+    { data: landingPageVariants },
+    { data: recommendations }
   ] = await Promise.all([
     supabase.from("goals").select("*").eq("id", goalId).single(),
     supabase.from("steps").select("id,title,step_type,status,output,error,position,created_at,updated_at").eq("goal_id", goalId).order("position"),
@@ -33,7 +34,8 @@ export async function GET(_: Request, { params }: { params: Promise<{ goalId: st
     supabase.from("landing_pages").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }),
     supabase.from("goodbot_jobs").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(20),
     supabase.from("distribution_events").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }),
-    supabase.from("landing_page_variants").select("*").eq("goal_id", goalId).order("created_at", { ascending: false })
+    supabase.from("landing_page_variants").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }),
+    supabase.from("goodbot_recommendations").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(10)
   ]);
 
   if (goalError) {
@@ -51,6 +53,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ goalId: st
     landing_pages: landingPages ?? [],
     distribution_events: distributionEvents ?? [],
     landing_page_variants: landingPageVariants ?? [],
+    recommendations: recommendations ?? [],
     attribution: {
       by_asset: rollup(metrics ?? [], contentAssets ?? [], "content_asset_id"),
       by_variant: rollup(metrics ?? [], landingPageVariants ?? [], "landing_page_variant_id"),

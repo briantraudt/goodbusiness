@@ -14,6 +14,8 @@ export type ApprovalStatus = "pending" | "approved" | "rejected";
 export type DistributionStatus = "not_ready" | "ready" | "distributed" | "failed";
 export type DistributionEventStatus = "claimed" | "verified" | "failed";
 export type LandingPageVariantStatus = "draft" | "active" | "archived";
+export type RecommendationConfidence = "low" | "medium" | "high";
+export type RecommendationStatus = "pending" | "approved" | "rejected" | "executed";
 export type JobStatus = "pending" | "running" | "completed" | "failed";
 
 export type PlanStep = {
@@ -128,6 +130,20 @@ export type GoodBotJobRecord = {
   output: Record<string, unknown> | null;
   created_at: string;
   updated_at: string;
+};
+
+export type RecommendationRecord = {
+  id: string;
+  goal_id: string;
+  recommendation_type: string;
+  title: string;
+  rationale: string;
+  confidence: RecommendationConfidence;
+  status: RecommendationStatus;
+  input: Record<string, unknown>;
+  output: Record<string, unknown>;
+  created_at: string;
+  executed_at: string | null;
 };
 
 export type GoalRecord = {
