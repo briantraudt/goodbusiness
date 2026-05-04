@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Good Business — AI software development firm</title>
+<title>Good Business — We build AI tools</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Good Business designs and builds AI agents, AI-native apps, automations, and internal tools that are useful, trustworthy, and fun to use.">
+<meta name="description" content="Good Business builds simple, useful AI tools, websites, apps, and custom software for growing teams.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -64,6 +64,18 @@
     backdrop-filter:blur(18px);
   }
 
+  .scroll-line{
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:80;
+    width:calc(var(--scroll, 0) * 100%);
+    height:3px;
+    background:linear-gradient(90deg, var(--amber), var(--blue));
+    transform-origin:left;
+    transition:width .12s linear;
+  }
+
   .nav{
     min-height:76px;
     display:flex;
@@ -85,6 +97,8 @@
   .nav-actions{display:flex;align-items:center;gap:10px}
 
   .btn{
+    position:relative;
+    overflow:hidden;
     display:inline-flex;
     align-items:center;
     justify-content:center;
@@ -94,9 +108,19 @@
     border-radius:10px;
     font-weight:750;
     font-size:14px;
-    transition:transform .18s ease, background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease;
+    transition:transform .24s ease, background .24s ease, border-color .24s ease, color .24s ease, box-shadow .24s ease;
   }
-  .btn:hover{transform:translateY(-1px)}
+  .btn:after{
+    content:"";
+    position:absolute;
+    inset:-80% auto -80% -45%;
+    width:38%;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.42), transparent);
+    transform:rotate(18deg) translateX(-120%);
+    transition:transform .65s ease;
+  }
+  .btn:hover{transform:translateY(-2px)}
+  .btn:hover:after{transform:rotate(18deg) translateX(520%)}
   .btn.dark{background:var(--ink);color:var(--paper);box-shadow:0 16px 32px rgba(24,34,38,.14)}
   .btn.dark:hover{background:var(--teal-dark)}
   .btn.light{background:rgba(255,255,255,.72);border:1px solid var(--line);color:var(--ink)}
@@ -175,7 +199,9 @@
     background:rgba(255,255,255,.62);
     border-radius:8px;
     padding:14px 15px;
+    transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease;
   }
+  .proof:hover{transform:translateY(-4px);border-color:color-mix(in oklab, var(--teal) 38%, var(--line));box-shadow:0 18px 40px rgba(24,34,38,.08)}
   .proof b{display:block;font-size:20px;letter-spacing:-.04em}
   .proof span{display:block;margin-top:4px;color:var(--quiet);font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
 
@@ -211,6 +237,7 @@
     border-radius:50%;
     transform:rotate(-10deg);
     background:rgba(255,255,255,.2);
+    animation:orbitDrift 14s linear infinite;
   }
 
   .robot-wrap{
@@ -241,6 +268,7 @@
   }
 
   @keyframes float{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}
+  @keyframes orbitDrift{to{transform:rotate(350deg)}}
   @keyframes blink{0%,72%,100%{transform:scaleY(1)}76%,82%{transform:scaleY(.08)}}
   @keyframes scan{0%,100%{transform:translateX(-18px);opacity:.35}50%{transform:translateX(18px);opacity:.85}}
   @keyframes pulse{0%,100%{opacity:.45;transform:scale(.92)}50%{opacity:1;transform:scale(1.12)}}
@@ -278,7 +306,9 @@
     display:flex;
     flex-direction:column;
     justify-content:space-between;
+    transition:transform .32s ease, box-shadow .32s ease, border-color .32s ease;
   }
+  .capability:hover{transform:translateY(-6px);border-color:color-mix(in oklab, var(--teal) 35%, var(--line));box-shadow:0 24px 70px rgba(24,34,38,.1)}
   .capability .num{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--quiet)}
   .capability h3{font-size:30px;line-height:1;letter-spacing:-.045em}
   .capability p{color:var(--muted);font-size:15px}
@@ -357,7 +387,9 @@
     border-radius:8px;
     padding:16px;
     background:rgba(255,255,255,.68);
+    transition:transform .26s ease, border-color .26s ease, background .26s ease;
   }
+  .route-row:hover{transform:translateX(6px);border-color:color-mix(in oklab, var(--teal) 36%, var(--line));background:var(--paper)}
   .route-row:nth-child(2){background:rgba(183,217,189,.22)}
   .route-row:nth-child(3){background:rgba(240,162,59,.16)}
   .route-row:nth-child(4){background:rgba(56,105,232,.09)}
@@ -392,7 +424,9 @@
     display:flex;
     flex-direction:column;
     justify-content:space-between;
+    transition:background .24s ease, transform .24s ease;
   }
+  .step:hover{background:var(--paper-2);transform:translateY(-3px)}
   .step:last-child{border-right:0}
   .step .index{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--quiet)}
   .step h3{font-size:25px;letter-spacing:-.045em;line-height:1}
@@ -451,6 +485,16 @@
   .success p{color:var(--muted)}
   body.modal-open{overflow:hidden}
 
+  .reveal{
+    opacity:0;
+    transform:translateY(22px);
+    transition:opacity .7s ease, transform .7s ease;
+  }
+  .reveal.in-view{
+    opacity:1;
+    transform:translateY(0);
+  }
+
   @media (max-width: 960px){
     .nav-links{display:none}
     .hero{min-height:auto;padding:48px 0 36px}
@@ -491,10 +535,12 @@
   @media (prefers-reduced-motion: reduce){
     html{scroll-behavior:auto}
     *,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+    .reveal{opacity:1;transform:none}
   }
 </style>
 </head>
 <body>
+<div class="scroll-line" aria-hidden="true"></div>
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="site-header">
@@ -504,11 +550,11 @@
     </a>
     <nav class="nav-links" aria-label="Primary navigation">
       <a href="#work">Work</a>
-      <a href="#adoption">AI Stack</a>
+      <a href="#adoption">How</a>
       <a href="#process">Process</a>
     </nav>
     <div class="nav-actions">
-      <button class="btn dark" type="button" data-open-contact>Start an AI build →</button>
+      <button class="btn dark" type="button" data-open-contact>Start a project →</button>
     </div>
   </div>
 </header>
@@ -517,18 +563,18 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div>
-        <div class="eyebrow">AI software, built around real users</div>
-        <h1>We build AI products with a <em>pulse.</em></h1>
-        <p class="hero-copy">Good Business designs and ships agents, AI-native apps, automations, and internal tools that feel clear, work reliably, and make ambitious teams faster.</p>
+        <div class="eyebrow">Simple software for useful work</div>
+        <h1>We build AI tools people <em>actually use.</em></h1>
+        <p class="hero-copy">Got an idea? We turn it into a clean website, app, or tool. Simple to use. Ready for real work.</p>
         <div class="hero-actions">
-          <button type="button" class="btn dark" data-open-contact>Tell us what you’re building →</button>
-          <a class="btn light" href="#adoption">See the AI stack</a>
+          <button type="button" class="btn dark" data-open-contact>Tell us your idea →</button>
+          <a class="btn light" href="#work">See what we make</a>
         </div>
-        <div class="hero-note"><span class="spark-dot" aria-hidden="true"></span><span><strong>Fun to try. Serious in production.</strong> Not just demos, decks, or launch-day noise.</span></div>
+        <div class="hero-note"><span class="spark-dot" aria-hidden="true"></span><span><strong>Useful first.</strong> Pretty close behind.</span></div>
         <div class="proof-row" aria-label="Good Business capabilities">
-          <div class="proof"><b>Agents</b><span>tools · memory · workflows</span></div>
-          <div class="proof"><b>Products</b><span>ux · full-stack · launch</span></div>
-          <div class="proof"><b>Trust</b><span>evals · logs · guardrails</span></div>
+          <div class="proof"><b>Plan</b><span>clear start</span></div>
+          <div class="proof"><b>Build</b><span>working product</span></div>
+          <div class="proof"><b>Improve</b><span>real feedback</span></div>
         </div>
       </div>
 
@@ -562,26 +608,26 @@
       <div class="section-head">
         <div>
           <div class="eyebrow">What we build</div>
-          <h2>Modern AI products people can <em>actually use.</em></h2>
+          <h2>Useful tools. Clean design. <em>Less busywork.</em></h2>
         </div>
-        <p class="lead">We help teams turn sharp ideas into useful software: agents, apps, and systems that make work easier without making the business weird.</p>
+        <p class="lead">We make software that helps people do the work faster, cleaner, and with less hassle.</p>
       </div>
 
       <div class="capability-grid">
         <article class="capability">
-          <div class="num">01 · Agentic software</div>
+          <div class="num">01 · AI helpers</div>
           <div class="cap-visual">
-            <span class="chip">LLM UX</span>
-            <span class="chip">RAG</span>
-            <span class="chip">Agents</span>
+            <span class="chip">Write</span>
+            <span class="chip">Sort</span>
+            <span class="chip">Help</span>
           </div>
           <div>
-            <h3>Agents that know their job.</h3>
-            <p>Copilots, automations, and tool-using agents with clear handoffs, review states, fallback paths, and cost tracking.</p>
+            <h3>AI that helps.</h3>
+            <p>Tools that draft, sort, search, summarize, and handle boring steps while people stay in control.</p>
           </div>
         </article>
         <article class="capability">
-          <div class="num">02 · AI-native products</div>
+          <div class="num">02 · Custom apps</div>
           <div class="cap-visual">
             <div class="mobile-frame"></div>
             <div class="mobile-frame" style="height:72px;border-color:var(--coral)"></div>
@@ -589,17 +635,17 @@
           </div>
           <div>
             <h3>Apps people keep opening.</h3>
-            <p>Web and mobile products with clean flows, fast feedback, strong polish, and a clear path from prototype to launch.</p>
+            <p>Web and mobile apps that look sharp, load fast, and make the next step obvious.</p>
           </div>
         </article>
         <article class="capability">
-          <div class="num">03 · Internal leverage</div>
+          <div class="num">03 · Team tools</div>
           <div class="cap-visual">
             <div class="stack-lines" aria-hidden="true"><i></i><i></i><i></i></div>
           </div>
           <div>
             <h3>Tools teams keep using.</h3>
-            <p>Dashboards, portals, workflows, and decision systems for teams whose work does not fit neatly into off-the-shelf software.</p>
+            <p>Dashboards, forms, and simple systems for work that does not fit into regular software.</p>
           </div>
         </article>
       </div>
@@ -610,35 +656,35 @@
     <div class="wrap economics">
       <div class="economics-panel">
         <div>
-          <div class="eyebrow" style="color:var(--amber)">Cutting edge without chaos</div>
-          <h2>AI only works when people <em>trust the system.</em></h2>
-          <p>We make the advanced parts understandable, the everyday parts easy, and the model behavior observable enough to run in the real world.</p>
+          <div class="eyebrow" style="color:var(--amber)">How we keep it simple</div>
+          <h2>New tech should feel <em>easy.</em></h2>
+          <p>People should know what the tool does, what it needs, and what happens next. No mystery. No maze.</p>
         </div>
-        <div class="price-readout" aria-label="AI cost principles">
-          <div><b>Fast loops</b><span>prototype to proof</span></div>
-          <div><b>Real trust</b><span>evals, logs, controls</span></div>
+        <div class="price-readout" aria-label="Good Business principles">
+          <div><b>Clear</b><span>easy to understand</span></div>
+          <div><b>Useful</b><span>built for real work</span></div>
         </div>
       </div>
-      <div class="route-board" aria-label="AI routing examples">
+      <div class="route-board" aria-label="How Good Business works">
         <div class="route-row">
-          <code>Map</code>
-          <div><b>Find the workflow</b><p>Clarify the user, data, risk, decision points, and the moment where AI creates leverage.</p></div>
-          <span class="chip">sharp brief</span>
+          <code>Listen</code>
+          <div><b>Understand the job</b><p>We learn what you need, who it is for, and what would make it worth building.</p></div>
+          <span class="chip">plain plan</span>
         </div>
         <div class="route-row">
-          <code>Prototype</code>
-          <div><b>Make the idea real</b><p>Build the riskiest product slice first so people can try it, react to it, and improve it.</p></div>
-          <span class="chip">fast learning</span>
+          <code>Show</code>
+          <div><b>Make it real fast</b><p>We turn the idea into something you can click, test, and react to.</p></div>
+          <span class="chip">quick look</span>
         </div>
         <div class="route-row">
-          <code>Systemize</code>
-          <div><b>Make it reliable</b><p>Use the right model, retrieval, tools, permissions, evals, and fallbacks so AI stays useful under pressure.</p></div>
-          <span class="chip">production ai</span>
+          <code>Build</code>
+          <div><b>Make it work well</b><p>We build the real thing with clean screens, strong code, and simple handoffs.</p></div>
+          <span class="chip">ready</span>
         </div>
         <div class="route-row">
-          <code>Observe</code>
-          <div><b>Learn from real use</b><p>Track adoption, speed, errors, spend, conversion, review burden, and time saved.</p></div>
-          <span class="chip">real feedback</span>
+          <code>Improve</code>
+          <div><b>Make it better</b><p>We learn from real use and keep improving the parts that matter.</p></div>
+          <span class="chip">keep going</span>
         </div>
       </div>
     </div>
@@ -649,15 +695,15 @@
       <div class="section-head">
         <div>
           <div class="eyebrow">How it works</div>
-          <h2>A practical path from <em>idea</em> to real use.</h2>
+          <h2>A simple path from <em>idea</em> to launch.</h2>
         </div>
-        <p class="lead">Small enough to move quickly, careful enough that the product does not get fragile, confusing, or expensive when people start using it.</p>
+        <p class="lead">Small steps. Honest feedback. A working product as soon as possible.</p>
       </div>
       <div class="process">
-        <article class="step"><div class="index">Week 0</div><div><h3>Get clear</h3><p>Goals, users, constraints, data, risks, and what the first AI version needs to prove.</p></div></article>
-        <article class="step"><div class="index">Week 1</div><div><h3>Make it usable early</h3><p>A prototype or product slice that proves the core interaction before the system gets big.</p></div></article>
-        <article class="step"><div class="index">Build</div><div><h3>Ship the system</h3><p>Production code, integrations, responsive UI, model routing, evals, and the setup needed to run it.</p></div></article>
-        <article class="step"><div class="index">Launch</div><div><h3>Learn from use</h3><p>Instrumentation, feedback loops, release polish, and the next meaningful iteration.</p></div></article>
+        <article class="step"><div class="index">Start</div><div><h3>Talk it through</h3><p>We get clear on the problem, the people, and the first version worth making.</p></div></article>
+        <article class="step"><div class="index">Sketch</div><div><h3>Show the shape</h3><p>You see the flow early, before time is wasted on the wrong thing.</p></div></article>
+        <article class="step"><div class="index">Build</div><div><h3>Make it real</h3><p>We design, code, connect, test, and polish the product.</p></div></article>
+        <article class="step"><div class="index">Launch</div><div><h3>Keep improving</h3><p>We watch what happens, fix what breaks, and make the next version better.</p></div></article>
       </div>
     </div>
   </section>
@@ -667,10 +713,10 @@
       <div>
         <div class="eyebrow" style="color:var(--amber)">Let’s talk</div>
         <h2>Let’s build something people <em>keep using.</em></h2>
-        <p>Send the rough version. A paragraph, a deck, a half-formed thought. We’ll help turn it into an AI product people want to use and a system your business can afford to run.</p>
+        <p>Send the rough version. A sentence is enough. We’ll help turn it into something real.</p>
       </div>
       <div class="hero-actions">
-        <button type="button" class="btn hot" data-open-contact>Start an AI build →</button>
+        <button type="button" class="btn hot" data-open-contact>Start a project →</button>
         <a class="btn light" href="mailto:hello@goodbusinesshq.com">Email directly</a>
       </div>
     </div>
@@ -697,7 +743,7 @@
   <div class="modal-card">
     <button type="button" class="close" data-close-contact aria-label="Close">×</button>
     <div class="eyebrow">New project</div>
-    <h3 id="contact-modal-title">Tell us about <em>what you’re building.</em></h3>
+    <h3 id="contact-modal-title">What do you want to <em>make?</em></h3>
     <form id="contact-form" novalidate>
       <label>Name
         <input type="text" name="name" autocomplete="name" required>
@@ -715,6 +761,35 @@
 
 <script>
   (function(){
+    const revealTargets = document.querySelectorAll('.section-head, .capability, .economics-panel, .route-row, .step, .final-grid');
+    const progress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const amount = max > 0 ? window.scrollY / max : 0;
+      document.documentElement.style.setProperty('--scroll', Math.max(0, Math.min(1, amount)).toFixed(4));
+    };
+
+    revealTargets.forEach((el, index) => {
+      el.classList.add('reveal');
+      el.style.transitionDelay = `${Math.min(index % 4, 3) * 70}ms`;
+    });
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: .16 });
+      revealTargets.forEach(el => observer.observe(el));
+    } else {
+      revealTargets.forEach(el => el.classList.add('in-view'));
+    }
+
+    progress();
+    window.addEventListener('scroll', progress, { passive: true });
+
     const modal = document.getElementById('contact-modal');
     const form = document.getElementById('contact-form');
     const openers = document.querySelectorAll('[data-open-contact]');
