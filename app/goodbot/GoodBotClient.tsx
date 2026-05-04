@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { getGoodBotBrowserSupabase } from "@/lib/goodbot/browserSupabase";
 
@@ -148,6 +148,7 @@ export default function GoodBotClient() {
   const [authPassword, setAuthPassword] = useState("");
   const [missions, setMissions] = useState<MissionSummary[]>([]);
   const [missionsLoading, setMissionsLoading] = useState(false);
+  const goalInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -406,6 +407,7 @@ export default function GoodBotClient() {
     setStatus(null);
     setAccessToken(null);
     window.history.replaceState(null, "", "/goodbot");
+    window.setTimeout(() => goalInputRef.current?.focus(), 0);
   }
 
   async function copyText(text: string) {
@@ -437,36 +439,33 @@ export default function GoodBotClient() {
   const rightPanel = status
     ? buildRightPanelState(status, activeStep, activeStepIndex)
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
+  const showSignedInIntro = authState === "signed_in" && !status;
 
   return (
     <main className="goodbot-shell">
+      <TopBar session={session} authState={authState} onSignOut={signOut} />
+
       <section className="goodbot-hero">
         <div className="goodbot-copy">
-          <p className="eyebrow">Good Business / GoodBot</p>
-          <h1>Autonomous Outcome Engine</h1>
+          <h1>{showSignedInIntro ? "You’re in. Let’s give GoodBot something to do." : "Autonomous Outcome Engine"}</h1>
           <p className="subcopy">
-            Give GoodBot a user-acquisition outcome. It will prepare the work, queue the execution, and ask for approval before anything external happens.
+            {showSignedInIntro
+              ? "Start with a simple outcome like getting users or launching something."
+              : "Give GoodBot a user-acquisition outcome. It will prepare the work, queue the execution, and ask for approval before anything external happens."}
           </p>
         </div>
         <img src="/assets/good-business-robot.svg" alt="" className={`bot ${executionState === "executing" ? "is-executing" : ""}`} />
       </section>
 
-      <ExecutionBanner state={executionState} lastUpdatedLabel={lastUpdatedLabel} />
+      <ExecutionBanner state={executionState} lastUpdatedLabel={lastUpdatedLabel} signedInIntro={showSignedInIntro} />
 
       <AuthPanel
         authState={authState}
         email={authEmail}
         password={authPassword}
-        session={session}
-        missions={missions}
-        selectedGoalId={goalId}
-        missionsLoading={missionsLoading}
         onEmailChange={setAuthEmail}
         onPasswordChange={setAuthPassword}
         onSignIn={signIn}
-        onSignOut={signOut}
-        onSelectMission={selectMission}
-        onNewMission={startNewMission}
       />
       {error && !canUseGoodBot ? <p className="auth-error error">{error}</p> : null}
 
@@ -474,6 +473,7 @@ export default function GoodBotClient() {
         <form onSubmit={submitGoal} className="goal-form">
           <label htmlFor="goal">Give GoodBot the Mission</label>
           <textarea
+            ref={goalInputRef}
             id="goal"
             value={goal}
             onChange={(event) => setGoal(event.target.value)}
@@ -526,6 +526,16 @@ export default function GoodBotClient() {
           {nextRecommendation ? <p className="operator-note">I found the best next move.</p> : null}
         </div>
       </section> : null}
+
+      {authState === "signed_in" ? (
+        <MissionHistory
+          missions={missions}
+          selectedGoalId={goalId}
+          missionsLoading={missionsLoading}
+          onSelectMission={selectMission}
+          onNewMission={startNewMission}
+        />
+      ) : null}
 
       {status && canUseGoodBot ? (
         <section className="operator-sections">
@@ -668,39 +678,44 @@ function RecommendationCard({
   );
 }
 
+function TopBar({ session, authState, onSignOut }: { session: Session | null; authState: string; onSignOut: () => void }) {
+  const email = session?.user.email ?? "";
+  return (
+    <header className="goodbot-topbar">
+      <p className="topbar-logo">Good Business / GoodBot</p>
+      {authState === "signed_in" && email ? (
+        <div className="topbar-account">
+          <span className="avatar" aria-hidden="true">
+            {initialsForEmail(email)}
+          </span>
+          <span className="account-email">{email}</span>
+          <button type="button" onClick={onSignOut}>
+            Sign out
+          </button>
+        </div>
+      ) : null}
+    </header>
+  );
+}
+
 function AuthPanel({
   authState,
   email,
   password,
-  session,
-  missions,
-  selectedGoalId,
-  missionsLoading,
   onEmailChange,
   onPasswordChange,
   onSignIn,
-  onSignOut,
-  onSelectMission,
-  onNewMission
 }: {
   authState: "loading_session" | "signed_out" | "signing_in" | "signed_in";
   email: string;
   password: string;
-  session: Session | null;
-  missions: MissionSummary[];
-  selectedGoalId: string | null;
-  missionsLoading: boolean;
   onEmailChange: (value: string) => void;
   onPasswordChange: (value: string) => void;
   onSignIn: (event: FormEvent<HTMLFormElement>) => void;
-  onSignOut: () => void;
-  onSelectMission: (mission: MissionSummary) => void;
-  onNewMission: () => void;
 }) {
   if (authState === "loading_session") {
     return (
       <section className="auth-panel" aria-live="polite">
-        <p className="status-label">Account</p>
         <h2>Loading your GoodBot session...</h2>
       </section>
     );
@@ -710,7 +725,6 @@ function AuthPanel({
     return (
       <section className="auth-panel">
         <div>
-          <p className="status-label">Account</p>
           <h2>Sign in to save your missions.</h2>
           <p>GoodBot saves your goals, assets, results, and next moves so you can come back anytime.</p>
         </div>
@@ -740,49 +754,58 @@ function AuthPanel({
     );
   }
 
+  return null;
+}
+
+function MissionHistory({
+  missions,
+  selectedGoalId,
+  missionsLoading,
+  onSelectMission,
+  onNewMission
+}: {
+  missions: MissionSummary[];
+  selectedGoalId: string | null;
+  missionsLoading: boolean;
+  onSelectMission: (mission: MissionSummary) => void;
+  onNewMission: () => void;
+}) {
   return (
-    <section className="auth-panel signed-in-panel">
-      <div>
-        <p className="status-label">Account</p>
-        <h2>{session?.user.email}</h2>
-        <button className="text-button" type="button" onClick={onSignOut}>
-          Sign out
+    <section className="mission-history" aria-label="My missions">
+      <div className="missions-heading">
+        <div>
+          <h2>My Missions</h2>
+          {!missionsLoading && missions.length === 0 ? <p>You haven’t created a mission yet.</p> : null}
+        </div>
+        <button type="button" onClick={onNewMission}>
+          {missions.length ? "New Mission" : "Create your first mission"}
         </button>
       </div>
-      <div className="missions-panel">
-        <div className="missions-heading">
-          <p className="status-label">My Missions</p>
-          <button type="button" onClick={onNewMission}>
-            New Mission
-          </button>
-        </div>
-        {missionsLoading ? <p className="empty">Loading missions...</p> : null}
-        {!missionsLoading && missions.length === 0 ? <p className="empty">No missions yet.</p> : null}
-        {missions.length ? (
-          <ol className="mission-list">
-            {missions.map((mission) => (
-              <li key={mission.id}>
-                <button type="button" onClick={() => onSelectMission(mission)} data-active={mission.id === selectedGoalId}>
-                  <span>{mission.goal}</span>
-                  <small>
-                    {mission.status} / {new Date(mission.created_at).toLocaleDateString()} / {mission.signups} of {mission.target_value} users
-                    {mission.is_demo ? " / demo" : ""}
-                  </small>
-                </button>
-              </li>
-            ))}
-          </ol>
-        ) : null}
-      </div>
+      {missionsLoading ? <p className="empty">Loading missions...</p> : null}
+      {missions.length ? (
+        <ol className="mission-list">
+          {missions.map((mission) => (
+            <li key={mission.id}>
+              <button type="button" onClick={() => onSelectMission(mission)} data-active={mission.id === selectedGoalId}>
+                <span>{mission.goal}</span>
+                <small>
+                  {mission.status} / {new Date(mission.created_at).toLocaleDateString()} / {mission.signups} of {mission.target_value} users
+                  {mission.is_demo ? " / demo" : ""}
+                </small>
+              </button>
+            </li>
+          ))}
+        </ol>
+      ) : null}
     </section>
   );
 }
 
-function ExecutionBanner({ state, lastUpdatedLabel }: { state: ExecutionState; lastUpdatedLabel: string }) {
+function ExecutionBanner({ state, lastUpdatedLabel, signedInIntro }: { state: ExecutionState; lastUpdatedLabel: string; signedInIntro?: boolean }) {
   return (
     <section className="execution-banner" data-state={state} aria-live="polite">
       <div>
-        <strong>{executionStateMessage(state)}</strong>
+        <strong>{signedInIntro ? "You’re in. Give GoodBot a mission." : executionStateMessage(state)}</strong>
         <span>Last updated {lastUpdatedLabel}</span>
       </div>
     </section>
@@ -1155,4 +1178,11 @@ function buildApiHeaders(session: Session | null, accessToken?: string | null, e
   if (session?.access_token) headers.set("Authorization", `Bearer ${session.access_token}`);
   if (accessToken) headers.set("x-goodbot-access-token", accessToken);
   return headers;
+}
+
+function initialsForEmail(email: string) {
+  const localPart = email.split("@")[0] || "GB";
+  const pieces = localPart.split(/[._+-]/).filter(Boolean);
+  const initials = pieces.length > 1 ? `${pieces[0][0]}${pieces[1][0]}` : localPart.slice(0, 2);
+  return initials.toUpperCase();
 }
