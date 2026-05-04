@@ -9,6 +9,8 @@ export async function GET(request: Request) {
     return new Response("Unauthorized", { status: 401 });
   }
 
-  const results = await runDailyFeedbackLoop();
+  const { searchParams } = new URL(request.url);
+  const goalId = searchParams.get("goalId") || undefined;
+  const results = await runDailyFeedbackLoop(goalId);
   return NextResponse.json({ ok: true, evaluated: results.length, results });
 }

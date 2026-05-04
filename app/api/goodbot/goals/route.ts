@@ -8,7 +8,8 @@ const intakeSchema = z.object({
   goal: z.string().trim().min(8).max(300),
   app_name: z.string().trim().max(120).optional(),
   audience: z.string().trim().max(200).optional(),
-  positioning: z.string().trim().max(300).optional()
+  positioning: z.string().trim().max(300).optional(),
+  demo_mode: z.boolean().optional()
 });
 
 export async function POST(request: Request) {
@@ -36,7 +37,8 @@ export async function POST(request: Request) {
       timeframe: goalObject.timeframe,
       app_name: goalObject.app_name,
       audience: goalObject.audience,
-      positioning: goalObject.positioning
+      positioning: goalObject.positioning,
+      is_demo: Boolean(parsed.data.demo_mode)
     })
     .select("*")
     .single();

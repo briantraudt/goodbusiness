@@ -13,7 +13,8 @@ const signupSchema = z.object({
   utm_content: z.string().trim().max(220).optional(),
   distribution_event_id: z.string().uuid().optional(),
   content_asset_id: z.string().uuid().optional(),
-  landing_page_variant_id: z.string().uuid().optional()
+  landing_page_variant_id: z.string().uuid().optional(),
+  demo_mode: z.boolean().optional()
 });
 
 export async function POST(request: Request) {
@@ -24,6 +25,8 @@ export async function POST(request: Request) {
   }
 
   const supabase = getSupabaseAdmin();
+  const { data: goal } = await supabase.from("goals").select("is_demo").eq("id", parsed.data.goal_id).maybeSingle();
+  const isDemo = Boolean(parsed.data.demo_mode || goal?.is_demo);
   const { error } = await supabase.from("leads").upsert(
     {
       goal_id: parsed.data.goal_id,
@@ -37,10 +40,12 @@ export async function POST(request: Request) {
       distribution_event_id: parsed.data.distribution_event_id || null,
       content_asset_id: parsed.data.content_asset_id || null,
       landing_page_variant_id: parsed.data.landing_page_variant_id || null,
+      is_demo: isDemo,
       metadata: {
         distribution_event_id: parsed.data.distribution_event_id || null,
         content_asset_id: parsed.data.content_asset_id || null,
-        landing_page_variant_id: parsed.data.landing_page_variant_id || null
+        landing_page_variant_id: parsed.data.landing_page_variant_id || null,
+        demo_mode: isDemo
       }
     },
     { onConflict: "goal_id,email" }
@@ -62,7 +67,8 @@ export async function POST(request: Request) {
     distribution_event_id: parsed.data.distribution_event_id || null,
     content_asset_id: parsed.data.content_asset_id || null,
     landing_page_variant_id: parsed.data.landing_page_variant_id || null,
-    metadata: { email: parsed.data.email.toLowerCase() }
+    is_demo: isDemo,
+    metadata: { email: parsed.data.email.toLowerCase(), demo_mode: isDemo }
   });
 
   return NextResponse.json({ ok: true });

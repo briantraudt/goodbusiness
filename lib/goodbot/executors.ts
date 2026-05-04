@@ -18,6 +18,7 @@ const contentSchema = z.object({
 });
 
 const JOB_BATCH_SIZE = 5;
+type RecommendedStep = PlanStep & { recommendation_id?: string };
 
 export async function executeStep(goal: GoalRecord, step: StepRecord): Promise<StepOutput> {
   const supabase = getSupabaseAdmin();
@@ -104,7 +105,7 @@ export async function enqueueFirstPendingStep(goalId: string) {
   return enqueueStepJob(step as StepRecord);
 }
 
-export async function enqueueStepJob(step: StepRecord, runAfter = new Date()) {
+export async function enqueueStepJob(step: StepRecord, runAfter = new Date(), recommendationId?: string | null) {
   const supabase = getSupabaseAdmin();
   const { data: existing, error: existingError } = await supabase
     .from("goodbot_jobs")
@@ -122,10 +123,11 @@ export async function enqueueStepJob(step: StepRecord, runAfter = new Date()) {
     .insert({
       goal_id: step.goal_id,
       step_id: step.id,
+      recommendation_id: recommendationId || null,
       job_type: "execute_step",
       status: "pending",
       run_after: runAfter.toISOString(),
-      input: { step_type: step.step_type, title: step.title }
+      input: { step_type: step.step_type, title: step.title, recommendation_id: recommendationId || null }
     })
     .select("id,status")
     .single();
@@ -161,20 +163,43 @@ export async function executeRecommendation(recommendationId: string, action: "a
     return data;
   }
 
-  const output = await executeRecommendationAction(record);
-  const { data, error: updateError } = await supabase
+  await supabase
     .from("goodbot_recommendations")
-    .update({
-      status: "executed",
-      output,
-      executed_at: new Date().toISOString()
-    })
-    .eq("id", record.id)
-    .select("*")
-    .single();
+    .update({ status: "approved", output: { approved_at: new Date().toISOString() } })
+    .eq("id", record.id);
 
-  if (updateError) throw updateError;
-  return data;
+  try {
+    await supabase
+      .from("goodbot_recommendations")
+      .update({ status: "running", output: { approved_at: new Date().toISOString(), running_at: new Date().toISOString() } })
+      .eq("id", record.id);
+
+    const output = await executeRecommendationAction(record);
+    const isQueued = Boolean((output as { job_id?: unknown }).job_id);
+    const { data, error: updateError } = await supabase
+      .from("goodbot_recommendations")
+      .update({
+        status: isQueued ? "running" : "executed",
+        output,
+        executed_at: isQueued ? null : new Date().toISOString()
+      })
+      .eq("id", record.id)
+      .select("*")
+      .single();
+
+    if (updateError) throw updateError;
+    return data;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Recommendation execution failed.";
+    const { data } = await supabase
+      .from("goodbot_recommendations")
+      .update({ status: "failed", output: { error: message }, executed_at: null })
+      .eq("id", record.id)
+      .select("*")
+      .single();
+    if (data) return data;
+    throw error;
+  }
 }
 
 export async function runQueuedJobs(limit = JOB_BATCH_SIZE) {
@@ -254,6 +279,8 @@ async function runQueuedJob(job: GoodBotJobRecord) {
       })
       .eq("id", job.id);
 
+    await markRecommendationFromJob(job, "executed", output);
+
     if (shouldEnqueueNextStep) {
       await enqueueNextPendingStep(job.goal_id);
     }
@@ -276,6 +303,10 @@ async function runQueuedJob(job: GoodBotJobRecord) {
       })
       .eq("id", job.id);
 
+    if (failedPermanently) {
+      await markRecommendationFromJob(job, "failed", { ok: false, summary: message });
+    }
+
     return { job_id: job.id, status: failedPermanently ? "failed" : "retrying", error: message };
   }
 }
@@ -293,6 +324,29 @@ async function enqueueNextPendingStep(goalId: string) {
   if (runningOrPendingJobs?.length) return null;
 
   return enqueueFirstPendingStep(goalId);
+}
+
+async function markRecommendationFromJob(job: GoodBotJobRecord, status: "executed" | "failed", output: StepOutput) {
+  const recommendationId =
+    job.recommendation_id ||
+    (typeof job.input?.recommendation_id === "string" ? job.input.recommendation_id : null);
+  if (!recommendationId) return;
+
+  const supabase = getSupabaseAdmin();
+  await supabase
+    .from("goodbot_recommendations")
+    .update({
+      status,
+      output: {
+        job_id: job.id,
+        step_id: job.step_id,
+        job_status: status === "executed" ? "completed" : "failed",
+        result: output
+      },
+      executed_at: status === "executed" ? new Date().toISOString() : null
+    })
+    .eq("id", recommendationId)
+    .in("status", ["approved", "running"]);
 }
 
 async function runStep(goal: GoalRecord, step: StepRecord): Promise<StepOutput> {
@@ -414,10 +468,16 @@ export async function generateContent(goal: GoalRecord, input: Record<string, un
   const linkedinCount = Number(input.linkedin_posts ?? 5);
   const blogCount = Number(input.blog_posts ?? 2);
   const emailCount = Number(input.email_drafts ?? 0);
+  const sourceAssetId = typeof input.source_asset_id === "string" ? input.source_asset_id : null;
+  const sourceAsset = sourceAssetId
+    ? await fetchSourceAsset(goal.id, sourceAssetId)
+    : null;
   const fallback = {
     linkedin_posts: Array.from({ length: linkedinCount }, (_, index) => ({
       title: `LinkedIn acquisition post ${index + 1}`,
-      body: `We are looking for early users for ${goal.app_name || "a focused web app"}. Goal: ${goal.goal}. Join the early list and help shape what ships next.`
+      body: sourceAsset
+        ? `For ${goal.audience || "early users"}: ${extractHook(sourceAsset.body)}\n\n${extractPain(sourceAsset.body)}\n\nIf this sounds familiar, join the early list for ${goal.app_name || "this app"} and help shape what ships next.`
+        : `We are looking for early users for ${goal.app_name || "a focused web app"}. Goal: ${goal.goal}. Join the early list and help shape what ships next.`
     })),
     blog_posts: Array.from({ length: blogCount }, (_, index) => ({
       title: `${goal.app_name || "GoodBot"} acquisition note ${index + 1}`,
@@ -428,7 +488,7 @@ export async function generateContent(goal: GoalRecord, input: Record<string, un
       body: `Subject: Early access for ${goal.app_name || "our app"}\n\nHi,\n\nI am inviting a small group of early users to try ${goal.app_name || "our app"}.\n\nThe goal: ${goal.goal}.\n\nIf this sounds relevant, join the early list here: /goodbot/landing/${goal.id}\n\nThanks.`
     }))
   };
-  const generated = await generateJson(contentPrompt(goalObject), fallback);
+  const generated = await generateJson(buildContentPrompt(goalObject, input, sourceAsset), fallback);
   const parsed = contentSchema.safeParse(generated);
   const content = parsed.success ? parsed.data : fallback;
 
@@ -443,7 +503,8 @@ export async function generateContent(goal: GoalRecord, input: Record<string, un
       approval_status: "pending",
       distribution_status: "not_ready",
       distribution_channel: "linkedin_manual",
-      recommended_action: "Review, approve, copy, and post manually to LinkedIn."
+      recommended_action: "Review, approve, copy, and post manually to LinkedIn.",
+      metadata: sourceAsset ? { source_asset_id: sourceAsset.id, source_angle: summarizeSourceAngle(sourceAsset.body) } : {}
     })),
     ...content.blog_posts.slice(0, blogCount).map((post) => ({
       goal_id: goal.id,
@@ -455,7 +516,8 @@ export async function generateContent(goal: GoalRecord, input: Record<string, un
       approval_status: "pending",
       distribution_status: "not_ready",
       distribution_channel: "blog_manual_share",
-      recommended_action: "Approve to publish this hosted post, then share the URL."
+      recommended_action: "Approve to publish this hosted post, then share the URL.",
+      metadata: sourceAsset ? { source_asset_id: sourceAsset.id, source_angle: summarizeSourceAngle(sourceAsset.body) } : {}
     })),
     ...content.email_drafts.slice(0, emailCount).map((draft) => ({
       goal_id: goal.id,
@@ -467,7 +529,8 @@ export async function generateContent(goal: GoalRecord, input: Record<string, un
       approval_status: "pending",
       distribution_status: "not_ready",
       distribution_channel: "email_manual",
-      recommended_action: "Approve, copy, send manually, then mark as sent."
+      recommended_action: "Approve, copy, send manually, then mark as sent.",
+      metadata: sourceAsset ? { source_asset_id: sourceAsset.id, source_angle: summarizeSourceAngle(sourceAsset.body) } : {}
     }))
   ];
 
@@ -477,7 +540,7 @@ export async function generateContent(goal: GoalRecord, input: Record<string, un
   return {
     ok: true,
     summary: `Generated ${data.length} content assets.`,
-    artifacts: { content_asset_ids: data.map((asset) => asset.id) }
+    artifacts: { content_asset_ids: data.map((asset) => asset.id), source_asset_id: sourceAsset?.id ?? null }
   };
 }
 
@@ -516,9 +579,65 @@ export async function trackMetrics(goal: GoalRecord): Promise<StepOutput> {
   };
 }
 
-export async function runDailyFeedbackLoop() {
+async function fetchSourceAsset(goalId: string, sourceAssetId: string) {
   const supabase = getSupabaseAdmin();
-  const { data: goals, error } = await supabase.from("goals").select("*").eq("status", "working");
+  const { data, error } = await supabase
+    .from("content_assets")
+    .select("id,title,body,content_type,channel")
+    .eq("goal_id", goalId)
+    .eq("id", sourceAssetId)
+    .maybeSingle();
+
+  if (error) throw error;
+  return data as { id: string; title: string | null; body: string; content_type: string; channel: string } | null;
+}
+
+function buildContentPrompt(
+  goal: GoalObject,
+  input: Record<string, unknown>,
+  sourceAsset: { id: string; title: string | null; body: string; content_type: string; channel: string } | null
+) {
+  const basePrompt = contentPrompt(goal);
+  if (!sourceAsset) return basePrompt;
+
+  return `${basePrompt}
+
+Winning source asset:
+- id: ${sourceAsset.id}
+- type: ${sourceAsset.content_type}
+- title: ${sourceAsset.title || "Untitled"}
+- body:
+${sourceAsset.body}
+
+The user asked GoodBot to create more posts using the winning angle.
+Generate ${Number(input.linkedin_posts ?? 3)} LinkedIn posts that intentionally mirror the source asset:
+- Same audience, but do not repeat identical wording.
+- Same hook structure and opening tension.
+- Same pain point and promised outcome.
+- Same CTA intent.
+- Same tone and directness.
+
+Return JSON only in the original schema. Do not mention that you mirrored the source asset.`;
+}
+
+function extractHook(body: string) {
+  return body.split(/\n+/).find((line) => line.trim().length > 0)?.trim().slice(0, 180) || "The old way of getting users is too manual.";
+}
+
+function extractPain(body: string) {
+  const sentences = body.split(/(?<=[.!?])\s+/).filter(Boolean);
+  return sentences[1]?.trim().slice(0, 220) || "Most founders know they need distribution, but the work gets stuck between planning and posting.";
+}
+
+function summarizeSourceAngle(body: string) {
+  return body.replace(/\s+/g, " ").trim().slice(0, 240);
+}
+
+export async function runDailyFeedbackLoop(goalId?: string) {
+  const supabase = getSupabaseAdmin();
+  let query = supabase.from("goals").select("*").eq("status", "working");
+  if (goalId) query = query.eq("id", goalId);
+  const { data: goals, error } = await query;
   if (error) throw error;
 
   const results = [];
@@ -677,7 +796,7 @@ async function createRecommendation(
     .select("id")
     .eq("goal_id", goalId)
     .eq("recommendation_type", recommendation.recommendation_type)
-    .eq("status", "pending")
+    .in("status", ["pending", "approved", "running"])
     .limit(1)
     .maybeSingle();
 
@@ -782,7 +901,7 @@ async function keepWinningVariant(goalId: string, variantId: string) {
   return { ok: true, summary: "Kept winning variant active.", landing_page_variant_id: variantId };
 }
 
-function recommendationToStep(recommendation: RecommendationRecord): PlanStep | null {
+function recommendationToStep(recommendation: RecommendationRecord): RecommendedStep | null {
   if (recommendation.recommendation_type === "create_distribution_copy") {
     return {
       step_type: "generate_content",
@@ -791,7 +910,8 @@ function recommendationToStep(recommendation: RecommendationRecord): PlanStep | 
         linkedin_posts: Number(recommendation.input.linkedin_posts ?? 3),
         blog_posts: Number(recommendation.input.blog_posts ?? 0),
         strategy_note: recommendation.input.strategy_note || "Create sharper distribution copy."
-      }
+      },
+      recommendation_id: recommendation.id
     };
   }
 
@@ -801,7 +921,8 @@ function recommendationToStep(recommendation: RecommendationRecord): PlanStep | 
       title: String(recommendation.input.title || "Generate landing page headline and CTA variant"),
       input: {
         variant_reason: recommendation.input.variant_reason || "Recommended next move."
-      }
+      },
+      recommendation_id: recommendation.id
     };
   }
 
@@ -814,14 +935,15 @@ function recommendationToStep(recommendation: RecommendationRecord): PlanStep | 
         blog_posts: Number(recommendation.input.blog_posts ?? 0),
         source_asset_id: recommendation.input.source_asset_id || null,
         strategy_note: recommendation.input.strategy_note || "Create more content using the winning angle."
-      }
+      },
+      recommendation_id: recommendation.id
     };
   }
 
   return null;
 }
 
-async function createRecommendedStep(goalId: string, title: string, rationale: string, step: PlanStep) {
+async function createRecommendedStep(goalId: string, title: string, rationale: string, step: RecommendedStep) {
   const supabase = getSupabaseAdmin();
   const { data: latestPlan } = await supabase
     .from("plans")
@@ -866,7 +988,7 @@ async function createRecommendedStep(goalId: string, title: string, rationale: s
     .single();
   if (stepError) throw stepError;
 
-  const job = await enqueueStepJob(insertedStep as StepRecord);
+  const job = await enqueueStepJob(insertedStep as StepRecord, new Date(), step.recommendation_id || null);
   await createNotification(goalId, "strategy_changed", `I queued the next move: ${title}.`);
   return { ok: true, summary: "Queued recommendation as a GoodBot job.", step_id: insertedStep.id, job_id: job.id };
 }

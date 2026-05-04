@@ -93,7 +93,7 @@ type Recommendation = {
   title: string;
   rationale: string;
   confidence: "low" | "medium" | "high";
-  status: "pending" | "approved" | "rejected" | "executed";
+  status: "pending" | "approved" | "running" | "rejected" | "executed" | "failed";
   input: Record<string, unknown>;
   output: Record<string, unknown>;
   created_at: string;
@@ -261,7 +261,7 @@ export default function GoodBotClient() {
   const completedSteps = status?.steps.filter((step) => step.status === "completed") ?? [];
   const distributionProof = status?.distribution_events ?? [];
   const variantPerformance = status?.landing_page_variants ?? [];
-  const nextRecommendation = status?.recommendations.find((recommendation) => recommendation.status === "pending") ?? null;
+  const nextRecommendation = status?.recommendations.find((recommendation) => ["pending", "approved", "running", "failed"].includes(recommendation.status)) ?? null;
   const activity = buildActivity(status);
 
   return (
@@ -450,14 +450,14 @@ function RecommendationCard({
         <h3>{recommendation.title}</h3>
         <p>{recommendation.rationale}</p>
         <small>
-          Confidence: {recommendation.confidence} / {recommendationLabel(recommendation.recommendation_type)}
+          Confidence: {recommendation.confidence} / {recommendation.status} / {recommendationLabel(recommendation.recommendation_type)}
         </small>
       </div>
       <div className="action-row">
-        <button type="button" onClick={() => onAction(recommendation, "approve")}>
+        <button type="button" onClick={() => onAction(recommendation, "approve")} disabled={recommendation.status !== "pending"}>
           Do it
         </button>
-        <button type="button" onClick={() => onAction(recommendation, "reject")}>
+        <button type="button" onClick={() => onAction(recommendation, "reject")} disabled={recommendation.status !== "pending"}>
           Not now
         </button>
       </div>

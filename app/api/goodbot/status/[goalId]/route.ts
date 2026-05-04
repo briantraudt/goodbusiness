@@ -62,6 +62,8 @@ export async function GET(_: Request, { params }: { params: Promise<{ goalId: st
     jobs: jobs ?? [],
     metrics: { visits, signups, events: metrics ?? [] },
     landing_page_url: landing ? `/goodbot/landing/${goalId}` : null
+  }, {
+    headers: { "Cache-Control": "no-store" }
   });
 }
 
