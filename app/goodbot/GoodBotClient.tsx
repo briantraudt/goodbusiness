@@ -88,6 +88,19 @@ export default function GoodBotClient() {
     };
   }, [goalId]);
 
+  useEffect(() => {
+    if (!status) return;
+    const queuedWork = status.jobs.some((job) => job.status === "pending" || job.status === "running");
+    const unfinishedSteps = status.steps.some((step) => step.status === "pending" || step.status === "running");
+    if (!queuedWork && !unfinishedSteps) return;
+
+    const timer = window.setTimeout(() => {
+      fetch("/api/cron/goodbot-jobs", { method: "POST" }).catch(() => undefined);
+    }, 750);
+
+    return () => window.clearTimeout(timer);
+  }, [status]);
+
   const currentState = useMemo(() => {
     if (!status) return "Waiting for a mission.";
     const activeJob = status.jobs.find((job) => job.status === "running" || job.status === "pending");
