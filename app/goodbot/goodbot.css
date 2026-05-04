@@ -104,6 +104,127 @@
   align-items: stretch;
 }
 
+.auth-panel {
+  width: min(1120px, 100%);
+  margin: 0 auto 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.72fr);
+  gap: 18px;
+  align-items: start;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 24px;
+  box-shadow: 0 24px 70px rgba(31, 83, 87, 0.08);
+}
+
+.auth-panel h2 {
+  margin: 10px 0 8px;
+  font-size: clamp(26px, 3.2vw, 42px);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.auth-panel p:not(.status-label) {
+  max-width: 620px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.42;
+}
+
+.auth-form {
+  display: grid;
+  gap: 10px;
+}
+
+.auth-form input {
+  min-height: 46px;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  padding: 0 14px;
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.auth-form button,
+.missions-heading button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #ffffff;
+  padding: 0 14px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.auth-form button:disabled {
+  opacity: 0.62;
+  cursor: wait;
+}
+
+.signed-in-panel {
+  grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
+}
+
+.missions-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.missions-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mission-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mission-list button {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  padding: 12px;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+
+.mission-list button[data-active="true"] {
+  border-color: color-mix(in oklab, var(--teal) 42%, var(--line));
+  background: color-mix(in oklab, var(--mint) 42%, #ffffff);
+}
+
+.mission-list span {
+  display: block;
+  font-weight: 850;
+}
+
+.mission-list small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.auth-error {
+  width: min(1120px, 100%);
+  margin: -8px auto 18px;
+}
+
 .goal-form,
 .status-panel {
   border: 1px solid var(--line);
@@ -631,7 +752,9 @@
   }
 
   .goodbot-hero,
-  .workbench {
+  .workbench,
+  .auth-panel,
+  .signed-in-panel {
     grid-template-columns: 1fr;
   }
 

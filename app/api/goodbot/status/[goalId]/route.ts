@@ -28,7 +28,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
     { data: landingPageVariants },
     { data: recommendations }
   ] = await Promise.all([
-    supabase.from("goals").select("*").eq("id", goalId).single(),
+    supabase.from("goals").select("id,goal,target_metric,target_value,timeframe,status,domain,app_name,audience,positioning,is_demo,created_at,updated_at").eq("id", goalId).single(),
     supabase.from("steps").select("id,title,step_type,status,output,error,position,created_at,updated_at").eq("goal_id", goalId).order("position"),
     supabase.from("notifications").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(10),
     supabase

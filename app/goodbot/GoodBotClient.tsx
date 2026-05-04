@@ -1,6 +1,8 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import type { Session } from "@supabase/supabase-js";
+import { getGoodBotBrowserSupabase } from "@/lib/goodbot/browserSupabase";
 
 type Step = {
   id: string;
@@ -100,6 +102,16 @@ type Recommendation = {
   executed_at: string | null;
 };
 
+type MissionSummary = {
+  id: string;
+  goal: string;
+  status: string;
+  target_value: number;
+  created_at: string;
+  is_demo: boolean;
+  signups: number;
+};
+
 type StatusResponse = {
   goal: { id: string; goal: string; target_value: number; status: string; app_name?: string | null };
   steps: Step[];
@@ -130,6 +142,12 @@ export default function GoodBotClient() {
   const [error, setError] = useState<string | null>(null);
   const [lastUpdatedAt, setLastUpdatedAt] = useState<Date | null>(null);
   const [clockTick, setClockTick] = useState(0);
+  const [session, setSession] = useState<Session | null>(null);
+  const [authState, setAuthState] = useState<"loading_session" | "signed_out" | "signing_in" | "signed_in">("loading_session");
+  const [authEmail, setAuthEmail] = useState("");
+  const [authPassword, setAuthPassword] = useState("");
+  const [missions, setMissions] = useState<MissionSummary[]>([]);
+  const [missionsLoading, setMissionsLoading] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -143,16 +161,68 @@ export default function GoodBotClient() {
   }, []);
 
   useEffect(() => {
+    let mounted = true;
+    let supabase: ReturnType<typeof getGoodBotBrowserSupabase>;
+    try {
+      supabase = getGoodBotBrowserSupabase();
+    } catch (authError) {
+      setError(authError instanceof Error ? authError.message : "GoodBot auth is not configured.");
+      setAuthState("signed_out");
+      return;
+    }
+
+    supabase.auth.getSession().then(({ data }) => {
+      if (!mounted) return;
+      setSession(data.session);
+      setAuthState(data.session ? "signed_in" : "signed_out");
+    });
+
+    const {
+      data: { subscription }
+    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      if (!mounted) return;
+      setSession(nextSession);
+      setAuthState(nextSession ? "signed_in" : "signed_out");
+      if (!nextSession) {
+        setMissions([]);
+        setGoalId(null);
+        setAccessToken(null);
+        setStatus(null);
+      }
+    });
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!session) return;
+    loadMissions(session.access_token).catch((loadError) => {
+      setError(loadError instanceof Error ? loadError.message : "Could not load missions.");
+    });
+  }, [session]);
+
+  useEffect(() => {
+    if (!session || goalId || !missions.length) return;
+    const storedGoalId = window.localStorage.getItem("goodbot:last_goal_id");
+    const storedMission = storedGoalId ? missions.find((mission) => mission.id === storedGoalId) : null;
+    const activeMission = missions.find((mission) => mission.status === "active") ?? missions[0];
+    selectMission(storedMission ?? activeMission);
+  }, [goalId, missions, session]);
+
+  useEffect(() => {
     if (!goalId) return;
     const tokenValue = accessToken || window.localStorage.getItem(`goodbot:${goalId}:access_token`);
-    if (!tokenValue) return;
-    if (!accessToken) setAccessToken(tokenValue);
+    if (!tokenValue && !session?.access_token) return;
+    if (!accessToken && tokenValue) setAccessToken(tokenValue);
     const token = tokenValue;
     let cancelled = false;
 
     async function loadStatus() {
       const response = await fetch(`/api/goodbot/status/${goalId}`, {
-        headers: { "x-goodbot-access-token": token }
+        headers: buildApiHeaders(session, token)
       });
       if (!response.ok || cancelled) return;
       setStatus(await response.json());
@@ -165,7 +235,7 @@ export default function GoodBotClient() {
       cancelled = true;
       window.clearInterval(interval);
     };
-  }, [goalId, accessToken]);
+  }, [goalId, accessToken, session]);
 
   useEffect(() => {
     if (!lastUpdatedAt) return;
@@ -175,6 +245,10 @@ export default function GoodBotClient() {
 
   async function submitGoal(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!session) {
+      setError("Sign in before giving GoodBot a mission.");
+      return;
+    }
     setIsSubmitting(true);
     setError(null);
     setStatus(null);
@@ -184,7 +258,7 @@ export default function GoodBotClient() {
 
     const response = await fetch("/api/goodbot/goals", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: buildApiHeaders(session, null, { "Content-Type": "application/json" }),
       body: JSON.stringify({
         goal,
         demo_mode: demoMode || undefined
@@ -202,7 +276,9 @@ export default function GoodBotClient() {
     setGoalId(payload.goal_id);
     setAccessToken(payload.access_token);
     window.localStorage.setItem(`goodbot:${payload.goal_id}:access_token`, payload.access_token);
+    window.localStorage.setItem("goodbot:last_goal_id", payload.goal_id);
     window.history.replaceState(null, "", `/goodbot?goalId=${payload.goal_id}&access_token=${encodeURIComponent(payload.access_token)}`);
+    await loadMissions(session.access_token);
   }
 
   async function assetAction(asset: ContentAsset, action: "approve" | "reject" | "edit" | "mark_distributed") {
@@ -220,7 +296,7 @@ export default function GoodBotClient() {
 
     const response = await fetch(`/api/goodbot/assets/${asset.id}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json", "x-goodbot-access-token": accessToken || "" },
+      headers: buildApiHeaders(session, accessToken, { "Content-Type": "application/json" }),
       body: JSON.stringify(body)
     });
 
@@ -232,7 +308,7 @@ export default function GoodBotClient() {
 
     if (goalId) {
       const statusResponse = await fetch(`/api/goodbot/status/${goalId}`, {
-        headers: { "x-goodbot-access-token": accessToken || "" }
+        headers: buildApiHeaders(session, accessToken)
       });
       if (statusResponse.ok) setStatus(await statusResponse.json());
     }
@@ -241,7 +317,7 @@ export default function GoodBotClient() {
   async function recommendationAction(recommendation: Recommendation, action: "approve" | "reject") {
     const response = await fetch(`/api/goodbot/recommendations/${recommendation.id}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json", "x-goodbot-access-token": accessToken || "" },
+      headers: buildApiHeaders(session, accessToken, { "Content-Type": "application/json" }),
       body: JSON.stringify({ action })
     });
 
@@ -253,10 +329,83 @@ export default function GoodBotClient() {
 
     if (goalId) {
       const statusResponse = await fetch(`/api/goodbot/status/${goalId}`, {
-        headers: { "x-goodbot-access-token": accessToken || "" }
+        headers: buildApiHeaders(session, accessToken)
       });
       if (statusResponse.ok) setStatus(await statusResponse.json());
     }
+  }
+
+  async function signIn(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    setAuthState("signing_in");
+    const supabase = getGoodBotBrowserSupabase();
+    const email = authEmail.trim();
+
+    const { data, error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password: authPassword
+    });
+
+    if (!signInError && data.session) {
+      setSession(data.session);
+      setAuthState("signed_in");
+      return;
+    }
+
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+      email,
+      password: authPassword
+    });
+
+    if (signUpError) {
+      setAuthState("signed_out");
+      setError(signUpError.message || signInError?.message || "Sign in failed.");
+      return;
+    }
+
+    setSession(signUpData.session);
+    setAuthState(signUpData.session ? "signed_in" : "signed_out");
+    if (!signUpData.session) {
+      setError("Check your email to confirm your account, then sign in.");
+    }
+  }
+
+  async function signOut() {
+    await getGoodBotBrowserSupabase().auth.signOut();
+    window.history.replaceState(null, "", "/goodbot");
+  }
+
+  async function loadMissions(accessJwt: string) {
+    setMissionsLoading(true);
+    try {
+      const response = await fetch("/api/goodbot/goals", {
+        headers: { Authorization: `Bearer ${accessJwt}` }
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || "Could not load missions.");
+      setMissions(payload.goals ?? []);
+    } finally {
+      setMissionsLoading(false);
+    }
+  }
+
+  function selectMission(mission: MissionSummary) {
+    setGoalId(mission.id);
+    setGoal(mission.goal);
+    setStatus(null);
+    const token = window.localStorage.getItem(`goodbot:${mission.id}:access_token`);
+    setAccessToken(token);
+    window.localStorage.setItem("goodbot:last_goal_id", mission.id);
+    const tokenParam = token ? `&access_token=${encodeURIComponent(token)}` : "";
+    window.history.replaceState(null, "", `/goodbot?goalId=${mission.id}${tokenParam}`);
+  }
+
+  function startNewMission() {
+    setGoalId(null);
+    setStatus(null);
+    setAccessToken(null);
+    window.history.replaceState(null, "", "/goodbot");
   }
 
   async function copyText(text: string) {
@@ -271,6 +420,7 @@ export default function GoodBotClient() {
   const nextRecommendation = status?.recommendations.find((recommendation) => ["pending", "approved", "running", "failed"].includes(recommendation.status)) ?? null;
   const activity = buildActivity(status);
   const executionState = useMemo(() => deriveExecutionState(status, isSubmitting || Boolean(goalId && !status)), [goalId, isSubmitting, status]);
+  const canUseGoodBot = authState === "signed_in" || Boolean(goalId && accessToken);
   const activeStep = status ? getActiveStep(status.steps) : null;
   const activeStepIndex = status && activeStep ? status.steps.findIndex((step) => step.id === activeStep.id) + 1 : null;
   const totalSteps = status?.steps.length ?? 0;
@@ -303,7 +453,24 @@ export default function GoodBotClient() {
 
       <ExecutionBanner state={executionState} lastUpdatedLabel={lastUpdatedLabel} />
 
-      <section className="workbench" aria-label="GoodBot goal intake">
+      <AuthPanel
+        authState={authState}
+        email={authEmail}
+        password={authPassword}
+        session={session}
+        missions={missions}
+        selectedGoalId={goalId}
+        missionsLoading={missionsLoading}
+        onEmailChange={setAuthEmail}
+        onPasswordChange={setAuthPassword}
+        onSignIn={signIn}
+        onSignOut={signOut}
+        onSelectMission={selectMission}
+        onNewMission={startNewMission}
+      />
+      {error && !canUseGoodBot ? <p className="auth-error error">{error}</p> : null}
+
+      {canUseGoodBot ? <section className="workbench" aria-label="GoodBot goal intake">
         <form onSubmit={submitGoal} className="goal-form">
           <label htmlFor="goal">Give GoodBot the Mission</label>
           <textarea
@@ -358,9 +525,9 @@ export default function GoodBotClient() {
           ) : null}
           {nextRecommendation ? <p className="operator-note">I found the best next move.</p> : null}
         </div>
-      </section>
+      </section> : null}
 
-      {status ? (
+      {status && canUseGoodBot ? (
         <section className="operator-sections">
           <section>
             <p className="status-label">Next Move</p>
@@ -498,6 +665,116 @@ function RecommendationCard({
         </button>
       </div>
     </article>
+  );
+}
+
+function AuthPanel({
+  authState,
+  email,
+  password,
+  session,
+  missions,
+  selectedGoalId,
+  missionsLoading,
+  onEmailChange,
+  onPasswordChange,
+  onSignIn,
+  onSignOut,
+  onSelectMission,
+  onNewMission
+}: {
+  authState: "loading_session" | "signed_out" | "signing_in" | "signed_in";
+  email: string;
+  password: string;
+  session: Session | null;
+  missions: MissionSummary[];
+  selectedGoalId: string | null;
+  missionsLoading: boolean;
+  onEmailChange: (value: string) => void;
+  onPasswordChange: (value: string) => void;
+  onSignIn: (event: FormEvent<HTMLFormElement>) => void;
+  onSignOut: () => void;
+  onSelectMission: (mission: MissionSummary) => void;
+  onNewMission: () => void;
+}) {
+  if (authState === "loading_session") {
+    return (
+      <section className="auth-panel" aria-live="polite">
+        <p className="status-label">Account</p>
+        <h2>Loading your GoodBot session...</h2>
+      </section>
+    );
+  }
+
+  if (authState === "signed_out" || authState === "signing_in") {
+    return (
+      <section className="auth-panel">
+        <div>
+          <p className="status-label">Account</p>
+          <h2>Sign in to save your missions.</h2>
+          <p>GoodBot saves your goals, assets, results, and next moves so you can come back anytime.</p>
+        </div>
+        <form className="auth-form" onSubmit={onSignIn}>
+          <input
+            type="email"
+            value={email}
+            onChange={(event) => onEmailChange(event.target.value)}
+            placeholder="Email"
+            autoComplete="email"
+            required
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(event) => onPasswordChange(event.target.value)}
+            placeholder="Password"
+            autoComplete="current-password"
+            minLength={6}
+            required
+          />
+          <button type="submit" disabled={authState === "signing_in"}>
+            {authState === "signing_in" ? "Signing in..." : "Sign in / create account"}
+          </button>
+        </form>
+      </section>
+    );
+  }
+
+  return (
+    <section className="auth-panel signed-in-panel">
+      <div>
+        <p className="status-label">Account</p>
+        <h2>{session?.user.email}</h2>
+        <button className="text-button" type="button" onClick={onSignOut}>
+          Sign out
+        </button>
+      </div>
+      <div className="missions-panel">
+        <div className="missions-heading">
+          <p className="status-label">My Missions</p>
+          <button type="button" onClick={onNewMission}>
+            New Mission
+          </button>
+        </div>
+        {missionsLoading ? <p className="empty">Loading missions...</p> : null}
+        {!missionsLoading && missions.length === 0 ? <p className="empty">No missions yet.</p> : null}
+        {missions.length ? (
+          <ol className="mission-list">
+            {missions.map((mission) => (
+              <li key={mission.id}>
+                <button type="button" onClick={() => onSelectMission(mission)} data-active={mission.id === selectedGoalId}>
+                  <span>{mission.goal}</span>
+                  <small>
+                    {mission.status} / {new Date(mission.created_at).toLocaleDateString()} / {mission.signups} of {mission.target_value} users
+                    {mission.is_demo ? " / demo" : ""}
+                  </small>
+                </button>
+              </li>
+            ))}
+          </ol>
+        ) : null}
+      </div>
+    </section>
   );
 }
 
@@ -871,4 +1148,11 @@ function secondsAgo(value: string, tick: number) {
   void tick;
   const elapsed = Math.max(0, Math.floor((Date.now() - Date.parse(value)) / 1000));
   return elapsed;
+}
+
+function buildApiHeaders(session: Session | null, accessToken?: string | null, extra?: HeadersInit) {
+  const headers = new Headers(extra);
+  if (session?.access_token) headers.set("Authorization", `Bearer ${session.access_token}`);
+  if (accessToken) headers.set("x-goodbot-access-token", accessToken);
+  return headers;
 }

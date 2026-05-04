@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "./supabase";
 
 export type RateLimitResult = { ok: true } | { ok: false; response: NextResponse };
+export type GoodBotUser = { id: string; email?: string };
 
 export function getGoodBotBaseUrl(request?: Request) {
   const configured = process.env.GOODBOT_BASE_URL || process.env.NEXT_PUBLIC_SITE_URL;
@@ -34,6 +35,16 @@ export function hashToken(token: string) {
 }
 
 export async function requireGoalAccess(request: Request, goalId: string) {
+  const user = await getAuthenticatedUser(request);
+  if (user) {
+    const supabase = getSupabaseAdmin();
+    const { data: ownedGoal, error: ownedError } = await supabase.from("goals").select("id").eq("id", goalId).eq("user_id", user.id).maybeSingle();
+    if (ownedError) {
+      return { ok: false as const, response: NextResponse.json({ error: "Goal access check failed." }, { status: 500 }) };
+    }
+    if (ownedGoal) return { ok: true as const, user };
+  }
+
   const token = readAccessToken(request);
   if (!token) {
     return { ok: false as const, response: NextResponse.json({ error: "GoodBot access token is required." }, { status: 401 }) };
@@ -49,7 +60,26 @@ export async function requireGoalAccess(request: Request, goalId: string) {
     return { ok: false as const, response: NextResponse.json({ error: "Invalid GoodBot access token." }, { status: 403 }) };
   }
 
-  return { ok: true as const };
+  return { ok: true as const, user: null };
+}
+
+export async function requireAuthenticatedUser(request: Request) {
+  const user = await getAuthenticatedUser(request);
+  if (!user) {
+    return { ok: false as const, response: NextResponse.json({ error: "Sign in to use GoodBot." }, { status: 401 }) };
+  }
+  return { ok: true as const, user };
+}
+
+export async function getAuthenticatedUser(request: Request): Promise<GoodBotUser | null> {
+  const token = readBearerToken(request);
+  if (!token) return null;
+
+  const supabase = getSupabaseAdmin();
+  const { data, error } = await supabase.auth.getUser(token);
+  if (error || !data.user) return null;
+
+  return { id: data.user.id, email: data.user.email ?? undefined };
 }
 
 export async function requireAssetAccess(request: Request, assetId: string) {
@@ -146,6 +176,12 @@ function readAccessToken(request: Request) {
   if (auth?.startsWith("GoodBot ")) return auth.slice("GoodBot ".length);
   const token = new URL(request.url).searchParams.get("access_token");
   return token || null;
+}
+
+function readBearerToken(request: Request) {
+  const auth = request.headers.get("authorization");
+  if (!auth?.startsWith("Bearer ")) return null;
+  return auth.slice("Bearer ".length).trim() || null;
 }
 
 function safeEqual(left: string, right: string) {
