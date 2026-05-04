@@ -119,6 +119,8 @@ type StatusResponse = {
   landing_page_url: string | null;
 };
 
+type ExecutionState = "idle" | "executing" | "waiting_for_approval" | "waiting_for_distribution" | "measuring" | "recommending";
+
 export default function GoodBotClient() {
   const [goal, setGoal] = useState("Get 50 users for GoodBot in 7 days");
   const [goalId, setGoalId] = useState<string | null>(null);
@@ -126,6 +128,8 @@ export default function GoodBotClient() {
   const [status, setStatus] = useState<StatusResponse | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [lastUpdatedAt, setLastUpdatedAt] = useState<Date | null>(null);
+  const [clockTick, setClockTick] = useState(0);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -152,26 +156,22 @@ export default function GoodBotClient() {
       });
       if (!response.ok || cancelled) return;
       setStatus(await response.json());
+      setLastUpdatedAt(new Date());
     }
 
     loadStatus();
-    const interval = window.setInterval(loadStatus, 3500);
+    const interval = window.setInterval(loadStatus, 2500);
     return () => {
       cancelled = true;
       window.clearInterval(interval);
     };
   }, [goalId, accessToken]);
 
-  const currentState = useMemo(() => {
-    if (!status) return "Waiting for a mission.";
-    const activeJob = status.jobs.find((job) => job.status === "running" || job.status === "pending");
-    const pendingApprovals = status.content_assets.filter((asset) => asset.approval_status === "pending").length;
-    const readyToDistribute = status.content_assets.filter((asset) => asset.distribution_status === "ready").length;
-    if (activeJob) return "Working through the queued execution plan.";
-    if (pendingApprovals) return `I prepared ${pendingApprovals} assets for review.`;
-    if (readyToDistribute) return `${readyToDistribute} approved assets are ready to distribute.`;
-    return "The acquisition loop is live and being watched.";
-  }, [status]);
+  useEffect(() => {
+    if (!lastUpdatedAt) return;
+    const interval = window.setInterval(() => setClockTick((tick) => tick + 1), 1000);
+    return () => window.clearInterval(interval);
+  }, [lastUpdatedAt]);
 
   async function submitGoal(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -270,6 +270,23 @@ export default function GoodBotClient() {
   const variantPerformance = status?.landing_page_variants ?? [];
   const nextRecommendation = status?.recommendations.find((recommendation) => ["pending", "approved", "running", "failed"].includes(recommendation.status)) ?? null;
   const activity = buildActivity(status);
+  const executionState = useMemo(() => deriveExecutionState(status, isSubmitting || Boolean(goalId && !status)), [goalId, isSubmitting, status]);
+  const activeStep = status ? getActiveStep(status.steps) : null;
+  const activeStepIndex = status && activeStep ? status.steps.findIndex((step) => step.id === activeStep.id) + 1 : null;
+  const totalSteps = status?.steps.length ?? 0;
+  const completedStepCount = completedSteps.length;
+  const progressPercent = totalSteps > 0 ? Math.round((completedStepCount / totalSteps) * 100) : 0;
+  const lastUpdatedLabel = lastUpdatedAt ? `${secondsAgo(lastUpdatedAt.toISOString(), clockTick)} seconds ago` : "not yet";
+  const jobDebug = buildJobDebug(status, clockTick);
+  const landingPageStep = status?.steps.find((step) => step.status === "completed" && step.step_type === "create_landing_page");
+  const firstCompletedAction = landingPageStep
+    ? { label: "Landing page created", url: status?.landing_page_url ?? null }
+    : completedSteps[0]
+      ? { label: completedSteps[0].output?.summary || completedSteps[0].title, url: null }
+      : null;
+  const rightPanel = status
+    ? buildRightPanelState(status, activeStep, activeStepIndex)
+    : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
 
   return (
     <main className="goodbot-shell">
@@ -281,8 +298,10 @@ export default function GoodBotClient() {
             Give GoodBot a user-acquisition outcome. It will prepare the work, queue the execution, and ask for approval before anything external happens.
           </p>
         </div>
-        <img src="/assets/good-business-robot.svg" alt="" className="bot" />
+        <img src="/assets/good-business-robot.svg" alt="" className={`bot ${executionState === "executing" ? "is-executing" : ""}`} />
       </section>
+
+      <ExecutionBanner state={executionState} lastUpdatedLabel={lastUpdatedLabel} />
 
       <section className="workbench" aria-label="GoodBot goal intake">
         <form onSubmit={submitGoal} className="goal-form">
@@ -294,7 +313,7 @@ export default function GoodBotClient() {
             placeholder='Tell GoodBot the outcome. Example: "Get 50 users for my app in 7 days."'
           />
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Queuing the mission..." : "Give GoodBot the mission"}
+            {isSubmitting ? "Starting GoodBot…" : "Give GoodBot the mission"}
           </button>
           <p className="approval-note">GoodBot prepares the work first. Nothing external is posted, sent, or shared without your approval.</p>
           {error ? <p className="error">{error}</p> : null}
@@ -302,22 +321,27 @@ export default function GoodBotClient() {
 
         <div className="status-panel operator-panel">
           <p className="status-label">{status ? "Next Move" : "What Happens Next"}</p>
-          <h2>{status ? currentState : "GoodBot gets to work."}</h2>
+          <h2>{rightPanel.headline}</h2>
+          <p className="operator-detail">{rightPanel.detail}</p>
           {status ? (
-            <div className="metrics">
-              <span>
-                <strong>{status.metrics.visits}</strong>
-                Visits
-              </span>
-              <span>
-                <strong>{status.metrics.signups}</strong>
-                Users
-              </span>
-              <span>
-                <strong>{status.goal.target_value}</strong>
-                Target
-              </span>
-            </div>
+            <>
+              <ProgressIndicator completed={completedStepCount} total={totalSteps} percent={progressPercent} />
+              <div className="metrics">
+                <span>
+                  <strong>{status.metrics.visits}</strong>
+                  Visits
+                </span>
+                <span>
+                  <strong>{status.metrics.signups}</strong>
+                  Users
+                </span>
+                <span>
+                  <strong>{status.goal.target_value}</strong>
+                  Target
+                </span>
+              </div>
+              <p className="job-debug">Jobs processed: {jobDebug.processed} | Last job run: {jobDebug.lastRun}</p>
+            </>
           ) : (
             <ol className="next-list">
               <li>Breaks the mission into executable steps.</li>
@@ -326,6 +350,7 @@ export default function GoodBotClient() {
               <li>Brings you approvals only when action is needed.</li>
             </ol>
           )}
+          {firstCompletedAction ? <MagicMoment action={firstCompletedAction} onCopy={copyText} /> : null}
           {status?.landing_page_url ? (
             <button className="text-button" type="button" onClick={() => copyText(`${window.location.origin}${status.landing_page_url}`)}>
               Copy Landing Page Link
@@ -350,10 +375,7 @@ export default function GoodBotClient() {
             <p className="status-label">What I’ve Done</p>
             <ol className="steps">
               {status.steps.map((step) => (
-                <li key={step.id} data-status={step.status}>
-                  <span>{step.title}</span>
-                  <small>{step.output?.summary || step.status}</small>
-                </li>
+                <StepRow key={step.id} step={step} />
               ))}
             </ol>
           </section>
@@ -367,7 +389,7 @@ export default function GoodBotClient() {
                 ))}
               </div>
             ) : (
-              <p className="empty">Nothing needs approval right now.</p>
+              <p className="empty">I will notify you when something needs approval.</p>
             )}
           </section>
 
@@ -380,7 +402,7 @@ export default function GoodBotClient() {
                 ))}
               </div>
             ) : (
-              <p className="empty">Approved assets will appear here before any external action.</p>
+              <p className="empty">No assets approved yet.</p>
             )}
           </section>
 
@@ -417,7 +439,7 @@ export default function GoodBotClient() {
                 ))}
               </div>
             ) : (
-              <p className="empty">I can’t measure this yet because it has not been distributed.</p>
+              <p className="empty">I need at least one distributed asset to measure results.</p>
             )}
           </section>
 
@@ -477,6 +499,72 @@ function RecommendationCard({
       </div>
     </article>
   );
+}
+
+function ExecutionBanner({ state, lastUpdatedLabel }: { state: ExecutionState; lastUpdatedLabel: string }) {
+  return (
+    <section className="execution-banner" data-state={state} aria-live="polite">
+      <div>
+        <strong>{executionStateMessage(state)}</strong>
+        <span>Last updated {lastUpdatedLabel}</span>
+      </div>
+    </section>
+  );
+}
+
+function ProgressIndicator({ completed, total, percent }: { completed: number; total: number; percent: number }) {
+  return (
+    <div className="progress-block" aria-label={`Step ${completed} of ${total} complete`}>
+      <div className="progress-copy">
+        <span>
+          Step {completed} of {total} complete
+        </span>
+        <small>{percent}%</small>
+      </div>
+      <div className="progress-track">
+        <span style={{ width: `${percent}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function MagicMoment({
+  action,
+  onCopy
+}: {
+  action: { label: string; url: string | null };
+  onCopy: (text: string) => void;
+}) {
+  const fullUrl = action.url && typeof window !== "undefined" ? `${window.location.origin}${action.url}` : null;
+  return (
+    <div className="magic-moment">
+      <span>✅ {action.label}</span>
+      {fullUrl ? (
+        <button type="button" onClick={() => onCopy(fullUrl)}>
+          Copy link
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
+function StepRow({ step }: { step: Step }) {
+  return (
+    <li data-status={step.status}>
+      <span className="step-line">
+        <StepStatusIcon status={step.status} />
+        <span>{step.title}</span>
+      </span>
+      <small>{step.output?.summary || step.status}</small>
+    </li>
+  );
+}
+
+function StepStatusIcon({ status }: { status: string }) {
+  if (status === "completed") return <span className="step-icon" data-status={status} aria-label="completed">✓</span>;
+  if (status === "failed") return <span className="step-icon" data-status={status} aria-label="failed">!</span>;
+  if (status === "running") return <span className="step-icon" data-status={status} aria-label="running">⚙️</span>;
+  return <span className="step-icon" data-status="pending" aria-label="pending">•</span>;
 }
 
 function recommendationLabel(type: string) {
@@ -679,4 +767,108 @@ function buildActivity(status: StatusResponse | null) {
     .sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
     .slice(0, 12)
     .map((item) => ({ ...item, when: new Date(item.date).toLocaleString() }));
+}
+
+function deriveExecutionState(status: StatusResponse | null, isStarting: boolean): ExecutionState {
+  if (isStarting) return "executing";
+  if (!status) return "idle";
+
+  const hasActiveJob = status.jobs.some((job) => job.status === "pending" || job.status === "running");
+  const hasRunningStep = status.steps.some((step) => step.status === "running");
+  const hasPendingApproval = status.content_assets.some((asset) => asset.approval_status === "pending");
+  const hasReadyDistribution = status.content_assets.some((asset) => asset.approval_status === "approved" && asset.distribution_status === "ready");
+  const hasRecommendation = status.recommendations.some((recommendation) => ["pending", "approved", "running"].includes(recommendation.status));
+  const hasDistribution = status.distribution_events.length > 0 || status.metrics.visits > 0 || status.metrics.signups > 0;
+
+  if (hasActiveJob || hasRunningStep) return "executing";
+  if (hasPendingApproval) return "waiting_for_approval";
+  if (hasReadyDistribution) return "waiting_for_distribution";
+  if (hasRecommendation) return "recommending";
+  if (hasDistribution) return "measuring";
+  return "idle";
+}
+
+function executionStateMessage(state: ExecutionState) {
+  if (state === "executing") return "⚙️ GoodBot is executing your plan…";
+  if (state === "waiting_for_approval") return "🟡 Waiting for your approval to continue.";
+  if (state === "waiting_for_distribution") return "🟠 Waiting for distribution to measure results.";
+  if (state === "measuring") return "📊 Measuring results from live traffic.";
+  if (state === "recommending") return "🧠 Identifying the next best move.";
+  return "GoodBot is ready for a mission.";
+}
+
+function getActiveStep(steps: Step[]) {
+  return steps.find((step) => step.status === "running") ?? steps.find((step) => step.status === "pending") ?? null;
+}
+
+function buildRightPanelState(status: StatusResponse, activeStep: Step | null, activeStepIndex: number | null) {
+  const total = status.steps.length;
+  if (activeStep && activeStepIndex) {
+    return {
+      headline: `Executing step ${activeStepIndex} of ${total}`,
+      detail: stepDetail(activeStep)
+    };
+  }
+
+  const pendingApprovals = status.content_assets.filter((asset) => asset.approval_status === "pending").length;
+  const readyAssets = status.content_assets.filter((asset) => asset.approval_status === "approved" && asset.distribution_status === "ready").length;
+  const pendingRecommendation = status.recommendations.find((recommendation) => ["pending", "approved", "running"].includes(recommendation.status));
+
+  if (pendingApprovals) {
+    return {
+      headline: "Preparing assets for approval",
+      detail: `${pendingApprovals} asset${pendingApprovals === 1 ? "" : "s"} ready for your review.`
+    };
+  }
+
+  if (readyAssets) {
+    return {
+      headline: "Waiting for distribution",
+      detail: `${readyAssets} approved asset${readyAssets === 1 ? "" : "s"} need to be posted or shared before I can measure results.`
+    };
+  }
+
+  if (pendingRecommendation) {
+    return {
+      headline: "Identifying the next best move",
+      detail: pendingRecommendation.title
+    };
+  }
+
+  if (status.distribution_events.length || status.metrics.visits || status.metrics.signups) {
+    return {
+      headline: "Measuring live traffic",
+      detail: "Watching visits, signups, attribution, and variant performance."
+    };
+  }
+
+  return {
+    headline: "Watching the acquisition loop",
+    detail: "No manual refresh needed. I will update this page when work moves."
+  };
+}
+
+function stepDetail(step: Step) {
+  if (step.step_type === "create_landing_page") return "Creating landing page";
+  if (step.step_type === "generate_content") return "Generating content";
+  if (step.step_type === "publish_content") return "Preparing assets for approval";
+  if (step.step_type === "track_metrics") return "Activating tracking";
+  return step.title;
+}
+
+function buildJobDebug(status: StatusResponse | null, tick: number) {
+  void tick;
+  if (!status || !status.jobs.length) return { processed: 0, lastRun: "not yet" };
+  const lastJob = [...status.jobs].sort((a, b) => Date.parse(b.updated_at || b.created_at) - Date.parse(a.updated_at || a.created_at))[0];
+  const processed = status.jobs.filter((job) => job.status === "completed").length;
+  return {
+    processed,
+    lastRun: lastJob ? `${secondsAgo(lastJob.updated_at || lastJob.created_at, tick)}s ago` : "not yet"
+  };
+}
+
+function secondsAgo(value: string, tick: number) {
+  void tick;
+  const elapsed = Math.max(0, Math.floor((Date.now() - Date.parse(value)) / 1000));
+  return elapsed;
 }

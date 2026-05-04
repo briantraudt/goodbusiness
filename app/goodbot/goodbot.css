@@ -44,6 +44,57 @@
   filter: drop-shadow(0 30px 38px rgba(18, 54, 58, 0.16));
 }
 
+.bot.is-executing {
+  animation: bot-working 2.4s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.execution-banner {
+  width: min(1120px, 100%);
+  margin: 0 auto 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 18px 50px rgba(31, 83, 87, 0.07);
+}
+
+.execution-banner > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+}
+
+.execution-banner strong {
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.execution-banner span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.execution-banner[data-state="executing"] {
+  border-color: color-mix(in oklab, var(--amber) 48%, var(--line));
+  background: color-mix(in oklab, var(--amber) 8%, #ffffff);
+}
+
+.execution-banner[data-state="waiting_for_approval"] {
+  border-color: color-mix(in oklab, var(--amber) 56%, var(--line));
+}
+
+.execution-banner[data-state="waiting_for_distribution"] {
+  border-color: color-mix(in oklab, var(--coral) 36%, var(--line));
+}
+
+.execution-banner[data-state="measuring"],
+.execution-banner[data-state="recommending"] {
+  border-color: color-mix(in oklab, var(--teal) 34%, var(--line));
+}
+
 .workbench {
   width: min(1120px, 100%);
   margin: 0 auto;
@@ -120,6 +171,13 @@
   letter-spacing: -0.04em;
 }
 
+.operator-detail {
+  margin: -8px 0 18px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.35;
+}
+
 .operator-panel {
   align-self: stretch;
 }
@@ -164,6 +222,78 @@
   line-height: 1;
 }
 
+.progress-block {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 18px;
+}
+
+.progress-copy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.progress-copy small {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.progress-track {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.progress-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--teal);
+  transition: width 220ms ease;
+}
+
+.job-debug {
+  margin: 10px 0 0;
+  color: var(--quiet);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.magic-moment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 14px 0 0;
+  border: 1px solid color-mix(in oklab, var(--teal) 34%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--mint) 44%, #ffffff);
+  padding: 12px;
+  color: var(--teal-dark);
+  font-weight: 850;
+}
+
+.magic-moment button {
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--ink);
+  padding: 0 10px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
 .steps {
   display: grid;
   gap: 8px;
@@ -181,6 +311,10 @@
   padding: 12px;
 }
 
+.steps li[data-status="running"] {
+  border-color: var(--amber);
+}
+
 .steps li[data-status="completed"] {
   border-color: var(--teal);
 }
@@ -191,6 +325,45 @@
 
 .steps span {
   font-weight: 800;
+}
+
+.step-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.step-icon {
+  display: inline-flex;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--quiet);
+  font-size: 14px;
+  line-height: 1;
+}
+
+.step-icon[data-status="running"] {
+  border-color: var(--amber);
+  color: var(--ink);
+  animation: step-spin 1.4s linear infinite;
+}
+
+.step-icon[data-status="completed"] {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: #ffffff;
+}
+
+.step-icon[data-status="failed"] {
+  border-color: var(--coral);
+  background: var(--coral);
+  color: #ffffff;
 }
 
 .steps small,
@@ -484,6 +657,31 @@
 
   .proof-stats {
     justify-content: flex-start;
+  }
+
+  .execution-banner > div,
+  .magic-moment {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@keyframes bot-working {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  45% {
+    transform: translateY(-6px) rotate(-1deg);
+  }
+  70% {
+    transform: translateY(-2px) rotate(1deg);
+  }
+}
+
+@keyframes step-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
