@@ -551,14 +551,40 @@ export default function GoodBotClient() {
     <main className="goodbot-shell">
       <TopBar session={session} authState={authState} onSignOut={signOut} />
 
-      <section className="goodbot-hero">
+      <section className={`goodbot-hero ${canUseGoodBot ? "with-intake" : ""}`}>
         <div className="goodbot-copy">
           <h1>Autonomous Outcome Engine</h1>
           <p className="subcopy">
             Give GoodBot a user-acquisition outcome. It will prepare the work, queue the execution, and ask for approval before anything external happens.
           </p>
         </div>
-        <img src="/assets/good-business-robot.svg" alt="" className={`bot ${executionState === "executing" ? "is-executing" : ""}`} />
+        {canUseGoodBot ? (
+          <form onSubmit={submitGoal} className="goal-form hero-goal-form">
+            <label htmlFor="project-name">Project Name</label>
+            <input
+              id="project-name"
+              value={projectName}
+              onChange={(event) => setProjectName(event.target.value)}
+              placeholder="NDA.company"
+              maxLength={120}
+            />
+            <label htmlFor="goal">Give GoodBot the Mission</label>
+            <textarea
+              ref={goalInputRef}
+              id="goal"
+              value={goal}
+              onChange={(event) => setGoal(event.target.value)}
+              placeholder='Tell GoodBot the outcome. Example: "Get 50 users for my app in 7 days."'
+            />
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Starting GoodBot…" : "Give GoodBot the mission"}
+            </button>
+            <p className="approval-note">GoodBot prepares the work first. Nothing external is posted, sent, or shared without your approval.</p>
+            {error ? <p className="error">{error}</p> : null}
+          </form>
+        ) : (
+          <img src="/assets/good-business-robot.svg" alt="" className={`bot ${executionState === "executing" ? "is-executing" : ""}`} />
+        )}
       </section>
 
       {showExecutionBanner ? <ExecutionBanner state={executionState} lastUpdatedLabel={lastUpdatedLabel} /> : null}
@@ -573,34 +599,15 @@ export default function GoodBotClient() {
       />
       {error && !canUseGoodBot ? <p className="auth-error error">{error}</p> : null}
 
-      {canUseGoodBot ? <section className="workbench" aria-label="GoodBot goal intake">
-        <form onSubmit={submitGoal} className="goal-form">
-          <label htmlFor="project-name">Project Name</label>
-          <input
-            id="project-name"
-            value={projectName}
-            onChange={(event) => setProjectName(event.target.value)}
-            placeholder="NDA.company"
-            maxLength={120}
-          />
-          <label htmlFor="goal">Give GoodBot the Mission</label>
-          <textarea
-            ref={goalInputRef}
-            id="goal"
-            value={goal}
-            onChange={(event) => setGoal(event.target.value)}
-            placeholder='Tell GoodBot the outcome. Example: "Get 50 users for my app in 7 days."'
-          />
-          <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Starting GoodBot…" : "Give GoodBot the mission"}
-          </button>
-          <p className="approval-note">GoodBot prepares the work first. Nothing external is posted, sent, or shared without your approval.</p>
-          {error ? <p className="error">{error}</p> : null}
-        </form>
-
+      {canUseGoodBot ? <section className="workbench support-workbench" aria-label="GoodBot goal intake">
         <div className="status-panel operator-panel">
-          <p className="status-label">{status ? "Next Move" : "What Happens Next"}</p>
-          <h2>{rightPanel.headline}</h2>
+          <div className="operator-heading-row">
+            <div>
+              <p className="status-label">{status ? "Next Move" : "What Happens Next"}</p>
+              <h2>{rightPanel.headline}</h2>
+            </div>
+            <img src="/assets/good-business-robot.svg" alt="" className={`panel-bot ${executionState === "executing" ? "is-executing" : ""}`} />
+          </div>
           <p className="operator-detail">{rightPanel.detail}</p>
           {status ? (
             <>
