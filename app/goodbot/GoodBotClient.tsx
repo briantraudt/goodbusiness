@@ -120,9 +120,7 @@ type StatusResponse = {
 };
 
 export default function GoodBotClient() {
-  const [goal, setGoal] = useState("Get 50 users for my app");
-  const [appName, setAppName] = useState("");
-  const [audience, setAudience] = useState("");
+  const [goal, setGoal] = useState("Get 50 users for GoodBot in 7 days");
   const [goalId, setGoalId] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [status, setStatus] = useState<StatusResponse | null>(null);
@@ -189,8 +187,6 @@ export default function GoodBotClient() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         goal,
-        app_name: appName || undefined,
-        audience: audience || undefined,
         demo_mode: demoMode || undefined
       })
     });
@@ -290,21 +286,23 @@ export default function GoodBotClient() {
 
       <section className="workbench" aria-label="GoodBot goal intake">
         <form onSubmit={submitGoal} className="goal-form">
-          <label htmlFor="goal">Current Mission</label>
-          <textarea id="goal" value={goal} onChange={(event) => setGoal(event.target.value)} />
-          <div className="field-row">
-            <input value={appName} onChange={(event) => setAppName(event.target.value)} placeholder="App name" />
-            <input value={audience} onChange={(event) => setAudience(event.target.value)} placeholder="Audience" />
-          </div>
+          <label htmlFor="goal">Give GoodBot the Mission</label>
+          <textarea
+            id="goal"
+            value={goal}
+            onChange={(event) => setGoal(event.target.value)}
+            placeholder='Tell GoodBot the outcome. Example: "Get 50 users for my app in 7 days."'
+          />
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Queuing..." : "Start GoodBot"}
+            {isSubmitting ? "Queuing the mission..." : "Give GoodBot the mission"}
           </button>
+          <p className="approval-note">GoodBot prepares the work first. Nothing external is posted, sent, or shared without your approval.</p>
           {error ? <p className="error">{error}</p> : null}
         </form>
 
         <div className="status-panel operator-panel">
-          <p className="status-label">Next Move</p>
-          <h2>{currentState}</h2>
+          <p className="status-label">{status ? "Next Move" : "What Happens Next"}</p>
+          <h2>{status ? currentState : "GoodBot gets to work."}</h2>
           {status ? (
             <div className="metrics">
               <span>
@@ -321,7 +319,12 @@ export default function GoodBotClient() {
               </span>
             </div>
           ) : (
-            <p className="empty">No dashboard. The system reports only what needs attention.</p>
+            <ol className="next-list">
+              <li>Breaks the mission into executable steps.</li>
+              <li>Creates the landing page and acquisition content.</li>
+              <li>Queues the work and tracks visits and signups.</li>
+              <li>Brings you approvals only when action is needed.</li>
+            </ol>
           )}
           {status?.landing_page_url ? (
             <button className="text-button" type="button" onClick={() => copyText(`${window.location.origin}${status.landing_page_url}`)}>

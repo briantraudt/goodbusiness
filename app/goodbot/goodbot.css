@@ -89,20 +89,6 @@
   outline: none;
 }
 
-.field-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.goal-form input {
-  min-width: 0;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 13px 14px;
-  background: var(--paper);
-}
-
 .goal-form button,
 .landing-link,
 .signup-form button {
@@ -120,6 +106,13 @@
   cursor: wait;
 }
 
+.approval-note {
+  margin: -2px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.45;
+}
+
 .status-panel h2 {
   margin: 12px 0 18px;
   font-size: clamp(28px, 4vw, 48px);
@@ -129,6 +122,22 @@
 
 .operator-panel {
   align-self: stretch;
+}
+
+.next-list {
+  display: grid;
+  gap: 14px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.next-list li {
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
 }
 
 .metrics {
