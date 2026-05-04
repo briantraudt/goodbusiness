@@ -541,8 +541,8 @@ export default function GoodBotClient() {
     ? buildRightPanelState(status, activeStep, activeStepIndex)
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
   const showExecutionBanner = executionState !== "idle" && (Boolean(status) || isSubmitting || Boolean(goalId && !status));
-  const heroTitle = canUseGoodBot ? "What should GoodBot make happen?" : "GoodBot";
-  const heroSubcopy = canUseGoodBot ? "Say the outcome. GoodBot starts moving." : "Sign in to save your missions and let GoodBot handle the work.";
+  const heroTitle = canUseGoodBot ? "Make it happen." : "GoodBot";
+  const heroSubcopy = canUseGoodBot ? "" : "Sign in to save your missions.";
 
   return (
     <main className="goodbot-shell">
@@ -566,12 +566,6 @@ export default function GoodBotClient() {
             <button type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Starting GoodBot…" : "Make it happen"}
             </button>
-            <p className="approval-note">Nothing goes public without your approval.</p>
-            <ul className="promise-list">
-              <li>Plans the path</li>
-              <li>Prepares the assets</li>
-              <li>Returns when you’re needed</li>
-            </ul>
             {error ? <p className="error">{error}</p> : null}
           </form>
         ) : null}
