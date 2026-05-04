@@ -550,7 +550,6 @@ export default function GoodBotClient() {
 
       <section className={`goodbot-hero ${canUseGoodBot ? "with-intake" : ""}`}>
         <div className="goodbot-copy">
-          <p className="hero-label">GoodBot</p>
           <h1>{heroTitle}</h1>
           <p className="subcopy">{heroSubcopy}</p>
         </div>
@@ -798,7 +797,10 @@ function TopBar({ session, authState, onSignOut }: { session: Session | null; au
   const email = session?.user.email ?? "";
   return (
     <header className="goodbot-topbar">
-      <p className="topbar-logo">Good Business / GoodBot</p>
+      <div className="topbar-brand">
+        <img src="/assets/good-business-robot.svg" alt="" />
+        <p className="topbar-logo">GoodBot</p>
+      </div>
       {authState === "signed_in" && email ? (
         <div className="topbar-account">
           <span className="avatar" aria-hidden="true">

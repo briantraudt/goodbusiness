@@ -13,6 +13,19 @@
   padding: 18px 0 10px;
 }
 
+.topbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topbar-brand img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 14px rgba(18, 54, 58, 0.12));
+}
+
 .topbar-logo {
   margin: 0;
   color: var(--teal);
@@ -67,7 +80,7 @@
 }
 
 .goodbot-hero {
-  min-height: 58vh;
+  min-height: 56vh;
   display: grid;
   grid-template-columns: 1fr;
   align-items: center;
@@ -75,20 +88,19 @@
   gap: 22px;
   width: min(760px, 100%);
   margin: 0 auto;
-  padding: 70px 0 44px;
+  padding: 58px 0 44px;
   text-align: center;
 }
 
 .goodbot-hero.with-intake {
-  min-height: 66vh;
+  min-height: 62vh;
   grid-template-columns: 1fr;
   align-items: center;
   gap: 24px;
-  padding: 58px 0 34px;
+  padding: 46px 0 34px;
 }
 
-.eyebrow,
-.hero-label {
+.eyebrow {
   margin: 0 0 18px;
   color: var(--teal);
   font-size: 12px;
