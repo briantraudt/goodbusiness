@@ -182,6 +182,7 @@ export default function GoodBotClient() {
     setStatus(null);
     setGoalId(null);
     setAccessToken(null);
+    const demoMode = new URLSearchParams(window.location.search).get("demo") === "1";
 
     const response = await fetch("/api/goodbot/goals", {
       method: "POST",
@@ -189,7 +190,8 @@ export default function GoodBotClient() {
       body: JSON.stringify({
         goal,
         app_name: appName || undefined,
-        audience: audience || undefined
+        audience: audience || undefined,
+        demo_mode: demoMode || undefined
       })
     });
 
