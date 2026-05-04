@@ -22,16 +22,25 @@ export default async function GeneratedLandingPage({ params }: { params: Promise
   ]);
 
   if (!goal || !page) notFound();
-  const bullets = Array.isArray(page.bullets) ? page.bullets : [];
+  const { data: activeVariant } = await supabase
+    .from("landing_page_variants")
+    .select("*")
+    .eq("landing_page_id", page.id)
+    .eq("status", "active")
+    .limit(1)
+    .maybeSingle();
+
+  const visiblePage = activeVariant || page;
+  const bullets = Array.isArray(visiblePage.bullets) ? visiblePage.bullets : [];
 
   return (
     <main className="generated-page">
-      <LandingTracker goalId={goalId} />
+      <LandingTracker goalId={goalId} variantId={activeVariant?.id ?? null} />
       <section className="generated-hero">
         <p className="eyebrow">{goal.app_name || "GoodBot launch"}</p>
-        <h1>{page.headline}</h1>
-        <p>{page.subheadline}</p>
-        <SignupForm goalId={goalId} cta={page.cta} />
+        <h1>{visiblePage.headline}</h1>
+        <p>{visiblePage.subheadline}</p>
+        <SignupForm goalId={goalId} cta={visiblePage.cta} variantId={activeVariant?.id ?? null} />
       </section>
       <section className="proof-band">
         {bullets.map((bullet: string) => (

@@ -12,12 +12,17 @@ export async function GET(_: Request, { params }: { params: Promise<{ goalId: st
     { data: landing },
     { data: contentAssets },
     { data: landingPages },
-    { data: jobs }
+    { data: jobs },
+    { data: distributionEvents },
+    { data: landingPageVariants }
   ] = await Promise.all([
     supabase.from("goals").select("*").eq("id", goalId).single(),
     supabase.from("steps").select("id,title,step_type,status,output,error,position,created_at,updated_at").eq("goal_id", goalId).order("position"),
     supabase.from("notifications").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(10),
-    supabase.from("metrics").select("metric_type,value,created_at,source").eq("goal_id", goalId),
+    supabase
+      .from("metrics")
+      .select("metric_type,value,created_at,source,utm_source,utm_medium,utm_campaign,utm_content,distribution_event_id,content_asset_id,landing_page_variant_id")
+      .eq("goal_id", goalId),
     supabase.from("landing_pages").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(1).maybeSingle(),
     supabase
       .from("content_assets")
@@ -26,7 +31,9 @@ export async function GET(_: Request, { params }: { params: Promise<{ goalId: st
       .neq("approval_status", "rejected")
       .order("created_at", { ascending: false }),
     supabase.from("landing_pages").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }),
-    supabase.from("goodbot_jobs").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(20)
+    supabase.from("goodbot_jobs").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(20),
+    supabase.from("distribution_events").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }),
+    supabase.from("landing_page_variants").select("*").eq("goal_id", goalId).order("created_at", { ascending: false })
   ]);
 
   if (goalError) {
@@ -42,8 +49,34 @@ export async function GET(_: Request, { params }: { params: Promise<{ goalId: st
     notifications,
     content_assets: contentAssets ?? [],
     landing_pages: landingPages ?? [],
+    distribution_events: distributionEvents ?? [],
+    landing_page_variants: landingPageVariants ?? [],
+    attribution: {
+      by_asset: rollup(metrics ?? [], contentAssets ?? [], "content_asset_id"),
+      by_variant: rollup(metrics ?? [], landingPageVariants ?? [], "landing_page_variant_id"),
+      by_distribution_event: rollup(metrics ?? [], distributionEvents ?? [], "distribution_event_id")
+    },
     jobs: jobs ?? [],
     metrics: { visits, signups, events: metrics ?? [] },
     landing_page_url: landing ? `/goodbot/landing/${goalId}` : null
+  });
+}
+
+function rollup(
+  metrics: { metric_type: string; value: number; [key: string]: unknown }[],
+  records: { id: string; title?: string | null; headline?: string | null; variant_name?: string | null; channel?: string | null; status?: string | null }[],
+  key: string
+) {
+  return records.map((record) => {
+    const rows = metrics.filter((metric) => metric[key] === record.id);
+    const visits = rows.filter((row) => row.metric_type === "visit").reduce((sum, row) => sum + Number(row.value ?? 0), 0);
+    const signups = rows.filter((row) => row.metric_type === "signup").reduce((sum, row) => sum + Number(row.value ?? 0), 0);
+    return {
+      id: record.id,
+      label: record.title || record.headline || record.variant_name || record.channel || "Untitled",
+      visits,
+      signups,
+      conversion_rate: visits > 0 ? signups / visits : 0
+    };
   });
 }

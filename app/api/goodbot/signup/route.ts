@@ -6,7 +6,14 @@ const signupSchema = z.object({
   goal_id: z.string().uuid(),
   email: z.string().email().max(220),
   name: z.string().trim().max(160).optional(),
-  source: z.string().trim().max(120).optional()
+  source: z.string().trim().max(120).optional(),
+  utm_source: z.string().trim().max(120).optional(),
+  utm_medium: z.string().trim().max(120).optional(),
+  utm_campaign: z.string().trim().max(220).optional(),
+  utm_content: z.string().trim().max(220).optional(),
+  distribution_event_id: z.string().uuid().optional(),
+  content_asset_id: z.string().uuid().optional(),
+  landing_page_variant_id: z.string().uuid().optional()
 });
 
 export async function POST(request: Request) {
@@ -22,7 +29,19 @@ export async function POST(request: Request) {
       goal_id: parsed.data.goal_id,
       email: parsed.data.email.toLowerCase(),
       name: parsed.data.name || null,
-      source: parsed.data.source || "goodbot_landing_page"
+      source: parsed.data.source || parsed.data.utm_source || "goodbot_landing_page",
+      utm_source: parsed.data.utm_source || null,
+      utm_medium: parsed.data.utm_medium || null,
+      utm_campaign: parsed.data.utm_campaign || null,
+      utm_content: parsed.data.utm_content || null,
+      distribution_event_id: parsed.data.distribution_event_id || null,
+      content_asset_id: parsed.data.content_asset_id || null,
+      landing_page_variant_id: parsed.data.landing_page_variant_id || null,
+      metadata: {
+        distribution_event_id: parsed.data.distribution_event_id || null,
+        content_asset_id: parsed.data.content_asset_id || null,
+        landing_page_variant_id: parsed.data.landing_page_variant_id || null
+      }
     },
     { onConflict: "goal_id,email" }
   );
@@ -35,7 +54,14 @@ export async function POST(request: Request) {
     goal_id: parsed.data.goal_id,
     metric_type: "signup",
     value: 1,
-    source: parsed.data.source || "goodbot_landing_page",
+    source: parsed.data.source || parsed.data.utm_source || "goodbot_landing_page",
+    utm_source: parsed.data.utm_source || null,
+    utm_medium: parsed.data.utm_medium || null,
+    utm_campaign: parsed.data.utm_campaign || null,
+    utm_content: parsed.data.utm_content || null,
+    distribution_event_id: parsed.data.distribution_event_id || null,
+    content_asset_id: parsed.data.content_asset_id || null,
+    landing_page_variant_id: parsed.data.landing_page_variant_id || null,
     metadata: { email: parsed.data.email.toLowerCase() }
   });
 

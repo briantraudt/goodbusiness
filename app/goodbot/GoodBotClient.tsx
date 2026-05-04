@@ -38,6 +38,42 @@ type LandingPage = {
   created_at: string;
 };
 
+type DistributionEvent = {
+  id: string;
+  goal_id: string;
+  content_asset_id: string | null;
+  landing_page_id: string | null;
+  channel: string;
+  status: "claimed" | "verified" | "failed";
+  claimed_url: string | null;
+  tracking_url: string;
+  utm_source: string;
+  utm_medium: string;
+  utm_campaign: string;
+  utm_content: string;
+  verified_at: string | null;
+  created_at: string;
+};
+
+type LandingPageVariant = {
+  id: string;
+  goal_id: string;
+  landing_page_id: string;
+  variant_name: string;
+  headline: string;
+  status: "draft" | "active" | "archived";
+  reason: string | null;
+  created_at: string;
+};
+
+type AttributionRow = {
+  id: string;
+  label: string;
+  visits: number;
+  signups: number;
+  conversion_rate: number;
+};
+
 type Job = {
   id: string;
   job_type: string;
@@ -56,6 +92,13 @@ type StatusResponse = {
   notifications: Notification[];
   content_assets: ContentAsset[];
   landing_pages: LandingPage[];
+  distribution_events: DistributionEvent[];
+  landing_page_variants: LandingPageVariant[];
+  attribution: {
+    by_asset: AttributionRow[];
+    by_variant: AttributionRow[];
+    by_distribution_event: AttributionRow[];
+  };
   jobs: Job[];
   metrics: { visits: number; signups: number; events?: { metric_type: string; value: number; created_at: string; source: string | null }[] };
   landing_page_url: string | null;
@@ -141,11 +184,16 @@ export default function GoodBotClient() {
   }
 
   async function assetAction(asset: ContentAsset, action: "approve" | "reject" | "edit" | "mark_distributed") {
-    let body: Record<string, string> = { action };
+    let body: Record<string, unknown> = { action };
     if (action === "edit") {
       const edited = window.prompt("Edit this asset", asset.edited_body || asset.body);
       if (!edited) return;
       body = { action, body: edited };
+    }
+    if (action === "mark_distributed") {
+      const claimedUrl = window.prompt("Paste the URL where this was posted or shared. Leave blank if you do not have one yet.", "");
+      if (claimedUrl === null) return;
+      body = claimedUrl ? { action, claimed_url: claimedUrl } : { action, no_url: true };
     }
 
     const response = await fetch(`/api/goodbot/assets/${asset.id}`, {
@@ -173,6 +221,8 @@ export default function GoodBotClient() {
   const approvalAssets = status?.content_assets.filter((asset) => asset.approval_status === "pending") ?? [];
   const readyAssets = status?.content_assets.filter((asset) => asset.approval_status === "approved" && asset.distribution_status === "ready") ?? [];
   const completedSteps = status?.steps.filter((step) => step.status === "completed") ?? [];
+  const distributionProof = status?.distribution_events ?? [];
+  const variantPerformance = status?.landing_page_variants ?? [];
   const activity = buildActivity(status);
 
   return (
@@ -290,6 +340,38 @@ export default function GoodBotClient() {
           </section>
 
           <section>
+            <p className="status-label">Distribution Proof</p>
+            {distributionProof.length ? (
+              <div className="proof-list">
+                {distributionProof.map((event) => (
+                  <DistributionProofRow
+                    key={event.id}
+                    event={event}
+                    asset={status.content_assets.find((asset) => asset.id === event.content_asset_id) ?? null}
+                    stats={status.attribution.by_distribution_event.find((row) => row.id === event.id)}
+                    onCopy={copyText}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="empty">I can’t measure this yet because it has not been distributed.</p>
+            )}
+          </section>
+
+          <section>
+            <p className="status-label">Variant Performance</p>
+            {variantPerformance.length ? (
+              <div className="variant-list">
+                {variantPerformance.map((variant) => (
+                  <VariantRow key={variant.id} variant={variant} stats={status.attribution.by_variant.find((row) => row.id === variant.id)} />
+                ))}
+              </div>
+            ) : (
+              <p className="empty">No landing page variants have been generated yet.</p>
+            )}
+          </section>
+
+          <section>
             <p className="status-label">GoodBot Activity</p>
             <ol className="activity-list">
               {activity.map((item) => (
@@ -303,6 +385,67 @@ export default function GoodBotClient() {
         </section>
       ) : null}
     </main>
+  );
+}
+
+function DistributionProofRow({
+  event,
+  asset,
+  stats,
+  onCopy
+}: {
+  event: DistributionEvent;
+  asset: ContentAsset | null;
+  stats?: AttributionRow;
+  onCopy: (text: string) => void;
+}) {
+  const visits = stats?.visits ?? 0;
+  const signups = stats?.signups ?? 0;
+  return (
+    <article className="proof-row">
+      <div>
+        <p>{asset ? asset.title || assetLabel(asset.content_type) : event.channel}</p>
+        <small>
+          {event.status === "verified" ? "Verified" : event.status === "failed" ? "Failed" : "Verification pending"} / {event.channel}
+        </small>
+        {event.claimed_url ? (
+          <a href={event.claimed_url} target="_blank" rel="noreferrer">
+            Claimed URL
+          </a>
+        ) : (
+          <small>I do not have a posted URL for this yet.</small>
+        )}
+      </div>
+      <div className="proof-stats">
+        <span>{visits} visits</span>
+        <span>{signups} signups</span>
+        <button type="button" onClick={() => onCopy(event.tracking_url)}>
+          Copy Tracking URL
+        </button>
+      </div>
+    </article>
+  );
+}
+
+function VariantRow({ variant, stats }: { variant: LandingPageVariant; stats?: AttributionRow }) {
+  const visits = stats?.visits ?? 0;
+  const signups = stats?.signups ?? 0;
+  const rate = visits > 0 ? Math.round((signups / visits) * 100) : 0;
+  return (
+    <article className="variant-row" data-status={variant.status}>
+      <div>
+        <p>{variant.headline}</p>
+        <small>
+          {variant.variant_name} / {variant.status}
+          {variant.reason ? ` / ${variant.reason}` : ""}
+        </small>
+      </div>
+      <div className="proof-stats">
+        <span>{visits} visits</span>
+        <span>{signups} signups</span>
+        <span>{rate}% conversion</span>
+      </div>
+    </article>
   );
 }
 
@@ -405,6 +548,14 @@ function buildActivity(status: StatusResponse | null) {
       id: `notification-${notification.id}`,
       label: notification.message,
       date: notification.created_at
+    })),
+    ...status.distribution_events.map((event) => ({
+      id: `distribution-${event.id}`,
+      label:
+        event.status === "verified"
+          ? `Verified distribution on ${event.channel}.`
+          : `Distribution claimed on ${event.channel}. Verification pending.`,
+      date: event.verified_at || event.created_at
     })),
     ...(status.metrics.events ?? []).slice(-10).map((metric, index) => ({
       id: `metric-${metric.created_at}-${index}`,

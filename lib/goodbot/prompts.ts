@@ -120,8 +120,8 @@ Return JSON only:
 
 Rules:
 - If totalSignups >= targetValue, decision is goal_completed.
-- If visits24h > 0 and signups24h is 0, adjust strategy.
+- If visits24h > 0 and signups24h is 0, create a landing page variant.
 - If there were no visits, generate more content with sharper distribution copy.
-- New steps can only use generate_content, publish_content, or track_metrics.
+- New steps can only use create_landing_page, generate_content, publish_content, or track_metrics.
 `.trim();
 }

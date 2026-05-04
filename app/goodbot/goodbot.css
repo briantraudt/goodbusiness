@@ -314,6 +314,71 @@
   margin-bottom: 0;
 }
 
+.proof-list,
+.variant-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.proof-row,
+.variant-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  padding: 14px;
+}
+
+.variant-row[data-status="active"] {
+  border-color: color-mix(in oklab, var(--teal) 34%, var(--line));
+}
+
+.proof-row p,
+.variant-row p {
+  margin: 0 0 4px;
+  font-weight: 850;
+}
+
+.proof-row small,
+.variant-row small {
+  display: block;
+  color: var(--muted);
+}
+
+.proof-row a {
+  display: inline-flex;
+  margin-top: 7px;
+  color: var(--teal);
+  font-weight: 800;
+}
+
+.proof-stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.proof-stats span,
+.proof-stats button {
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--ink);
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.proof-stats button {
+  cursor: pointer;
+}
+
 .activity-list {
   display: grid;
   gap: 8px;
@@ -361,6 +426,15 @@
 
   .activity-list li {
     display: grid;
+  }
+
+  .proof-row,
+  .variant-row {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-stats {
+    justify-content: flex-start;
   }
 }
 

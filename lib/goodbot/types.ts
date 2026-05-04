@@ -12,6 +12,8 @@ export type StepType = "create_landing_page" | "generate_content" | "publish_con
 export type StepStatus = "pending" | "running" | "completed" | "failed" | "skipped";
 export type ApprovalStatus = "pending" | "approved" | "rejected";
 export type DistributionStatus = "not_ready" | "ready" | "distributed" | "failed";
+export type DistributionEventStatus = "claimed" | "verified" | "failed";
+export type LandingPageVariantStatus = "draft" | "active" | "archived";
 export type JobStatus = "pending" | "running" | "completed" | "failed";
 
 export type PlanStep = {
@@ -56,6 +58,58 @@ export type ContentAssetRecord = {
   distributed_at: string | null;
   distribution_channel: string | null;
   recommended_action: string | null;
+  metadata: Record<string, unknown>;
+};
+
+export type LandingPageRecord = {
+  id: string;
+  goal_id: string;
+  created_at: string;
+  slug: string;
+  headline: string;
+  subheadline: string;
+  cta: string;
+  bullets: string[];
+  status: string;
+  version: number;
+  approval_status: ApprovalStatus;
+  approved_at: string | null;
+  rejected_at: string | null;
+  distribution_status: DistributionStatus;
+  distributed_at: string | null;
+  distribution_channel: string | null;
+  recommended_action: string | null;
+};
+
+export type LandingPageVariantRecord = {
+  id: string;
+  goal_id: string;
+  landing_page_id: string;
+  variant_name: string;
+  headline: string;
+  subheadline: string;
+  cta: string;
+  bullets: string[];
+  status: LandingPageVariantStatus;
+  reason: string | null;
+  created_at: string;
+};
+
+export type DistributionEventRecord = {
+  id: string;
+  goal_id: string;
+  content_asset_id: string | null;
+  landing_page_id: string | null;
+  channel: string;
+  status: DistributionEventStatus;
+  claimed_url: string | null;
+  tracking_url: string;
+  utm_source: string;
+  utm_medium: string;
+  utm_campaign: string;
+  utm_content: string;
+  verified_at: string | null;
+  created_at: string;
   metadata: Record<string, unknown>;
 };
 

@@ -2,7 +2,7 @@ import { z } from "zod";
 import { contentPrompt, feedbackPrompt, landingPagePrompt } from "./prompts";
 import { getSupabaseAdmin } from "./supabase";
 import { generateJson } from "./llm";
-import type { GoalObject, GoalRecord, GoodBotJobRecord, StepOutput, StepRecord } from "./types";
+import type { GoalObject, GoalRecord, GoodBotJobRecord, LandingPageRecord, StepOutput, StepRecord } from "./types";
 
 const landingSchema = z.object({
   headline: z.string().min(1),
@@ -255,7 +255,7 @@ async function enqueueNextPendingStep(goalId: string) {
 async function runStep(goal: GoalRecord, step: StepRecord): Promise<StepOutput> {
   switch (step.step_type) {
     case "create_landing_page":
-      return createLandingPage(goal);
+      return createLandingPage(goal, step.input);
     case "generate_content":
       return generateContent(goal, step.input);
     case "publish_content":
@@ -267,23 +267,35 @@ async function runStep(goal: GoalRecord, step: StepRecord): Promise<StepOutput> 
   }
 }
 
-export async function createLandingPage(goal: GoalRecord): Promise<StepOutput> {
+export async function createLandingPage(goal: GoalRecord, input: Record<string, unknown> = {}): Promise<StepOutput> {
   const supabase = getSupabaseAdmin();
   const goalObject = toGoalObject(goal);
+  const isVariant = Boolean(input.variant_reason || input.variant);
+  const variantReason = String(input.variant_reason || input.variant || (isVariant ? "Generated from feedback loop." : "Initial generated landing page."));
   const fallback = {
-    headline: `Get early access to ${goal.app_name || "this app"}`,
+    headline: isVariant ? `Try ${goal.app_name || "this app"} with less friction` : `Get early access to ${goal.app_name || "this app"}`,
     subheadline: `A focused way for ${goal.audience || "busy teams"} to solve the problem behind: ${goal.goal}`,
-    cta: "Join the early list",
+    cta: isVariant ? "Get early access" : "Join the early list",
     bullets: ["Built for a specific workflow", "Simple onboarding", "Early users shape the roadmap"]
   };
   const generated = await generateJson(landingPagePrompt(goalObject), fallback);
   const copy = landingSchema.safeParse(generated).success ? landingSchema.parse(generated) : fallback;
   const slug = `${slugify(goal.app_name || "goodbot-app")}-${goal.id.slice(0, 8)}`;
 
-  const { data, error } = await supabase
+  let { data: page, error: pageReadError } = await supabase
     .from("landing_pages")
-    .upsert(
-      {
+    .select("*")
+    .eq("goal_id", goal.id)
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+
+  if (pageReadError) throw pageReadError;
+
+  if (!page) {
+    const { data: createdPage, error: pageCreateError } = await supabase
+      .from("landing_pages")
+      .insert({
         goal_id: goal.id,
         slug,
         headline: copy.headline,
@@ -296,17 +308,60 @@ export async function createLandingPage(goal: GoalRecord): Promise<StepOutput> {
         distribution_status: "ready",
         distribution_channel: "landing_page",
         recommended_action: "Copy this link anywhere you are asking for early users."
-      },
-      { onConflict: "slug" }
-    )
-    .select("id, slug")
+      })
+      .select("*")
+      .single();
+
+    if (pageCreateError) throw pageCreateError;
+    page = createdPage;
+  }
+
+  const { count: variantCount, error: countError } = await supabase
+    .from("landing_page_variants")
+    .select("id", { count: "exact", head: true })
+    .eq("landing_page_id", page.id);
+  if (countError) throw countError;
+
+  await supabase
+    .from("landing_page_variants")
+    .update({ status: "archived" })
+    .eq("landing_page_id", page.id)
+    .eq("status", "active");
+
+  const variantName = `v${Number(variantCount ?? 0) + 1}`;
+  const { data: variant, error } = await supabase
+    .from("landing_page_variants")
+    .insert({
+      goal_id: goal.id,
+      landing_page_id: page.id,
+      variant_name: variantName,
+      headline: copy.headline,
+      subheadline: copy.subheadline,
+      cta: copy.cta,
+      bullets: copy.bullets,
+      status: "active",
+      reason: variantReason
+    })
+    .select("id, variant_name")
     .single();
 
   if (error) throw error;
+
+  await supabase
+    .from("landing_pages")
+    .update({
+      headline: copy.headline,
+      subheadline: copy.subheadline,
+      cta: copy.cta,
+      bullets: copy.bullets,
+      version: Number(variantCount ?? 0) + 1
+    })
+    .eq("id", page.id);
+
   return {
     ok: true,
-    summary: "Landing page generated and published.",
-    artifacts: { landing_page_id: data.id, url: `/goodbot/landing/${goal.id}`, slug: data.slug }
+    summary: isVariant ? `Landing page variant ${variant.variant_name} generated and activated.` : "Landing page generated and published.",
+    artifacts: { landing_page_id: page.id, landing_page_variant_id: variant.id, variant_name: variant.variant_name, url: `/goodbot/landing/${goal.id}`, slug: (page as LandingPageRecord).slug }
   };
 }
 
@@ -434,9 +489,13 @@ export async function runDailyFeedbackLoop() {
 async function evaluateGoal(goal: GoalRecord) {
   const supabase = getSupabaseAdmin();
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-  const [{ data: recentMetrics }, { data: allSignups }] = await Promise.all([
-    supabase.from("metrics").select("metric_type,value").eq("goal_id", goal.id).gte("created_at", since),
+  const [{ data: recentMetrics }, { data: allSignups }, { data: distributionEvents }, { data: assetMetrics }, { data: variantMetrics }] = await Promise.all([
+    supabase.from("metrics").select("metric_type,value,distribution_event_id,content_asset_id,landing_page_variant_id").eq("goal_id", goal.id).gte("created_at", since),
     supabase.from("metrics").select("value").eq("goal_id", goal.id).eq("metric_type", "signup")
+    ,
+    supabase.from("distribution_events").select("*").eq("goal_id", goal.id),
+    supabase.from("metrics").select("metric_type,value,content_asset_id").eq("goal_id", goal.id).not("content_asset_id", "is", null),
+    supabase.from("metrics").select("metric_type,value,landing_page_variant_id").eq("goal_id", goal.id).not("landing_page_variant_id", "is", null)
   ]);
 
   const visits24h = sumMetric(recentMetrics, "visit");
@@ -451,7 +510,10 @@ async function evaluateGoal(goal: GoalRecord) {
   const approvedUndistributed = (assets ?? []).filter(
     (asset) => asset.approval_status === "approved" && asset.distribution_status === "ready"
   ).length;
-  const distributedAssets = (assets ?? []).filter((asset) => asset.distribution_status === "distributed").length;
+  const claimedOrVerifiedEvents = (distributionEvents ?? []).filter((event) => event.status === "claimed" || event.status === "verified");
+  const verifiedEvents = (distributionEvents ?? []).filter((event) => event.status === "verified");
+  const bestAsset = findBestPerformer(assetMetrics ?? [], "content_asset_id");
+  const bestVariant = findBestPerformer(variantMetrics ?? [], "landing_page_variant_id");
 
   if (totalSignups >= goal.target_value) {
     await supabase.from("goals").update({ status: "completed", last_evaluated_at: new Date().toISOString() }).eq("id", goal.id);
@@ -469,6 +531,12 @@ async function evaluateGoal(goal: GoalRecord) {
     return { decision: "awaiting_distribution", visits24h, signups24h, totalSignups, approvedUndistributed };
   }
 
+  if (!claimedOrVerifiedEvents.length) {
+    await createNotification(goal.id, "strategy_changed", "I can’t measure this yet because no approved asset has been distributed.");
+    await supabase.from("goals").update({ last_evaluated_at: new Date().toISOString() }).eq("id", goal.id);
+    return { decision: "distribution_blocked", visits24h, signups24h, totalSignups };
+  }
+
   const fallback = {
     progressing: signups24h > 0,
     decision: signups24h > 0 ? "continue_current_strategy" : "adjust_strategy",
@@ -478,8 +546,15 @@ async function evaluateGoal(goal: GoalRecord) {
         ? []
         : visits24h > 0
           ? [{ step_type: "create_landing_page", title: "Generate landing page headline and CTA variant", input: { variant_reason: "Visits without signups" } }]
-          : [{ step_type: "generate_content", title: "Generate 3 sharper LinkedIn posts", input: { linkedin_posts: 3, blog_posts: 0, strategy_note: distributedAssets > 0 ? "Distributed assets did not produce visits" : "Sharpen pain point and CTA" } }],
-    notification: signups24h > 0 ? undefined : "I adjusted the strategy based on the last 24 hours of results."
+          : [{ step_type: "generate_content", title: bestAsset ? "Generate 3 posts similar to the best traffic driver" : "Generate 3 sharper LinkedIn posts", input: { linkedin_posts: 3, blog_posts: 0, strategy_note: bestAsset ? `Create more content similar to asset ${bestAsset.id}` : verifiedEvents.length > 0 ? "Verified distribution did not produce visits" : "Claimed distribution did not produce visits" } }],
+    notification:
+      signups24h > 0
+        ? bestVariant
+          ? `Signups are coming in. I am keeping the best-converting landing page active.`
+          : undefined
+        : visits24h > 0
+          ? "This landing page received visits but no signups, so I created a new version."
+          : "Assets were distributed but did not drive visits, so I generated new distribution copy."
   };
 
   const decision = await generateJson(
@@ -556,4 +631,18 @@ function sumMetric(rows: { metric_type: string; value: number }[] | null, metric
   return (rows ?? [])
     .filter((row) => row.metric_type === metricType)
     .reduce((sum, row) => sum + Number(row.value ?? 0), 0);
+}
+
+function findBestPerformer(rows: { metric_type: string; value: number; [key: string]: unknown }[], key: string) {
+  const totals = new Map<string, { id: string; visits: number; signups: number }>();
+  for (const row of rows) {
+    const id = typeof row[key] === "string" ? row[key] : null;
+    if (!id) continue;
+    const current = totals.get(id) ?? { id, visits: 0, signups: 0 };
+    if (row.metric_type === "visit") current.visits += Number(row.value ?? 0);
+    if (row.metric_type === "signup") current.signups += Number(row.value ?? 0);
+    totals.set(id, current);
+  }
+
+  return [...totals.values()].sort((a, b) => b.signups - a.signups || b.visits - a.visits)[0] ?? null;
 }
