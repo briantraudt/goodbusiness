@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { enqueueLinkedInAutoPost } from "@/lib/goodbot/executors";
 import { enforceRateLimit, getGoodBotBaseUrl, readClientIp, requireAssetAccess } from "@/lib/goodbot/security";
 import { getSupabaseAdmin } from "@/lib/goodbot/supabase";
 
@@ -151,6 +152,20 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ as
       notification_type: parsed.data.action === "mark_distributed" ? "milestone" : "strategy_changed",
       message: activity
     });
+  }
+
+  if (
+    parsed.data.action === "approve" &&
+    asset.content_type === "linkedin_post"
+  ) {
+    const { data: goal } = await supabase
+      .from("goals")
+      .select("id,autonomous_mode,auto_post_mode")
+      .eq("id", asset.goal_id)
+      .maybeSingle();
+    if (goal?.autonomous_mode && goal?.auto_post_mode === "auto_post") {
+      await enqueueLinkedInAutoPost(asset.goal_id, asset.id);
+    }
   }
 
   return NextResponse.json({ ok: true, asset: updated });

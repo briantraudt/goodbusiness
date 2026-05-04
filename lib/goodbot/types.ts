@@ -87,6 +87,10 @@ export type ContentAssetRecord = {
   distributed_at: string | null;
   distribution_channel: string | null;
   recommended_action: string | null;
+  external_post_id?: string | null;
+  external_url?: string | null;
+  posted_at?: string | null;
+  auto_post_status?: string | null;
   metadata: Record<string, unknown>;
 };
 
@@ -177,6 +181,7 @@ export type RecommendationRecord = {
 export type GoalRecord = {
   id: string;
   goal: string;
+  user_id?: string | null;
   target_metric: "users";
   target_value: number;
   timeframe: string | null;
@@ -185,6 +190,12 @@ export type GoalRecord = {
   positioning: string | null;
   is_demo?: boolean;
   access_token_hash?: string | null;
+  autonomous_mode?: boolean;
+  auto_post_mode?: "manual" | "auto_post";
+  daily_post_limit?: number;
+  channels_enabled?: string[];
+  auto_response_level?: "approval_required" | "low_risk_auto" | "manual";
+  paused_at?: string | null;
   status: "working" | "paused" | "completed" | "failed";
 };
 

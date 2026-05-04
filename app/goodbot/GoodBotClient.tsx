@@ -141,7 +141,19 @@ type GoodBotContextRecord = {
 };
 
 type StatusResponse = {
-  goal: { id: string; goal: string; target_value: number; status: string; app_name?: string | null; project_name?: string | null };
+  goal: {
+    id: string;
+    goal: string;
+    target_value: number;
+    status: string;
+    app_name?: string | null;
+    project_name?: string | null;
+    autonomous_mode?: boolean;
+    auto_post_mode?: "manual" | "auto_post";
+    daily_post_limit?: number;
+    auto_response_level?: string;
+    paused_at?: string | null;
+  };
   steps: Step[];
   notifications: Notification[];
   content_assets: ContentAsset[];
@@ -149,6 +161,8 @@ type StatusResponse = {
   distribution_events: DistributionEvent[];
   landing_page_variants: LandingPageVariant[];
   recommendations: Recommendation[];
+  engagement_events: Array<{ id: string; category: string | null; sentiment: string | null; response_status: string; comment_text: string; suggested_response: string | null; created_at: string }>;
+  integrations?: { linkedin?: { connected: boolean; account_name?: string | null; scopes?: string[] } };
   context: GoodBotContextRecord | null;
   attribution: {
     by_asset: AttributionRow[];
@@ -368,6 +382,37 @@ export default function GoodBotClient() {
       });
       if (statusResponse.ok) setStatus(await statusResponse.json());
     }
+  }
+
+  async function updateGoalSettings(input: Record<string, unknown>) {
+    if (!goalId) return;
+    const response = await fetch(`/api/goodbot/goals/${goalId}`, {
+      method: "PATCH",
+      headers: buildApiHeaders(session, accessToken, { "Content-Type": "application/json" }),
+      body: JSON.stringify(input)
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      setError(payload.error || "GoodBot settings update failed.");
+      return;
+    }
+    const statusResponse = await fetch(`/api/goodbot/status/${goalId}`, {
+      headers: buildApiHeaders(session, accessToken)
+    });
+    if (statusResponse.ok) setStatus(await statusResponse.json());
+  }
+
+  async function connectLinkedIn() {
+    const response = await fetch("/api/goodbot/integrations/linkedin/start", {
+      method: "POST",
+      headers: buildApiHeaders(session, null)
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || !payload.authorization_url) {
+      setError(payload.error || "LinkedIn connection could not start.");
+      return;
+    }
+    window.location.href = payload.authorization_url;
   }
 
   async function contextAction(input: { action: "confirm" | "edit"; context?: Partial<GoodBotContext>; answers?: Record<string, string> }) {
@@ -671,6 +716,11 @@ export default function GoodBotClient() {
       {status && canUseGoodBot ? (
         <section className="operator-sections">
           <section>
+            <p className="status-label">Autonomy</p>
+            <AutonomyPanel status={status} onConnectLinkedIn={connectLinkedIn} onUpdate={updateGoalSettings} />
+          </section>
+
+          <section>
             <p className="status-label">Next Move</p>
             {nextRecommendation ? (
               <RecommendationCard recommendation={nextRecommendation} onAction={recommendationAction} />
@@ -806,6 +856,51 @@ function RecommendationCard({
         </button>
       </div>
     </article>
+  );
+}
+
+function AutonomyPanel({
+  status,
+  onConnectLinkedIn,
+  onUpdate
+}: {
+  status: StatusResponse;
+  onConnectLinkedIn: () => void;
+  onUpdate: (input: Record<string, unknown>) => void;
+}) {
+  const linkedinConnected = Boolean(status.integrations?.linkedin?.connected);
+  const autonomous = Boolean(status.goal.autonomous_mode);
+  const autoPost = status.goal.auto_post_mode === "auto_post";
+  const paused = status.goal.status === "paused" || Boolean(status.goal.paused_at);
+
+  return (
+    <div className="autonomy-panel">
+      <div>
+        <h3>{autonomous ? "Controlled autonomy is on" : "Controlled autonomy is off"}</h3>
+        <p>
+          {linkedinConnected
+            ? `LinkedIn connected${status.integrations?.linkedin?.account_name ? ` as ${status.integrations.linkedin.account_name}` : ""}.`
+            : "Connect LinkedIn before GoodBot can post or monitor comments."}
+        </p>
+      </div>
+      <div className="action-row">
+        {!linkedinConnected ? (
+          <button type="button" onClick={onConnectLinkedIn}>
+            Connect LinkedIn
+          </button>
+        ) : null}
+        <button
+          type="button"
+          onClick={() => onUpdate({ autonomous_mode: !autonomous, auto_post_mode: !autonomous ? "auto_post" : "manual" })}
+          disabled={!linkedinConnected && !autonomous}
+        >
+          {autonomous && autoPost ? "Turn off auto-post" : "Enable auto-post"}
+        </button>
+        <button type="button" onClick={() => onUpdate({ paused: !paused })}>
+          {paused ? "Resume GoodBot" : "Pause GoodBot"}
+        </button>
+      </div>
+    </div>
   );
 }
 

@@ -27,9 +27,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
     { data: distributionEvents },
     { data: landingPageVariants },
     { data: recommendations },
-    { data: context }
+    { data: context },
+    { data: engagementEvents }
   ] = await Promise.all([
-    supabase.from("goals").select("id,goal,target_metric,target_value,timeframe,status,domain,app_name,audience,positioning,project_name,is_demo,created_at,updated_at").eq("id", goalId).single(),
+    supabase.from("goals").select("id,goal,target_metric,target_value,timeframe,status,domain,app_name,audience,positioning,project_name,is_demo,autonomous_mode,auto_post_mode,daily_post_limit,channels_enabled,auto_response_level,paused_at,created_at,updated_at").eq("id", goalId).single(),
     supabase.from("steps").select("id,title,step_type,status,output,error,position,created_at,updated_at").eq("goal_id", goalId).order("position"),
     supabase.from("notifications").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(10),
     supabase
@@ -48,12 +49,25 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
     supabase.from("distribution_events").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }),
     supabase.from("landing_page_variants").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }),
     supabase.from("goodbot_recommendations").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(10),
-    supabase.from("goodbot_context").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(1).maybeSingle()
+    supabase.from("goodbot_context").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(1).maybeSingle(),
+    supabase.from("engagement_events").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(20)
   ]);
 
   if (goalError) {
     return NextResponse.json({ error: "Goal not found." }, { status: 404 });
   }
+
+  const { data: linkedinAccount } = access.user
+    ? await supabase
+      .from("connected_accounts")
+      .select("id,provider_account_name,status,scopes")
+      .eq("user_id", access.user.id)
+      .eq("provider", "linkedin")
+      .eq("status", "connected")
+      .order("updated_at", { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    : { data: null };
 
   const visits = (metrics ?? []).filter((row) => row.metric_type === "visit").reduce((sum, row) => sum + Number(row.value), 0);
   const signups = (metrics ?? []).filter((row) => row.metric_type === "signup").reduce((sum, row) => sum + Number(row.value), 0);
@@ -67,6 +81,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
     distribution_events: distributionEvents ?? [],
     landing_page_variants: landingPageVariants ?? [],
     recommendations: recommendations ?? [],
+    engagement_events: engagementEvents ?? [],
+    integrations: {
+      linkedin: linkedinAccount ? {
+        connected: true,
+        account_name: linkedinAccount.provider_account_name,
+        scopes: linkedinAccount.scopes ?? []
+      } : { connected: false }
+    },
     context,
     attribution: {
       by_asset: rollup(metrics ?? [], contentAssets ?? [], "content_asset_id"),

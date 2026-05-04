@@ -3,7 +3,9 @@ import { contentPrompt, landingPagePrompt } from "./prompts";
 import { getSupabaseAdmin } from "./supabase";
 import { generateJson } from "./llm";
 import { getConfirmedContext } from "./context";
-import type { GoalObject, GoalRecord, GoodBotContext, GoodBotJobRecord, LandingPageRecord, PlanStep, RecommendationRecord, StepOutput, StepRecord } from "./types";
+import { createLinkedInTextPost, fetchLinkedInComments, type LinkedInAccount } from "./linkedin";
+import { getGoodBotBaseUrl } from "./security";
+import type { ContentAssetRecord, GoalObject, GoalRecord, GoodBotContext, GoodBotJobRecord, LandingPageRecord, PlanStep, RecommendationRecord, StepOutput, StepRecord } from "./types";
 
 const landingSchema = z.object({
   headline: z.string().min(1),
@@ -129,6 +131,37 @@ export async function enqueueStepJob(step: StepRecord, runAfter = new Date(), re
       status: "pending",
       run_after: runAfter.toISOString(),
       input: { step_type: step.step_type, title: step.title, recommendation_id: recommendationId || null }
+    })
+    .select("id,status")
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+export async function enqueueLinkedInAutoPost(goalId: string, contentAssetId: string, runAfter = new Date()) {
+  const supabase = getSupabaseAdmin();
+  const { data: existing, error: existingError } = await supabase
+    .from("goodbot_jobs")
+    .select("id,status")
+    .eq("goal_id", goalId)
+    .eq("job_type", "linkedin_auto_post")
+    .contains("input", { content_asset_id: contentAssetId })
+    .in("status", ["pending", "running", "completed"])
+    .limit(1)
+    .maybeSingle();
+
+  if (existingError) throw existingError;
+  if (existing) return existing;
+
+  const { data, error } = await supabase
+    .from("goodbot_jobs")
+    .insert({
+      goal_id: goalId,
+      job_type: "linkedin_auto_post",
+      status: "pending",
+      run_after: runAfter.toISOString(),
+      input: { content_asset_id: contentAssetId }
     })
     .select("id,status")
     .single();
@@ -265,6 +298,10 @@ async function runQueuedJob(job: GoodBotJobRecord) {
         summary: "Feedback loop evaluated.",
         artifacts: await evaluateGoal(goal as GoalRecord)
       };
+    } else if (job.job_type === "linkedin_auto_post") {
+      output = await postLinkedInContent(job.goal_id, String(job.input?.content_asset_id || ""));
+    } else if (job.job_type === "linkedin_poll_comments") {
+      output = await pollLinkedInComments(job.goal_id, typeof job.input?.content_asset_id === "string" ? job.input.content_asset_id : undefined);
     } else {
       throw new Error(`Unsupported job type: ${job.job_type}`);
     }
@@ -593,6 +630,257 @@ export async function trackMetrics(goal: GoalRecord): Promise<StepOutput> {
       metric_types: ["visit", "signup"]
     }
   };
+}
+
+export async function postLinkedInContent(goalId: string, contentAssetId: string): Promise<StepOutput> {
+  if (!contentAssetId) throw new Error("Missing content_asset_id for LinkedIn auto-post.");
+  const supabase = getSupabaseAdmin();
+  const [{ data: goal, error: goalError }, { data: asset, error: assetError }] = await Promise.all([
+    supabase.from("goals").select("*").eq("id", goalId).single(),
+    supabase.from("content_assets").select("*").eq("id", contentAssetId).single()
+  ]);
+  if (goalError) throw goalError;
+  if (assetError) throw assetError;
+
+  const goalRecord = goal as GoalRecord;
+  const assetRecord = asset as ContentAssetRecord;
+  if (goalRecord.paused_at || goalRecord.status === "paused") throw new Error("GoodBot is paused for this goal.");
+  if (!goalRecord.autonomous_mode || goalRecord.auto_post_mode !== "auto_post") {
+    throw new Error("Autonomous auto-post is not enabled for this goal.");
+  }
+  if (assetRecord.content_type !== "linkedin_post") throw new Error("Only LinkedIn posts can use LinkedIn auto-post.");
+  if (assetRecord.approval_status !== "approved") throw new Error("Asset must be approved before LinkedIn auto-post.");
+  if (assetRecord.external_post_id) {
+    return { ok: true, summary: "LinkedIn post already exists.", artifacts: { external_post_id: assetRecord.external_post_id, external_url: assetRecord.external_url } };
+  }
+
+  await enforceDailyPostLimit(goalRecord);
+  const account = await getLinkedInAccountForGoal(goalRecord);
+  const postBody = assetRecord.edited_body || assetRecord.body;
+  const createdPost = await createLinkedInTextPost({ account, text: postBody });
+  const now = new Date().toISOString();
+
+  const [{ data: landingPage }, { data: activeVariant }] = await Promise.all([
+    supabase.from("landing_pages").select("id").eq("goal_id", goalId).order("created_at", { ascending: true }).limit(1).maybeSingle(),
+    supabase.from("landing_page_variants").select("id").eq("goal_id", goalId).eq("status", "active").limit(1).maybeSingle()
+  ]);
+
+  const eventId = crypto.randomUUID();
+  const trackingUrl = buildAutonomousTrackingUrl({
+    goalId,
+    distributionEventId: eventId,
+    contentAssetId,
+    landingPageVariantId: activeVariant?.id ?? null
+  });
+
+  await supabase.from("distribution_events").insert({
+    id: eventId,
+    goal_id: goalId,
+    content_asset_id: contentAssetId,
+    landing_page_id: landingPage?.id ?? null,
+    channel: "linkedin_auto",
+    status: "verified",
+    claimed_url: createdPost.url,
+    tracking_url: trackingUrl,
+    utm_source: "linkedin",
+    utm_medium: "social",
+    utm_campaign: `goodbot_${goalId}`,
+    utm_content: contentAssetId,
+    verified_at: now,
+    metadata: {
+      autonomous: true,
+      external_post_id: createdPost.post_id
+    }
+  });
+
+  await supabase
+    .from("content_assets")
+    .update({
+      distribution_status: "distributed",
+      distributed_at: now,
+      distribution_channel: "linkedin_auto",
+      auto_post_status: "posted",
+      external_post_id: createdPost.post_id,
+      external_url: createdPost.url,
+      posted_at: now
+    })
+    .eq("id", contentAssetId);
+
+  await supabase.from("notifications").insert({
+    goal_id: goalId,
+    notification_type: "milestone",
+    message: `I posted an approved LinkedIn asset automatically and started monitoring engagement.`
+  });
+
+  await enqueueLinkedInCommentPolling(goalId, contentAssetId, new Date(Date.now() + 10 * 60 * 1000));
+  return {
+    ok: true,
+    summary: "Posted approved content to LinkedIn.",
+    artifacts: { content_asset_id: contentAssetId, external_post_id: createdPost.post_id, external_url: createdPost.url, tracking_url: trackingUrl }
+  };
+}
+
+export async function enqueueLinkedInCommentPolling(goalId: string, contentAssetId: string, runAfter = new Date()) {
+  const supabase = getSupabaseAdmin();
+  const { data, error } = await supabase
+    .from("goodbot_jobs")
+    .insert({
+      goal_id: goalId,
+      job_type: "linkedin_poll_comments",
+      status: "pending",
+      run_after: runAfter.toISOString(),
+      input: { content_asset_id: contentAssetId }
+    })
+    .select("id,status")
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function pollLinkedInComments(goalId: string, contentAssetId?: string): Promise<StepOutput> {
+  const supabase = getSupabaseAdmin();
+  const { data: goal, error: goalError } = await supabase.from("goals").select("*").eq("id", goalId).single();
+  if (goalError) throw goalError;
+  const goalRecord = goal as GoalRecord;
+  if (goalRecord.paused_at || goalRecord.status === "paused") throw new Error("GoodBot is paused for this goal.");
+
+  let query = supabase
+    .from("content_assets")
+    .select("*")
+    .eq("goal_id", goalId)
+    .eq("content_type", "linkedin_post")
+    .not("external_post_id", "is", null);
+  if (contentAssetId) query = query.eq("id", contentAssetId);
+  const { data: assets, error: assetError } = await query;
+  if (assetError) throw assetError;
+
+  const account = await getLinkedInAccountForGoal(goalRecord);
+  let createdCount = 0;
+  for (const asset of (assets ?? []) as ContentAssetRecord[]) {
+    if (!asset.external_post_id) continue;
+    const comments = await fetchLinkedInComments({ account, postId: asset.external_post_id });
+    const context = await getConfirmedContext(goalId).catch(() => null);
+    for (const comment of comments) {
+      const externalCommentId = String(comment.id || comment.$URN || "");
+      const commentText = extractLinkedInCommentText(comment);
+      if (!externalCommentId || !commentText) continue;
+      const classification = await classifyEngagement(commentText, asset.body, context);
+      const { error } = await supabase.from("engagement_events").upsert({
+        goal_id: goalId,
+        content_asset_id: asset.id,
+        external_post_id: asset.external_post_id,
+        external_comment_id: externalCommentId,
+        commenter: extractLinkedInCommenter(comment),
+        comment_text: commentText,
+        sentiment: classification.sentiment,
+        category: classification.category,
+        requires_response: classification.requires_response,
+        response_status: classification.requires_response ? "pending_approval" : "no_response_needed",
+        suggested_response: classification.suggested_response,
+        raw_event: comment,
+        updated_at: new Date().toISOString()
+      }, { onConflict: "content_asset_id,external_comment_id" });
+      if (!error) createdCount += 1;
+    }
+  }
+
+  return {
+    ok: true,
+    summary: `Polled LinkedIn comments and queued ${createdCount} engagement events.`,
+    artifacts: { content_asset_id: contentAssetId ?? null, engagement_events_seen: createdCount }
+  };
+}
+
+async function getLinkedInAccountForGoal(goal: GoalRecord) {
+  if (!goal.user_id) throw new Error("Goal is not owned by a user; cannot post to LinkedIn.");
+  const supabase = getSupabaseAdmin();
+  const { data, error } = await supabase
+    .from("connected_accounts")
+    .select("*")
+    .eq("user_id", goal.user_id)
+    .eq("provider", "linkedin")
+    .eq("status", "connected")
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data) throw new Error("Connect LinkedIn before enabling autonomous posting.");
+  return data as LinkedInAccount;
+}
+
+async function enforceDailyPostLimit(goal: GoalRecord) {
+  const supabase = getSupabaseAdmin();
+  const since = new Date();
+  since.setUTCHours(0, 0, 0, 0);
+  const { count, error } = await supabase
+    .from("content_assets")
+    .select("id", { count: "exact", head: true })
+    .eq("goal_id", goal.id)
+    .eq("distribution_channel", "linkedin_auto")
+    .gte("posted_at", since.toISOString());
+  if (error) throw error;
+  if (Number(count ?? 0) >= Number(goal.daily_post_limit ?? 1)) {
+    throw new Error("Daily LinkedIn auto-post limit reached for this goal.");
+  }
+}
+
+function buildAutonomousTrackingUrl(input: {
+  goalId: string;
+  distributionEventId: string;
+  contentAssetId: string;
+  landingPageVariantId: string | null;
+}) {
+  const url = new URL(`/goodbot/landing/${input.goalId}`, getGoodBotBaseUrl());
+  url.searchParams.set("utm_source", "linkedin");
+  url.searchParams.set("utm_medium", "social");
+  url.searchParams.set("utm_campaign", `goodbot_${input.goalId}`);
+  url.searchParams.set("utm_content", input.contentAssetId);
+  url.searchParams.set("distribution_event_id", input.distributionEventId);
+  url.searchParams.set("content_asset_id", input.contentAssetId);
+  if (input.landingPageVariantId) url.searchParams.set("landing_page_variant_id", input.landingPageVariantId);
+  return url.toString();
+}
+
+function extractLinkedInCommentText(comment: Record<string, unknown>) {
+  const message = comment.message as { text?: unknown } | undefined;
+  return String(message?.text || comment.commentary || comment.text || "").trim();
+}
+
+function extractLinkedInCommenter(comment: Record<string, unknown>) {
+  const actor = comment.actor || comment.createdBy || comment.author;
+  return typeof actor === "string" ? actor : null;
+}
+
+async function classifyEngagement(commentText: string, originalPost: string, context: GoodBotContext | null) {
+  const fallback = {
+    sentiment: commentText.includes("?") ? "neutral" : "positive",
+    category: commentText.includes("?") ? "question" : "interest",
+    requires_response: true,
+    suggested_response: `Thanks for asking. ${context?.product_name ? `${context.product_name} is focused on ${context.value_prop || "this outcome"}.` : "Happy to share more."}`
+  };
+  return generateJson(`Classify this LinkedIn comment for a controlled-autonomy business operator.
+
+Product context:
+${JSON.stringify(context ?? {}, null, 2)}
+
+Original post:
+${originalPost}
+
+Comment:
+${commentText}
+
+Return JSON with:
+{
+  "sentiment": "positive|neutral|negative|spam",
+  "category": "question|objection|interest|spam",
+  "requires_response": boolean,
+  "suggested_response": "short response queued for user approval"
+}
+
+Rules:
+- Never auto-send.
+- Suggested response must be helpful, non-pushy, and under 500 characters.
+- If spam, requires_response=false.`, fallback);
 }
 
 async function fetchSourceAsset(goalId: string, sourceAssetId: string) {
