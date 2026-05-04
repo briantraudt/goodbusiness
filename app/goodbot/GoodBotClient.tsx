@@ -545,7 +545,7 @@ export default function GoodBotClient() {
   const rightPanel = status
     ? buildRightPanelState(status, activeStep, activeStepIndex)
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
-  const showExecutionBanner = Boolean(status) || isSubmitting || Boolean(goalId && !status);
+  const showExecutionBanner = executionState !== "idle" && (Boolean(status) || isSubmitting || Boolean(goalId && !status));
 
   return (
     <main className="goodbot-shell">
