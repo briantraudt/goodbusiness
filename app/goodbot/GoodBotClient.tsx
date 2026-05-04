@@ -163,7 +163,7 @@ type StatusResponse = {
 type ExecutionState = "idle" | "executing" | "waiting_for_approval" | "waiting_for_distribution" | "measuring" | "recommending";
 
 export default function GoodBotClient() {
-  const [goal, setGoal] = useState("Get 50 users for GoodBot in 7 days");
+  const [goal, setGoal] = useState("");
   const [goalId, setGoalId] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [status, setStatus] = useState<StatusResponse | null>(null);
@@ -549,18 +549,28 @@ export default function GoodBotClient() {
       <TopBar session={session} authState={authState} onSignOut={signOut} />
 
       <section className={`goodbot-hero ${canUseGoodBot ? "with-intake" : ""}`}>
-        <div className="goodbot-copy">
-          <h1>{heroTitle}</h1>
-          <p className="subcopy">{heroSubcopy}</p>
-        </div>
+        {!canUseGoodBot ? (
+          <div className="goodbot-copy">
+            <h1>{heroTitle}</h1>
+            <p className="subcopy">{heroSubcopy}</p>
+          </div>
+        ) : null}
         {canUseGoodBot ? (
           <form onSubmit={submitGoal} className="goal-form hero-goal-form">
+            <div className={`wish-bot ${executionState === "executing" ? "is-executing" : ""}`} aria-hidden="true">
+              <span className="wish-bot-antenna" />
+              <span className="wish-bot-face">
+                <span className="wish-bot-eye left" />
+                <span className="wish-bot-eye right" />
+                <span className="wish-bot-smile" />
+              </span>
+            </div>
             <textarea
               ref={goalInputRef}
               id="goal"
               value={goal}
               onChange={(event) => setGoal(event.target.value)}
-              placeholder="Get 25 users for nda.company in 7 days"
+              placeholder="How can I help?"
               aria-label="GoodBot mission"
             />
             <button type="submit" disabled={isSubmitting}>
