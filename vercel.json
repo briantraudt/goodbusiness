@@ -6,6 +6,10 @@
     {
       "path": "/api/cron/goodbot-feedback",
       "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/cron/goodbot-jobs",
+      "schedule": "*/5 * * * *"
     }
   ]
 }

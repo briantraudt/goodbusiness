@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { executePendingSteps } from "@/lib/goodbot/executors";
+import { enqueueFirstPendingStep } from "@/lib/goodbot/executors";
 import { createPlan, parseGoal } from "@/lib/goodbot/planner";
 import { getSupabaseAdmin } from "@/lib/goodbot/supabase";
 
@@ -76,9 +76,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    await executePendingSteps(goal.id);
+    await enqueueFirstPendingStep(goal.id);
   } catch (error) {
-    console.error("GoodBot execution failed", error);
+    console.error("GoodBot job enqueue failed", error);
   }
 
   return NextResponse.json({

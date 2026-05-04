@@ -7,6 +7,7 @@ user acquisition for a web app.
 Allowed tools:
 - Landing page generator
 - Content generator for LinkedIn posts and simple blog posts
+- Email draft generator for copy-ready launch emails
 - Email capture and Supabase storage
 - Basic analytics tracking for page visits and signups
 
@@ -37,6 +38,7 @@ Return JSON only:
 Rules:
 - Include exactly these step types in this order: create_landing_page, generate_content, publish_content, track_metrics.
 - generate_content must request 5 LinkedIn posts and 2 simple blog posts.
+- email drafts are optional and must only be generated when explicitly requested.
 - publish_content means publish GoodBot-hosted blog/landing artifacts and mark LinkedIn posts ready_to_publish.
 - track_metrics means enable visits and signups tracking.
 - No vague steps.
@@ -74,12 +76,16 @@ Return JSON only:
   ],
   "blog_posts": [
     {"title": "public title", "body": "simple blog post copy, 400-700 words"}
+  ],
+  "email_drafts": [
+    {"title": "internal title", "body": "plain text email draft"}
   ]
 }
 
 Rules:
 - Exactly 5 LinkedIn posts.
 - Exactly 2 blog posts.
+- Include email_drafts only if requested in the execution input.
 - Tie every piece of content to the landing page CTA.
 `.trim();
 }
