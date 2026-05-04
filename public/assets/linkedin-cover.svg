@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1584" height="396" viewBox="0 0 1584 396" role="img" aria-labelledby="title desc">
+  <title id="title">We build what the future will use.</title>
+  <desc id="desc">A Good Business LinkedIn cover image with a cream grid background and the phrase We build what the future will use.</desc>
+  <defs>
+    <linearGradient id="warmGlow" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fffaf0" stop-opacity="0"/>
+      <stop offset="0.58" stop-color="#fffaf0" stop-opacity="0"/>
+      <stop offset="1" stop-color="#f0a23b" stop-opacity=".2"/>
+    </linearGradient>
+    <pattern id="grid" width="72" height="72" patternUnits="userSpaceOnUse">
+      <path d="M72 0H0V72" fill="none" stroke="#1f5357" stroke-opacity=".07" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1584" height="396" fill="#fbf5e8"/>
+  <rect width="1584" height="396" fill="url(#grid)"/>
+  <rect width="1584" height="396" fill="url(#warmGlow)"/>
+  <circle cx="1270" cy="70" r="260" fill="#f0a23b" opacity=".1"/>
+  <text x="152" y="200" fill="#182226" font-family="Inter, Geist, Arial, Helvetica, sans-serif" font-size="106" font-weight="900" letter-spacing="-8">
+    We build what the
+  </text>
+  <text x="152" y="302" fill="#3869e8" font-family="Georgia, 'Times New Roman', serif" font-size="110" font-style="italic" letter-spacing="-4">
+    future will use.
+  </text>
+</svg>

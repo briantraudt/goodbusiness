@@ -1,0 +1,363 @@
+.goodbot-shell {
+  min-height: 100vh;
+  padding: 28px;
+}
+
+.goodbot-hero {
+  min-height: 42vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  align-items: center;
+  gap: 48px;
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 48px 0 28px;
+}
+
+.eyebrow {
+  margin: 0 0 18px;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.goodbot-copy h1 {
+  max-width: 780px;
+  margin: 0;
+  font-size: clamp(54px, 8vw, 112px);
+  line-height: 0.88;
+  letter-spacing: -0.06em;
+}
+
+.subcopy {
+  max-width: 720px;
+  margin: 28px 0 0;
+  color: var(--muted);
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.38;
+}
+
+.bot {
+  width: 100%;
+  filter: drop-shadow(0 30px 38px rgba(18, 54, 58, 0.16));
+}
+
+.workbench {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(320px, 0.72fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.goal-form,
+.status-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 24px;
+  box-shadow: 0 24px 70px rgba(31, 83, 87, 0.08);
+}
+
+.goal-form {
+  display: grid;
+  gap: 14px;
+}
+
+.goal-form label,
+.status-label {
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 850;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.goal-form textarea {
+  min-height: 168px;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  color: var(--ink);
+  background: var(--paper);
+  font-size: 22px;
+  line-height: 1.24;
+  outline: none;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.goal-form input {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 13px 14px;
+  background: var(--paper);
+}
+
+.goal-form button,
+.landing-link,
+.signup-form button {
+  min-height: 48px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--ink);
+  color: #ffffff;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.goal-form button:disabled {
+  opacity: 0.62;
+  cursor: wait;
+}
+
+.status-panel h2 {
+  margin: 12px 0 18px;
+  font-size: clamp(28px, 4vw, 48px);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 18px 0;
+}
+
+.metrics span {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+.metrics strong {
+  display: block;
+  color: var(--ink);
+  font-size: 28px;
+  line-height: 1;
+}
+
+.steps {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.steps li {
+  display: grid;
+  gap: 4px;
+  border-left: 4px solid var(--quiet);
+  border-radius: 6px;
+  background: var(--paper);
+  padding: 12px;
+}
+
+.steps li[data-status="completed"] {
+  border-color: var(--teal);
+}
+
+.steps li[data-status="failed"] {
+  border-color: var(--coral);
+}
+
+.steps span {
+  font-weight: 800;
+}
+
+.steps small,
+.empty,
+.notification {
+  color: var(--muted);
+}
+
+.notification {
+  border-top: 1px solid var(--line);
+  margin: 18px 0 0;
+  padding-top: 16px;
+}
+
+.landing-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  padding: 0 18px;
+  text-decoration: none;
+}
+
+.error {
+  color: var(--coral);
+  margin: 0;
+}
+
+@media (max-width: 780px) {
+  .goodbot-shell {
+    padding: 18px;
+  }
+
+  .goodbot-hero,
+  .workbench {
+    grid-template-columns: 1fr;
+  }
+
+  .bot {
+    width: min(180px, 60%);
+  }
+
+  .field-row,
+  .metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+.generated-page,
+.blog-post {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+.generated-hero {
+  width: min(980px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 86px 0 56px;
+}
+
+.generated-hero h1,
+.blog-post h1 {
+  max-width: 860px;
+  margin: 0;
+  font-size: clamp(48px, 8vw, 104px);
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+}
+
+.generated-hero > p:not(.eyebrow) {
+  max-width: 680px;
+  margin: 24px 0;
+  color: var(--muted);
+  font-size: clamp(20px, 2vw, 26px);
+  line-height: 1.36;
+}
+
+.signup-form {
+  display: grid;
+  grid-template-columns: 0.8fr 1fr auto;
+  gap: 10px;
+  max-width: 760px;
+}
+
+.signup-form input {
+  min-width: 0;
+  min-height: 50px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 14px;
+  background: var(--paper);
+}
+
+.signup-form button {
+  padding: 0 18px;
+}
+
+.signup-done {
+  display: inline-flex;
+  border-radius: 8px;
+  background: var(--mint);
+  padding: 14px 18px;
+  color: var(--teal-dark);
+  font-weight: 850;
+}
+
+.proof-band {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.proof-band article {
+  min-height: 220px;
+  padding: 28px;
+  border-right: 1px solid var(--line);
+}
+
+.proof-band span {
+  display: block;
+  width: 30px;
+  height: 4px;
+  margin-bottom: 32px;
+  background: var(--amber);
+}
+
+.proof-band h2 {
+  margin: 0;
+  font-size: clamp(24px, 3vw, 40px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.blog-band {
+  width: min(980px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 44px 0 70px;
+  display: grid;
+  gap: 12px;
+}
+
+.blog-band a {
+  border-top: 1px solid var(--line);
+  padding: 18px 0;
+  color: var(--teal);
+  font-size: 22px;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.blog-post {
+  width: min(860px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 60px 0 90px;
+}
+
+.blog-post > a {
+  display: inline-flex;
+  margin-bottom: 36px;
+  color: var(--teal);
+  font-weight: 800;
+}
+
+.blog-post article {
+  margin-top: 36px;
+  color: #273235;
+  font-size: 20px;
+  line-height: 1.65;
+}
+
+@media (max-width: 780px) {
+  .signup-form,
+  .proof-band {
+    grid-template-columns: 1fr;
+  }
+
+  .proof-band article {
+    min-height: auto;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+}

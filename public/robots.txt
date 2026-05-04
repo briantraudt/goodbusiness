@@ -1,0 +1,17 @@
+# Good Business HQ - robots.txt
+
+User-agent: *
+Allow: /
+Disallow: /design/
+
+# Social media crawlers
+User-agent: Twitterbot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+Sitemap: https://goodbusinesshq.com/sitemap.xml

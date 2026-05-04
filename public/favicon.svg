@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <!-- antenna light -->
+  <circle cx="128" cy="24" r="10" fill="#2E6BE6"/>
+  <!-- antenna stem -->
+  <line x1="128" y1="34" x2="128" y2="66" stroke="#111111" stroke-width="10" stroke-linecap="round"/>
+  <!-- body -->
+  <rect x="20" y="60" width="216" height="180" rx="30" fill="#111111"/>
+  <!-- face panel -->
+  <rect x="44" y="96" width="168" height="116" rx="16" fill="#FAFAF7"/>
+  <!-- left eye -->
+  <rect x="82" y="130" width="22" height="26" rx="5" fill="#111111"/>
+  <!-- right eye -->
+  <rect x="152" y="130" width="22" height="26" rx="5" fill="#111111"/>
+  <!-- smile -->
+  <path d="M 84 184 Q 128 214 172 184" stroke="#2E6BE6" stroke-width="12" stroke-linecap="round" fill="none"/>
+</svg>
