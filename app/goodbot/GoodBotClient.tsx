@@ -439,7 +439,7 @@ export default function GoodBotClient() {
   const rightPanel = status
     ? buildRightPanelState(status, activeStep, activeStepIndex)
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
-  const showSignedInIntro = authState === "signed_in" && !status;
+  const showExecutionBanner = Boolean(status) || isSubmitting || Boolean(goalId && !status);
 
   return (
     <main className="goodbot-shell">
@@ -447,17 +447,15 @@ export default function GoodBotClient() {
 
       <section className="goodbot-hero">
         <div className="goodbot-copy">
-          <h1>{showSignedInIntro ? "You’re in. Let’s give GoodBot something to do." : "Autonomous Outcome Engine"}</h1>
+          <h1>Autonomous Outcome Engine</h1>
           <p className="subcopy">
-            {showSignedInIntro
-              ? "Start with a simple outcome like getting users or launching something."
-              : "Give GoodBot a user-acquisition outcome. It will prepare the work, queue the execution, and ask for approval before anything external happens."}
+            Give GoodBot a user-acquisition outcome. It will prepare the work, queue the execution, and ask for approval before anything external happens.
           </p>
         </div>
         <img src="/assets/good-business-robot.svg" alt="" className={`bot ${executionState === "executing" ? "is-executing" : ""}`} />
       </section>
 
-      <ExecutionBanner state={executionState} lastUpdatedLabel={lastUpdatedLabel} signedInIntro={showSignedInIntro} />
+      {showExecutionBanner ? <ExecutionBanner state={executionState} lastUpdatedLabel={lastUpdatedLabel} /> : null}
 
       <AuthPanel
         authState={authState}
@@ -801,11 +799,11 @@ function MissionHistory({
   );
 }
 
-function ExecutionBanner({ state, lastUpdatedLabel, signedInIntro }: { state: ExecutionState; lastUpdatedLabel: string; signedInIntro?: boolean }) {
+function ExecutionBanner({ state, lastUpdatedLabel }: { state: ExecutionState; lastUpdatedLabel: string }) {
   return (
     <section className="execution-banner" data-state={state} aria-live="polite">
       <div>
-        <strong>{signedInIntro ? "You’re in. Give GoodBot a mission." : executionStateMessage(state)}</strong>
+        <strong>{executionStateMessage(state)}</strong>
         <span>Last updated {lastUpdatedLabel}</span>
       </div>
     </section>
