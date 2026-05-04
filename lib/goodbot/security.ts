@@ -92,7 +92,8 @@ export async function enforceRateLimit(
     key?: string;
     limit: number;
     windowSeconds: number;
-  }
+  },
+  retryOnConflict = true
 ): Promise<RateLimitResult> {
   const supabase = getSupabaseAdmin();
   const now = Date.now();
@@ -131,6 +132,9 @@ export async function enforceRateLimit(
     window_start: windowStart,
     count: 1
   });
+  if (error?.code === "23505" && retryOnConflict) {
+    return enforceRateLimit(request, input, false);
+  }
   if (error) throw error;
   return { ok: true };
 }
