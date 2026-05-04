@@ -352,44 +352,6 @@
     white-space:nowrap;
   }
 
-  #process{
-    padding-top:150px;
-    padding-bottom:150px;
-    background:#f7f7f4;
-  }
-  #process .section-head{
-    align-items:start;
-    margin-bottom:64px;
-  }
-  .process{
-    display:grid;
-    grid-template-columns:repeat(4, minmax(0, 1fr));
-    gap:18px;
-    border:0;
-    border-top:0;
-    border-radius:0;
-    overflow:visible;
-    background:transparent;
-  }
-  .step{
-    min-height:290px;
-    padding:24px;
-    border:1px solid var(--line);
-    background:var(--paper);
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-    transition:background .24s ease, transform .24s ease, box-shadow .24s ease;
-  }
-  .step:nth-child(2){transform:translateY(34px)}
-  .step:nth-child(3){transform:translateY(68px)}
-  .step:nth-child(4){transform:translateY(102px)}
-  .step:hover{background:var(--ink);color:var(--paper);box-shadow:0 26px 60px rgba(24,34,38,.16)}
-  .step:hover p,.step:hover .index{color:rgba(255,255,255,.66)}
-  .step .index{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--quiet)}
-  .step h3{font-size:clamp(28px, 3vw, 46px);letter-spacing:-.06em;line-height:.92}
-  .step p{font-size:18px;line-height:1.25;color:var(--muted)}
-
   .final{
     padding:150px 0 124px;
     background:var(--paper);
@@ -458,13 +420,11 @@
     .hero{min-height:auto;padding:48px 0 56px}
     .hero-grid,.economics,.final-grid{grid-template-columns:1fr}
     .bot-stage{min-height:320px;order:-1}
-    .capability-grid,.process{grid-template-columns:1fr}
+    .capability-grid{grid-template-columns:1fr}
     .capability,.capability:nth-child(2),.capability:last-child{grid-template-columns:96px 1fr;border-right:0;border-bottom:1px solid var(--line);padding:28px 0;min-height:auto}
     .route-board{grid-template-columns:1fr}
     .route-row,.route-row:nth-child(2),.route-row:nth-child(3),.route-row:nth-child(4){border-right:0;border-bottom:1px solid rgba(255,255,255,.18)}
     .route-row:nth-child(4){border-bottom:0}
-    .step,.step:nth-child(2),.step:nth-child(3),.step:nth-child(4){transform:none;min-height:220px}
-    .step:last-child{border-bottom:0}
     .section-head{display:grid;margin-bottom:28px}
     .section{padding:74px 0}
     .economics-panel,.route-board{min-height:auto}
@@ -485,7 +445,7 @@
     .hero-actions .btn{width:min(100%, 320px)}
     .bot-stage{min-height:210px}
     .robot-wrap{width:205px}
-    #work,#adoption,#process,.final{padding-top:82px;padding-bottom:82px}
+    #work,#adoption,.final{padding-top:82px;padding-bottom:82px}
     .capability,.capability:nth-child(2),.capability:last-child{grid-template-columns:1fr;gap:18px}
     .capability .num{font-size:42px}
     .modal-card{padding:28px 22px}
@@ -614,24 +574,6 @@
     </div>
   </section>
 
-  <section class="section" id="process">
-    <div class="wrap">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">How it works</div>
-          <h2>A simple path from <em>idea</em> to launch.</h2>
-        </div>
-        <p class="lead">Small steps. Real progress.</p>
-      </div>
-      <div class="process">
-        <article class="step"><div class="index">Start</div><div><h3>Define the job</h3><p>What should this replace, speed up, or improve?</p></div></article>
-        <article class="step"><div class="index">Shape</div><div><h3>Map the first version</h3><p>One useful flow before a long feature list.</p></div></article>
-        <article class="step"><div class="index">Build</div><div><h3>Build the working tool</h3><p>Design, code, connect, test.</p></div></article>
-        <article class="step"><div class="index">Launch</div><div><h3>Measure real use</h3><p>Keep what helps. Fix what gets in the way.</p></div></article>
-      </div>
-    </div>
-  </section>
-
   <section class="final" id="contact">
     <div class="wrap final-grid">
       <div>
@@ -685,7 +627,7 @@
 
 <script>
   (function(){
-    const revealTargets = document.querySelectorAll('.section-head, .capability, .economics-panel, .route-row, .step, .final-grid');
+    const revealTargets = document.querySelectorAll('.section-head, .capability, .economics-panel, .route-row, .final-grid');
     const progress = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const amount = max > 0 ? window.scrollY / max : 0;
@@ -694,10 +636,10 @@
 
     revealTargets.forEach((el, index) => {
       el.classList.add('reveal');
-      if (el.matches('.capability:nth-child(odd), .economics-panel, .route-row:nth-child(odd), .step:nth-child(odd)')) {
+      if (el.matches('.capability:nth-child(odd), .economics-panel, .route-row:nth-child(odd)')) {
         el.classList.add('from-left');
       }
-      if (el.matches('.capability:nth-child(even), .route-row:nth-child(even), .step:nth-child(even)')) {
+      if (el.matches('.capability:nth-child(even), .route-row:nth-child(even)')) {
         el.classList.add('from-right');
       }
       el.style.transitionDelay = `${Math.min(index % 4, 3) * 70}ms`;
