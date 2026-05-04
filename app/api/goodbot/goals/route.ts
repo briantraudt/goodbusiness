@@ -7,6 +7,7 @@ import { getSupabaseAdmin } from "@/lib/goodbot/supabase";
 
 const intakeSchema = z.object({
   goal: z.string().trim().min(8).max(300),
+  project_name: z.string().trim().max(120).optional(),
   app_name: z.string().trim().max(120).optional(),
   audience: z.string().trim().max(200).optional(),
   positioning: z.string().trim().max(300).optional(),
@@ -28,7 +29,7 @@ export async function GET(request: Request) {
   const supabase = getSupabaseAdmin();
   const { data: goals, error } = await supabase
     .from("goals")
-    .select("id,goal,status,target_value,created_at,is_demo")
+    .select("id,goal,status,target_value,created_at,is_demo,project_name")
     .eq("user_id", auth.user.id)
     .order("created_at", { ascending: false })
     .limit(25);
@@ -95,6 +96,7 @@ export async function POST(request: Request) {
       app_name: goalObject.app_name,
       audience: goalObject.audience,
       positioning: goalObject.positioning,
+      project_name: parsed.data.project_name || goalObject.app_name || inferProjectName(parsed.data.goal),
       is_demo: Boolean(parsed.data.demo_mode),
       user_id: auth.user.id,
       status: "paused",
@@ -129,4 +131,16 @@ export async function POST(request: Request) {
     landing_page_url: `/goodbot/landing/${goal.id}`,
     absolute_landing_page_url: `${baseUrl}/goodbot/landing/${goal.id}`
   });
+}
+
+function inferProjectName(goal: string) {
+  const url = extractUrlFromGoal(goal);
+  if (url) {
+    try {
+      return new URL(url).hostname.replace(/^www\./, "");
+    } catch {
+      return null;
+    }
+  }
+  return null;
 }

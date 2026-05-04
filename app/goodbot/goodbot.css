@@ -264,12 +264,34 @@
 .mission-list {
   display: grid;
   gap: 8px;
-  margin: 16px 0 0;
+  margin: 10px 0 0;
   padding: 0;
   list-style: none;
 }
 
-.mission-list button {
+.project-groups {
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.project-group h3 {
+  margin: 0;
+  color: var(--teal);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mission-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.mission-select {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -280,9 +302,26 @@
   cursor: pointer;
 }
 
-.mission-list button[data-active="true"] {
+.mission-item[data-active="true"] .mission-select {
   border-color: color-mix(in oklab, var(--teal) 42%, var(--line));
   background: color-mix(in oklab, var(--mint) 42%, #ffffff);
+}
+
+.mission-delete {
+  min-width: 82px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--coral);
+  padding: 0 12px;
+  font-size: 12px;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.mission-delete:disabled {
+  opacity: 0.6;
+  cursor: wait;
 }
 
 .mission-list span {
@@ -466,9 +505,9 @@
   text-transform: uppercase;
 }
 
+.goal-form input,
 .goal-form textarea {
   min-height: 168px;
-  resize: vertical;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 18px;
@@ -477,6 +516,16 @@
   font-size: 22px;
   line-height: 1.24;
   outline: none;
+}
+
+.goal-form input {
+  min-height: 54px;
+  padding: 0 16px;
+  font-size: 18px;
+}
+
+.goal-form textarea {
+  resize: vertical;
 }
 
 .goal-form button,
@@ -1013,6 +1062,14 @@
 
   .activity-list li {
     display: grid;
+  }
+
+  .mission-item {
+    grid-template-columns: 1fr;
+  }
+
+  .mission-delete {
+    min-height: 38px;
   }
 
   .proof-row,

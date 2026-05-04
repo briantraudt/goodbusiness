@@ -109,6 +109,7 @@ type MissionSummary = {
   target_value: number;
   created_at: string;
   is_demo: boolean;
+  project_name: string | null;
   signups: number;
 };
 
@@ -140,7 +141,7 @@ type GoodBotContextRecord = {
 };
 
 type StatusResponse = {
-  goal: { id: string; goal: string; target_value: number; status: string; app_name?: string | null };
+  goal: { id: string; goal: string; target_value: number; status: string; app_name?: string | null; project_name?: string | null };
   steps: Step[];
   notifications: Notification[];
   content_assets: ContentAsset[];
@@ -163,6 +164,7 @@ type ExecutionState = "idle" | "executing" | "waiting_for_approval" | "waiting_f
 
 export default function GoodBotClient() {
   const [goal, setGoal] = useState("Get 50 users for GoodBot in 7 days");
+  const [projectName, setProjectName] = useState("");
   const [goalId, setGoalId] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [status, setStatus] = useState<StatusResponse | null>(null);
@@ -176,6 +178,8 @@ export default function GoodBotClient() {
   const [authPassword, setAuthPassword] = useState("");
   const [missions, setMissions] = useState<MissionSummary[]>([]);
   const [missionsLoading, setMissionsLoading] = useState(false);
+  const [deletingMissionId, setDeletingMissionId] = useState<string | null>(null);
+  const [autoSelectMission, setAutoSelectMission] = useState(true);
   const [contextSaving, setContextSaving] = useState(false);
   const goalInputRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -218,6 +222,7 @@ export default function GoodBotClient() {
         setGoalId(null);
         setAccessToken(null);
         setStatus(null);
+        setAutoSelectMission(true);
       }
     });
 
@@ -235,7 +240,7 @@ export default function GoodBotClient() {
   }, [session]);
 
   useEffect(() => {
-    if (!session || goalId || !missions.length) return;
+    if (!session || goalId || !missions.length || !autoSelectMission) return;
     const storedGoalId = window.localStorage.getItem("goodbot:last_goal_id");
     const storedMission = storedGoalId ? missions.find((mission) => mission.id === storedGoalId) : null;
     const activeMission = missions.find((mission) => mission.status === "active") ?? missions[0];
@@ -291,6 +296,7 @@ export default function GoodBotClient() {
       headers: buildApiHeaders(session, null, { "Content-Type": "application/json" }),
       body: JSON.stringify({
         goal,
+        project_name: projectName.trim() || undefined,
         demo_mode: demoMode || undefined
       })
     });
@@ -305,6 +311,7 @@ export default function GoodBotClient() {
 
     setGoalId(payload.goal_id);
     setAccessToken(payload.access_token);
+    setAutoSelectMission(true);
     window.localStorage.setItem(`goodbot:${payload.goal_id}:access_token`, payload.access_token);
     window.localStorage.setItem("goodbot:last_goal_id", payload.goal_id);
     window.history.replaceState(null, "", `/goodbot?goalId=${payload.goal_id}&access_token=${encodeURIComponent(payload.access_token)}`);
@@ -448,6 +455,8 @@ export default function GoodBotClient() {
   function selectMission(mission: MissionSummary) {
     setGoalId(mission.id);
     setGoal(mission.goal);
+    setProjectName(mission.project_name || "");
+    setAutoSelectMission(true);
     setStatus(null);
     const token = window.localStorage.getItem(`goodbot:${mission.id}:access_token`);
     setAccessToken(token);
@@ -460,8 +469,51 @@ export default function GoodBotClient() {
     setGoalId(null);
     setStatus(null);
     setAccessToken(null);
+    setProjectName("");
+    setAutoSelectMission(false);
     window.history.replaceState(null, "", "/goodbot");
     window.setTimeout(() => goalInputRef.current?.focus(), 0);
+  }
+
+  async function deleteMission(mission: MissionSummary) {
+    if (!session) {
+      setError("Sign in before deleting a mission.");
+      return;
+    }
+
+    const confirmed = window.confirm(`Delete "${mission.goal}" and all generated GoodBot work for this mission? This cannot be undone.`);
+    if (!confirmed) return;
+
+    setDeletingMissionId(mission.id);
+    setError(null);
+
+    const response = await fetch(`/api/goodbot/goals/${mission.id}`, {
+      method: "DELETE",
+      headers: buildApiHeaders(session, null)
+    });
+    const payload = await response.json().catch(() => ({}));
+    setDeletingMissionId(null);
+
+    if (!response.ok) {
+      setError(payload.error || "GoodBot could not delete that mission.");
+      return;
+    }
+
+    window.localStorage.removeItem(`goodbot:${mission.id}:access_token`);
+    if (window.localStorage.getItem("goodbot:last_goal_id") === mission.id) {
+      window.localStorage.removeItem("goodbot:last_goal_id");
+    }
+
+    if (goalId === mission.id) {
+      setGoalId(null);
+      setStatus(null);
+      setAccessToken(null);
+      setProjectName("");
+      setAutoSelectMission(false);
+      window.history.replaceState(null, "", "/goodbot");
+    }
+
+    await loadMissions(session.access_token);
   }
 
   async function copyText(text: string) {
@@ -523,6 +575,14 @@ export default function GoodBotClient() {
 
       {canUseGoodBot ? <section className="workbench" aria-label="GoodBot goal intake">
         <form onSubmit={submitGoal} className="goal-form">
+          <label htmlFor="project-name">Project Name</label>
+          <input
+            id="project-name"
+            value={projectName}
+            onChange={(event) => setProjectName(event.target.value)}
+            placeholder="NDA.company"
+            maxLength={120}
+          />
           <label htmlFor="goal">Give GoodBot the Mission</label>
           <textarea
             ref={goalInputRef}
@@ -590,6 +650,8 @@ export default function GoodBotClient() {
           missionsLoading={missionsLoading}
           onSelectMission={selectMission}
           onNewMission={startNewMission}
+          onDeleteMission={deleteMission}
+          deletingMissionId={deletingMissionId}
         />
       ) : null}
 
@@ -818,14 +880,20 @@ function MissionHistory({
   selectedGoalId,
   missionsLoading,
   onSelectMission,
-  onNewMission
+  onNewMission,
+  onDeleteMission,
+  deletingMissionId
 }: {
   missions: MissionSummary[];
   selectedGoalId: string | null;
   missionsLoading: boolean;
   onSelectMission: (mission: MissionSummary) => void;
   onNewMission: () => void;
+  onDeleteMission: (mission: MissionSummary) => void;
+  deletingMissionId: string | null;
 }) {
+  const groupedMissions = groupMissionsByProject(missions);
+
   return (
     <section className="mission-history" aria-label="My missions">
       <div className="missions-heading">
@@ -838,23 +906,51 @@ function MissionHistory({
         </button>
       </div>
       {missionsLoading ? <p className="empty">Loading missions...</p> : null}
-      {missions.length ? (
-        <ol className="mission-list">
-          {missions.map((mission) => (
-            <li key={mission.id}>
-              <button type="button" onClick={() => onSelectMission(mission)} data-active={mission.id === selectedGoalId}>
-                <span>{mission.goal}</span>
-                <small>
-                  {mission.status} / {new Date(mission.created_at).toLocaleDateString()} / {mission.signups} of {mission.target_value} users
-                  {mission.is_demo ? " / demo" : ""}
-                </small>
-              </button>
-            </li>
+      {groupedMissions.length ? (
+        <div className="project-groups">
+          {groupedMissions.map((group) => (
+            <section key={group.projectName} className="project-group">
+              <h3>{group.projectName}</h3>
+              <ol className="mission-list">
+                {group.missions.map((mission) => (
+                  <li key={mission.id} className="mission-item" data-active={mission.id === selectedGoalId}>
+                    <button type="button" className="mission-select" onClick={() => onSelectMission(mission)}>
+                      <span>{mission.goal}</span>
+                      <small>
+                        {mission.status} / {new Date(mission.created_at).toLocaleDateString()} / {mission.signups} of {mission.target_value} users
+                        {mission.is_demo ? " / demo" : ""}
+                      </small>
+                    </button>
+                    <button
+                      type="button"
+                      className="mission-delete"
+                      onClick={() => onDeleteMission(mission)}
+                      disabled={deletingMissionId === mission.id}
+                    >
+                      {deletingMissionId === mission.id ? "Deleting..." : "Delete"}
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </section>
           ))}
-        </ol>
+        </div>
       ) : null}
     </section>
   );
+}
+
+function groupMissionsByProject(missions: MissionSummary[]) {
+  const groups = new Map<string, MissionSummary[]>();
+  for (const mission of missions) {
+    const projectName = mission.project_name?.trim() || "Untitled Project";
+    groups.set(projectName, [...(groups.get(projectName) ?? []), mission]);
+  }
+
+  return Array.from(groups.entries()).map(([projectName, projectMissions]) => ({
+    projectName,
+    missions: projectMissions
+  }));
 }
 
 function ContextPanel({
