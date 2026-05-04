@@ -164,7 +164,6 @@ type ExecutionState = "idle" | "executing" | "waiting_for_approval" | "waiting_f
 
 export default function GoodBotClient() {
   const [goal, setGoal] = useState("Get 50 users for GoodBot in 7 days");
-  const [projectName, setProjectName] = useState("");
   const [goalId, setGoalId] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [status, setStatus] = useState<StatusResponse | null>(null);
@@ -296,7 +295,6 @@ export default function GoodBotClient() {
       headers: buildApiHeaders(session, null, { "Content-Type": "application/json" }),
       body: JSON.stringify({
         goal,
-        project_name: projectName.trim() || undefined,
         demo_mode: demoMode || undefined
       })
     });
@@ -455,7 +453,6 @@ export default function GoodBotClient() {
   function selectMission(mission: MissionSummary) {
     setGoalId(mission.id);
     setGoal(mission.goal);
-    setProjectName(mission.project_name || "");
     setAutoSelectMission(true);
     setStatus(null);
     const token = window.localStorage.getItem(`goodbot:${mission.id}:access_token`);
@@ -469,7 +466,6 @@ export default function GoodBotClient() {
     setGoalId(null);
     setStatus(null);
     setAccessToken(null);
-    setProjectName("");
     setAutoSelectMission(false);
     window.history.replaceState(null, "", "/goodbot");
     window.setTimeout(() => goalInputRef.current?.focus(), 0);
@@ -508,7 +504,6 @@ export default function GoodBotClient() {
       setGoalId(null);
       setStatus(null);
       setAccessToken(null);
-      setProjectName("");
       setAutoSelectMission(false);
       window.history.replaceState(null, "", "/goodbot");
     }
@@ -546,6 +541,8 @@ export default function GoodBotClient() {
     ? buildRightPanelState(status, activeStep, activeStepIndex)
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
   const showExecutionBanner = executionState !== "idle" && (Boolean(status) || isSubmitting || Boolean(goalId && !status));
+  const heroTitle = canUseGoodBot ? "Give GoodBot a mission." : "GoodBot";
+  const heroSubcopy = canUseGoodBot ? "Tell it the outcome. It handles the work." : "Sign in to save your missions and let GoodBot handle the work.";
 
   return (
     <main className="goodbot-shell">
@@ -553,38 +550,32 @@ export default function GoodBotClient() {
 
       <section className={`goodbot-hero ${canUseGoodBot ? "with-intake" : ""}`}>
         <div className="goodbot-copy">
-          <h1>Autonomous Outcome Engine</h1>
-          <p className="subcopy">
-            Give GoodBot a user-acquisition outcome. It will prepare the work, queue the execution, and ask for approval before anything external happens.
-          </p>
+          <p className="hero-label">GoodBot</p>
+          <h1>{heroTitle}</h1>
+          <p className="subcopy">{heroSubcopy}</p>
         </div>
         {canUseGoodBot ? (
           <form onSubmit={submitGoal} className="goal-form hero-goal-form">
-            <label htmlFor="project-name">Project Name</label>
-            <input
-              id="project-name"
-              value={projectName}
-              onChange={(event) => setProjectName(event.target.value)}
-              placeholder="NDA.company"
-              maxLength={120}
-            />
-            <label htmlFor="goal">Give GoodBot the Mission</label>
             <textarea
               ref={goalInputRef}
               id="goal"
               value={goal}
               onChange={(event) => setGoal(event.target.value)}
-              placeholder='Tell GoodBot the outcome. Example: "Get 50 users for my app in 7 days."'
+              placeholder="Get 25 users for nda.company in 7 days"
+              aria-label="GoodBot mission"
             />
             <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Starting GoodBot…" : "Give GoodBot the mission"}
+              {isSubmitting ? "Starting GoodBot…" : "Let GoodBot handle it"}
             </button>
-            <p className="approval-note">GoodBot prepares the work first. Nothing external is posted, sent, or shared without your approval.</p>
+            <p className="approval-note">Nothing is posted or sent without your approval.</p>
+            <ul className="promise-list">
+              <li>Builds your landing page</li>
+              <li>Creates content</li>
+              <li>Tells you what to approve</li>
+            </ul>
             {error ? <p className="error">{error}</p> : null}
           </form>
-        ) : (
-          <img src="/assets/good-business-robot.svg" alt="" className={`bot ${executionState === "executing" ? "is-executing" : ""}`} />
-        )}
+        ) : null}
       </section>
 
       {showExecutionBanner ? <ExecutionBanner state={executionState} lastUpdatedLabel={lastUpdatedLabel} /> : null}
@@ -599,7 +590,7 @@ export default function GoodBotClient() {
       />
       {error && !canUseGoodBot ? <p className="auth-error error">{error}</p> : null}
 
-      {canUseGoodBot ? <section className="workbench support-workbench" aria-label="GoodBot goal intake">
+      {canUseGoodBot && status ? <section className="workbench support-workbench" aria-label="GoodBot status">
         <div className="status-panel operator-panel">
           <div className="operator-heading-row">
             <div>

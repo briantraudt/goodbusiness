@@ -67,25 +67,28 @@
 }
 
 .goodbot-hero {
-  min-height: 32vh;
+  min-height: 58vh;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px;
+  grid-template-columns: 1fr;
   align-items: center;
-  gap: 48px;
-  width: min(1120px, 100%);
+  justify-items: center;
+  gap: 22px;
+  width: min(760px, 100%);
   margin: 0 auto;
-  padding: 34px 0 22px;
+  padding: 70px 0 44px;
+  text-align: center;
 }
 
 .goodbot-hero.with-intake {
-  min-height: 0;
-  grid-template-columns: minmax(0, 0.98fr) minmax(360px, 0.72fr);
-  align-items: end;
-  gap: 34px;
-  padding: 26px 0 18px;
+  min-height: 66vh;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 58px 0 34px;
 }
 
-.eyebrow {
+.eyebrow,
+.hero-label {
   margin: 0 0 18px;
   color: var(--teal);
   font-size: 12px;
@@ -95,30 +98,30 @@
 }
 
 .goodbot-copy h1 {
-  max-width: 780px;
+  max-width: 760px;
   margin: 0;
-  font-size: clamp(54px, 8vw, 112px);
-  line-height: 0.88;
-  letter-spacing: -0.06em;
+  font-size: clamp(54px, 7vw, 92px);
+  line-height: 0.95;
+  letter-spacing: -0.055em;
 }
 
 .goodbot-hero.with-intake .goodbot-copy h1 {
-  max-width: 680px;
-  font-size: clamp(54px, 7vw, 98px);
+  max-width: 720px;
+  font-size: clamp(48px, 6vw, 76px);
 }
 
 .subcopy {
-  max-width: 720px;
-  margin: 28px 0 0;
+  max-width: 620px;
+  margin: 18px auto 0;
   color: var(--muted);
-  font-size: clamp(18px, 2vw, 24px);
-  line-height: 1.38;
+  font-size: clamp(18px, 2vw, 23px);
+  line-height: 1.3;
 }
 
 .goodbot-hero.with-intake .subcopy {
-  max-width: 620px;
-  margin-top: 22px;
-  font-size: clamp(17px, 1.65vw, 22px);
+  max-width: 560px;
+  margin-top: 14px;
+  font-size: clamp(18px, 1.7vw, 22px);
 }
 
 .bot {
@@ -521,8 +524,11 @@
 }
 
 .hero-goal-form {
-  align-self: end;
-  padding: 22px;
+  width: min(680px, 100%);
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
 }
 
 .goal-form label,
@@ -534,37 +540,32 @@
   text-transform: uppercase;
 }
 
-.goal-form input,
 .goal-form textarea {
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 18px;
+  border-radius: 10px;
+  padding: 24px;
   color: var(--ink);
-  background: var(--paper);
-  font-size: 22px;
-  line-height: 1.24;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(31, 83, 87, 0.08);
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1.18;
   outline: none;
 }
 
-.goal-form input {
-  min-height: 54px;
-  padding: 0 16px;
-  font-size: 18px;
-}
-
 .goal-form textarea {
-  min-height: 156px;
+  min-height: 170px;
   resize: vertical;
 }
 
 .goal-form button,
 .landing-link,
 .signup-form button {
-  min-height: 48px;
+  min-height: 58px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--ink);
   color: #ffffff;
+  font-size: 17px;
   font-weight: 850;
   cursor: pointer;
 }
@@ -575,10 +576,37 @@
 }
 
 .approval-note {
-  margin: -2px 0 0;
+  margin: -4px 0 0;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.45;
+}
+
+.promise-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 16px;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--quiet);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.promise-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.promise-list li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--teal);
 }
 
 .operator-heading-row {
