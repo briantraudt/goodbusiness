@@ -4,6 +4,10 @@
   "installCommand": "npm install",
   "crons": [
     {
+      "path": "/api/cron/goodbot-jobs",
+      "schedule": "*/5 * * * *"
+    },
+    {
       "path": "/api/cron/goodbot-feedback",
       "schedule": "0 14 * * *"
     }

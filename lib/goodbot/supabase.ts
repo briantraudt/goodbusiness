@@ -1,25 +1,20 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 let adminClient: SupabaseClient | null = null;
+let anonClient: SupabaseClient | null = null;
 
-const GOOD_BUSINESS_SUPABASE_URL = "https://qiyjzukzhwklkmpdxmfl.supabase.co";
-const GOOD_BUSINESS_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_wlKLDRgzNPEhy3sD92Htzg_5s7r-_QS";
+function requiredEnv(name: string) {
+  const value = process.env[name];
+  if (!value) {
+    throw new Error(`GoodBot is missing required environment variable: ${name}.`);
+  }
+  return value;
+}
 
 export function getSupabaseAdmin() {
   if (adminClient) return adminClient;
 
-  const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || GOOD_BUSINESS_SUPABASE_URL;
-  const apiKey =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.SUPABASE_PUBLISHABLE_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-    GOOD_BUSINESS_SUPABASE_PUBLISHABLE_KEY;
-
-  if (!url || !apiKey) {
-    throw new Error("Supabase is not configured.");
-  }
-
-  adminClient = createClient(url, apiKey, {
+  adminClient = createClient(requiredEnv("NEXT_PUBLIC_SUPABASE_URL"), requiredEnv("SUPABASE_SERVICE_ROLE_KEY"), {
     auth: {
       autoRefreshToken: false,
       persistSession: false
@@ -27,4 +22,17 @@ export function getSupabaseAdmin() {
   });
 
   return adminClient;
+}
+
+export function getSupabaseAnon() {
+  if (anonClient) return anonClient;
+
+  anonClient = createClient(requiredEnv("NEXT_PUBLIC_SUPABASE_URL"), requiredEnv("NEXT_PUBLIC_SUPABASE_ANON_KEY"), {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  });
+
+  return anonClient;
 }

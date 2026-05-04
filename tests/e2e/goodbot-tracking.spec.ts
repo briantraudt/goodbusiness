@@ -13,19 +13,23 @@ test("GoodBot tracking URL records attributed visit and signup", async ({ page, 
   expect(goalResponse.ok()).toBeTruthy();
   const goalPayload = await goalResponse.json();
   const goalId = goalPayload.goal_id as string;
+  const accessToken = goalPayload.access_token as string;
+  expect(accessToken).toBeTruthy();
 
   await runGoodBotJobs(request);
 
-  const initialStatus = await getStatus(request, goalId);
+  const initialStatus = await getStatus(request, goalId, accessToken);
   const asset = initialStatus.content_assets.find((item: any) => item.content_type === "linkedin_post");
   expect(asset?.id).toBeTruthy();
 
   const approveResponse = await request.patch(`/api/goodbot/assets/${asset.id}`, {
+    headers: accessHeaders(accessToken),
     data: { action: "approve" }
   });
   expect(approveResponse.ok()).toBeTruthy();
 
   const distributeResponse = await request.patch(`/api/goodbot/assets/${asset.id}`, {
+    headers: accessHeaders(accessToken),
     data: {
       action: "mark_distributed",
       claimed_url: `${appBaseUrl}/goodbot`
@@ -33,7 +37,7 @@ test("GoodBot tracking URL records attributed visit and signup", async ({ page, 
   });
   expect(distributeResponse.ok()).toBeTruthy();
 
-  const distributedStatus = await getStatus(request, goalId);
+  const distributedStatus = await getStatus(request, goalId, accessToken);
   const distributionEvent = distributedStatus.distribution_events.find((event: any) => event.content_asset_id === asset.id);
   expect(distributionEvent?.tracking_url).toBeTruthy();
 
@@ -42,7 +46,7 @@ test("GoodBot tracking URL records attributed visit and signup", async ({ page, 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
   await expect.poll(async () => {
-    const status = await getStatus(request, goalId);
+    const status = await getStatus(request, goalId, accessToken);
     const row = status.attribution.by_distribution_event.find((item: any) => item.id === distributionEvent.id);
     return row?.visits ?? 0;
   }).toBeGreaterThan(0);
@@ -53,12 +57,12 @@ test("GoodBot tracking URL records attributed visit and signup", async ({ page, 
   await expect(page.getByText("You are on the list.")).toBeVisible();
 
   await expect.poll(async () => {
-    const status = await getStatus(request, goalId);
+    const status = await getStatus(request, goalId, accessToken);
     const row = status.attribution.by_distribution_event.find((item: any) => item.id === distributionEvent.id);
     return row?.signups ?? 0;
   }).toBeGreaterThan(0);
 
-  const finalStatus = await getStatus(request, goalId);
+  const finalStatus = await getStatus(request, goalId, accessToken);
   const assetAttribution = finalStatus.attribution.by_asset.find((item: any) => item.id === asset.id);
   const variantId = new URL(distributionEvent.tracking_url).searchParams.get("landing_page_variant_id");
   const variantAttribution = finalStatus.attribution.by_variant.find((item: any) => item.id === variantId);
@@ -71,17 +75,26 @@ test("GoodBot tracking URL records attributed visit and signup", async ({ page, 
 
 async function runGoodBotJobs(request: any) {
   for (let index = 0; index < 8; index += 1) {
-    const response = await request.post("/api/cron/goodbot-jobs");
+    const response = await request.post("/api/cron/goodbot-jobs", { headers: cronHeaders() });
     expect(response.ok()).toBeTruthy();
     const payload = await response.json();
     if (!payload.processed) return;
   }
 }
 
-async function getStatus(request: any, goalId: string) {
+async function getStatus(request: any, goalId: string, accessToken: string) {
   const response = await request.get(`/api/goodbot/status/${goalId}`, {
-    headers: { "Cache-Control": "no-cache" }
+    headers: { "Cache-Control": "no-cache", ...accessHeaders(accessToken) }
   });
   expect(response.ok()).toBeTruthy();
   return response.json();
+}
+
+function accessHeaders(accessToken: string) {
+  return { "x-goodbot-access-token": accessToken };
+}
+
+function cronHeaders() {
+  const secret = process.env.CRON_SECRET || "local-cron-secret";
+  return { authorization: `Bearer ${secret}` };
 }

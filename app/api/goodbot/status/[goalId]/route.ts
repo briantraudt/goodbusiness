@@ -1,8 +1,19 @@
 import { NextResponse } from "next/server";
+import { enforceRateLimit, readClientIp, requireGoalAccess } from "@/lib/goodbot/security";
 import { getSupabaseAdmin } from "@/lib/goodbot/supabase";
 
-export async function GET(_: Request, { params }: { params: Promise<{ goalId: string }> }) {
+export async function GET(request: Request, { params }: { params: Promise<{ goalId: string }> }) {
   const { goalId } = await params;
+  const access = await requireGoalAccess(request, goalId);
+  if (!access.ok) return access.response;
+  const rateLimit = await enforceRateLimit(request, {
+    name: "goodbot:status",
+    key: `${goalId}:${readClientIp(request)}`,
+    limit: 120,
+    windowSeconds: 60
+  });
+  if (!rateLimit.ok) return rateLimit.response;
+
   const supabase = getSupabaseAdmin();
   const [
     { data: goal, error: goalError },

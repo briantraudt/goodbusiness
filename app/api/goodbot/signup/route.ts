@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { enforceRateLimit, readClientIp } from "@/lib/goodbot/security";
 import { getSupabaseAdmin } from "@/lib/goodbot/supabase";
 
 const signupSchema = z.object({
@@ -25,6 +26,14 @@ export async function POST(request: Request) {
   }
 
   const supabase = getSupabaseAdmin();
+  const rateLimit = await enforceRateLimit(request, {
+    name: "goodbot:signup",
+    key: `${parsed.data.goal_id}:${readClientIp(request)}`,
+    limit: 10,
+    windowSeconds: 60 * 60
+  });
+  if (!rateLimit.ok) return rateLimit.response;
+
   const { data: goal } = await supabase.from("goals").select("is_demo").eq("id", parsed.data.goal_id).maybeSingle();
   const isDemo = Boolean(parsed.data.demo_mode || goal?.is_demo);
   const { error } = await supabase.from("leads").upsert(

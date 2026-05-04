@@ -1,13 +1,17 @@
 import { NextResponse } from "next/server";
 import { runDailyFeedbackLoop } from "@/lib/goodbot/executors";
+import { enforceRateLimit, readClientIp, requireCronAuth } from "@/lib/goodbot/security";
 
 export async function GET(request: Request) {
-  const cronSecret = process.env.CRON_SECRET;
-  const authHeader = request.headers.get("authorization");
-
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    return new Response("Unauthorized", { status: 401 });
-  }
+  const unauthorized = requireCronAuth(request);
+  if (unauthorized) return unauthorized;
+  const rateLimit = await enforceRateLimit(request, {
+    name: "cron:goodbot-feedback",
+    key: readClientIp(request),
+    limit: 30,
+    windowSeconds: 60
+  });
+  if (!rateLimit.ok) return rateLimit.response;
 
   const { searchParams } = new URL(request.url);
   const goalId = searchParams.get("goalId") || undefined;

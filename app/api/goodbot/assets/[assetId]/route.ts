@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { enforceRateLimit, getGoodBotBaseUrl, readClientIp, requireAssetAccess } from "@/lib/goodbot/security";
 import { getSupabaseAdmin } from "@/lib/goodbot/supabase";
 
 const actionSchema = z.discriminatedUnion("action", [
@@ -21,6 +22,16 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ as
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid asset action." }, { status: 400 });
   }
+
+  const access = await requireAssetAccess(request, assetId);
+  if (!access.ok) return access.response;
+  const rateLimit = await enforceRateLimit(request, {
+    name: "goodbot:asset-mutation",
+    key: `${access.goalId}:${readClientIp(request)}`,
+    limit: 60,
+    windowSeconds: 60
+  });
+  if (!rateLimit.ok) return rateLimit.response;
 
   const supabase = getSupabaseAdmin();
   const { data: asset, error: assetError } = await supabase.from("content_assets").select("*").eq("id", assetId).single();
@@ -213,8 +224,7 @@ function buildTrackingUrl(
     contentType: string;
   }
 ) {
-  const origin = new URL(request.url).origin;
-  const url = new URL(`/goodbot/landing/${input.goalId}`, origin);
+  const url = new URL(`/goodbot/landing/${input.goalId}`, getGoodBotBaseUrl(request));
   url.searchParams.set("utm_source", sourceForAsset(input.contentType));
   url.searchParams.set("utm_medium", mediumForAsset(input.contentType));
   url.searchParams.set("utm_campaign", `goodbot_${input.goalId}`);

@@ -124,16 +124,34 @@ export default function GoodBotClient() {
   const [appName, setAppName] = useState("");
   const [audience, setAudience] = useState("");
   const [goalId, setGoalId] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
   const [status, setStatus] = useState<StatusResponse | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlGoalId = params.get("goalId");
+    const urlToken = params.get("access_token");
+    if (urlGoalId && urlToken) {
+      setGoalId(urlGoalId);
+      setAccessToken(urlToken);
+      window.localStorage.setItem(`goodbot:${urlGoalId}:access_token`, urlToken);
+    }
+  }, []);
+
+  useEffect(() => {
     if (!goalId) return;
+    const tokenValue = accessToken || window.localStorage.getItem(`goodbot:${goalId}:access_token`);
+    if (!tokenValue) return;
+    if (!accessToken) setAccessToken(tokenValue);
+    const token = tokenValue;
     let cancelled = false;
 
     async function loadStatus() {
-      const response = await fetch(`/api/goodbot/status/${goalId}`);
+      const response = await fetch(`/api/goodbot/status/${goalId}`, {
+        headers: { "x-goodbot-access-token": token }
+      });
       if (!response.ok || cancelled) return;
       setStatus(await response.json());
     }
@@ -144,20 +162,7 @@ export default function GoodBotClient() {
       cancelled = true;
       window.clearInterval(interval);
     };
-  }, [goalId]);
-
-  useEffect(() => {
-    if (!status) return;
-    const queuedWork = status.jobs.some((job) => job.status === "pending" || job.status === "running");
-    const unfinishedSteps = status.steps.some((step) => step.status === "pending" || step.status === "running");
-    if (!queuedWork && !unfinishedSteps) return;
-
-    const timer = window.setTimeout(() => {
-      fetch("/api/cron/goodbot-jobs", { method: "POST" }).catch(() => undefined);
-    }, 750);
-
-    return () => window.clearTimeout(timer);
-  }, [status]);
+  }, [goalId, accessToken]);
 
   const currentState = useMemo(() => {
     if (!status) return "Waiting for a mission.";
@@ -176,6 +181,7 @@ export default function GoodBotClient() {
     setError(null);
     setStatus(null);
     setGoalId(null);
+    setAccessToken(null);
 
     const response = await fetch("/api/goodbot/goals", {
       method: "POST",
@@ -196,6 +202,9 @@ export default function GoodBotClient() {
     }
 
     setGoalId(payload.goal_id);
+    setAccessToken(payload.access_token);
+    window.localStorage.setItem(`goodbot:${payload.goal_id}:access_token`, payload.access_token);
+    window.history.replaceState(null, "", `/goodbot?goalId=${payload.goal_id}&access_token=${encodeURIComponent(payload.access_token)}`);
   }
 
   async function assetAction(asset: ContentAsset, action: "approve" | "reject" | "edit" | "mark_distributed") {
@@ -213,7 +222,7 @@ export default function GoodBotClient() {
 
     const response = await fetch(`/api/goodbot/assets/${asset.id}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-goodbot-access-token": accessToken || "" },
       body: JSON.stringify(body)
     });
 
@@ -224,7 +233,9 @@ export default function GoodBotClient() {
     }
 
     if (goalId) {
-      const statusResponse = await fetch(`/api/goodbot/status/${goalId}`);
+      const statusResponse = await fetch(`/api/goodbot/status/${goalId}`, {
+        headers: { "x-goodbot-access-token": accessToken || "" }
+      });
       if (statusResponse.ok) setStatus(await statusResponse.json());
     }
   }
@@ -232,7 +243,7 @@ export default function GoodBotClient() {
   async function recommendationAction(recommendation: Recommendation, action: "approve" | "reject") {
     const response = await fetch(`/api/goodbot/recommendations/${recommendation.id}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-goodbot-access-token": accessToken || "" },
       body: JSON.stringify({ action })
     });
 
@@ -242,12 +253,10 @@ export default function GoodBotClient() {
       return;
     }
 
-    if (action === "approve") {
-      fetch("/api/cron/goodbot-jobs", { method: "POST" }).catch(() => undefined);
-    }
-
     if (goalId) {
-      const statusResponse = await fetch(`/api/goodbot/status/${goalId}`);
+      const statusResponse = await fetch(`/api/goodbot/status/${goalId}`, {
+        headers: { "x-goodbot-access-token": accessToken || "" }
+      });
       if (statusResponse.ok) setStatus(await statusResponse.json());
     }
   }

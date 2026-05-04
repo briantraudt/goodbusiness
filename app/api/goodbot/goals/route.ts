@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { enqueueFirstPendingStep } from "@/lib/goodbot/executors";
 import { createPlan, parseGoal } from "@/lib/goodbot/planner";
+import { createGoalAccessToken, enforceRateLimit, getGoodBotBaseUrl, hashToken, readClientIp } from "@/lib/goodbot/security";
 import { getSupabaseAdmin } from "@/lib/goodbot/supabase";
 
 const intakeSchema = z.object({
@@ -21,6 +22,15 @@ export async function POST(request: Request) {
   }
 
   const supabase = getSupabaseAdmin();
+  const rateLimit = await enforceRateLimit(request, {
+    name: "goodbot:goal-create",
+    key: readClientIp(request),
+    limit: 5,
+    windowSeconds: 60 * 60
+  });
+  if (!rateLimit.ok) return rateLimit.response;
+
+  const accessToken = createGoalAccessToken();
   const goalObject = {
     ...parseGoal(parsed.data.goal),
     app_name: parsed.data.app_name || parseGoal(parsed.data.goal).app_name,
@@ -38,7 +48,8 @@ export async function POST(request: Request) {
       app_name: goalObject.app_name,
       audience: goalObject.audience,
       positioning: goalObject.positioning,
-      is_demo: Boolean(parsed.data.demo_mode)
+      is_demo: Boolean(parsed.data.demo_mode),
+      access_token_hash: hashToken(accessToken)
     })
     .select("*")
     .single();
@@ -83,10 +94,15 @@ export async function POST(request: Request) {
     console.error("GoodBot job enqueue failed", error);
   }
 
+  const statusUrl = `/api/goodbot/status/${goal.id}?access_token=${encodeURIComponent(accessToken)}`;
+  const baseUrl = getGoodBotBaseUrl(request);
+
   return NextResponse.json({
     goal_id: goal.id,
+    access_token: accessToken,
     goal: goalObject,
-    status_url: `/api/goodbot/status/${goal.id}`,
-    landing_page_url: `/goodbot/landing/${goal.id}`
+    status_url: statusUrl,
+    landing_page_url: `/goodbot/landing/${goal.id}`,
+    absolute_landing_page_url: `${baseUrl}/goodbot/landing/${goal.id}`
   });
 }

@@ -157,6 +157,7 @@ export type GoalRecord = {
   audience: string | null;
   positioning: string | null;
   is_demo?: boolean;
+  access_token_hash?: string | null;
   status: "working" | "paused" | "completed" | "failed";
 };
 
