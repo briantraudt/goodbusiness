@@ -125,11 +125,12 @@
 }
 
 .goodbot-copy h1 {
-  max-width: 1040px;
+  max-width: 100%;
   margin: 0;
-  font-size: clamp(76px, 10.4vw, 154px);
-  line-height: 0.84;
+  font-size: clamp(20px, 6.5vw, 118px);
+  line-height: 0.9;
   letter-spacing: -0.045em;
+  white-space: nowrap;
 }
 
 .goodbot-hero.with-intake .goodbot-copy h1 {
@@ -143,12 +144,13 @@
   align-items: center;
   justify-content: center;
   gap: 20px;
-  margin: 8px auto 0;
+  margin: 10px auto 0;
   color: var(--ink);
-  font-size: clamp(58px, 7.4vw, 128px);
+  font-size: clamp(20px, 6.5vw, 118px);
   font-weight: 850;
-  line-height: 0.84;
+  line-height: 0.9;
   letter-spacing: -0.045em;
+  white-space: nowrap;
 }
 
 .subcopy span {
@@ -156,18 +158,10 @@
 }
 
 .hero-bot {
-  width: clamp(58px, 5.8vw, 96px);
+  width: 0.72em;
   flex: 0 0 auto;
   height: auto;
   filter: drop-shadow(0 26px 32px rgba(18, 54, 58, 0.16));
-}
-
-.hero-support {
-  max-width: 760px;
-  margin: 28px auto 0;
-  color: var(--muted);
-  font-size: clamp(18px, 1.8vw, 25px);
-  line-height: 1.28;
 }
 
 .goodbot-hero.with-intake .subcopy {
@@ -1398,21 +1392,7 @@
   }
 
   .subcopy {
-    gap: 12px;
-    flex-wrap: wrap;
-    font-size: clamp(40px, 12vw, 64px);
-  }
-
-  .subcopy span {
-    white-space: normal;
-  }
-
-  .hero-bot {
-    width: clamp(48px, 14vw, 68px);
-  }
-
-  .hero-support {
-    font-size: 17px;
+    gap: 8px;
   }
 
   .wish-bot {
