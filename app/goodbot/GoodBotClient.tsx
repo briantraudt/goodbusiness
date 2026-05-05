@@ -658,20 +658,10 @@ export default function GoodBotClient() {
 
       <section className={`goodbot-hero ${canUseGoodBot ? "with-intake" : ""} ${hasMissionInFlight ? "is-compact" : ""}`}>
         {!canUseGoodBot ? (
-          <div className="goodbot-copy" aria-label="Want mailbox money? Then meet your Mailbot.">
-            <p className="type-line type-money" aria-hidden="true">Want Mailbox Money?</p>
-            <div className="mailbot-reveal" aria-hidden="true">
-              <p className="type-line type-mailman">
-                Then Meet Your Mail<span className="mail-suffix">
-                  <span className="suffix-man">man</span>
-                  <span className="mailman-strike" />
-                  <span className="suffix-bot">bot</span>
-                </span>.
-              </p>
-              <div className="mailbot-final">
-                <span className="bot-bubble">Hi!</span>
-                <img className="hero-bot" src="/assets/good-business-robot.svg" alt="" />
-              </div>
+          <div className="goodbot-copy" aria-label="GoodBot says hi">
+            <div className="mailbot-final">
+              <span className="bot-bubble">Hi!</span>
+              <img className="hero-bot" src="/assets/good-business-robot.svg" alt="" />
             </div>
             <button className="hero-signup-button" type="button" onClick={() => setShowAuthForm(true)}>
               Sign up
