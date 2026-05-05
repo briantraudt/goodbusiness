@@ -1208,23 +1208,6 @@
   color: var(--muted);
 }
 
-.debug-output {
-  grid-column: 1 / -1;
-  max-height: 260px;
-  overflow: auto;
-  margin: 0;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #ffffff;
-  color: #263235;
-  padding: 12px;
-  white-space: pre-wrap;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 12px;
-  line-height: 1.45;
-  text-align: left;
-}
-
 .recommendation-card h3 {
   margin: 0;
   font-size: clamp(24px, 3vw, 38px);
