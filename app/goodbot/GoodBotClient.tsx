@@ -952,10 +952,10 @@ function AutonomyPanel({
             ? `Reconnect LinkedIn${status.integrations?.linkedin?.reconnect_reason ? `: ${status.integrations.linkedin.reconnect_reason}` : " to keep posting."}`
             : linkedinConnected
             ? `LinkedIn connected${status.integrations?.linkedin?.account_name ? ` as ${status.integrations.linkedin.account_name}` : ""}.`
-            : "Connect LinkedIn before GoodBot can post or monitor comments."}
+            : "Connect LinkedIn before GoodBot can publish approved posts."}
         </p>
         {linkedinConnected && !commentMonitoringAvailable ? (
-          <p className="inline-warning">Comment monitoring not available for this LinkedIn app yet.</p>
+          <p className="inline-warning">GoodBot can publish approved posts. Reading comments is not enabled for this LinkedIn app yet.</p>
         ) : null}
       </div>
       <div className="action-row">
