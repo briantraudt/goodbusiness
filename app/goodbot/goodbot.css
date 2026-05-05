@@ -152,9 +152,9 @@
 
 .type-money {
   animation:
-    type-money 2.2s steps(19, end) 0.45s forwards,
-    caret-blink 0.78s step-end 0s 6,
-    type-fade-out 0.72s ease 4.15s forwards;
+    type-money-cycle 5.35s linear 0.45s forwards,
+    caret-blink 0.86s step-end 0s 7,
+    hide-type-caret 0.01s linear 5.78s forwards;
 }
 
 .mailbot-reveal {
@@ -164,15 +164,15 @@
   place-items: center;
   opacity: 0;
   pointer-events: none;
-  animation: show-mailman 0.01s linear 5.05s forwards;
+  animation: show-mailman 0.01s linear 6.2s forwards;
 }
 
 .type-mailman {
   position: relative;
   animation:
-    type-mailman 2.55s steps(23, end) 5.05s forwards,
-    hide-type-caret 0.01s linear 7.7s forwards,
-    mailman-out 0.58s ease 9.72s forwards;
+    type-mailman-cycle 5.95s linear 6.2s forwards,
+    caret-blink 0.86s step-end 6.2s 7,
+    hide-type-caret 0.01s linear 12.12s forwards;
 }
 
 .mailman-word {
@@ -189,9 +189,7 @@
   border-radius: 999px;
   background: var(--coral);
   transform: translateY(-50%) rotate(-1deg);
-  animation:
-    strike-mailman 0.95s ease 8.35s forwards,
-    type-fade-out 0.44s ease 9.66s forwards;
+  animation: strike-mailman 1.15s ease 9.75s forwards;
 }
 
 .mailbot-final {
@@ -202,21 +200,21 @@
   justify-content: center;
   opacity: 0;
   transform: translateY(14px) scale(0.96);
-  animation: mailbot-in 0.8s ease 10.42s forwards;
+  animation: mailbot-in 0.9s ease 12.55s forwards;
 }
 
 .hero-bot {
-  width: clamp(116px, 15vw, 230px);
+  width: clamp(156px, 19vw, 320px);
   flex: 0 0 auto;
   height: auto;
   filter: drop-shadow(0 30px 44px rgba(18, 54, 58, 0.18));
-  animation: hero-bot-float 2.9s ease-in-out 11.15s infinite;
+  animation: hero-bot-float 2.9s ease-in-out 13.35s infinite;
   transform-origin: center bottom;
 }
 
 .hero-signup-button {
   position: absolute;
-  top: calc(50% + clamp(58px, 8vw, 140px));
+  top: calc(50% + clamp(118px, 13vw, 210px));
   left: 50%;
   min-width: 164px;
   min-height: 54px;
@@ -231,7 +229,7 @@
   box-shadow: 0 20px 46px rgba(18, 54, 58, 0.15);
   transform: translate(-50%, 10px);
   cursor: pointer;
-  animation: signup-in 0.72s ease 11.28s forwards;
+  animation: signup-in 0.72s ease 13.45s forwards;
 }
 
 .hero-signup-button:hover {
@@ -1503,7 +1501,7 @@
   }
 
   .hero-signup-button {
-    top: calc(50% + 70px);
+    top: calc(50% + 118px);
     min-height: 50px;
     padding: 0 28px;
   }
@@ -1596,21 +1594,33 @@
   }
 }
 
-@keyframes type-money {
-  from {
+@keyframes type-money-cycle {
+  0% {
     width: 0;
   }
-  to {
+  50% {
     width: 19ch;
+  }
+  72% {
+    width: 19ch;
+  }
+  100% {
+    width: 0;
   }
 }
 
-@keyframes type-mailman {
-  from {
+@keyframes type-mailman-cycle {
+  0% {
     width: 0;
   }
-  to {
+  48% {
     width: 23ch;
+  }
+  78% {
+    width: 23ch;
+  }
+  100% {
+    width: 0;
   }
 }
 
