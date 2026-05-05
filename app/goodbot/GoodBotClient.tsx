@@ -147,8 +147,10 @@ type GoodBotContextRecord = {
 
 type LinkedInIntegration = {
   connected: boolean;
+  provider?: string;
   account_name?: string | null;
   scopes?: string[];
+  token_expires_at?: string | null;
   status?: string;
   reconnect_required?: boolean;
   reconnect_reason?: string | null;

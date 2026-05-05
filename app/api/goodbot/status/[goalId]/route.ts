@@ -60,7 +60,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
   const { data: linkedinAccount } = access.user
     ? await supabase
       .from("connected_accounts")
-      .select("id,provider_account_name,status,scopes,metadata")
+      .select("id,provider,provider_account_name,status,scopes,token_expires_at,metadata")
       .eq("user_id", access.user.id)
       .eq("provider", "linkedin")
       .order("updated_at", { ascending: false })
@@ -84,8 +84,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
     integrations: {
       linkedin: linkedinAccount ? {
         connected: linkedinAccount.status === "connected",
+        provider: linkedinAccount.provider,
         account_name: linkedinAccount.provider_account_name,
         scopes: linkedinAccount.scopes ?? [],
+        token_expires_at: linkedinAccount.token_expires_at,
         status: linkedinAccount.status,
         reconnect_required: linkedinAccount.status === "reconnect_required",
         comment_monitoring_available: (linkedinAccount.scopes ?? []).includes("r_member_social_feed") || (linkedinAccount.scopes ?? []).includes("r_member_social"),
