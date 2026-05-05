@@ -209,7 +209,7 @@ export default function GoodBotClient() {
   const [missions, setMissions] = useState<MissionSummary[]>([]);
   const [missionsLoading, setMissionsLoading] = useState(false);
   const [deletingMissionId, setDeletingMissionId] = useState<string | null>(null);
-  const [autoSelectMission, setAutoSelectMission] = useState(true);
+  const [showMissionComposer, setShowMissionComposer] = useState(false);
   const [contextSaving, setContextSaving] = useState(false);
   const [showAuthForm, setShowAuthForm] = useState(false);
   const goalInputRef = useRef<HTMLTextAreaElement | null>(null);
@@ -263,7 +263,7 @@ export default function GoodBotClient() {
         setGoalId(null);
         setAccessToken(null);
         setStatus(null);
-        setAutoSelectMission(true);
+        setShowMissionComposer(false);
       }
     });
 
@@ -279,14 +279,6 @@ export default function GoodBotClient() {
       setError(loadError instanceof Error ? loadError.message : "Could not load missions.");
     });
   }, [session]);
-
-  useEffect(() => {
-    if (!session || goalId || !missions.length || !autoSelectMission) return;
-    const storedGoalId = window.localStorage.getItem("goodbot:last_goal_id");
-    const storedMission = storedGoalId ? missions.find((mission) => mission.id === storedGoalId) : null;
-    const activeMission = missions.find((mission) => mission.status === "active") ?? missions[0];
-    selectMission(storedMission ?? activeMission);
-  }, [goalId, missions, session]);
 
   useEffect(() => {
     if (!goalId) return;
@@ -362,7 +354,7 @@ export default function GoodBotClient() {
 
     setGoalId(payload.goal_id);
     setAccessToken(payload.access_token);
-    setAutoSelectMission(true);
+    setShowMissionComposer(false);
     window.localStorage.setItem(`goodbot:${payload.goal_id}:access_token`, payload.access_token);
     window.localStorage.setItem("goodbot:last_goal_id", payload.goal_id);
     window.history.replaceState(null, "", `/goodbot?goalId=${payload.goal_id}&access_token=${encodeURIComponent(payload.access_token)}`);
@@ -562,7 +554,7 @@ export default function GoodBotClient() {
   function selectMission(mission: MissionSummary) {
     setGoalId(mission.id);
     setGoal(mission.goal);
-    setAutoSelectMission(true);
+    setShowMissionComposer(false);
     setStatus(null);
     const token = window.localStorage.getItem(`goodbot:${mission.id}:access_token`);
     setAccessToken(token);
@@ -575,7 +567,8 @@ export default function GoodBotClient() {
     setGoalId(null);
     setStatus(null);
     setAccessToken(null);
-    setAutoSelectMission(false);
+    setGoal("");
+    setShowMissionComposer(true);
     window.history.replaceState(null, "", "/goodbot");
     window.setTimeout(() => goalInputRef.current?.focus(), 0);
   }
@@ -613,7 +606,7 @@ export default function GoodBotClient() {
       setGoalId(null);
       setStatus(null);
       setAccessToken(null);
-      setAutoSelectMission(false);
+      setShowMissionComposer(false);
       window.history.replaceState(null, "", "/goodbot");
     }
 
@@ -650,12 +643,14 @@ export default function GoodBotClient() {
     ? buildRightPanelState(status, activeStep, activeStepIndex)
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
   const hasMissionInFlight = Boolean(goalId || status || isSubmitting);
+  const showUserDashboard = authState === "signed_in" && !hasMissionInFlight && !showMissionComposer;
+  const showMissionInput = canUseGoodBot && showMissionComposer && !hasMissionInFlight;
 
   return (
     <main className={`goodbot-shell ${hasMissionInFlight ? "has-mission" : ""}`}>
       <TopBar session={session} authState={authState} onSignIn={() => setShowAuthForm(true)} onSignOut={signOut} />
 
-      <section className={`goodbot-hero ${canUseGoodBot ? "with-intake" : ""} ${hasMissionInFlight ? "is-compact" : ""}`}>
+      <section className={`goodbot-hero ${showMissionInput ? "with-intake" : ""} ${hasMissionInFlight ? "is-compact" : ""} ${showUserDashboard ? "is-dashboard" : ""}`}>
         {!canUseGoodBot ? (
           <div className="goodbot-copy" aria-label="GoodBot says hi">
             <div className="mailbot-final">
@@ -667,7 +662,7 @@ export default function GoodBotClient() {
             </button>
           </div>
         ) : null}
-        {canUseGoodBot && !hasMissionInFlight ? (
+        {showMissionInput ? (
           <form onSubmit={submitGoal} className="goal-form hero-goal-form">
             <div className={`wish-bot ${executionState === "executing" ? "is-executing" : ""}`} aria-hidden="true">
               <span className="wish-bot-antenna" />
@@ -693,11 +688,6 @@ export default function GoodBotClient() {
         ) : null}
         {canUseGoodBot && hasMissionInFlight ? (
           <div className="mission-summary">
-            <div className="mission-actions">
-              <button type="button" onClick={startNewMission}>
-                New Mission
-              </button>
-            </div>
             <div className="mission-bar">
               <div>
                 <span>Current Mission</span>
@@ -705,6 +695,17 @@ export default function GoodBotClient() {
               </div>
             </div>
           </div>
+        ) : null}
+        {showUserDashboard ? (
+          <UserMissionDashboard
+            missions={missions}
+            selectedGoalId={goalId}
+            missionsLoading={missionsLoading}
+            onSelectMission={selectMission}
+            onNewMission={startNewMission}
+            onDeleteMission={deleteMission}
+            deletingMissionId={deletingMissionId}
+          />
         ) : null}
       </section>
 
@@ -769,18 +770,6 @@ export default function GoodBotClient() {
 
       {status?.context && canUseGoodBot ? (
         <ContextPanel context={status.context} saving={contextSaving} onAction={contextAction} />
-      ) : null}
-
-      {authState === "signed_in" && (missionsLoading || missions.length > 0) ? (
-        <MissionHistory
-          missions={missions}
-          selectedGoalId={goalId}
-          missionsLoading={missionsLoading}
-          onSelectMission={selectMission}
-          onNewMission={startNewMission}
-          onDeleteMission={deleteMission}
-          deletingMissionId={deletingMissionId}
-        />
       ) : null}
 
       {status && canUseGoodBot ? (
@@ -1105,7 +1094,7 @@ function AuthPanel({
   return null;
 }
 
-function MissionHistory({
+function UserMissionDashboard({
   missions,
   selectedGoalId,
   missionsLoading,
@@ -1125,10 +1114,10 @@ function MissionHistory({
   const groupedMissions = groupMissionsByProject(missions);
 
   return (
-    <section className="mission-history" aria-label="My missions">
+    <section className="user-dashboard" aria-label="User dashboard">
       <div className="missions-heading">
         <div>
-          <h2>My Missions</h2>
+          <h2>Your Missions</h2>
           {!missionsLoading && missions.length === 0 ? <p>You haven’t created a mission yet.</p> : null}
         </div>
         <button type="button" onClick={onNewMission}>
@@ -1141,23 +1130,20 @@ function MissionHistory({
           {groupedMissions.map((group) => (
             <section key={group.projectName} className="project-group">
               <h3>{group.projectName}</h3>
-              <ol className="mission-list">
+              <ol className="mission-tile-grid">
                 {group.missions.map((mission) => (
-                  <li key={mission.id} className="mission-item" data-active={mission.id === selectedGoalId}>
-                    <button type="button" className="mission-select" onClick={() => onSelectMission(mission)}>
-                      <span>{mission.goal}</span>
-                      <small>
-                        {mission.status} / {new Date(mission.created_at).toLocaleDateString()} / {mission.signups} of {mission.target_value} users
-                        {mission.is_demo ? " / demo" : ""}
-                      </small>
+                  <li key={mission.id} className="mission-tile-item" data-active={mission.id === selectedGoalId}>
+                    <button type="button" className="mission-tile" onClick={() => onSelectMission(mission)}>
+                      {mission.goal}
                     </button>
                     <button
                       type="button"
-                      className="mission-delete"
+                      className="mission-tile-delete"
                       onClick={() => onDeleteMission(mission)}
                       disabled={deletingMissionId === mission.id}
+                      aria-label={`Delete ${mission.goal}`}
                     >
-                      {deletingMissionId === mission.id ? "Deleting..." : "Delete"}
+                      {deletingMissionId === mission.id ? "..." : "×"}
                     </button>
                   </li>
                 ))}
