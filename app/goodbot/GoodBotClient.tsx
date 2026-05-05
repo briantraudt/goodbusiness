@@ -211,6 +211,7 @@ export default function GoodBotClient() {
   const [deletingMissionId, setDeletingMissionId] = useState<string | null>(null);
   const [autoSelectMission, setAutoSelectMission] = useState(true);
   const [contextSaving, setContextSaving] = useState(false);
+  const [linkedinDebug, setLinkedinDebug] = useState<Record<string, unknown> | null>(null);
   const goalInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
@@ -440,6 +441,18 @@ export default function GoodBotClient() {
       return;
     }
     window.location.href = payload.authorization_url;
+  }
+
+  async function checkLinkedInSetup() {
+    const response = await fetch("/api/goodbot/integrations/linkedin/start?debug=1", {
+      method: "POST",
+      headers: buildApiHeaders(session, null)
+    });
+    const payload = await response.json().catch(() => ({}));
+    setLinkedinDebug(payload);
+    if (!response.ok) {
+      setError(payload.error || "LinkedIn setup check failed.");
+    }
   }
 
   async function contextAction(input: { action: "confirm" | "edit"; context?: Partial<GoodBotContext>; answers?: Record<string, string> }) {
@@ -744,7 +757,13 @@ export default function GoodBotClient() {
         <section className="operator-sections">
           <section>
             <p className="status-label">Autonomy</p>
-            <AutonomyPanel status={status} onConnectLinkedIn={connectLinkedIn} onUpdate={updateGoalSettings} />
+            <AutonomyPanel
+              status={status}
+              debug={linkedinDebug}
+              onCheckLinkedIn={checkLinkedInSetup}
+              onConnectLinkedIn={connectLinkedIn}
+              onUpdate={updateGoalSettings}
+            />
           </section>
 
           <section>
@@ -888,10 +907,14 @@ function RecommendationCard({
 
 function AutonomyPanel({
   status,
+  debug,
+  onCheckLinkedIn,
   onConnectLinkedIn,
   onUpdate
 }: {
   status: StatusResponse;
+  debug: Record<string, unknown> | null;
+  onCheckLinkedIn: () => void;
   onConnectLinkedIn: () => void;
   onUpdate: (input: Record<string, unknown>) => void;
 }) {
@@ -918,6 +941,9 @@ function AutonomyPanel({
         ) : null}
       </div>
       <div className="action-row">
+        <button type="button" onClick={onCheckLinkedIn}>
+          Check LinkedIn setup
+        </button>
         {!linkedinConnected || reconnectRequired ? (
           <button type="button" onClick={onConnectLinkedIn}>
             {reconnectRequired ? "Reconnect LinkedIn" : "Connect LinkedIn"}
@@ -934,6 +960,9 @@ function AutonomyPanel({
           {paused ? "Resume GoodBot" : "Pause GoodBot"}
         </button>
       </div>
+      {debug ? (
+        <pre className="debug-output">{JSON.stringify(debug, null, 2)}</pre>
+      ) : null}
     </div>
   );
 }
