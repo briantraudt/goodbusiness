@@ -89,15 +89,15 @@
 }
 
 .goodbot-hero {
-  min-height: 68vh;
+  min-height: 72vh;
   display: grid;
   grid-template-columns: 1fr;
   align-items: center;
   justify-items: center;
   gap: 22px;
-  width: min(980px, 100%);
+  width: min(1120px, 100%);
   margin: 0 auto;
-  padding: 88px 0 70px;
+  padding: 82px 0 70px;
   text-align: center;
 }
 
@@ -125,10 +125,10 @@
 }
 
 .goodbot-copy h1 {
-  max-width: 920px;
+  max-width: 1040px;
   margin: 0;
-  font-size: clamp(64px, 8.2vw, 118px);
-  line-height: 0.9;
+  font-size: clamp(76px, 10.4vw, 154px);
+  line-height: 0.84;
   letter-spacing: -0.045em;
 }
 
@@ -142,20 +142,28 @@
   max-width: 100%;
   align-items: center;
   justify-content: center;
-  gap: 22px;
-  margin: 20px auto 0;
+  gap: 18px;
+  margin: 8px auto 0;
   color: var(--ink);
-  font-size: clamp(54px, 7.2vw, 104px);
+  font-size: clamp(60px, 8.5vw, 132px);
   font-weight: 850;
-  line-height: 0.9;
+  line-height: 0.84;
   letter-spacing: -0.045em;
 }
 
 .hero-bot {
-  width: clamp(62px, 7vw, 108px);
+  width: clamp(58px, 6.4vw, 98px);
   flex: 0 0 auto;
   height: auto;
   filter: drop-shadow(0 26px 32px rgba(18, 54, 58, 0.16));
+}
+
+.hero-support {
+  max-width: 760px;
+  margin: 28px auto 0;
+  color: var(--muted);
+  font-size: clamp(18px, 1.8vw, 25px);
+  line-height: 1.28;
 }
 
 .goodbot-hero.with-intake .subcopy {
@@ -1387,11 +1395,16 @@
 
   .subcopy {
     gap: 12px;
-    font-size: clamp(42px, 13vw, 64px);
+    flex-wrap: wrap;
+    font-size: clamp(40px, 12vw, 64px);
   }
 
   .hero-bot {
     width: clamp(48px, 14vw, 68px);
+  }
+
+  .hero-support {
+    font-size: 17px;
   }
 
   .wish-bot {
