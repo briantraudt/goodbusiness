@@ -245,9 +245,21 @@
   margin-top: 14px;
 }
 
+.auth-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  background: rgba(246, 247, 243, 0.72);
+  padding: 22px;
+  backdrop-filter: blur(10px);
+}
+
 .auth-panel {
   width: min(520px, 100%);
-  margin: -56px auto 18px;
+  position: relative;
+  margin: 0;
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
@@ -258,6 +270,29 @@
   padding: 22px;
   box-shadow: 0 24px 70px rgba(31, 83, 87, 0.07);
   text-align: center;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--muted);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.modal-close:disabled {
+  opacity: 0.5;
+  cursor: wait;
 }
 
 .auth-panel h2 {

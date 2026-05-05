@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { getGoodBotBrowserSupabase } from "@/lib/goodbot/browserSupabase";
 
@@ -318,6 +318,17 @@ export default function GoodBotClient() {
     const interval = window.setInterval(() => setClockTick((tick) => tick + 1), 1000);
     return () => window.clearInterval(interval);
   }, [lastUpdatedAt]);
+
+  useEffect(() => {
+    if (!showAuthForm) return;
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape" && authState !== "signing_in") {
+        setShowAuthForm(false);
+      }
+    }
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [authState, showAuthForm]);
 
   async function submitGoal(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -701,6 +712,7 @@ export default function GoodBotClient() {
         email={authEmail}
         password={authPassword}
         visible={showAuthForm || authState === "signing_in"}
+        onClose={() => setShowAuthForm(false)}
         onEmailChange={setAuthEmail}
         onPasswordChange={setAuthPassword}
         onSignIn={signIn}
@@ -1021,6 +1033,7 @@ function AuthPanel({
   email,
   password,
   visible,
+  onClose,
   onEmailChange,
   onPasswordChange,
   onSignIn,
@@ -1029,6 +1042,7 @@ function AuthPanel({
   email: string;
   password: string;
   visible: boolean;
+  onClose: () => void;
   onEmailChange: (value: string) => void;
   onPasswordChange: (value: string) => void;
   onSignIn: (event: FormEvent<HTMLFormElement>) => void;
@@ -1043,34 +1057,46 @@ function AuthPanel({
 
   if (authState === "signed_out" || authState === "signing_in") {
     if (!visible) return null;
+    function closeFromBackdrop(event: MouseEvent<HTMLElement>) {
+      if (event.target === event.currentTarget && authState !== "signing_in") {
+        onClose();
+      }
+    }
+
     return (
-      <section className="auth-panel">
-        <div>
-          <h2>Log in</h2>
-          <p>Save your missions, assets, results, and next moves.</p>
-        </div>
-        <form className="auth-form" onSubmit={onSignIn}>
-          <input
-            type="email"
-            value={email}
-            onChange={(event) => onEmailChange(event.target.value)}
-            placeholder="Email"
-            autoComplete="email"
-            required
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(event) => onPasswordChange(event.target.value)}
-            placeholder="Password"
-            autoComplete="current-password"
-            minLength={6}
-            required
-          />
-          <button type="submit" disabled={authState === "signing_in"}>
-            {authState === "signing_in" ? "Signing in..." : "Sign in / create account"}
+      <section className="auth-modal-backdrop" role="presentation" onMouseDown={closeFromBackdrop}>
+        <div className="auth-panel" role="dialog" aria-modal="true" aria-labelledby="goodbot-login-title">
+          <button className="modal-close" type="button" onClick={onClose} disabled={authState === "signing_in"} aria-label="Close login">
+            ×
           </button>
-        </form>
+          <div>
+            <h2 id="goodbot-login-title">Log in</h2>
+            <p>Save your missions, assets, results, and next moves.</p>
+          </div>
+          <form className="auth-form" onSubmit={onSignIn}>
+            <input
+              type="email"
+              value={email}
+              onChange={(event) => onEmailChange(event.target.value)}
+              placeholder="Email"
+              autoComplete="email"
+              required
+              autoFocus
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(event) => onPasswordChange(event.target.value)}
+              placeholder="Password"
+              autoComplete="current-password"
+              minLength={6}
+              required
+            />
+            <button type="submit" disabled={authState === "signing_in"}>
+              {authState === "signing_in" ? "Signing in..." : "Sign in / create account"}
+            </button>
+          </form>
+        </div>
       </section>
     );
   }
