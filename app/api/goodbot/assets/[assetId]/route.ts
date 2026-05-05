@@ -12,7 +12,8 @@ const actionSchema = z.discriminatedUnion("action", [
     action: z.literal("mark_distributed"),
     claimed_url: z.string().trim().max(1000).optional(),
     no_url: z.boolean().optional()
-  })
+  }),
+  z.object({ action: z.literal("retry_auto_post") })
 ]);
 
 export async function PATCH(request: Request, { params }: { params: Promise<{ assetId: string }> }) {
@@ -147,6 +148,41 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ as
       verification.status === "verified"
         ? `Verified distribution for ${assetLabel(asset.content_type)}: ${asset.title || "Untitled"}.`
         : `Distribution claimed for ${assetLabel(asset.content_type)}: ${asset.title || "Untitled"}. Verification pending.`;
+  }
+
+  if (parsed.data.action === "retry_auto_post") {
+    if (asset.content_type !== "linkedin_post") {
+      return NextResponse.json({ error: "Only LinkedIn posts can be auto-posted." }, { status: 400 });
+    }
+    if (asset.approval_status !== "approved") {
+      return NextResponse.json({ error: "Approve this LinkedIn post before retrying auto-post." }, { status: 400 });
+    }
+
+    const { data: goal, error: goalError } = await supabase
+      .from("goals")
+      .select("id,user_id,autonomous_mode,auto_post_mode")
+      .eq("id", asset.goal_id)
+      .maybeSingle();
+
+    if (goalError) {
+      return NextResponse.json({ error: goalError.message }, { status: 500 });
+    }
+    if (!goal || !access.user || access.user.id !== goal.user_id) {
+      return NextResponse.json({ error: "Sign in as the mission owner to retry LinkedIn auto-posting." }, { status: 403 });
+    }
+    if (!goal.autonomous_mode || goal.auto_post_mode !== "auto_post") {
+      return NextResponse.json({ error: "Turn on auto-post before retrying this LinkedIn post." }, { status: 400 });
+    }
+
+    const job = await enqueueLinkedInAutoPost(asset.goal_id, asset.id);
+    await supabase.from("notifications").insert({
+      goal_id: asset.goal_id,
+      notification_type: "strategy_changed",
+      message: `Queued LinkedIn auto-post retry for ${asset.title || "Untitled LinkedIn post"}.`
+    });
+
+    const { data: queuedAsset } = await supabase.from("content_assets").select("*").eq("id", asset.id).single();
+    return NextResponse.json({ ok: true, asset: queuedAsset ?? asset, job });
   }
 
   const { data: updated, error: updateError } = await supabase

@@ -358,7 +358,7 @@ export default function GoodBotClient() {
     await loadMissions(session.access_token);
   }
 
-  async function assetAction(asset: ContentAsset, action: "approve" | "reject" | "edit" | "mark_distributed") {
+  async function assetAction(asset: ContentAsset, action: "approve" | "reject" | "edit" | "mark_distributed" | "retry_auto_post") {
     let body: Record<string, unknown> = { action };
     if (action === "edit") {
       const edited = window.prompt("Edit this asset", asset.edited_body || asset.body);
@@ -1434,7 +1434,7 @@ function ApprovalCard({
 }: {
   asset: ContentAsset;
   linkedin?: LinkedInIntegration;
-  onAction: (asset: ContentAsset, action: "approve" | "reject" | "edit" | "mark_distributed") => void;
+  onAction: (asset: ContentAsset, action: "approve" | "reject" | "edit" | "mark_distributed" | "retry_auto_post") => void;
   onCopy: (text: string) => void;
 }) {
   const body = asset.edited_body || asset.body;
@@ -1473,13 +1473,17 @@ function DistributionCard({
 }: {
   asset: ContentAsset;
   linkedin?: LinkedInIntegration;
-  onAction: (asset: ContentAsset, action: "approve" | "reject" | "edit" | "mark_distributed") => void;
+  onAction: (asset: ContentAsset, action: "approve" | "reject" | "edit" | "mark_distributed" | "retry_auto_post") => void;
   onCopy: (text: string) => void;
 }) {
   const body = asset.edited_body || asset.body;
   const origin = typeof window === "undefined" ? "" : window.location.origin;
   const link = asset.published_url ? `${origin}${asset.published_url}` : null;
   const copyText = link || body;
+  const retryAvailable = canRetryAutoPost(asset, linkedin);
+  const postError = retryAvailable
+    ? "The last auto-post attempt failed before LinkedIn was fully connected. Retry now to queue it again."
+    : assetPostError(asset);
   return (
     <article className="approval-card ready-card">
       <div className="asset-card-topline">
@@ -1488,18 +1492,23 @@ function DistributionCard({
       </div>
       <h3>{asset.title || "Untitled asset"}</h3>
       <pre>{copyText.slice(0, 420)}</pre>
-      <small>{distributionInstruction(asset)}</small>
+      <small>{retryAvailable ? "GoodBot can retry this through LinkedIn auto-post." : distributionInstruction(asset)}</small>
       {asset.external_url ? (
         <a href={asset.external_url} target="_blank" rel="noreferrer">
           View LinkedIn post
         </a>
       ) : null}
       {asset.auto_post_status === "partially_posted" ? <small>Posted, URL unavailable.</small> : null}
-      {assetPostError(asset) ? <small className="asset-error">{assetPostError(asset)}</small> : null}
+      {postError ? <small className={retryAvailable ? "asset-retry-note" : "asset-error"}>{postError}</small> : null}
       <div className="action-row">
         <button type="button" onClick={() => onCopy(copyText)}>
           {asset.content_type === "blog_post" ? "Copy Link" : asset.content_type === "email_draft" ? "Copy Email" : "Copy Post"}
         </button>
+        {retryAvailable ? (
+          <button type="button" onClick={() => onAction(asset, "retry_auto_post")}>
+            Retry auto-post
+          </button>
+        ) : null}
         <button type="button" onClick={() => onAction(asset, "mark_distributed")}>
           {asset.content_type === "blog_post" ? "Mark as Shared" : asset.content_type === "email_draft" ? "Mark as Sent" : "Mark as Posted"}
         </button>
@@ -1527,6 +1536,16 @@ function assetPostBadgeLabel(asset: ContentAsset, linkedin?: LinkedInIntegration
   if (asset.auto_post_status === "reconnect_required") return "Reconnect LinkedIn";
   if (asset.approval_status === "approved" && asset.distribution_channel !== "linkedin_auto") return "Auto-post off";
   return null;
+}
+
+function canRetryAutoPost(asset: ContentAsset, linkedin?: LinkedInIntegration) {
+  return (
+    asset.content_type === "linkedin_post" &&
+    asset.approval_status === "approved" &&
+    asset.auto_post_status === "failed" &&
+    Boolean(linkedin?.connected) &&
+    !linkedin?.reconnect_required
+  );
 }
 
 function assetPostError(asset: ContentAsset) {
