@@ -650,7 +650,6 @@ export default function GoodBotClient() {
       <section className={`goodbot-hero ${canUseGoodBot ? "with-intake" : ""} ${hasMissionInFlight ? "is-compact" : ""}`}>
         {!canUseGoodBot ? (
           <div className="goodbot-copy">
-            <p className="hero-kicker">GoodBot</p>
             <h1>{heroTitle}</h1>
             <p className="subcopy">{heroSubcopy}</p>
             <div className="hero-proof" aria-label="What GoodBot does">
