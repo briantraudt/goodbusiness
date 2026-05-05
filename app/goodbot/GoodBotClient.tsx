@@ -212,6 +212,7 @@ export default function GoodBotClient() {
   const [autoSelectMission, setAutoSelectMission] = useState(true);
   const [contextSaving, setContextSaving] = useState(false);
   const [linkedinDebug, setLinkedinDebug] = useState<Record<string, unknown> | null>(null);
+  const [showAuthForm, setShowAuthForm] = useState(false);
   const goalInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
@@ -653,18 +654,23 @@ export default function GoodBotClient() {
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
   const showExecutionBanner = executionState !== "idle" && (Boolean(status) || isSubmitting || Boolean(goalId && !status));
   const heroTitle = canUseGoodBot ? "Make it happen." : "GoodBot";
-  const heroSubcopy = canUseGoodBot ? "" : "Sign in to save your missions.";
+  const heroSubcopy = canUseGoodBot ? "" : "Tell it the outcome. It handles the work.";
   const hasMissionInFlight = Boolean(goalId || status || isSubmitting);
 
   return (
     <main className={`goodbot-shell ${hasMissionInFlight ? "has-mission" : ""}`}>
-      <TopBar session={session} authState={authState} onSignOut={signOut} />
+      <TopBar session={session} authState={authState} onSignIn={() => setShowAuthForm(true)} onSignOut={signOut} />
 
       <section className={`goodbot-hero ${canUseGoodBot ? "with-intake" : ""} ${hasMissionInFlight ? "is-compact" : ""}`}>
         {!canUseGoodBot ? (
           <div className="goodbot-copy">
             <h1>{heroTitle}</h1>
             <p className="subcopy">{heroSubcopy}</p>
+            {authState !== "loading_session" ? (
+              <button className="homepage-login-button" type="button" onClick={() => setShowAuthForm(true)}>
+                Log in
+              </button>
+            ) : null}
           </div>
         ) : null}
         {canUseGoodBot && !hasMissionInFlight ? (
@@ -710,6 +716,7 @@ export default function GoodBotClient() {
         authState={authState}
         email={authEmail}
         password={authPassword}
+        visible={showAuthForm || authState === "signing_in"}
         onEmailChange={setAuthEmail}
         onPasswordChange={setAuthPassword}
         onSignIn={signIn}
@@ -1001,7 +1008,17 @@ function AutonomyPanel({
   );
 }
 
-function TopBar({ session, authState, onSignOut }: { session: Session | null; authState: string; onSignOut: () => void }) {
+function TopBar({
+  session,
+  authState,
+  onSignIn,
+  onSignOut
+}: {
+  session: Session | null;
+  authState: string;
+  onSignIn: () => void;
+  onSignOut: () => void;
+}) {
   const email = session?.user.email ?? "";
   return (
     <header className="goodbot-topbar">
@@ -1019,6 +1036,10 @@ function TopBar({ session, authState, onSignOut }: { session: Session | null; au
             Sign out
           </button>
         </div>
+      ) : authState === "signed_out" ? (
+        <button className="topbar-login" type="button" onClick={onSignIn}>
+          Log in
+        </button>
       ) : null}
     </header>
   );
@@ -1028,6 +1049,7 @@ function AuthPanel({
   authState,
   email,
   password,
+  visible,
   onEmailChange,
   onPasswordChange,
   onSignIn,
@@ -1035,6 +1057,7 @@ function AuthPanel({
   authState: "loading_session" | "signed_out" | "signing_in" | "signed_in";
   email: string;
   password: string;
+  visible: boolean;
   onEmailChange: (value: string) => void;
   onPasswordChange: (value: string) => void;
   onSignIn: (event: FormEvent<HTMLFormElement>) => void;
@@ -1048,11 +1071,12 @@ function AuthPanel({
   }
 
   if (authState === "signed_out" || authState === "signing_in") {
+    if (!visible) return null;
     return (
       <section className="auth-panel">
         <div>
-          <h2>Sign in to save your missions.</h2>
-          <p>GoodBot saves your goals, assets, results, and next moves so you can come back anytime.</p>
+          <h2>Log in</h2>
+          <p>Save your missions, assets, results, and next moves.</p>
         </div>
         <form className="auth-form" onSubmit={onSignIn}>
           <input
