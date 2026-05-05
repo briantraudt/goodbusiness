@@ -1457,20 +1457,21 @@
   }
 
   .missions-heading {
-    align-items: stretch;
+    align-items: center;
     flex-direction: column;
-    gap: 18px;
+    gap: 0;
   }
 
-  .missions-heading h2 {
-    font-size: clamp(42px, 13vw, 64px);
+  .missions-heading > div {
+    display: none;
   }
 
   .missions-heading button {
-    width: 100%;
-    min-height: 58px;
+    width: min(50%, 260px);
+    min-width: 180px;
+    min-height: 52px;
     border-radius: 999px;
-    font-size: 18px;
+    font-size: 16px;
   }
 
   .project-groups {
