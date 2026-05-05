@@ -639,8 +639,8 @@ export default function GoodBotClient() {
     ? buildRightPanelState(status, activeStep, activeStepIndex)
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
   const showExecutionBanner = executionState !== "idle" && (Boolean(status) || isSubmitting || Boolean(goalId && !status));
-  const heroTitle = canUseGoodBot ? "Make it happen." : "Your business, on autopilot.";
-  const heroSubcopy = canUseGoodBot ? "" : "Give GoodBot an outcome. It plans the work, prepares the assets, and keeps moving until there is something worth your attention.";
+  const heroTitle = canUseGoodBot ? "Make it happen." : "Mailbox Money.";
+  const heroSubcopy = canUseGoodBot ? "" : "Meet Your Mailman.";
   const hasMissionInFlight = Boolean(goalId || status || isSubmitting);
 
   return (
@@ -652,12 +652,7 @@ export default function GoodBotClient() {
           <div className="goodbot-copy">
             <h1>{heroTitle}</h1>
             <p className="subcopy">{heroSubcopy}</p>
-            <div className="hero-proof" aria-label="What GoodBot does">
-              <span>Plans</span>
-              <span>Creates</span>
-              <span>Measures</span>
-              <span>Adapts</span>
-            </div>
+            <img className="hero-bot" src="/assets/good-business-robot.svg" alt="GoodBot robot" />
           </div>
         ) : null}
         {canUseGoodBot && !hasMissionInFlight ? (

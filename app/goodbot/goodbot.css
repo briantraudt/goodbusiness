@@ -149,28 +149,17 @@
   max-width: 760px;
   margin: 28px auto 0;
   color: var(--muted);
-  font-size: clamp(20px, 2.1vw, 28px);
-  line-height: 1.25;
+  font-size: clamp(30px, 3vw, 48px);
+  font-weight: 850;
+  line-height: 1;
+  letter-spacing: -0.025em;
 }
 
-.hero-proof {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
+.hero-bot {
+  width: clamp(92px, 9vw, 150px);
+  height: auto;
   margin-top: 34px;
-}
-
-.hero-proof span {
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: #ffffff;
-  color: var(--teal);
-  padding: 9px 14px;
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  filter: drop-shadow(0 26px 32px rgba(18, 54, 58, 0.16));
 }
 
 .goodbot-hero.with-intake .subcopy {
