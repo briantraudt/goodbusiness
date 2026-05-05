@@ -649,7 +649,6 @@ export default function GoodBotClient() {
   const rightPanel = status
     ? buildRightPanelState(status, activeStep, activeStepIndex)
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
-  const showExecutionBanner = executionState !== "idle" && (Boolean(status) || isSubmitting || Boolean(goalId && !status));
   const hasMissionInFlight = Boolean(goalId || status || isSubmitting);
 
   return (
@@ -693,19 +692,21 @@ export default function GoodBotClient() {
           </form>
         ) : null}
         {canUseGoodBot && hasMissionInFlight ? (
-          <div className="mission-bar">
-            <div>
-              <span>Current Mission</span>
-              <p>{status?.goal.goal || goal || "GoodBot is starting..."}</p>
+          <div className="mission-summary">
+            <div className="mission-actions">
+              <button type="button" onClick={startNewMission}>
+                New Mission
+              </button>
             </div>
-            <button type="button" onClick={startNewMission}>
-              New Mission
-            </button>
+            <div className="mission-bar">
+              <div>
+                <span>Current Mission</span>
+                <p>{status?.goal.goal || goal || "GoodBot is starting..."}</p>
+              </div>
+            </div>
           </div>
         ) : null}
       </section>
-
-      {showExecutionBanner ? <ExecutionBanner state={executionState} lastUpdatedLabel={lastUpdatedLabel} /> : null}
 
       <AuthPanel
         authState={authState}
@@ -1311,17 +1312,6 @@ function ContextPanel({
   );
 }
 
-function ExecutionBanner({ state, lastUpdatedLabel }: { state: ExecutionState; lastUpdatedLabel: string }) {
-  return (
-    <section className="execution-banner" data-state={state} aria-live="polite">
-      <div>
-        <strong>{executionStateMessage(state)}</strong>
-        <span>Last updated {lastUpdatedLabel}</span>
-      </div>
-    </section>
-  );
-}
-
 function ProgressIndicator({ completed, total, percent }: { completed: number; total: number; percent: number }) {
   return (
     <div className="progress-block" aria-label={`Step ${completed} of ${total} complete`}>
@@ -1658,15 +1648,6 @@ function deriveExecutionState(status: StatusResponse | null, isStarting: boolean
   if (hasRecommendation) return "recommending";
   if (hasDistribution) return "measuring";
   return "idle";
-}
-
-function executionStateMessage(state: ExecutionState) {
-  if (state === "executing") return "⚙️ GoodBot is executing your plan…";
-  if (state === "waiting_for_approval") return "🟡 Waiting for your approval to continue.";
-  if (state === "waiting_for_distribution") return "🟠 Waiting for distribution to measure results.";
-  if (state === "measuring") return "📊 Measuring results from live traffic.";
-  if (state === "recommending") return "🧠 Identifying the next best move.";
-  return "GoodBot is ready for a mission.";
 }
 
 function getActiveStep(steps: Step[]) {

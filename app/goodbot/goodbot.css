@@ -200,52 +200,6 @@
   transform-origin: center bottom;
 }
 
-.execution-banner {
-  width: min(1120px, 100%);
-  margin: 0 auto 16px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #ffffff;
-  box-shadow: 0 18px 50px rgba(31, 83, 87, 0.07);
-}
-
-.execution-banner > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 14px 18px;
-}
-
-.execution-banner strong {
-  color: var(--ink);
-  font-size: 16px;
-}
-
-.execution-banner span {
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 750;
-}
-
-.execution-banner[data-state="executing"] {
-  border-color: color-mix(in oklab, var(--amber) 48%, var(--line));
-  background: color-mix(in oklab, var(--amber) 8%, #ffffff);
-}
-
-.execution-banner[data-state="waiting_for_approval"] {
-  border-color: color-mix(in oklab, var(--amber) 56%, var(--line));
-}
-
-.execution-banner[data-state="waiting_for_distribution"] {
-  border-color: color-mix(in oklab, var(--coral) 36%, var(--line));
-}
-
-.execution-banner[data-state="measuring"],
-.execution-banner[data-state="recommending"] {
-  border-color: color-mix(in oklab, var(--teal) 34%, var(--line));
-}
-
 .workbench {
   width: min(1120px, 100%);
   margin: 0 auto;
@@ -666,11 +620,38 @@
   opacity: 0.9;
 }
 
+.mission-summary {
+  width: 100%;
+  display: grid;
+  gap: 12px;
+}
+
+.mission-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mission-actions button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--teal);
+  color: #ffffff;
+  padding: 0 18px;
+  font-weight: 850;
+  cursor: pointer;
+  box-shadow: 0 16px 36px rgba(31, 83, 87, 0.14);
+}
+
+.mission-actions button:hover {
+  background: var(--teal-dark);
+}
+
 .mission-bar {
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
   align-items: center;
   border: 1px solid var(--line);
   border-radius: 14px;
@@ -696,17 +677,6 @@
   font-size: clamp(18px, 2vw, 24px);
   font-weight: 800;
   line-height: 1.16;
-}
-
-.mission-bar button {
-  min-height: 42px;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  background: var(--paper);
-  color: var(--teal);
-  padding: 0 14px;
-  font-weight: 850;
-  cursor: pointer;
 }
 
 .goal-form label,
@@ -1426,11 +1396,11 @@
     flex-direction: row;
   }
 
-  .mission-bar {
-    grid-template-columns: 1fr;
+  .mission-actions {
+    justify-content: stretch;
   }
 
-  .mission-bar button {
+  .mission-actions button {
     width: 100%;
   }
 
@@ -1509,7 +1479,6 @@
     justify-content: flex-start;
   }
 
-  .execution-banner > div,
   .magic-moment {
     align-items: flex-start;
     flex-direction: column;
