@@ -217,10 +217,20 @@ export default function GoodBotClient() {
     const params = new URLSearchParams(window.location.search);
     const urlGoalId = params.get("goalId");
     const urlToken = params.get("access_token");
+    const linkedinState = params.get("linkedin");
+    const linkedinError = params.get("linkedin_error");
+    const linkedinErrorDescription = params.get("linkedin_error_description");
     if (urlGoalId && urlToken) {
       setGoalId(urlGoalId);
       setAccessToken(urlToken);
       window.localStorage.setItem(`goodbot:${urlGoalId}:access_token`, urlToken);
+    }
+    if (linkedinState === "connected") {
+      setError(null);
+    }
+    if (linkedinState === "failed") {
+      const details = [linkedinError, linkedinErrorDescription].filter(Boolean).join(": ");
+      setError(details ? `LinkedIn connection failed: ${details}` : "LinkedIn connection failed.");
     }
   }, []);
 

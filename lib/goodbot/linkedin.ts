@@ -2,7 +2,9 @@ import { getGoodBotBaseUrl } from "./security";
 import { decryptSecret, encryptSecret } from "./crypto";
 import { getSupabaseAdmin } from "./supabase";
 
-const LINKEDIN_SCOPES = ["openid", "profile", "w_member_social", "r_member_social"];
+const LINKEDIN_SIGN_IN_SCOPES = ["openid", "profile"];
+const LINKEDIN_SHARE_SCOPES = ["w_member_social"];
+const LINKEDIN_COMMENT_SCOPES = ["r_member_social"];
 const TOKEN_REFRESH_SKEW_MS = 10 * 60 * 1000;
 
 export class LinkedInApiError extends Error {
@@ -56,7 +58,7 @@ export function checkLinkedInReadiness(request?: Request) {
     ok: missing.length === 0,
     missing,
     redirect_uri: redirectUri,
-    scopes: LINKEDIN_SCOPES,
+    scopes: getLinkedInScopes(),
     api_version: process.env.LINKEDIN_API_VERSION || null
   };
 }
@@ -87,15 +89,36 @@ export function getLinkedInConfig(request?: Request) {
   };
 }
 
-export function buildLinkedInAuthUrl(request: Request, state: string) {
+export function getLinkedInScopes() {
+  const mode = process.env.LINKEDIN_OAUTH_SCOPE_MODE || "signin";
+  if (mode === "full") return [...LINKEDIN_SIGN_IN_SCOPES, ...LINKEDIN_SHARE_SCOPES];
+  if (mode === "comments") return [...LINKEDIN_SIGN_IN_SCOPES, ...LINKEDIN_SHARE_SCOPES, ...LINKEDIN_COMMENT_SCOPES];
+  return LINKEDIN_SIGN_IN_SCOPES;
+}
+
+export function getLinkedInOAuthDebug(request: Request, state: string) {
   const config = getLinkedInConfig(request);
+  const scopes = getLinkedInScopes();
   const url = new URL("https://www.linkedin.com/oauth/v2/authorization");
   url.searchParams.set("response_type", "code");
   url.searchParams.set("client_id", config.clientId);
   url.searchParams.set("redirect_uri", config.redirectUri);
   url.searchParams.set("state", state);
-  url.searchParams.set("scope", LINKEDIN_SCOPES.join(" "));
-  return url.toString();
+  url.searchParams.set("scope", scopes.join(" "));
+  const missingConfig = checkLinkedInReadiness(request).missing;
+  return {
+    client_id_present: Boolean(config.clientId),
+    client_id_last4: config.clientId.slice(-4),
+    redirect_uri: config.redirectUri,
+    scopes_requested: scopes,
+    base_url: getGoodBotBaseUrl(request),
+    auth_url_without_secret: url.toString(),
+    missing_config: missingConfig
+  };
+}
+
+export function buildLinkedInAuthUrl(request: Request, state: string) {
+  return getLinkedInOAuthDebug(request, state).auth_url_without_secret;
 }
 
 export async function exchangeLinkedInCode(request: Request, code: string) {

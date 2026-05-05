@@ -7,16 +7,33 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
+  const oauthError = url.searchParams.get("error");
+  const oauthErrorDescription = url.searchParams.get("error_description");
   const storedState = request.headers.get("cookie")?.match(/(?:^|;\s*)goodbot_linkedin_oauth_state=([^;]+)/)?.[1];
   const baseUrl = getGoodBotBaseUrl(request);
 
+  if (oauthError) {
+    const errorUrl = new URL("/goodbot", baseUrl);
+    errorUrl.searchParams.set("linkedin", "failed");
+    errorUrl.searchParams.set("linkedin_error", oauthError);
+    if (oauthErrorDescription) errorUrl.searchParams.set("linkedin_error_description", oauthErrorDescription);
+    return NextResponse.redirect(errorUrl);
+  }
+
   if (!code || !state || !storedState || decodeURIComponent(storedState) !== state) {
-    return NextResponse.redirect(`${baseUrl}/goodbot?linkedin=failed`);
+    const errorUrl = new URL("/goodbot", baseUrl);
+    errorUrl.searchParams.set("linkedin", "failed");
+    errorUrl.searchParams.set("linkedin_error", "invalid_state");
+    errorUrl.searchParams.set("linkedin_error_description", "LinkedIn did not return a valid OAuth state. Try connecting again.");
+    return NextResponse.redirect(errorUrl);
   }
 
   const userId = state.split(".")[0];
   if (!userId) {
-    return NextResponse.redirect(`${baseUrl}/goodbot?linkedin=failed`);
+    const errorUrl = new URL("/goodbot", baseUrl);
+    errorUrl.searchParams.set("linkedin", "failed");
+    errorUrl.searchParams.set("linkedin_error", "invalid_user");
+    return NextResponse.redirect(errorUrl);
   }
 
   try {
@@ -48,6 +65,10 @@ export async function GET(request: Request) {
     return response;
   } catch (error) {
     console.error("GoodBot LinkedIn callback failed.", error);
-    return NextResponse.redirect(`${baseUrl}/goodbot?linkedin=failed`);
+    const errorUrl = new URL("/goodbot", baseUrl);
+    errorUrl.searchParams.set("linkedin", "failed");
+    errorUrl.searchParams.set("linkedin_error", "callback_failed");
+    errorUrl.searchParams.set("linkedin_error_description", error instanceof Error ? error.message : "LinkedIn callback failed.");
+    return NextResponse.redirect(errorUrl);
   }
 }
