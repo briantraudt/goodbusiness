@@ -651,8 +651,10 @@ export default function GoodBotClient() {
         {!canUseGoodBot ? (
           <div className="goodbot-copy">
             <h1>{heroTitle}</h1>
-            <p className="subcopy">{heroSubcopy}</p>
-            <img className="hero-bot" src="/assets/good-business-robot.svg" alt="GoodBot robot" />
+            <p className="subcopy">
+              <span>{heroSubcopy}</span>
+              <img className="hero-bot" src="/assets/good-business-robot.svg" alt="GoodBot robot" />
+            </p>
           </div>
         ) : null}
         {canUseGoodBot && !hasMissionInFlight ? (
@@ -993,7 +995,6 @@ function TopBar({
   return (
     <header className="goodbot-topbar">
       <div className="topbar-brand">
-        <img src="/assets/good-business-robot.svg" alt="" />
         <p className="topbar-logo">GoodBot</p>
       </div>
       {authState === "signed_in" && email ? (
