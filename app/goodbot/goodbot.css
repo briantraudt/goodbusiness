@@ -965,14 +965,6 @@
   transition: width 220ms ease;
 }
 
-.job-debug {
-  margin: 10px 0 0;
-  color: var(--quiet);
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
 .magic-moment {
   display: flex;
   align-items: center;
@@ -1109,21 +1101,27 @@
 
 .operator-sections {
   width: min(1120px, 100%);
-  margin: 18px auto 80px;
+  margin: 14px auto 80px;
   display: grid;
-  gap: 18px;
+  gap: 14px;
 }
 
 .operator-sections > section {
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 14px;
   background: #ffffff;
-  padding: 24px;
+  padding: 22px;
+  box-shadow: 0 18px 50px rgba(31, 83, 87, 0.04);
+}
+
+.operator-sections > section.priority-section {
+  border-color: color-mix(in oklab, var(--teal) 28%, var(--line));
+  box-shadow: 0 24px 70px rgba(31, 83, 87, 0.07);
 }
 
 .approval-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
   gap: 12px;
   margin-top: 14px;
 }
@@ -1203,7 +1201,7 @@
 
 .approval-card pre {
   min-height: 132px;
-  max-height: 220px;
+  max-height: 170px;
   overflow: auto;
   margin: 0;
   white-space: pre-wrap;
@@ -1225,6 +1223,16 @@
   margin: 12px 0 0;
   color: var(--teal);
   font-weight: 850;
+}
+
+.primary-next-move {
+  margin-top: 20px;
+  border-top: 1px solid var(--line);
+  padding-top: 18px;
+}
+
+.primary-next-move .recommendation-card {
+  margin-top: 10px;
 }
 
 .recommendation-card {
@@ -1249,6 +1257,12 @@
   border-radius: 8px;
   background: var(--paper);
   padding: 16px;
+}
+
+.autonomy-panel .action-row button:first-child {
+  border-color: var(--line);
+  background: #ffffff;
+  color: var(--ink);
 }
 
 .autonomy-panel h3 {

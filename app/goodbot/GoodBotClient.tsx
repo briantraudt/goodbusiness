@@ -623,7 +623,7 @@ export default function GoodBotClient() {
   const distributionProof = status?.distribution_events ?? [];
   const variantPerformance = status?.landing_page_variants ?? [];
   const nextRecommendation = status?.recommendations.find((recommendation) => ["pending", "approved", "running", "failed"].includes(recommendation.status)) ?? null;
-  const activity = buildActivity(status);
+  const activity = buildActivity(status, clockTick);
   const executionState = useMemo(() => deriveExecutionState(status, isSubmitting || Boolean(goalId && !status)), [goalId, isSubmitting, status]);
   const canUseGoodBot = authState === "signed_in" || Boolean(goalId && accessToken);
   const activeStep = status ? getActiveStep(status.steps) : null;
@@ -631,14 +631,21 @@ export default function GoodBotClient() {
   const totalSteps = status?.steps.length ?? 0;
   const completedStepCount = completedSteps.length;
   const progressPercent = totalSteps > 0 ? Math.round((completedStepCount / totalSteps) * 100) : 0;
-  const lastUpdatedLabel = lastUpdatedAt ? `${secondsAgo(lastUpdatedAt.toISOString(), clockTick)} seconds ago` : "not yet";
-  const jobDebug = buildJobDebug(status, clockTick);
   const landingPageStep = status?.steps.find((step) => step.status === "completed" && step.step_type === "create_landing_page");
   const firstCompletedAction = landingPageStep
     ? { label: "Landing page created", url: status?.landing_page_url ?? null }
     : completedSteps[0]
       ? { label: completedSteps[0].output?.summary || completedSteps[0].title, url: null }
       : null;
+  const hasMeaningfulVariantData = status
+    ? variantPerformance.length > 1 ||
+      variantPerformance.some((variant) => {
+        const stats = status.attribution.by_variant.find((row) => row.id === variant.id);
+        return Boolean((stats?.visits ?? 0) || (stats?.signups ?? 0));
+      })
+    : false;
+  const recentActivity = activity.slice(0, 6);
+  const shouldShowContext = Boolean(status?.context && status.context.status !== "confirmed");
   const rightPanel = status
     ? buildRightPanelState(status, activeStep, activeStepIndex)
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
@@ -748,7 +755,6 @@ export default function GoodBotClient() {
                   Target
                 </span>
               </div>
-              <p className="job-debug">Jobs processed: {jobDebug.processed} | Last job run: {jobDebug.lastRun}</p>
             </>
           ) : (
             <ol className="next-list">
@@ -759,23 +765,50 @@ export default function GoodBotClient() {
             </ol>
           )}
           {firstCompletedAction ? <MagicMoment action={firstCompletedAction} onCopy={copyText} /> : null}
-          {status?.landing_page_url ? (
+          {status?.landing_page_url && !firstCompletedAction ? (
             <button className="text-button" type="button" onClick={() => copyText(`${window.location.origin}${status.landing_page_url}`)}>
               Copy Landing Page Link
             </button>
           ) : null}
-          {nextRecommendation ? <p className="operator-note">I found the best next move.</p> : null}
+          {nextRecommendation ? (
+            <div className="primary-next-move">
+              <p className="status-label">Recommended Action</p>
+              <RecommendationCard recommendation={nextRecommendation} onAction={recommendationAction} />
+            </div>
+          ) : null}
         </div>
       </section> : null}
 
-      {status?.context && canUseGoodBot ? (
+      {shouldShowContext && status?.context && canUseGoodBot ? (
         <ContextPanel context={status.context} saving={contextSaving} onAction={contextAction} />
       ) : null}
 
       {status && canUseGoodBot ? (
         <section className="operator-sections">
+          {approvalAssets.length ? (
+          <section className="priority-section">
+            <p className="status-label">Ready for Approval</p>
+            <div className="approval-grid">
+              {approvalAssets.map((asset) => (
+                <ApprovalCard key={asset.id} asset={asset} linkedin={status.integrations?.linkedin} onAction={assetAction} onCopy={copyText} />
+              ))}
+            </div>
+          </section>
+          ) : null}
+
+          {readyAssets.length ? (
+          <section className="priority-section">
+            <p className="status-label">Ready to Distribute</p>
+            <div className="approval-grid">
+              {readyAssets.map((asset) => (
+                <DistributionCard key={asset.id} asset={asset} linkedin={status.integrations?.linkedin} onAction={assetAction} onCopy={copyText} />
+              ))}
+            </div>
+          </section>
+          ) : null}
+
           <section>
-            <p className="status-label">Autonomy</p>
+            <p className="status-label">Publishing</p>
             <AutonomyPanel
               status={status}
               onConnectLinkedIn={connectLinkedIn}
@@ -784,14 +817,22 @@ export default function GoodBotClient() {
             />
           </section>
 
+          {distributionProof.length ? (
           <section>
-            <p className="status-label">Next Move</p>
-            {nextRecommendation ? (
-              <RecommendationCard recommendation={nextRecommendation} onAction={recommendationAction} />
-            ) : (
-              <p className="empty">No recommendation is waiting. I am watching the loop for the next bottleneck.</p>
-            )}
+            <p className="status-label">Distribution Proof</p>
+            <div className="proof-list">
+              {distributionProof.map((event) => (
+                <DistributionProofRow
+                  key={event.id}
+                  event={event}
+                  asset={status.content_assets.find((asset) => asset.id === event.content_asset_id) ?? null}
+                  stats={status.attribution.by_distribution_event.find((row) => row.id === event.id)}
+                  onCopy={copyText}
+                />
+              ))}
+            </div>
           </section>
+          ) : null}
 
           <section>
             <p className="status-label">What I’ve Done</p>
@@ -802,86 +843,22 @@ export default function GoodBotClient() {
             </ol>
           </section>
 
-          <section>
-            <p className="status-label">Ready for Approval</p>
-            {approvalAssets.length ? (
-              <div className="approval-grid">
-                {approvalAssets.map((asset) => (
-                  <ApprovalCard key={asset.id} asset={asset} linkedin={status.integrations?.linkedin} onAction={assetAction} onCopy={copyText} />
-                ))}
-              </div>
-            ) : (
-              <p className="empty">I will notify you when something needs approval.</p>
-            )}
-          </section>
-
-          <section>
-            <p className="status-label">Ready to Distribute</p>
-            {readyAssets.length ? (
-              <div className="approval-grid">
-                {readyAssets.map((asset) => (
-                  <DistributionCard key={asset.id} asset={asset} linkedin={status.integrations?.linkedin} onAction={assetAction} onCopy={copyText} />
-                ))}
-              </div>
-            ) : (
-              <p className="empty">No assets approved yet.</p>
-            )}
-          </section>
-
-          <section>
-            <p className="status-label">Results So Far</p>
-            <div className="metrics results-metrics">
-              <span>
-                <strong>{completedSteps.length}</strong>
-                Actions done
-              </span>
-              <span>
-                <strong>{status.content_assets.filter((asset) => asset.distribution_status === "distributed").length}</strong>
-                Distributed
-              </span>
-              <span>
-                <strong>{status.jobs.filter((job) => job.status === "pending" || job.status === "running").length}</strong>
-                Queued
-              </span>
-            </div>
-          </section>
-
-          <section>
-            <p className="status-label">Distribution Proof</p>
-            {distributionProof.length ? (
-              <div className="proof-list">
-                {distributionProof.map((event) => (
-                  <DistributionProofRow
-                    key={event.id}
-                    event={event}
-                    asset={status.content_assets.find((asset) => asset.id === event.content_asset_id) ?? null}
-                    stats={status.attribution.by_distribution_event.find((row) => row.id === event.id)}
-                    onCopy={copyText}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className="empty">I need at least one distributed asset to measure results.</p>
-            )}
-          </section>
-
+          {hasMeaningfulVariantData ? (
           <section>
             <p className="status-label">Variant Performance</p>
-            {variantPerformance.length ? (
-              <div className="variant-list">
-                {variantPerformance.map((variant) => (
-                  <VariantRow key={variant.id} variant={variant} stats={status.attribution.by_variant.find((row) => row.id === variant.id)} />
-                ))}
-              </div>
-            ) : (
-              <p className="empty">No landing page variants have been generated yet.</p>
-            )}
+            <div className="variant-list">
+              {variantPerformance.map((variant) => (
+                <VariantRow key={variant.id} variant={variant} stats={status.attribution.by_variant.find((row) => row.id === variant.id)} />
+              ))}
+            </div>
           </section>
+          ) : null}
 
-          <section>
+          {recentActivity.length ? (
+          <section className="activity-section">
             <p className="status-label">GoodBot Activity</p>
             <ol className="activity-list">
-              {activity.map((item) => (
+              {recentActivity.map((item) => (
                 <li key={item.id}>
                   <span>{item.label}</span>
                   <small>{item.when}</small>
@@ -889,6 +866,7 @@ export default function GoodBotClient() {
               ))}
             </ol>
           </section>
+          ) : null}
         </section>
       ) : null}
     </main>
@@ -1564,7 +1542,8 @@ function distributionInstruction(asset: ContentAsset) {
   return "Distribute manually, then mark complete.";
 }
 
-function buildActivity(status: StatusResponse | null) {
+function buildActivity(status: StatusResponse | null, tick: number) {
+  void tick;
   if (!status) return [];
   const items = [
     ...status.steps
@@ -1693,17 +1672,6 @@ function stepDetail(step: Step) {
   if (step.step_type === "publish_content") return "Preparing assets for approval";
   if (step.step_type === "track_metrics") return "Activating tracking";
   return step.title;
-}
-
-function buildJobDebug(status: StatusResponse | null, tick: number) {
-  void tick;
-  if (!status || !status.jobs.length) return { processed: 0, lastRun: "not yet" };
-  const lastJob = [...status.jobs].sort((a, b) => Date.parse(b.updated_at || b.created_at) - Date.parse(a.updated_at || a.created_at))[0];
-  const processed = status.jobs.filter((job) => job.status === "completed").length;
-  return {
-    processed,
-    lastRun: lastJob ? `${secondsAgo(lastJob.updated_at || lastJob.created_at, tick)}s ago` : "not yet"
-  };
 }
 
 function secondsAgo(value: string, tick: number) {
