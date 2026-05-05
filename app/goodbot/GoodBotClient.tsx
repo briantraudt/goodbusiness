@@ -1065,13 +1065,13 @@ function AuthPanel({
 
     return (
       <section className="auth-modal-backdrop" role="presentation" onMouseDown={closeFromBackdrop}>
-        <div className="auth-panel" role="dialog" aria-modal="true" aria-labelledby="goodbot-login-title">
+        <div className="auth-panel" role="dialog" aria-modal="true" aria-label="Log in to GoodBot">
           <button className="modal-close" type="button" onClick={onClose} disabled={authState === "signing_in"} aria-label="Close login">
             ×
           </button>
-          <div>
-            <h2 id="goodbot-login-title">Log in</h2>
-            <p>Save your missions, assets, results, and next moves.</p>
+          <div className="auth-robot-stage" aria-hidden="true">
+            <span className="bot-bubble auth-bubble">Hi!</span>
+            <img className="auth-bot" src="/assets/good-business-robot.svg" alt="" />
           </div>
           <form className="auth-form" onSubmit={onSignIn}>
             <input
