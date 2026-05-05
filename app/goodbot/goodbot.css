@@ -371,8 +371,8 @@
 
 .mission-tile-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(360px, 100%), 520px));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 340px));
+  gap: 22px;
   justify-content: start;
   margin: 0;
   padding: 0;
@@ -394,9 +394,9 @@
   background:
     linear-gradient(#ffffff, #ffffff) padding-box,
     linear-gradient(135deg, rgba(242, 173, 75, 0.75), rgba(47, 84, 87, 0.22), rgba(218, 241, 229, 0.8)) border-box;
-  padding: 44px 38px;
+  padding: 34px 28px;
   color: var(--ink);
-  font-size: clamp(30px, 2.55vw, 42px);
+  font-size: clamp(22px, 1.95vw, 30px);
   font-weight: 850;
   line-height: 1.02;
   overflow-wrap: anywhere;
@@ -409,9 +409,9 @@
 .mission-tile::before {
   content: "";
   position: absolute;
-  top: 32px;
-  left: 38px;
-  width: 56px;
+  top: 26px;
+  left: 28px;
+  width: 46px;
   height: 5px;
   border-radius: 999px;
   background: var(--amber);
@@ -420,8 +420,8 @@
 .mission-tile::after {
   content: "GOODBOT";
   position: absolute;
-  right: 34px;
-  bottom: 30px;
+  right: 24px;
+  bottom: 22px;
   color: color-mix(in oklab, var(--teal) 22%, transparent);
   font-size: 12px;
   font-weight: 900;
@@ -1467,31 +1467,31 @@
   }
 
   .mission-tile-grid {
-    grid-template-columns: minmax(0, min(100%, 430px));
+    grid-template-columns: minmax(0, min(100%, 340px));
     justify-content: center;
   }
 
   .mission-tile-item {
-    aspect-ratio: 0.92;
+    aspect-ratio: 1;
   }
 
   .mission-tile {
-    border-radius: 24px;
-    padding: 34px 28px;
-    font-size: clamp(27px, 7.2vw, 38px);
+    border-radius: 20px;
+    padding: 30px 24px;
+    font-size: clamp(23px, 6vw, 30px);
     box-shadow: 0 30px 70px rgba(31, 83, 87, 0.11);
   }
 
   .mission-tile::before {
-    top: 30px;
-    left: 28px;
-    width: 54px;
+    top: 26px;
+    left: 24px;
+    width: 46px;
   }
 
   .mission-tile::after {
-    right: 28px;
-    bottom: 28px;
-    font-size: 13px;
+    right: 24px;
+    bottom: 22px;
+    font-size: 12px;
   }
 
   .mission-tile-delete {
