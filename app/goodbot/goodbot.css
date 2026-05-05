@@ -20,7 +20,11 @@
 .topbar-brand {
   display: inline-flex;
   align-items: center;
+  border: 0;
+  background: transparent;
   gap: 10px;
+  padding: 0;
+  cursor: pointer;
 }
 
 .topbar-bot {

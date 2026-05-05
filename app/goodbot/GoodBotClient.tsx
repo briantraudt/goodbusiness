@@ -573,6 +573,15 @@ export default function GoodBotClient() {
     window.setTimeout(() => goalInputRef.current?.focus(), 0);
   }
 
+  function goToMissionDashboard() {
+    setGoalId(null);
+    setStatus(null);
+    setAccessToken(null);
+    setGoal("");
+    setShowMissionComposer(false);
+    window.history.replaceState(null, "", "/goodbot");
+  }
+
   async function deleteMission(mission: MissionSummary) {
     if (!session) {
       setError("Sign in before deleting a mission.");
@@ -655,7 +664,7 @@ export default function GoodBotClient() {
 
   return (
     <main className={`goodbot-shell ${hasMissionInFlight ? "has-mission" : ""}`}>
-      <TopBar session={session} authState={authState} onSignIn={() => setShowAuthForm(true)} onSignOut={signOut} />
+      <TopBar session={session} authState={authState} onHome={goToMissionDashboard} onSignIn={() => setShowAuthForm(true)} onSignOut={signOut} />
 
       <section className={`goodbot-hero ${showMissionInput ? "with-intake" : ""} ${hasMissionInFlight ? "is-compact" : ""} ${showUserDashboard ? "is-dashboard" : ""}`}>
         {!canUseGoodBot ? (
@@ -963,21 +972,23 @@ function AutonomyPanel({
 function TopBar({
   session,
   authState,
+  onHome,
   onSignIn,
   onSignOut
 }: {
   session: Session | null;
   authState: string;
+  onHome: () => void;
   onSignIn: () => void;
   onSignOut: () => void;
 }) {
   const email = session?.user.email ?? "";
   return (
     <header className="goodbot-topbar">
-      <div className="topbar-brand">
+      <button className="topbar-brand" type="button" onClick={onHome} aria-label="Go to GoodBot missions">
         <img className="topbar-bot" src="/assets/good-business-robot.svg" alt="" />
         <p className="topbar-logo">GoodBot</p>
-      </div>
+      </button>
       {authState === "signed_in" && email ? (
         <div className="topbar-account">
           <span className="avatar" aria-hidden="true">
