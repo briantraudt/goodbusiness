@@ -1395,7 +1395,7 @@
 
 @media (max-width: 780px) {
   .goodbot-shell {
-    padding: 18px;
+    padding: 22px;
   }
 
   .goodbot-hero,
@@ -1405,23 +1405,100 @@
     grid-template-columns: 1fr;
   }
 
-  .goodbot-topbar,
-  .topbar-account,
-  .missions-heading {
-    align-items: flex-start;
-  }
-
-  .missions-heading {
-    flex-direction: column;
-  }
-
   .goodbot-topbar {
     align-items: center;
     flex-direction: row;
+    gap: 14px;
+    padding: 12px 0 6px;
+  }
+
+  .topbar-logo {
+    font-size: 17px;
+  }
+
+  .topbar-account {
+    align-items: center;
+    gap: 12px;
+  }
+
+  .avatar {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+    font-size: 14px;
+  }
+
+  .account-email {
+    display: none;
+  }
+
+  .topbar-account button {
+    font-size: 16px;
+  }
+
+  .goodbot-hero.is-dashboard {
+    padding: 42px 0 32px;
+  }
+
+  .user-dashboard {
+    gap: 24px;
+  }
+
+  .missions-heading {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .missions-heading h2 {
+    font-size: clamp(42px, 13vw, 64px);
   }
 
   .missions-heading button {
     width: 100%;
+    min-height: 58px;
+    border-radius: 999px;
+    font-size: 18px;
+  }
+
+  .project-groups {
+    gap: 22px;
+  }
+
+  .mission-tile-grid {
+    grid-template-columns: minmax(0, min(100%, 430px));
+    justify-content: center;
+  }
+
+  .mission-tile-item {
+    aspect-ratio: 0.92;
+  }
+
+  .mission-tile {
+    border-radius: 24px;
+    padding: 34px 28px;
+    font-size: clamp(27px, 7.2vw, 38px);
+    box-shadow: 0 30px 70px rgba(31, 83, 87, 0.11);
+  }
+
+  .mission-tile::before {
+    top: 30px;
+    left: 28px;
+    width: 54px;
+  }
+
+  .mission-tile::after {
+    right: 28px;
+    bottom: 28px;
+    font-size: 13px;
+  }
+
+  .mission-tile-delete {
+    top: 16px;
+    right: 16px;
+    width: 38px;
+    height: 38px;
+    font-size: 24px;
   }
 
   .context-heading,
@@ -1433,10 +1510,6 @@
   .context-edit-grid,
   .context-questions {
     grid-template-columns: 1fr;
-  }
-
-  .account-email {
-    max-width: calc(100vw - 116px);
   }
 
   .bot {
