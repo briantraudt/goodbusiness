@@ -134,8 +134,7 @@
   text-align: center;
 }
 
-.type-line,
-.mailbot-name {
+.type-line {
   margin: 0;
   overflow: hidden;
   color: var(--ink);
@@ -153,9 +152,9 @@
 
 .type-money {
   animation:
-    type-money 1.25s steps(19, end) 0.28s forwards,
-    caret-blink 0.68s step-end 0s 4,
-    type-fade-out 0.42s ease 2.18s forwards;
+    type-money 2.2s steps(19, end) 0.45s forwards,
+    caret-blink 0.78s step-end 0s 6,
+    type-fade-out 0.72s ease 4.15s forwards;
 }
 
 .mailbot-reveal {
@@ -165,29 +164,34 @@
   place-items: center;
   opacity: 0;
   pointer-events: none;
-  animation: show-mailman 0.01s linear 2.68s forwards;
+  animation: show-mailman 0.01s linear 5.05s forwards;
 }
 
 .type-mailman {
   position: relative;
   animation:
-    type-mailman 1.38s steps(23, end) 2.68s forwards,
-    hide-type-caret 0.01s linear 4.1s forwards,
-    mailman-out 0.36s ease 4.92s forwards;
+    type-mailman 2.55s steps(23, end) 5.05s forwards,
+    hide-type-caret 0.01s linear 7.7s forwards,
+    mailman-out 0.58s ease 9.72s forwards;
+}
+
+.mailman-word {
+  position: relative;
+  display: inline-block;
 }
 
 .mailman-strike {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: -0.04em;
   width: 0;
   height: clamp(5px, 0.55vw, 10px);
   border-radius: 999px;
   background: var(--coral);
-  transform: translate(-50%, -50%);
+  transform: translateY(-50%) rotate(-1deg);
   animation:
-    strike-mailman 0.45s ease 4.26s forwards,
-    type-fade-out 0.28s ease 4.9s forwards;
+    strike-mailman 0.95s ease 8.35s forwards,
+    type-fade-out 0.44s ease 9.66s forwards;
 }
 
 .mailbot-final {
@@ -196,22 +200,17 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(12px, 1.6vw, 28px);
   opacity: 0;
-  transform: translateY(10px);
-  animation: mailbot-in 0.5s ease 5.08s forwards;
-}
-
-.mailbot-name {
-  overflow: visible;
+  transform: translateY(14px) scale(0.96);
+  animation: mailbot-in 0.8s ease 10.42s forwards;
 }
 
 .hero-bot {
-  width: 0.78em;
+  width: clamp(116px, 15vw, 230px);
   flex: 0 0 auto;
   height: auto;
-  filter: drop-shadow(0 26px 32px rgba(18, 54, 58, 0.16));
-  animation: hero-bot-float 2.6s ease-in-out 5.58s infinite;
+  filter: drop-shadow(0 30px 44px rgba(18, 54, 58, 0.18));
+  animation: hero-bot-float 2.9s ease-in-out 11.15s infinite;
   transform-origin: center bottom;
 }
 
@@ -232,7 +231,7 @@
   box-shadow: 0 20px 46px rgba(18, 54, 58, 0.15);
   transform: translate(-50%, 10px);
   cursor: pointer;
-  animation: signup-in 0.46s ease 5.62s forwards;
+  animation: signup-in 0.72s ease 11.28s forwards;
 }
 
 .hero-signup-button:hover {
@@ -1645,7 +1644,7 @@
 
 @keyframes strike-mailman {
   to {
-    width: min(94vw, 11.2em);
+    width: 100%;
   }
 }
 
@@ -1659,7 +1658,7 @@
 @keyframes mailbot-in {
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 

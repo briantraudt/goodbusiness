@@ -661,10 +661,10 @@ export default function GoodBotClient() {
           <div className="goodbot-copy" aria-label="Want mailbox money? Then meet the Mailman. Mailbot.">
             <p className="type-line type-money" aria-hidden="true">Want Mailbox Money?</p>
             <div className="mailbot-reveal" aria-hidden="true">
-              <p className="type-line type-mailman">Then Meet the Mailman.</p>
-              <span className="mailman-strike" />
+              <p className="type-line type-mailman">
+                Then Meet the <span className="mailman-word">Mailman.<span className="mailman-strike" /></span>
+              </p>
               <div className="mailbot-final">
-                <p className="mailbot-name">Mailbot.</p>
                 <img className="hero-bot" src="/assets/good-business-robot.svg" alt="" />
               </div>
             </div>
