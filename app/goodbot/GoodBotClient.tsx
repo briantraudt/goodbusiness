@@ -653,8 +653,8 @@ export default function GoodBotClient() {
     ? buildRightPanelState(status, activeStep, activeStepIndex)
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
   const showExecutionBanner = executionState !== "idle" && (Boolean(status) || isSubmitting || Boolean(goalId && !status));
-  const heroTitle = canUseGoodBot ? "Make it happen." : "GoodBot";
-  const heroSubcopy = canUseGoodBot ? "" : "Tell it the outcome. It handles the work.";
+  const heroTitle = canUseGoodBot ? "Make it happen." : "Your business, on autopilot.";
+  const heroSubcopy = canUseGoodBot ? "" : "Give GoodBot an outcome. It plans the work, prepares the assets, and keeps moving until there is something worth your attention.";
   const hasMissionInFlight = Boolean(goalId || status || isSubmitting);
 
   return (
@@ -664,13 +664,15 @@ export default function GoodBotClient() {
       <section className={`goodbot-hero ${canUseGoodBot ? "with-intake" : ""} ${hasMissionInFlight ? "is-compact" : ""}`}>
         {!canUseGoodBot ? (
           <div className="goodbot-copy">
+            <p className="hero-kicker">GoodBot</p>
             <h1>{heroTitle}</h1>
             <p className="subcopy">{heroSubcopy}</p>
-            {authState !== "loading_session" ? (
-              <button className="homepage-login-button" type="button" onClick={() => setShowAuthForm(true)}>
-                Log in
-              </button>
-            ) : null}
+            <div className="hero-proof" aria-label="What GoodBot does">
+              <span>Plans</span>
+              <span>Creates</span>
+              <span>Measures</span>
+              <span>Adapts</span>
+            </div>
           </div>
         ) : null}
         {canUseGoodBot && !hasMissionInFlight ? (
