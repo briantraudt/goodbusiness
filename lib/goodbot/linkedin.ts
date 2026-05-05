@@ -96,6 +96,10 @@ export function getLinkedInScopes() {
   return LINKEDIN_SIGN_IN_SCOPES;
 }
 
+export function parseLinkedInScopes(scope: string | null | undefined, fallback: string[] = []) {
+  return scope ? scope.split(/[,\s]+/).map((item) => item.trim()).filter(Boolean) : fallback;
+}
+
 export function getLinkedInOAuthDebug(request: Request, state: string) {
   const config = getLinkedInConfig(request);
   const scopes = getLinkedInScopes();
@@ -176,7 +180,7 @@ export async function refreshLinkedInAccessToken(account: LinkedInAccount) {
 
   const payload = await response.json() as { access_token: string; expires_in?: number; refresh_token?: string; scope?: string };
   const expiresAt = payload.expires_in ? new Date(Date.now() + payload.expires_in * 1000).toISOString() : null;
-  const scopes = payload.scope?.split(/\s+/).filter(Boolean) ?? account.scopes;
+  const scopes = parseLinkedInScopes(payload.scope, account.scopes);
   const supabase = getSupabaseAdmin();
   const { data, error } = await supabase
     .from("connected_accounts")

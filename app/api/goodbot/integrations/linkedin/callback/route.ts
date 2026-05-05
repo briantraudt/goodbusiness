@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { exchangeLinkedInCode, fetchLinkedInProfile, encryptLinkedInToken } from "@/lib/goodbot/linkedin";
+import { exchangeLinkedInCode, fetchLinkedInProfile, encryptLinkedInToken, parseLinkedInScopes } from "@/lib/goodbot/linkedin";
 import { getGoodBotBaseUrl } from "@/lib/goodbot/security";
 import { getSupabaseAdmin } from "@/lib/goodbot/supabase";
 
@@ -39,7 +39,7 @@ export async function GET(request: Request) {
   try {
     const token = await exchangeLinkedInCode(request, code);
     const profile = await fetchLinkedInProfile(token.access_token);
-    const scopes = token.scope?.split(/\s+/).filter(Boolean) ?? [];
+    const scopes = parseLinkedInScopes(token.scope);
     const expiresAt = token.expires_in ? new Date(Date.now() + token.expires_in * 1000).toISOString() : null;
 
     const supabase = getSupabaseAdmin();

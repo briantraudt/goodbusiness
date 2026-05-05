@@ -455,6 +455,32 @@ export default function GoodBotClient() {
     }
   }
 
+  async function disconnectLinkedIn() {
+    const confirmed = window.confirm("Disconnect LinkedIn and turn off auto-post for your missions?");
+    if (!confirmed) return;
+
+    const response = await fetch("/api/goodbot/integrations/linkedin", {
+      method: "DELETE",
+      headers: buildApiHeaders(session, null)
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      setError(payload.error || "LinkedIn disconnect failed.");
+      return;
+    }
+
+    setLinkedinDebug(null);
+    if (goalId) {
+      const statusResponse = await fetch(`/api/goodbot/status/${goalId}`, {
+        headers: buildApiHeaders(session, accessToken)
+      });
+      if (statusResponse.ok) {
+        setStatus(await statusResponse.json());
+        setLastUpdatedAt(new Date());
+      }
+    }
+  }
+
   async function contextAction(input: { action: "confirm" | "edit"; context?: Partial<GoodBotContext>; answers?: Record<string, string> }) {
     if (!goalId) return;
     setContextSaving(true);
@@ -762,6 +788,7 @@ export default function GoodBotClient() {
               debug={linkedinDebug}
               onCheckLinkedIn={checkLinkedInSetup}
               onConnectLinkedIn={connectLinkedIn}
+              onDisconnectLinkedIn={disconnectLinkedIn}
               onUpdate={updateGoalSettings}
             />
           </section>
@@ -910,12 +937,14 @@ function AutonomyPanel({
   debug,
   onCheckLinkedIn,
   onConnectLinkedIn,
+  onDisconnectLinkedIn,
   onUpdate
 }: {
   status: StatusResponse;
   debug: Record<string, unknown> | null;
   onCheckLinkedIn: () => void;
   onConnectLinkedIn: () => void;
+  onDisconnectLinkedIn: () => void;
   onUpdate: (input: Record<string, unknown>) => void;
 }) {
   const linkedinConnected = Boolean(status.integrations?.linkedin?.connected);
@@ -947,6 +976,11 @@ function AutonomyPanel({
         {!linkedinConnected || reconnectRequired ? (
           <button type="button" onClick={onConnectLinkedIn}>
             {reconnectRequired ? "Reconnect LinkedIn" : "Connect LinkedIn"}
+          </button>
+        ) : null}
+        {linkedinConnected ? (
+          <button type="button" onClick={onDisconnectLinkedIn}>
+            Disconnect LinkedIn
           </button>
         ) : null}
         <button
