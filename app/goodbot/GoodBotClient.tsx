@@ -997,6 +997,7 @@ function TopBar({
   return (
     <header className="goodbot-topbar">
       <div className="topbar-brand">
+        <img className="topbar-bot" src="/assets/good-business-robot.svg" alt="" />
         <p className="topbar-logo">GoodBot</p>
       </div>
       {authState === "signed_in" && email ? (
