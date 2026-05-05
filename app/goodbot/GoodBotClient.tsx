@@ -26,6 +26,11 @@ type ContentAsset = {
   distributed_at: string | null;
   published_url: string | null;
   recommended_action: string | null;
+  external_post_id?: string | null;
+  external_url?: string | null;
+  posted_at?: string | null;
+  auto_post_status?: string | null;
+  metadata?: Record<string, unknown>;
   created_at: string;
 };
 
@@ -140,6 +145,16 @@ type GoodBotContextRecord = {
   created_at: string;
 };
 
+type LinkedInIntegration = {
+  connected: boolean;
+  account_name?: string | null;
+  scopes?: string[];
+  status?: string;
+  reconnect_required?: boolean;
+  reconnect_reason?: string | null;
+  comment_monitoring_available?: boolean;
+};
+
 type StatusResponse = {
   goal: {
     id: string;
@@ -162,7 +177,7 @@ type StatusResponse = {
   landing_page_variants: LandingPageVariant[];
   recommendations: Recommendation[];
   engagement_events: Array<{ id: string; category: string | null; sentiment: string | null; response_status: string; comment_text: string; suggested_response: string | null; created_at: string }>;
-  integrations?: { linkedin?: { connected: boolean; account_name?: string | null; scopes?: string[] } };
+  integrations?: { linkedin?: LinkedInIntegration };
   context: GoodBotContextRecord | null;
   attribution: {
     by_asset: AttributionRow[];
@@ -743,7 +758,7 @@ export default function GoodBotClient() {
             {approvalAssets.length ? (
               <div className="approval-grid">
                 {approvalAssets.map((asset) => (
-                  <ApprovalCard key={asset.id} asset={asset} onAction={assetAction} onCopy={copyText} />
+                  <ApprovalCard key={asset.id} asset={asset} linkedin={status.integrations?.linkedin} onAction={assetAction} onCopy={copyText} />
                 ))}
               </div>
             ) : (
@@ -756,7 +771,7 @@ export default function GoodBotClient() {
             {readyAssets.length ? (
               <div className="approval-grid">
                 {readyAssets.map((asset) => (
-                  <DistributionCard key={asset.id} asset={asset} onAction={assetAction} onCopy={copyText} />
+                  <DistributionCard key={asset.id} asset={asset} linkedin={status.integrations?.linkedin} onAction={assetAction} onCopy={copyText} />
                 ))}
               </div>
             ) : (
@@ -869,6 +884,8 @@ function AutonomyPanel({
   onUpdate: (input: Record<string, unknown>) => void;
 }) {
   const linkedinConnected = Boolean(status.integrations?.linkedin?.connected);
+  const reconnectRequired = Boolean(status.integrations?.linkedin?.reconnect_required);
+  const commentMonitoringAvailable = Boolean(status.integrations?.linkedin?.comment_monitoring_available);
   const autonomous = Boolean(status.goal.autonomous_mode);
   const autoPost = status.goal.auto_post_mode === "auto_post";
   const paused = status.goal.status === "paused" || Boolean(status.goal.paused_at);
@@ -878,21 +895,26 @@ function AutonomyPanel({
       <div>
         <h3>{autonomous ? "Controlled autonomy is on" : "Controlled autonomy is off"}</h3>
         <p>
-          {linkedinConnected
+          {reconnectRequired
+            ? `Reconnect LinkedIn${status.integrations?.linkedin?.reconnect_reason ? `: ${status.integrations.linkedin.reconnect_reason}` : " to keep posting."}`
+            : linkedinConnected
             ? `LinkedIn connected${status.integrations?.linkedin?.account_name ? ` as ${status.integrations.linkedin.account_name}` : ""}.`
             : "Connect LinkedIn before GoodBot can post or monitor comments."}
         </p>
+        {linkedinConnected && !commentMonitoringAvailable ? (
+          <p className="inline-warning">Comment monitoring not available for this LinkedIn app yet.</p>
+        ) : null}
       </div>
       <div className="action-row">
-        {!linkedinConnected ? (
+        {!linkedinConnected || reconnectRequired ? (
           <button type="button" onClick={onConnectLinkedIn}>
-            Connect LinkedIn
+            {reconnectRequired ? "Reconnect LinkedIn" : "Connect LinkedIn"}
           </button>
         ) : null}
         <button
           type="button"
           onClick={() => onUpdate({ autonomous_mode: !autonomous, auto_post_mode: !autonomous ? "auto_post" : "manual" })}
-          disabled={!linkedinConnected && !autonomous}
+          disabled={(!linkedinConnected || reconnectRequired) && !autonomous}
         >
           {autonomous && autoPost ? "Turn off auto-post" : "Enable auto-post"}
         </button>
@@ -1331,17 +1353,22 @@ function VariantRow({ variant, stats }: { variant: LandingPageVariant; stats?: A
 
 function ApprovalCard({
   asset,
+  linkedin,
   onAction,
   onCopy
 }: {
   asset: ContentAsset;
+  linkedin?: LinkedInIntegration;
   onAction: (asset: ContentAsset, action: "approve" | "reject" | "edit" | "mark_distributed") => void;
   onCopy: (text: string) => void;
 }) {
   const body = asset.edited_body || asset.body;
   return (
     <article className="approval-card">
-      <p>{assetLabel(asset.content_type)}</p>
+      <div className="asset-card-topline">
+        <p>{assetLabel(asset.content_type)}</p>
+        <AssetPostBadge asset={asset} linkedin={linkedin} />
+      </div>
       <h3>{asset.title || "Untitled asset"}</h3>
       <pre>{body.slice(0, 420)}</pre>
       <small>{asset.recommended_action}</small>
@@ -1365,10 +1392,12 @@ function ApprovalCard({
 
 function DistributionCard({
   asset,
+  linkedin,
   onAction,
   onCopy
 }: {
   asset: ContentAsset;
+  linkedin?: LinkedInIntegration;
   onAction: (asset: ContentAsset, action: "approve" | "reject" | "edit" | "mark_distributed") => void;
   onCopy: (text: string) => void;
 }) {
@@ -1378,10 +1407,20 @@ function DistributionCard({
   const copyText = link || body;
   return (
     <article className="approval-card ready-card">
-      <p>{assetLabel(asset.content_type)}</p>
+      <div className="asset-card-topline">
+        <p>{assetLabel(asset.content_type)}</p>
+        <AssetPostBadge asset={asset} linkedin={linkedin} />
+      </div>
       <h3>{asset.title || "Untitled asset"}</h3>
       <pre>{copyText.slice(0, 420)}</pre>
       <small>{distributionInstruction(asset)}</small>
+      {asset.external_url ? (
+        <a href={asset.external_url} target="_blank" rel="noreferrer">
+          View LinkedIn post
+        </a>
+      ) : null}
+      {asset.auto_post_status === "partially_posted" ? <small>Posted, URL unavailable.</small> : null}
+      {assetPostError(asset) ? <small className="asset-error">{assetPostError(asset)}</small> : null}
       <div className="action-row">
         <button type="button" onClick={() => onCopy(copyText)}>
           {asset.content_type === "blog_post" ? "Copy Link" : asset.content_type === "email_draft" ? "Copy Email" : "Copy Post"}
@@ -1392,6 +1431,32 @@ function DistributionCard({
       </div>
     </article>
   );
+}
+
+function AssetPostBadge({ asset, linkedin }: { asset: ContentAsset; linkedin?: LinkedInIntegration }) {
+  const label = assetPostBadgeLabel(asset, linkedin);
+  if (!label) return null;
+  const state = asset.auto_post_status || (linkedin?.reconnect_required ? "reconnect_required" : linkedin?.connected === false ? "not_connected" : asset.distribution_status);
+  return <span className="asset-post-badge" data-state={state}>{label}</span>;
+}
+
+function assetPostBadgeLabel(asset: ContentAsset, linkedin?: LinkedInIntegration) {
+  if (asset.content_type !== "linkedin_post") return null;
+  if (linkedin?.reconnect_required) return "Reconnect LinkedIn";
+  if (linkedin?.connected === false) return "LinkedIn not connected";
+  if (asset.auto_post_status === "queued") return "Queued for LinkedIn";
+  if (asset.auto_post_status === "posting") return "Posting";
+  if (asset.auto_post_status === "posted") return "Published";
+  if (asset.auto_post_status === "partially_posted") return "Posted, URL unavailable";
+  if (asset.auto_post_status === "failed") return "Failed";
+  if (asset.auto_post_status === "reconnect_required") return "Reconnect LinkedIn";
+  if (asset.approval_status === "approved" && asset.distribution_channel !== "linkedin_auto") return "Auto-post off";
+  return null;
+}
+
+function assetPostError(asset: ContentAsset) {
+  const error = asset.metadata?.linkedin_auto_post_error;
+  return typeof error === "string" && error ? error : null;
 }
 
 function assetLabel(type: string) {

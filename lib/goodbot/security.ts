@@ -91,7 +91,7 @@ export async function requireAssetAccess(request: Request, assetId: string) {
 
   const access = await requireGoalAccess(request, asset.goal_id);
   if (!access.ok) return access;
-  return { ok: true as const, goalId: asset.goal_id };
+  return { ok: true as const, goalId: asset.goal_id, user: access.user };
 }
 
 export async function requireRecommendationAccess(request: Request, recommendationId: string) {

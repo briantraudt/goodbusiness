@@ -60,10 +60,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
   const { data: linkedinAccount } = access.user
     ? await supabase
       .from("connected_accounts")
-      .select("id,provider_account_name,status,scopes")
+      .select("id,provider_account_name,status,scopes,metadata")
       .eq("user_id", access.user.id)
       .eq("provider", "linkedin")
-      .eq("status", "connected")
       .order("updated_at", { ascending: false })
       .limit(1)
       .maybeSingle()
@@ -84,9 +83,15 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
     engagement_events: engagementEvents ?? [],
     integrations: {
       linkedin: linkedinAccount ? {
-        connected: true,
+        connected: linkedinAccount.status === "connected",
         account_name: linkedinAccount.provider_account_name,
-        scopes: linkedinAccount.scopes ?? []
+        scopes: linkedinAccount.scopes ?? [],
+        status: linkedinAccount.status,
+        reconnect_required: linkedinAccount.status === "reconnect_required",
+        comment_monitoring_available: (linkedinAccount.scopes ?? []).includes("r_member_social_feed") || (linkedinAccount.scopes ?? []).includes("r_member_social"),
+        reconnect_reason: typeof linkedinAccount.metadata === "object" && linkedinAccount.metadata && "reconnect_reason" in linkedinAccount.metadata
+          ? String(linkedinAccount.metadata.reconnect_reason)
+          : null
       } : { connected: false }
     },
     context,

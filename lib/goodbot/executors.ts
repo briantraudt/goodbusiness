@@ -3,7 +3,7 @@ import { contentPrompt, landingPagePrompt } from "./prompts";
 import { getSupabaseAdmin } from "./supabase";
 import { generateJson } from "./llm";
 import { getConfirmedContext } from "./context";
-import { createLinkedInTextPost, fetchLinkedInComments, type LinkedInAccount } from "./linkedin";
+import { createLinkedInTextPost, fetchLinkedInComments, hasLinkedInCommentReadScope, LinkedInApiError, type LinkedInAccount } from "./linkedin";
 import { getGoodBotBaseUrl } from "./security";
 import type { ContentAssetRecord, GoalObject, GoalRecord, GoodBotContext, GoodBotJobRecord, LandingPageRecord, PlanStep, RecommendationRecord, StepOutput, StepRecord } from "./types";
 
@@ -153,6 +153,25 @@ export async function enqueueLinkedInAutoPost(goalId: string, contentAssetId: st
 
   if (existingError) throw existingError;
   if (existing) return existing;
+
+  const { data: asset } = await supabase
+    .from("content_assets")
+    .select("id,metadata")
+    .eq("id", contentAssetId)
+    .maybeSingle();
+  if (asset) {
+    await supabase
+      .from("content_assets")
+      .update({
+        auto_post_status: "queued",
+        metadata: {
+          ...((asset.metadata as Record<string, unknown> | null) || {}),
+          linkedin_auto_post_error: null,
+          linkedin_auto_post_status_at: new Date().toISOString()
+        }
+      })
+      .eq("id", contentAssetId);
+  }
 
   const { data, error } = await supabase
     .from("goodbot_jobs")
@@ -327,8 +346,12 @@ async function runQueuedJob(job: GoodBotJobRecord) {
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown job error";
     const attempts = job.attempts + 1;
-    const failedPermanently = attempts >= job.max_attempts;
-    const retryDelayMs = Math.min(60, Math.pow(2, attempts) * 5) * 1000;
+    const isPermissionDenied = error instanceof LinkedInApiError && error.status === 403;
+    const isReconnectRequired = error instanceof LinkedInApiError && error.status === 401;
+    const failedPermanently = isPermissionDenied || isReconnectRequired || attempts >= job.max_attempts;
+    const retryDelayMs = error instanceof LinkedInApiError && error.retryAfterMs
+      ? error.retryAfterMs
+      : Math.min(60, Math.pow(2, attempts) * 5) * 1000;
 
     await supabase
       .from("goodbot_jobs")
@@ -644,6 +667,7 @@ export async function postLinkedInContent(goalId: string, contentAssetId: string
 
   const goalRecord = goal as GoalRecord;
   const assetRecord = asset as ContentAssetRecord;
+  await setAssetAutoPostState(assetRecord, "posting", null);
   if (goalRecord.paused_at || goalRecord.status === "paused") throw new Error("GoodBot is paused for this goal.");
   if (!goalRecord.autonomous_mode || goalRecord.auto_post_mode !== "auto_post") {
     throw new Error("Autonomous auto-post is not enabled for this goal.");
@@ -657,7 +681,13 @@ export async function postLinkedInContent(goalId: string, contentAssetId: string
   await enforceDailyPostLimit(goalRecord);
   const account = await getLinkedInAccountForGoal(goalRecord);
   const postBody = assetRecord.edited_body || assetRecord.body;
-  const createdPost = await createLinkedInTextPost({ account, text: postBody });
+  let createdPost: { post_id: string; url: string | null };
+  try {
+    createdPost = await createLinkedInTextPost({ account, text: postBody });
+  } catch (error) {
+    await handleLinkedInAutoPostFailure(assetRecord, account, error);
+    throw error;
+  }
   const now = new Date().toISOString();
 
   const [{ data: landingPage }, { data: activeVariant }] = await Promise.all([
@@ -679,30 +709,37 @@ export async function postLinkedInContent(goalId: string, contentAssetId: string
     content_asset_id: contentAssetId,
     landing_page_id: landingPage?.id ?? null,
     channel: "linkedin_auto",
-    status: "verified",
+    status: createdPost.url ? "verified" : "claimed",
     claimed_url: createdPost.url,
     tracking_url: trackingUrl,
     utm_source: "linkedin",
     utm_medium: "social",
     utm_campaign: `goodbot_${goalId}`,
     utm_content: contentAssetId,
-    verified_at: now,
+    verified_at: createdPost.url ? now : null,
     metadata: {
       autonomous: true,
-      external_post_id: createdPost.post_id
+      external_post_id: createdPost.post_id,
+      partial: !createdPost.url,
+      note: createdPost.url ? "LinkedIn post URL generated." : "LinkedIn post created, but GoodBot could not generate a public URL."
     }
   });
 
   await supabase
     .from("content_assets")
     .update({
-      distribution_status: "distributed",
-      distributed_at: now,
+      distribution_status: createdPost.url ? "distributed" : "ready",
+      distributed_at: createdPost.url ? now : null,
       distribution_channel: "linkedin_auto",
-      auto_post_status: "posted",
+      auto_post_status: createdPost.url ? "posted" : "partially_posted",
       external_post_id: createdPost.post_id,
       external_url: createdPost.url,
-      posted_at: now
+      posted_at: now,
+      metadata: {
+        ...(assetRecord.metadata || {}),
+        linkedin_auto_post_error: createdPost.url ? null : "Posted, URL unavailable.",
+        linkedin_auto_post_status_at: now
+      }
     })
     .eq("id", contentAssetId);
 
@@ -712,10 +749,18 @@ export async function postLinkedInContent(goalId: string, contentAssetId: string
     message: `I posted an approved LinkedIn asset automatically and started monitoring engagement.`
   });
 
-  await enqueueLinkedInCommentPolling(goalId, contentAssetId, new Date(Date.now() + 10 * 60 * 1000));
+  if (hasLinkedInCommentReadScope(account)) {
+    await enqueueLinkedInCommentPolling(goalId, contentAssetId, new Date(Date.now() + 10 * 60 * 1000));
+  } else {
+    await supabase.from("notifications").insert({
+      goal_id: goalId,
+      notification_type: "strategy_changed",
+      message: "Comment monitoring is not available for this LinkedIn app yet."
+    });
+  }
   return {
     ok: true,
-    summary: "Posted approved content to LinkedIn.",
+    summary: createdPost.url ? "Posted approved content to LinkedIn." : "Posted approved content to LinkedIn, but the public URL is unavailable.",
     artifacts: { content_asset_id: contentAssetId, external_post_id: createdPost.post_id, external_url: createdPost.url, tracking_url: trackingUrl }
   };
 }
@@ -755,6 +800,13 @@ export async function pollLinkedInComments(goalId: string, contentAssetId?: stri
   if (assetError) throw assetError;
 
   const account = await getLinkedInAccountForGoal(goalRecord);
+  if (!hasLinkedInCommentReadScope(account)) {
+    return {
+      ok: true,
+      summary: "Comment monitoring not available for this LinkedIn app yet.",
+      artifacts: { comment_monitoring_available: false }
+    };
+  }
   let createdCount = 0;
   for (const asset of (assets ?? []) as ContentAssetRecord[]) {
     if (!asset.external_post_id) continue;
@@ -806,6 +858,33 @@ async function getLinkedInAccountForGoal(goal: GoalRecord) {
   if (error) throw error;
   if (!data) throw new Error("Connect LinkedIn before enabling autonomous posting.");
   return data as LinkedInAccount;
+}
+
+async function setAssetAutoPostState(asset: ContentAssetRecord, status: string, error: string | null) {
+  const supabase = getSupabaseAdmin();
+  await supabase
+    .from("content_assets")
+    .update({
+      auto_post_status: status,
+      metadata: {
+        ...(asset.metadata || {}),
+        linkedin_auto_post_error: error,
+        linkedin_auto_post_status_at: new Date().toISOString()
+      }
+    })
+    .eq("id", asset.id);
+}
+
+async function handleLinkedInAutoPostFailure(asset: ContentAssetRecord, account: LinkedInAccount, error: unknown) {
+  let status = "failed";
+  let message = error instanceof Error ? error.message : "LinkedIn posting failed.";
+  if (error instanceof LinkedInApiError) {
+    if (error.status === 401) status = "reconnect_required";
+    if (error.status === 403) message = "LinkedIn permission not approved.";
+    if (error.status === 429) message = "LinkedIn rate limit reached.";
+  }
+  if (account.status === "reconnect_required") status = "reconnect_required";
+  await setAssetAutoPostState(asset, status, message);
 }
 
 async function enforceDailyPostLimit(goal: GoalRecord) {

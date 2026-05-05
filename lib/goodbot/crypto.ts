@@ -4,9 +4,10 @@ const IV_LENGTH = 12;
 const AUTH_TAG_LENGTH = 16;
 
 function encryptionKey() {
-  const secret = process.env.GOODBOT_TOKEN_ENCRYPTION_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const secret = process.env.GOODBOT_TOKEN_ENCRYPTION_KEY ||
+    (process.env.NODE_ENV === "production" ? undefined : process.env.SUPABASE_SERVICE_ROLE_KEY);
   if (!secret) {
-    throw new Error("GoodBot is missing required environment variable: GOODBOT_TOKEN_ENCRYPTION_KEY or SUPABASE_SERVICE_ROLE_KEY.");
+    throw new Error("GoodBot is missing required environment variable: GOODBOT_TOKEN_ENCRYPTION_KEY.");
   }
   return createHash("sha256").update(secret).digest();
 }

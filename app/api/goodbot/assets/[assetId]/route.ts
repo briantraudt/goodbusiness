@@ -40,6 +40,20 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ as
     return NextResponse.json({ error: "Asset not found." }, { status: 404 });
   }
 
+  if (parsed.data.action === "approve" && asset.content_type === "linkedin_post") {
+    const { data: autoPostGoal } = await supabase
+      .from("goals")
+      .select("id,user_id,autonomous_mode,auto_post_mode")
+      .eq("id", asset.goal_id)
+      .maybeSingle();
+    if (autoPostGoal?.autonomous_mode && autoPostGoal?.auto_post_mode === "auto_post" && (!access.user || access.user.id !== autoPostGoal.user_id)) {
+      return NextResponse.json(
+        { error: "Sign in as the mission owner to approve assets that will trigger LinkedIn auto-posting." },
+        { status: 403 }
+      );
+    }
+  }
+
   const now = new Date().toISOString();
   let update: Record<string, unknown> = {};
   let activity = "";
@@ -160,7 +174,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ as
   ) {
     const { data: goal } = await supabase
       .from("goals")
-      .select("id,autonomous_mode,auto_post_mode")
+      .select("id,user_id,autonomous_mode,auto_post_mode")
       .eq("id", asset.goal_id)
       .maybeSingle();
     if (goal?.autonomous_mode && goal?.auto_post_mode === "auto_post") {

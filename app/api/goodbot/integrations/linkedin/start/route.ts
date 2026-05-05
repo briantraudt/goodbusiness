@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { buildLinkedInAuthUrl } from "@/lib/goodbot/linkedin";
+import { buildLinkedInAuthUrl, checkLinkedInReadiness } from "@/lib/goodbot/linkedin";
 import { createGoalAccessToken, enforceRateLimit, readClientIp, requireAuthenticatedUser } from "@/lib/goodbot/security";
 
 async function start(request: Request, asJson = false) {
@@ -15,6 +15,14 @@ async function start(request: Request, asJson = false) {
   if (!rateLimit.ok) return rateLimit.response;
 
   const state = `${auth.user.id}.${createGoalAccessToken()}`;
+  const readiness = checkLinkedInReadiness(request);
+  if (!readiness.ok) {
+    return NextResponse.json({
+      error: `LinkedIn is not production-ready. Missing: ${readiness.missing.join(", ")}.`,
+      readiness
+    }, { status: 500 });
+  }
+
   const authorizationUrl = buildLinkedInAuthUrl(request, state);
   if (asJson) {
     const json = NextResponse.json({ authorization_url: authorizationUrl });
