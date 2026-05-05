@@ -650,8 +650,6 @@ export default function GoodBotClient() {
     ? buildRightPanelState(status, activeStep, activeStepIndex)
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
   const showExecutionBanner = executionState !== "idle" && (Boolean(status) || isSubmitting || Boolean(goalId && !status));
-  const heroTitle = canUseGoodBot ? "Make it happen." : "Want Mailbox Money?";
-  const heroSubcopy = canUseGoodBot ? "" : "Then Meet the Mailman.";
   const hasMissionInFlight = Boolean(goalId || status || isSubmitting);
 
   return (
@@ -660,12 +658,19 @@ export default function GoodBotClient() {
 
       <section className={`goodbot-hero ${canUseGoodBot ? "with-intake" : ""} ${hasMissionInFlight ? "is-compact" : ""}`}>
         {!canUseGoodBot ? (
-          <div className="goodbot-copy">
-            <h1>{heroTitle}</h1>
-            <p className="subcopy">
-              <span>{heroSubcopy}</span>
-              <img className="hero-bot" src="/assets/good-business-robot.svg" alt="GoodBot robot" />
-            </p>
+          <div className="goodbot-copy" aria-label="Want mailbox money? Then meet the Mailman. Mailbot.">
+            <p className="type-line type-money" aria-hidden="true">Want Mailbox Money?</p>
+            <div className="mailbot-reveal" aria-hidden="true">
+              <p className="type-line type-mailman">Then Meet the Mailman.</p>
+              <span className="mailman-strike" />
+              <div className="mailbot-final">
+                <p className="mailbot-name">Mailbot.</p>
+                <img className="hero-bot" src="/assets/good-business-robot.svg" alt="" />
+              </div>
+            </div>
+            <button className="hero-signup-button" type="button" onClick={() => setShowAuthForm(true)}>
+              Sign up
+            </button>
           </div>
         ) : null}
         {canUseGoodBot && !hasMissionInFlight ? (
