@@ -639,8 +639,8 @@ export default function GoodBotClient() {
     ? buildRightPanelState(status, activeStep, activeStepIndex)
     : { headline: "GoodBot gets to work.", detail: "Tell it the outcome. It will create the plan, queue the work, and bring you approvals only when needed." };
   const showExecutionBanner = executionState !== "idle" && (Boolean(status) || isSubmitting || Boolean(goalId && !status));
-  const heroTitle = canUseGoodBot ? "Make it happen." : "Mailbox Money";
-  const heroSubcopy = canUseGoodBot ? "" : "Meet the Mailman";
+  const heroTitle = canUseGoodBot ? "Make it happen." : "Mailbox Money.";
+  const heroSubcopy = canUseGoodBot ? "" : "Meet Your Mailman.";
   const hasMissionInFlight = Boolean(goalId || status || isSubmitting);
 
   return (
