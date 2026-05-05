@@ -1129,7 +1129,6 @@ function UserMissionDashboard({
         <div className="project-groups">
           {groupedMissions.map((group) => (
             <section key={group.projectName} className="project-group">
-              <h3>{group.projectName}</h3>
               <ol className="mission-tile-grid">
                 {group.missions.map((mission) => (
                   <li key={mission.id} className="mission-tile-item" data-active={mission.id === selectedGoalId}>
