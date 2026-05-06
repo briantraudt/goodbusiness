@@ -10,6 +10,11 @@ const updateSchema = z.object({
   daily_post_limit: z.number().int().min(0).max(5).optional(),
   channels_enabled: z.array(z.enum(["linkedin"])).optional(),
   auto_response_level: z.enum(["approval_required", "low_risk_auto", "manual"]).optional(),
+  ads_enabled: z.boolean().optional(),
+  max_daily_ad_spend: z.number().min(0).max(1000).optional(),
+  max_total_ad_spend: z.number().min(0).max(10000).optional(),
+  approved_channels: z.array(z.string()).optional(),
+  ads_autonomy_level: z.enum(["off", "assisted", "controlled"]).optional(),
   paused: z.boolean().optional()
 });
 
@@ -33,7 +38,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ go
   if (!rateLimit.ok) return rateLimit.response;
 
   const update: Record<string, unknown> = {};
-  for (const key of ["autonomous_mode", "auto_post_mode", "daily_post_limit", "channels_enabled", "auto_response_level"] as const) {
+  for (const key of ["autonomous_mode", "auto_post_mode", "daily_post_limit", "channels_enabled", "auto_response_level", "ads_enabled", "max_daily_ad_spend", "max_total_ad_spend", "approved_channels", "ads_autonomy_level"] as const) {
     if (parsed.data[key] !== undefined) update[key] = parsed.data[key];
   }
   if (parsed.data.paused !== undefined) {
@@ -50,7 +55,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ go
     .update(update)
     .eq("id", goalId)
     .eq("user_id", auth.user.id)
-    .select("id,autonomous_mode,auto_post_mode,daily_post_limit,channels_enabled,auto_response_level,status,paused_at")
+    .select("*")
     .maybeSingle();
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });

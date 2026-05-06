@@ -157,6 +157,66 @@ type LinkedInIntegration = {
   comment_monitoring_available?: boolean;
 };
 
+type GoogleAdsIntegration = {
+  connected: boolean;
+  provider?: string;
+  account_name?: string | null;
+  status?: string;
+  scopes?: string[];
+  token_expires_at?: string | null;
+  reconnect_required?: boolean;
+  customer_id?: string | null;
+  login_customer_id?: string | null;
+  raw_tokens_exposed?: boolean;
+};
+
+type GoogleAdsDraft = {
+  id: string;
+  goal_id: string;
+  status: "pending_approval" | "approved" | "rejected" | "queued" | "dry_run_launched" | "launched" | "failed";
+  draft_json: {
+    campaign_name?: string;
+    daily_budget?: number;
+    total_budget?: number;
+    landing_page_url?: string;
+    ad_groups?: Array<{ name: string; keywords: string[]; headlines: string[]; descriptions: string[] }>;
+  };
+  estimated_daily_budget: number | null;
+  estimated_total_budget: number | null;
+  estimated_keywords: string[] | null;
+  landing_page_url: string | null;
+  created_at: string;
+  approved_at: string | null;
+  rejected_at: string | null;
+  launched_at: string | null;
+};
+
+type GoogleAdsCampaign = {
+  id: string;
+  goal_id: string;
+  draft_id: string | null;
+  google_customer_id: string;
+  google_campaign_id: string | null;
+  status: string;
+  daily_budget: number | null;
+  total_spend: number;
+  launched_at: string | null;
+  paused_at: string | null;
+  error: string | null;
+};
+
+type GoogleAdsMetric = {
+  id: string;
+  campaign_id: string | null;
+  clicks: number;
+  impressions: number;
+  spend: number;
+  conversions: number;
+  cpc: number | null;
+  cpa: number | null;
+  captured_at: string;
+};
+
 type StatusResponse = {
   goal: {
     id: string;
@@ -169,6 +229,11 @@ type StatusResponse = {
     auto_post_mode?: "manual" | "auto_post";
     daily_post_limit?: number;
     auto_response_level?: string;
+    ads_enabled?: boolean;
+    max_daily_ad_spend?: number;
+    max_total_ad_spend?: number;
+    approved_channels?: string[];
+    ads_autonomy_level?: "off" | "assisted" | "controlled";
     paused_at?: string | null;
   };
   steps: Step[];
@@ -179,7 +244,10 @@ type StatusResponse = {
   landing_page_variants: LandingPageVariant[];
   recommendations: Recommendation[];
   engagement_events: Array<{ id: string; category: string | null; sentiment: string | null; response_status: string; comment_text: string; suggested_response: string | null; created_at: string }>;
-  integrations?: { linkedin?: LinkedInIntegration };
+  integrations?: { linkedin?: LinkedInIntegration; google_ads?: GoogleAdsIntegration };
+  google_ads_campaign_drafts?: GoogleAdsDraft[];
+  google_ads_campaigns?: GoogleAdsCampaign[];
+  google_ads_metrics?: GoogleAdsMetric[];
   context: GoodBotContextRecord | null;
   attribution: {
     by_asset: AttributionRow[];
@@ -221,6 +289,9 @@ export default function GoodBotClient() {
     const linkedinState = params.get("linkedin");
     const linkedinError = params.get("linkedin_error");
     const linkedinErrorDescription = params.get("linkedin_error_description");
+    const googleAdsState = params.get("google_ads");
+    const googleAdsError = params.get("google_ads_error");
+    const googleAdsErrorDescription = params.get("google_ads_error_description");
     if (urlGoalId && urlToken) {
       setGoalId(urlGoalId);
       setAccessToken(urlToken);
@@ -232,6 +303,13 @@ export default function GoodBotClient() {
     if (linkedinState === "failed") {
       const details = [linkedinError, linkedinErrorDescription].filter(Boolean).join(": ");
       setError(details ? `LinkedIn connection failed: ${details}` : "LinkedIn connection failed.");
+    }
+    if (googleAdsState === "connected") {
+      setError(null);
+    }
+    if (googleAdsState === "failed") {
+      const details = [googleAdsError, googleAdsErrorDescription].filter(Boolean).join(": ");
+      setError(details ? `Google Ads connection failed: ${details}` : "Google Ads connection failed.");
     }
   }, []);
 
@@ -460,6 +538,74 @@ export default function GoodBotClient() {
       return;
     }
 
+    if (goalId) {
+      const statusResponse = await fetch(`/api/goodbot/status/${goalId}`, {
+        headers: buildApiHeaders(session, accessToken)
+      });
+      if (statusResponse.ok) {
+        setStatus(await statusResponse.json());
+        setLastUpdatedAt(new Date());
+      }
+    }
+  }
+
+  async function connectGoogleAds() {
+    const response = await fetch("/api/goodbot/integrations/google-ads/start", {
+      method: "POST",
+      headers: buildApiHeaders(session, null)
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || !payload.authorization_url) {
+      setError(payload.error || "Google Ads connection could not start.");
+      return;
+    }
+    window.location.href = payload.authorization_url;
+  }
+
+  async function draftGoogleAdsCampaign() {
+    if (!goalId) return;
+    const response = await fetch("/api/goodbot/google-ads/drafts", {
+      method: "POST",
+      headers: buildApiHeaders(session, accessToken, { "Content-Type": "application/json" }),
+      body: JSON.stringify({ goal_id: goalId })
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      setError(payload.error || "Google Ads campaign draft failed.");
+      return;
+    }
+    const statusResponse = await fetch(`/api/goodbot/status/${goalId}`, {
+      headers: buildApiHeaders(session, accessToken)
+    });
+    if (statusResponse.ok) {
+      setStatus(await statusResponse.json());
+      setLastUpdatedAt(new Date());
+    }
+  }
+
+  async function googleAdsDraftAction(draft: GoogleAdsDraft, action: "approve" | "reject" | "edit") {
+    let body: Record<string, unknown> = { action };
+    if (action === "edit") {
+      const edited = window.prompt("Edit this campaign draft JSON", JSON.stringify(draft.draft_json, null, 2));
+      if (!edited) return;
+      try {
+        body = { action, draft_json: JSON.parse(edited) };
+      } catch {
+        setError("That campaign draft JSON is not valid.");
+        return;
+      }
+    }
+
+    const response = await fetch(`/api/goodbot/google-ads/drafts/${draft.id}`, {
+      method: "PATCH",
+      headers: buildApiHeaders(session, accessToken, { "Content-Type": "application/json" }),
+      body: JSON.stringify(body)
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      setError(payload.error || "Google Ads campaign update failed.");
+      return;
+    }
     if (goalId) {
       const statusResponse = await fetch(`/api/goodbot/status/${goalId}`, {
         headers: buildApiHeaders(session, accessToken)
@@ -826,6 +972,14 @@ export default function GoodBotClient() {
             />
           </section>
 
+          <PaidAcquisitionPanel
+            status={status}
+            onConnectGoogleAds={connectGoogleAds}
+            onDraft={draftGoogleAdsCampaign}
+            onDraftAction={googleAdsDraftAction}
+            onUpdate={updateGoalSettings}
+          />
+
           {distributionProof.length ? (
           <section>
             <p className="status-label">Distribution Proof</p>
@@ -966,6 +1120,151 @@ function AutonomyPanel({
         </button>
       </div>
     </div>
+  );
+}
+
+function PaidAcquisitionPanel({
+  status,
+  onConnectGoogleAds,
+  onDraft,
+  onDraftAction,
+  onUpdate
+}: {
+  status: StatusResponse;
+  onConnectGoogleAds: () => void;
+  onDraft: () => void;
+  onDraftAction: (draft: GoogleAdsDraft, action: "approve" | "reject" | "edit") => void;
+  onUpdate: (input: Record<string, unknown>) => void;
+}) {
+  const drafts = status.google_ads_campaign_drafts ?? [];
+  const campaigns = status.google_ads_campaigns ?? [];
+  const metrics = status.google_ads_metrics ?? [];
+  const latestDraft = drafts.find((draft) => draft.status !== "rejected") ?? drafts[0] ?? null;
+  const latestCampaign = campaigns[0] ?? null;
+  const googleConnected = Boolean(status.integrations?.google_ads?.connected);
+  const capsReady = Number(status.goal.max_daily_ad_spend ?? 0) > 0 && Number(status.goal.max_total_ad_spend ?? 0) > 0;
+  const clicks = metrics.reduce((sum, row) => sum + Number(row.clicks ?? 0), 0);
+  const spend = metrics.reduce((sum, row) => sum + Number(row.spend ?? 0), 0);
+  const conversions = metrics.reduce((sum, row) => sum + Number(row.conversions ?? 0), 0);
+
+  return (
+    <section>
+      <p className="status-label">Paid Acquisition</p>
+      <div className="paid-panel">
+        <div className="paid-panel-header">
+          <div>
+            <h3>{latestCampaign ? "Google Ads dry-run is ready" : latestDraft ? "Campaign draft ready" : "Paid acquisition is off"}</h3>
+            <p>
+              {latestCampaign
+                ? "No money has been spent. This confirms the approval and queue flow works."
+                : latestDraft
+                ? "Review the draft before anything can launch."
+                : "GoodBot can draft a small search campaign when you are ready."}
+            </p>
+          </div>
+          <div className="action-row">
+            {!googleConnected ? <button type="button" onClick={onConnectGoogleAds}>Connect Google Ads</button> : <span className="pill">Google Ads connected</span>}
+            {!latestDraft ? <button type="button" onClick={onDraft}>Draft campaign</button> : null}
+          </div>
+        </div>
+
+        <div className="spend-controls">
+          <label>
+            Daily cap
+            <input
+              type="number"
+              min="0"
+              step="1"
+              defaultValue={status.goal.max_daily_ad_spend ?? 0}
+              onBlur={(event) => onUpdate({ max_daily_ad_spend: Number(event.currentTarget.value || 0), ads_enabled: true })}
+            />
+          </label>
+          <label>
+            Total cap
+            <input
+              type="number"
+              min="0"
+              step="1"
+              defaultValue={status.goal.max_total_ad_spend ?? 0}
+              onBlur={(event) => onUpdate({ max_total_ad_spend: Number(event.currentTarget.value || 0), ads_enabled: true })}
+            />
+          </label>
+          <label>
+            Mode
+            <select
+              value={status.goal.ads_autonomy_level ?? "off"}
+              onChange={(event) => onUpdate({ ads_autonomy_level: event.currentTarget.value, ads_enabled: event.currentTarget.value !== "off" })}
+            >
+              <option value="off">Off</option>
+              <option value="assisted">Assisted</option>
+              <option value="controlled">Controlled</option>
+            </select>
+          </label>
+        </div>
+
+        {!capsReady ? <p className="inline-warning">Set daily and total spend caps before any campaign can launch.</p> : null}
+
+        {latestDraft ? (
+          <GoogleAdsDraftCard draft={latestDraft} onAction={onDraftAction} />
+        ) : null}
+
+        {latestCampaign ? (
+          <div className="paid-stats">
+            <span><strong>${Number(latestCampaign.total_spend ?? 0).toFixed(2)}</strong> spend</span>
+            <span><strong>{clicks}</strong> clicks</span>
+            <span><strong>{conversions}</strong> conversions</span>
+            <span><strong>${spend && conversions ? (spend / conversions).toFixed(2) : "0.00"}</strong> CPA</span>
+          </div>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
+function GoogleAdsDraftCard({ draft, onAction }: { draft: GoogleAdsDraft; onAction: (draft: GoogleAdsDraft, action: "approve" | "reject" | "edit") => void }) {
+  const group = draft.draft_json.ad_groups?.[0];
+  const canApprove = draft.status === "pending_approval";
+  return (
+    <article className="google-ads-draft-card">
+      <div className="card-heading">
+        <div>
+          <p className="status-label">{draft.status.replaceAll("_", " ")}</p>
+          <h3>{draft.draft_json.campaign_name || "Google Ads search campaign"}</h3>
+        </div>
+        <div className="budget-pair">
+          <span>${Number(draft.estimated_daily_budget ?? 0).toFixed(0)}/day</span>
+          <span>${Number(draft.estimated_total_budget ?? 0).toFixed(0)} total</span>
+        </div>
+      </div>
+      {group ? (
+        <div className="draft-detail-grid">
+          <div>
+            <strong>Keywords</strong>
+            <p>{group.keywords.slice(0, 6).join(", ")}</p>
+          </div>
+          <div>
+            <strong>Headlines</strong>
+            <p>{group.headlines.slice(0, 5).join(" / ")}</p>
+          </div>
+          <div>
+            <strong>Descriptions</strong>
+            <p>{group.descriptions.slice(0, 2).join(" ")}</p>
+          </div>
+        </div>
+      ) : null}
+      {draft.landing_page_url ? <a href={draft.landing_page_url} target="_blank" rel="noreferrer">Landing page</a> : null}
+      <div className="action-row">
+        <button type="button" onClick={() => onAction(draft, "approve")} disabled={!canApprove}>
+          Approve campaign
+        </button>
+        <button type="button" onClick={() => onAction(draft, "edit")} disabled={draft.status === "rejected" || draft.status === "dry_run_launched"}>
+          Edit
+        </button>
+        <button type="button" onClick={() => onAction(draft, "reject")} disabled={draft.status === "rejected" || draft.status === "dry_run_launched"}>
+          Reject
+        </button>
+      </div>
+    </article>
   );
 }
 

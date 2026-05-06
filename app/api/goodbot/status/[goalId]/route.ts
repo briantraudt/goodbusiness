@@ -28,9 +28,12 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
     { data: landingPageVariants },
     { data: recommendations },
     { data: context },
-    { data: engagementEvents }
+    { data: engagementEvents },
+    { data: googleAdsDrafts },
+    { data: googleAdsCampaigns },
+    { data: googleAdsMetrics }
   ] = await Promise.all([
-    supabase.from("goals").select("id,goal,target_metric,target_value,timeframe,status,domain,app_name,audience,positioning,project_name,is_demo,autonomous_mode,auto_post_mode,daily_post_limit,channels_enabled,auto_response_level,paused_at,created_at,updated_at").eq("id", goalId).single(),
+    supabase.from("goals").select("*").eq("id", goalId).single(),
     supabase.from("steps").select("id,title,step_type,status,output,error,position,created_at,updated_at").eq("goal_id", goalId).order("position"),
     supabase.from("notifications").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(10),
     supabase
@@ -50,7 +53,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
     supabase.from("landing_page_variants").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }),
     supabase.from("goodbot_recommendations").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(10),
     supabase.from("goodbot_context").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(1).maybeSingle(),
-    supabase.from("engagement_events").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(20)
+    supabase.from("engagement_events").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(20),
+    supabase.from("google_ads_campaign_drafts").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(10),
+    supabase.from("google_ads_campaigns").select("*").eq("goal_id", goalId).order("created_at", { ascending: false }).limit(10),
+    supabase.from("google_ads_metrics").select("*").eq("goal_id", goalId).order("captured_at", { ascending: false }).limit(50)
   ]);
 
   if (goalError) {
@@ -68,6 +74,21 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
       .maybeSingle()
     : { data: null };
 
+  const { data: googleAdsAccount } = access.user
+    ? await supabase
+      .from("connected_accounts")
+      .select("id,provider,provider_account_name,status,scopes,token_expires_at,metadata")
+      .eq("user_id", access.user.id)
+      .eq("provider", "google_ads")
+      .order("updated_at", { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    : { data: null };
+
+  const googleAdsMetadata = typeof googleAdsAccount?.metadata === "object" && googleAdsAccount.metadata
+    ? googleAdsAccount.metadata as Record<string, unknown>
+    : {};
+
   const visits = (metrics ?? []).filter((row) => row.metric_type === "visit").reduce((sum, row) => sum + Number(row.value), 0);
   const signups = (metrics ?? []).filter((row) => row.metric_type === "signup").reduce((sum, row) => sum + Number(row.value), 0);
 
@@ -77,6 +98,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
     notifications,
     content_assets: contentAssets ?? [],
     landing_pages: landingPages ?? [],
+    google_ads_campaign_drafts: googleAdsDrafts ?? [],
+    google_ads_campaigns: googleAdsCampaigns ?? [],
+    google_ads_metrics: googleAdsMetrics ?? [],
     distribution_events: distributionEvents ?? [],
     landing_page_variants: landingPageVariants ?? [],
     recommendations: recommendations ?? [],
@@ -94,7 +118,19 @@ export async function GET(request: Request, { params }: { params: Promise<{ goal
         reconnect_reason: typeof linkedinAccount.metadata === "object" && linkedinAccount.metadata && "reconnect_reason" in linkedinAccount.metadata
           ? String(linkedinAccount.metadata.reconnect_reason)
           : null
-      } : { connected: false }
+      } : { connected: false },
+      google_ads: googleAdsAccount ? {
+        connected: googleAdsAccount.status === "connected",
+        provider: googleAdsAccount.provider,
+        account_name: googleAdsAccount.provider_account_name,
+        status: googleAdsAccount.status,
+        scopes: googleAdsAccount.scopes ?? [],
+        token_expires_at: googleAdsAccount.token_expires_at,
+        reconnect_required: googleAdsAccount.status === "reconnect_required",
+        customer_id: typeof googleAdsMetadata.customer_id === "string" ? googleAdsMetadata.customer_id : null,
+        login_customer_id: typeof googleAdsMetadata.login_customer_id === "string" ? googleAdsMetadata.login_customer_id : null,
+        raw_tokens_exposed: false
+      } : { connected: false, raw_tokens_exposed: false }
     },
     context,
     attribution: {

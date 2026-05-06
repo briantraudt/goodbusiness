@@ -1670,6 +1670,143 @@
   }
 }
 
+.paid-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.paid-panel-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.paid-panel h3,
+.google-ads-draft-card h3 {
+  margin: 0 0 6px;
+  font-size: clamp(24px, 3vw, 38px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.paid-panel p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.spend-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.spend-controls label {
+  display: grid;
+  gap: 7px;
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.spend-controls input,
+.spend-controls select {
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 12px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-weight: 800;
+}
+
+.google-ads-draft-card {
+  display: grid;
+  gap: 16px;
+  border: 1px solid color-mix(in srgb, var(--teal) 34%, var(--line));
+  border-radius: 8px;
+  padding: 20px;
+  background: color-mix(in srgb, var(--mint) 24%, #fff);
+}
+
+.card-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.budget-pair {
+  display: inline-flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.budget-pair span,
+.paid-stats span,
+.pill {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 12px;
+  background: #fff;
+  color: var(--ink);
+  font-weight: 850;
+}
+
+.draft-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.draft-detail-grid > div {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: #fff;
+}
+
+.draft-detail-grid strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--teal);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.paid-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.paid-stats span {
+  justify-content: space-between;
+}
+
+@media (max-width: 780px) {
+  .paid-panel-header,
+  .card-heading {
+    display: grid;
+  }
+
+  .spend-controls,
+  .draft-detail-grid,
+  .paid-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
 .generated-page,
 .blog-post {
   min-height: 100vh;

@@ -20,6 +20,27 @@ const contentSchema = z.object({
   email_drafts: z.array(z.object({ title: z.string(), body: z.string() })).default([])
 });
 
+const googleAdsDraftSchema = z.object({
+  campaign_name: z.string().min(1),
+  objective: z.literal("lead_generation").default("lead_generation"),
+  network: z.literal("search").default("search"),
+  daily_budget: z.number().min(0),
+  total_budget: z.number().min(0),
+  ad_groups: z.array(z.object({
+    name: z.string().min(1),
+    keywords: z.array(z.string()).min(3).max(20),
+    headlines: z.array(z.string()).min(3).max(15),
+    descriptions: z.array(z.string()).min(2).max(4)
+  })).min(1).max(3),
+  landing_page_url: z.string().min(1),
+  tracking: z.object({
+    utm_source: z.literal("google_ads"),
+    utm_medium: z.literal("paid_search"),
+    utm_campaign: z.string(),
+    utm_content: z.string()
+  })
+});
+
 const JOB_BATCH_SIZE = 5;
 type RecommendedStep = PlanStep & { recommendation_id?: string };
 
@@ -189,6 +210,42 @@ export async function enqueueLinkedInAutoPost(goalId: string, contentAssetId: st
   return data;
 }
 
+export async function enqueueGoogleAdsDryRunLaunch(goalId: string, draftId: string, runAfter = new Date()) {
+  const supabase = getSupabaseAdmin();
+  const { data: existing, error: existingError } = await supabase
+    .from("goodbot_jobs")
+    .select("id,status")
+    .eq("goal_id", goalId)
+    .eq("job_type", "google_ads_launch_dry_run")
+    .contains("input", { draft_id: draftId })
+    .in("status", ["pending", "running", "completed"])
+    .limit(1)
+    .maybeSingle();
+
+  if (existingError) throw existingError;
+  if (existing) return existing;
+
+  const { data, error } = await supabase
+    .from("goodbot_jobs")
+    .insert({
+      goal_id: goalId,
+      job_type: "google_ads_launch_dry_run",
+      status: "pending",
+      run_after: runAfter.toISOString(),
+      input: { draft_id: draftId, dry_run: true }
+    })
+    .select("id,status")
+    .single();
+
+  if (error) throw error;
+  await supabase
+    .from("google_ads_campaign_drafts")
+    .update({ status: "queued" })
+    .eq("id", draftId)
+    .eq("status", "approved");
+  return data;
+}
+
 export async function executeRecommendation(recommendationId: string, action: "approve" | "reject") {
   const supabase = getSupabaseAdmin();
   const { data: recommendation, error } = await supabase
@@ -321,6 +378,10 @@ async function runQueuedJob(job: GoodBotJobRecord) {
       output = await postLinkedInContent(job.goal_id, String(job.input?.content_asset_id || ""));
     } else if (job.job_type === "linkedin_poll_comments") {
       output = await pollLinkedInComments(job.goal_id, typeof job.input?.content_asset_id === "string" ? job.input.content_asset_id : undefined);
+    } else if (job.job_type === "google_ads_launch_dry_run") {
+      output = await launchGoogleAdsCampaignDryRun(String(job.input?.draft_id || ""));
+    } else if (job.job_type === "google_ads_sync_metrics") {
+      output = await syncGoogleAdsMetrics(job.goal_id);
     } else {
       throw new Error(`Unsupported job type: ${job.job_type}`);
     }
@@ -652,6 +713,118 @@ export async function trackMetrics(goal: GoalRecord): Promise<StepOutput> {
       signup_endpoint: "/api/goodbot/signup",
       metric_types: ["visit", "signup"]
     }
+  };
+}
+
+export async function planGoogleAdsCampaign(goalId: string): Promise<StepOutput & { draft_id?: string }> {
+  const supabase = getSupabaseAdmin();
+  const { data: goal, error: goalError } = await supabase.from("goals").select("*").eq("id", goalId).single();
+  if (goalError) throw goalError;
+
+  const goalRecord = goal as GoalRecord;
+  const context = await getConfirmedContext(goalId);
+  const landingPageUrl = await getLandingPageUrl(goalId);
+  const dailyCap = Number(goalRecord.max_daily_ad_spend ?? 0);
+  const totalCap = Number(goalRecord.max_total_ad_spend ?? 0);
+  const conservativeDailyBudget = dailyCap > 0 ? Math.min(dailyCap, 10) : 0;
+  const conservativeTotalBudget = totalCap > 0 ? Math.min(totalCap, 50) : 0;
+  const fallback = buildGoogleAdsDraftFallback(goalRecord, context, landingPageUrl, conservativeDailyBudget, conservativeTotalBudget, "pending");
+
+  const generated = await generateJson(buildGoogleAdsPlanPrompt(goalRecord, context, landingPageUrl, conservativeDailyBudget, conservativeTotalBudget), fallback);
+  const normalized = normalizeGoogleAdsDraft(generated, goalId, landingPageUrl, conservativeDailyBudget, conservativeTotalBudget);
+  const parsed = googleAdsDraftSchema.safeParse(normalized);
+  const draft = enforceGoogleAdsSafety(parsed.success ? parsed.data : fallback, context, conservativeDailyBudget, conservativeTotalBudget);
+
+  const { data, error } = await supabase
+    .from("google_ads_campaign_drafts")
+    .insert({
+      goal_id: goalId,
+      status: "pending_approval",
+      draft_json: draft,
+      estimated_daily_budget: draft.daily_budget,
+      estimated_total_budget: draft.total_budget,
+      estimated_keywords: draft.ad_groups.flatMap((group) => group.keywords),
+      landing_page_url: draft.landing_page_url
+    })
+    .select("id")
+    .single();
+
+  if (error) throw error;
+  await supabase.from("goals").update({
+    ads_enabled: true,
+    ads_autonomy_level: goalRecord.ads_autonomy_level === "off" ? "assisted" : goalRecord.ads_autonomy_level,
+    approved_channels: Array.from(new Set([...(goalRecord.approved_channels ?? []), "google_ads"]))
+  }).eq("id", goalId);
+  await createNotification(goalId, "strategy_changed", "I drafted a conservative Google Ads search campaign for approval.");
+
+  return {
+    ok: true,
+    summary: "Google Ads campaign draft created.",
+    draft_id: data.id,
+    artifacts: { google_ads_campaign_draft_id: data.id, daily_budget: draft.daily_budget, total_budget: draft.total_budget }
+  };
+}
+
+export async function launchGoogleAdsCampaignDryRun(draftId: string): Promise<StepOutput> {
+  if (!draftId) throw new Error("Missing Google Ads draft_id.");
+  const supabase = getSupabaseAdmin();
+  const { data: draft, error: draftError } = await supabase
+    .from("google_ads_campaign_drafts")
+    .select("*, goals(*)")
+    .eq("id", draftId)
+    .single();
+  if (draftError) throw draftError;
+
+  const goal = draft.goals as GoalRecord | undefined;
+  if (!goal) throw new Error("Google Ads draft is missing its mission.");
+  assertGoogleAdsLaunchAllowed(goal, draft, true);
+
+  const draftJson = draft.draft_json as z.infer<typeof googleAdsDraftSchema>;
+  const { data: campaign, error } = await supabase
+    .from("google_ads_campaigns")
+    .insert({
+      goal_id: draft.goal_id,
+      draft_id: draft.id,
+      google_customer_id: "dry-run",
+      google_campaign_id: `dry-run-${draft.id.slice(0, 8)}`,
+      status: "dry_run",
+      daily_budget: draftJson.daily_budget,
+      total_spend: 0,
+      launched_at: new Date().toISOString()
+    })
+    .select("id,google_campaign_id")
+    .single();
+  if (error) throw error;
+
+  await supabase
+    .from("google_ads_campaign_drafts")
+    .update({ status: "dry_run_launched", launched_at: new Date().toISOString() })
+    .eq("id", draft.id);
+
+  await createNotification(draft.goal_id, "strategy_changed", "Google Ads dry-run launch passed. No ad spend happened.");
+  return {
+    ok: true,
+    summary: "Google Ads dry-run launch completed. No Google Ads API launch was called.",
+    artifacts: { google_ads_campaign_id: campaign.id, google_campaign_id: campaign.google_campaign_id, dry_run: true }
+  };
+}
+
+export async function launchGoogleAdsCampaign(draftId: string): Promise<StepOutput> {
+  if (process.env.GOOGLE_ADS_LIVE_LAUNCH_ENABLED !== "1") {
+    throw new Error("Live Google Ads launch is disabled. Run dry-run mode until a controlled spend test is explicitly approved.");
+  }
+  return {
+    ok: false,
+    summary: `Live Google Ads launch is gated for draft ${draftId}.`,
+    artifacts: { live_launch_enabled: false }
+  };
+}
+
+export async function syncGoogleAdsMetrics(goalId: string): Promise<StepOutput> {
+  return {
+    ok: true,
+    summary: "Google Ads metrics sync is ready for live campaigns. No live Google Ads API call was made in this foundation pass.",
+    artifacts: { goal_id: goalId, dry_run: true }
   };
 }
 
@@ -1395,6 +1568,181 @@ async function createRecommendedStep(goalId: string, title: string, rationale: s
   const job = await enqueueStepJob(insertedStep as StepRecord, new Date(), step.recommendation_id || null);
   await createNotification(goalId, "strategy_changed", `I queued the next move: ${title}.`);
   return { ok: true, summary: "Queued recommendation as a GoodBot job.", step_id: insertedStep.id, job_id: job.id };
+}
+
+async function getLandingPageUrl(goalId: string) {
+  const baseUrl = getGoodBotBaseUrl();
+  return `${baseUrl}/goodbot/landing/${goalId}`;
+}
+
+function buildGoogleAdsPlanPrompt(
+  goal: GoalRecord,
+  context: GoodBotContext,
+  landingPageUrl: string,
+  dailyBudget: number,
+  totalBudget: number
+) {
+  return `Create a small, conservative Google Ads search campaign draft for GoodBot.
+
+Goal:
+${JSON.stringify(toGoalObject(goal), null, 2)}
+
+Confirmed product context:
+${JSON.stringify(context, null, 2)}
+
+Landing page:
+${landingPageUrl}
+
+Budget caps already enforced:
+- daily_budget must be ${dailyBudget}
+- total_budget must be ${totalBudget}
+
+Return JSON only:
+{
+  "campaign_name": "...",
+  "objective": "lead_generation",
+  "network": "search",
+  "daily_budget": ${dailyBudget},
+  "total_budget": ${totalBudget},
+  "ad_groups": [
+    {
+      "name": "...",
+      "keywords": ["exact or phrase intent keywords"],
+      "headlines": ["specific headline under 30 chars if possible"],
+      "descriptions": ["specific description under 90 chars if possible"]
+    }
+  ],
+  "landing_page_url": "${landingPageUrl}",
+  "tracking": {
+    "utm_source": "google_ads",
+    "utm_medium": "paid_search",
+    "utm_campaign": "${goal.id}",
+    "utm_content": "pending"
+  }
+}
+
+Rules:
+- Search network only.
+- Use phrase/exact-intent keywords; no broad match default.
+- Be product-specific. Mention the actual product and use case.
+- No legal guarantees, no misleading claims, no generic SaaS language.
+- Draft only. Do not imply the campaign is launched.`;
+}
+
+function buildGoogleAdsDraftFallback(
+  goal: GoalRecord,
+  context: GoodBotContext,
+  landingPageUrl: string,
+  dailyBudget: number,
+  totalBudget: number,
+  draftId: string
+): z.infer<typeof googleAdsDraftSchema> {
+  const product = context.product_name || goal.app_name || "the product";
+  const audience = context.audience || goal.audience || "qualified buyers";
+  const coreUseCase = context.features[0] || context.value_prop || "solve a specific business workflow";
+  const keywordRoot = product.toLowerCase();
+  return {
+    campaign_name: `${product} lead generation`,
+    objective: "lead_generation",
+    network: "search",
+    daily_budget: dailyBudget,
+    total_budget: totalBudget,
+    ad_groups: [
+      {
+        name: `${product} intent`,
+        keywords: [
+          `"${keywordRoot}"`,
+          `"${keywordRoot} for ${audience.toLowerCase()}"`,
+          `"${String(coreUseCase).toLowerCase()}"`,
+          `[${keywordRoot}]`
+        ].slice(0, 6),
+        headlines: [
+          `${product}`,
+          `For ${audience}`,
+          "Start in minutes",
+          "Simple setup"
+        ],
+        descriptions: [
+          `${product} helps ${audience} ${context.value_prop || coreUseCase}.`,
+          `Try ${product} with a focused workflow built around ${coreUseCase}.`
+        ]
+      }
+    ],
+    landing_page_url: landingPageUrl,
+    tracking: {
+      utm_source: "google_ads",
+      utm_medium: "paid_search",
+      utm_campaign: goal.id,
+      utm_content: draftId
+    }
+  };
+}
+
+function normalizeGoogleAdsDraft(
+  value: unknown,
+  goalId: string,
+  landingPageUrl: string,
+  dailyBudget: number,
+  totalBudget: number
+) {
+  const draft = typeof value === "object" && value ? value as Record<string, unknown> : {};
+  return {
+    ...draft,
+    objective: "lead_generation",
+    network: "search",
+    daily_budget: dailyBudget,
+    total_budget: totalBudget,
+    landing_page_url: landingPageUrl,
+    tracking: {
+      ...((typeof draft.tracking === "object" && draft.tracking ? draft.tracking : {}) as Record<string, unknown>),
+      utm_source: "google_ads",
+      utm_medium: "paid_search",
+      utm_campaign: goalId,
+      utm_content: "pending"
+    }
+  };
+}
+
+function enforceGoogleAdsSafety(
+  draft: z.infer<typeof googleAdsDraftSchema>,
+  context: GoodBotContext,
+  dailyBudget: number,
+  totalBudget: number
+) {
+  const blocked = /\b(guarantee|guaranteed|revolutionize|transform your workflow|best in the world|risk-free legal)\b/i;
+  const product = context.product_name || "";
+  return {
+    ...draft,
+    daily_budget: Math.min(Number(draft.daily_budget || 0), dailyBudget),
+    total_budget: Math.min(Number(draft.total_budget || 0), totalBudget),
+    ad_groups: draft.ad_groups.map((group) => ({
+      ...group,
+      keywords: group.keywords
+        .filter(Boolean)
+        .map((keyword) => keyword.startsWith("[") || keyword.startsWith("\"") ? keyword : `"${keyword}"`)
+        .slice(0, 20),
+      headlines: group.headlines
+        .filter((headline) => !blocked.test(headline))
+        .map((headline) => headline.slice(0, 30))
+        .slice(0, 15),
+      descriptions: group.descriptions
+        .filter((description) => !blocked.test(description))
+        .map((description) => description.includes(product) || !product ? description : `${product}: ${description}`)
+        .map((description) => description.slice(0, 90))
+        .slice(0, 4)
+    }))
+  };
+}
+
+function assertGoogleAdsLaunchAllowed(goal: GoalRecord, draft: { status: string; estimated_daily_budget: number | null; estimated_total_budget: number | null }, dryRun: boolean) {
+  if (goal.paused_at || goal.status === "paused") throw new Error("GoodBot is paused for this goal.");
+  if (draft.status !== "approved" && draft.status !== "queued") throw new Error("Approve this Google Ads draft before launch.");
+  if (!goal.ads_enabled) throw new Error("Paid acquisition is off for this mission.");
+  if (goal.ads_autonomy_level !== "controlled" && !dryRun) throw new Error("Set paid acquisition autonomy to controlled before live launch.");
+  if (Number(goal.max_daily_ad_spend ?? 0) <= 0) throw new Error("Set a daily ad spend cap before launch.");
+  if (Number(goal.max_total_ad_spend ?? 0) <= 0) throw new Error("Set a total ad spend cap before launch.");
+  if (Number(draft.estimated_daily_budget ?? 0) > Number(goal.max_daily_ad_spend ?? 0)) throw new Error("Draft daily budget exceeds the mission spend cap.");
+  if (Number(draft.estimated_total_budget ?? 0) > Number(goal.max_total_ad_spend ?? 0)) throw new Error("Draft total budget exceeds the mission spend cap.");
 }
 
 function toGoalObject(goal: GoalRecord): GoalObject {

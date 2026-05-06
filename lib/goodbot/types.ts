@@ -195,6 +195,11 @@ export type GoalRecord = {
   daily_post_limit?: number;
   channels_enabled?: string[];
   auto_response_level?: "approval_required" | "low_risk_auto" | "manual";
+  ads_enabled?: boolean;
+  max_daily_ad_spend?: number;
+  max_total_ad_spend?: number;
+  approved_channels?: string[];
+  ads_autonomy_level?: "off" | "assisted" | "controlled";
   paused_at?: string | null;
   status: "working" | "paused" | "completed" | "failed";
 };
