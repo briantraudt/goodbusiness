@@ -126,7 +126,7 @@ export default function Home() {
           <div className="hero-text-stack">
             <h1>Are You AI?</h1>
             <p>
-              Successful companies are <strong>Always</strong> <strong>Innovating</strong>. We help
+              Successful companies are <strong>A</strong>lways <strong>I</strong>nnovating. We help
               find the operational drag, fix the work, and turn better systems into measurable
               results.
             </p>
