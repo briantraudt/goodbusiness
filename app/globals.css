@@ -579,6 +579,16 @@ a {
   }
 }
 
+@keyframes operational-drift {
+  from {
+    background-position: 0 0, 0 0, 0 0, 0 0;
+  }
+
+  to {
+    background-position: 760px 0, -680px 0, 164px 0, 0 164px;
+  }
+}
+
 .workflow-visual,
 .mockup-stage {
   position: relative;
@@ -2114,6 +2124,10 @@ a {
     scroll-behavior: auto !important;
     transition-duration: 1ms !important;
   }
+
+  .quiet-hero::before {
+    animation: none;
+  }
 }
 
 @media (max-width: 1180px) {
@@ -2731,20 +2745,52 @@ a {
 
 /* Quiet Good Business landing page */
 .quiet-home {
-  background:
-    radial-gradient(circle at 75% 16%, rgba(9, 14, 18, 0.035), transparent 26%),
-    #fff;
+  background: #fff;
 }
 
 .quiet-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   display: grid;
   grid-template-columns: 1fr;
   gap: 0;
   align-items: center;
-  max-width: 1480px;
-  min-height: min(680px, calc(100vh - 72px));
-  margin: 0 auto;
-  padding: clamp(70px, 8vw, 112px) clamp(20px, 5vw, 72px);
+  max-width: none;
+  min-height: min(700px, calc(100vh - 72px));
+  margin: 0;
+  padding: clamp(76px, 8vw, 118px) clamp(20px, 5vw, 72px);
+  background: #070b0d;
+  color: #fff;
+}
+
+.quiet-hero::before,
+.quiet-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+
+.quiet-hero::before {
+  opacity: 0.42;
+  background:
+    linear-gradient(115deg, transparent 0 48%, rgba(255, 255, 255, 0.16) 49%, transparent 50% 100%),
+    linear-gradient(25deg, transparent 0 54%, rgba(255, 255, 255, 0.12) 55%, transparent 56% 100%),
+    repeating-linear-gradient(90deg, transparent 0 82px, rgba(255, 255, 255, 0.055) 83px, transparent 84px),
+    repeating-linear-gradient(0deg, transparent 0 82px, rgba(255, 255, 255, 0.04) 83px, transparent 84px);
+  background-size: 760px 520px, 680px 480px, 164px 164px, 164px 164px;
+  transform: translate3d(0, 0, 0);
+  animation: operational-drift 24s linear infinite;
+}
+
+.quiet-hero::after {
+  z-index: -1;
+  background:
+    radial-gradient(circle at 72% 46%, rgba(255, 255, 255, 0.18), transparent 17%),
+    radial-gradient(circle at 82% 24%, rgba(35, 111, 79, 0.2), transparent 24%),
+    linear-gradient(90deg, #070b0d 0%, rgba(7, 11, 13, 0.94) 42%, rgba(7, 11, 13, 0.7) 100%);
 }
 
 .quiet-hero-copy {
@@ -2768,7 +2814,7 @@ a {
 .quiet-hero-copy > p:not(.brand-promise) {
   max-width: 650px;
   margin: 28px 0 0;
-  color: var(--muted);
+  color: #c7cdd1;
   font-size: clamp(19px, 1.45vw, 23px);
   line-height: 1.46;
 }
@@ -2776,9 +2822,23 @@ a {
 .brand-promise {
   display: inline-flex;
   margin: 24px 0 0;
-  color: var(--ink);
+  color: #fff;
   font-size: 15px;
   font-weight: 850;
+}
+
+.quiet-hero .button-dark {
+  border-color: #fff;
+  background: #fff;
+  color: #070b0d;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.35);
+}
+
+.quiet-hero .button-light {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.055);
+  color: #fff;
+  backdrop-filter: blur(14px);
 }
 
 .outcome-signal {
