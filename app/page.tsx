@@ -111,6 +111,17 @@ export default function Home() {
       <SiteNav />
 
       <section className="quiet-hero" id="outcomes">
+        <div className="hero-motion-image" aria-hidden="true">
+          <span className="motion-panel motion-panel-a" />
+          <span className="motion-panel motion-panel-b" />
+          <span className="motion-panel motion-panel-c" />
+          <span className="motion-line motion-line-a" />
+          <span className="motion-line motion-line-b" />
+          <span className="motion-line motion-line-c" />
+          <span className="motion-node motion-node-a" />
+          <span className="motion-node motion-node-b" />
+          <span className="motion-node motion-node-c" />
+        </div>
         <div className="quiet-hero-copy">
           <div className="hero-text-stack">
             <h1>Are You AI?</h1>
