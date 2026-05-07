@@ -3085,8 +3085,15 @@ a {
 
 @media (max-width: 520px) {
   .quiet-hero {
-    gap: 30px;
-    padding: 40px 20px 46px;
+    min-height: calc(100svh - 72px);
+    gap: 0;
+    padding: 40px 20px 34px;
+  }
+
+  .quiet-hero-copy {
+    display: flex;
+    min-height: calc(100svh - 146px);
+    flex-direction: column;
   }
 
   .quiet-hero h1 {
@@ -3100,6 +3107,11 @@ a {
 
   .brand-promise {
     margin-top: 18px;
+  }
+
+  .quiet-hero .hero-actions {
+    margin-top: auto;
+    padding-top: 30px;
   }
 
   .outcome-signal {
