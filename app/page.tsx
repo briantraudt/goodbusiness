@@ -112,12 +112,12 @@ export default function Home() {
 
       <section className="quiet-hero" id="outcomes">
         <div className="quiet-hero-copy">
-          <h1>Outcomes. Not Consultants.</h1>
+          <h1>Are You AI?</h1>
           <p>
-            We help businesses find operational inefficiencies, improve workflows, and use modern
-            tools where they create measurable business results.
+            Successful companies are <strong>Always</strong> <strong>Innovating</strong>. We help
+            find the operational drag, fix the work, and turn better systems into measurable results.
           </p>
-          <p className="brand-promise">You pay for outcomes, not presentations.</p>
+          <p className="brand-promise">We provide outcomes, nothing else.</p>
           <div className="hero-actions">
             <Link className="button button-dark" href="/contact">
               Book a Strategy Call <ArrowRight aria-hidden="true" size={17} />

@@ -2819,6 +2819,11 @@ a {
   line-height: 1.46;
 }
 
+.quiet-hero-copy > p:not(.brand-promise) strong {
+  color: #fff;
+  font-weight: 900;
+}
+
 .brand-promise {
   display: inline-flex;
   margin: 24px 0 0;
