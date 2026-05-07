@@ -8,12 +8,22 @@ export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}));
   const name = String(body.name || "").trim();
   const email = String(body.email || "").trim();
-  const message = String(body.message || "").trim();
+  const company = String(body.company || "").trim();
+  const project = String(body.project || "").trim();
+  const bottleneck = String(body.bottleneck || "").trim();
+  const budget = String(body.budget || "").trim();
 
-  if (!name || !email || !message) {
+  if (!name || !email || !company || !project || !bottleneck || !budget) {
     return Response.json({ error: "Missing required fields" }, { status: 400 });
   }
-  if (name.length > 200 || email.length > 200 || message.length > 5000) {
+  if (
+    name.length > 200 ||
+    email.length > 200 ||
+    company.length > 200 ||
+    budget.length > 100 ||
+    project.length > 5000 ||
+    bottleneck.length > 5000
+  ) {
     return Response.json({ error: "Input too long" }, { status: 400 });
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -25,14 +35,34 @@ export async function POST(request: Request) {
     return Response.json({ error: "Email service not configured" }, { status: 500 });
   }
 
-  const subject = `New project inquiry - ${name}`;
-  const text = `New project inquiry\n\nFrom: ${name}\nEmail: ${email}\n\n${message}\n`;
+  const subject = `New strategy call request - ${name}`;
+  const text = [
+    "New strategy call request",
+    "",
+    `From: ${name}`,
+    `Email: ${email}`,
+    `Company: ${company}`,
+    `Budget: ${budget}`,
+    "",
+    "What are they trying to build?",
+    project,
+    "",
+    "Biggest bottleneck",
+    bottleneck
+  ].join("\n");
   const html = `
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;color:#111;padding:24px">
-  <h2 style="margin:0 0 20px;font-size:20px;font-weight:600">New project inquiry</h2>
+  <h2 style="margin:0 0 20px;font-size:20px;font-weight:600">New strategy call request</h2>
   <p><strong>From:</strong> ${escapeHtml(name)}</p>
   <p><strong>Email:</strong> <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></p>
-  <div style="border-top:1px solid #e0e0da;padding-top:20px;white-space:pre-wrap">${escapeHtml(message)}</div>
+  <p><strong>Company:</strong> ${escapeHtml(company)}</p>
+  <p><strong>Budget:</strong> ${escapeHtml(budget)}</p>
+  <div style="border-top:1px solid #e0e0da;padding-top:20px">
+    <h3 style="margin:0 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:#666">What are they trying to build?</h3>
+    <div style="white-space:pre-wrap">${escapeHtml(project)}</div>
+    <h3 style="margin:24px 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:#666">Biggest bottleneck</h3>
+    <div style="white-space:pre-wrap">${escapeHtml(bottleneck)}</div>
+  </div>
 </div>`.trim();
 
   const response = await fetch("https://api.resend.com/emails", {

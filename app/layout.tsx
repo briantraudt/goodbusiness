@@ -3,8 +3,9 @@ import "./globals.css";
 import "./goodbot/goodbot.css";
 
 export const metadata: Metadata = {
-  title: "GoodBot | Good Business",
-  description: "An autonomous outcome engine for getting users for your web app."
+  title: "Good Business | AI Venture Studio",
+  description:
+    "AI venture studio and rapid product development firm for founders, operators, and business owners."
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
