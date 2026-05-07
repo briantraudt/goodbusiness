@@ -3,9 +3,9 @@ import "./globals.css";
 import "./goodbot/goodbot.css";
 
 export const metadata: Metadata = {
-  title: "Good Business HQ | AI Software for Business Problems",
+  title: "Good Business HQ | AI, Automation, and Better Operations",
   description:
-    "Good Business HQ helps business owners, operators, and founders turn business problems into working AI-powered software."
+    "Good Business HQ helps owners and operators reduce manual work, speed up workflows, and improve profitability with AI, automation, and modern tools."
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

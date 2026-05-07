@@ -7,7 +7,7 @@ export function SiteNav() {
         Good Business HQ
       </Link>
       <nav aria-label="Primary navigation">
-        <Link href="/#what-we-build">What We Build</Link>
+        <Link href="/#what-we-build">What We Fix</Link>
         <Link href="/#process">Process</Link>
         <Link href="/#services">Services</Link>
         <Link href="/about">About</Link>

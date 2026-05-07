@@ -4,7 +4,7 @@ import { SiteNav } from "../components/SiteNav";
 
 export const metadata = {
   title: "About | Good Business HQ",
-  description: "Good Business HQ builds practical AI-powered software for business problems."
+  description: "Good Business HQ helps businesses reduce waste, speed up work, and improve profit."
 };
 
 export default function AboutPage() {
@@ -13,10 +13,10 @@ export default function AboutPage() {
       <SiteNav />
       <section className="page-hero about-hero">
         <p className="eyebrow">About</p>
-        <h1>Built for owners who need working software, not a long innovation project.</h1>
+        <h1>Built for owners who want the business to run better.</h1>
         <p>
           Good Business HQ is led by Brian Traudt, a founder, operator, and builder focused on
-          turning clear business problems into usable AI-powered software.
+          using AI, automation, and practical tools to reduce waste and improve operations.
         </p>
       </section>
       <section className="operator-section">
@@ -33,7 +33,7 @@ export default function AboutPage() {
           </p>
           <p>
             The work is practical by design. No theater. No generic AI roadmap. The goal is to help
-            business owners move faster with software that fits how the business actually runs.
+            business owners move faster with systems that fit how the business actually runs.
           </p>
         </div>
       </section>

@@ -43,7 +43,7 @@ const examples = [
 
 export const metadata = {
   title: "Example Builds | Good Business HQ",
-  description: "Example B2B AI software build types from Good Business HQ."
+  description: "Example AI and automation systems Good Business HQ can help build."
 };
 
 export default function ExampleBuildsPage() {
@@ -52,7 +52,7 @@ export default function ExampleBuildsPage() {
       <SiteNav />
       <section className="page-hero">
         <p className="eyebrow">Example build types</p>
-        <h1>B2B AI software built around real work.</h1>
+        <h1>Business systems built around real work.</h1>
         <p>
           These are example build types. The point is simple: find the business problem, design the
           workflow, and build the tool.
@@ -84,7 +84,7 @@ export default function ExampleBuildsPage() {
         ))}
       </section>
       <section className="final-cta slim">
-        <h2>Have a workflow that should become software?</h2>
+        <h2>Have a workflow that should run better?</h2>
         <Link className="button button-dark" href="/contact">
           Book a Strategy Call
         </Link>
