@@ -79,21 +79,6 @@ const industries = [
   }
 ];
 
-const modelSteps = [
-  {
-    title: "Find the Leak",
-    text: "Where time, money, or attention is being wasted."
-  },
-  {
-    title: "Fix the Work",
-    text: "Use better systems, automation, and AI where useful."
-  },
-  {
-    title: "Measure the Result",
-    text: "Time saved, costs reduced, revenue improved."
-  }
-];
-
 function IndustriesSection() {
   return (
     <section className="industries-section" id="industries">
@@ -118,25 +103,9 @@ function IndustriesSection() {
   );
 }
 
-function SimpleModel() {
+function PromiseSection() {
   return (
-    <section className="simple-model quiet-model" id="process">
-      <div className="model-head">
-        <p className="eyebrow">Process</p>
-        <h2>The Model Is Simple</h2>
-        <p>We only care about work that produces a measurable business result.</p>
-      </div>
-
-      <div className="simple-steps">
-        {modelSteps.map((step, index) => (
-          <article key={step.title}>
-            <span>{String(index + 1).padStart(2, "0")}</span>
-            <h3>{step.title}</h3>
-            <p>{step.text}</p>
-          </article>
-        ))}
-      </div>
-
+    <section className="promise-section" id="process">
       <div className="promise-block">
         <h2>
           You are not paying for hours.
@@ -167,7 +136,7 @@ export default function Home() {
               Book a Strategy Call <ArrowRight aria-hidden="true" size={17} />
             </Link>
             <Link className="button button-light" href="#process">
-              How It Works <ArrowRight aria-hidden="true" size={17} />
+              Our Promise <ArrowRight aria-hidden="true" size={17} />
             </Link>
           </div>
         </div>
@@ -175,7 +144,7 @@ export default function Home() {
       </section>
 
       <IndustriesSection />
-      <SimpleModel />
+      <PromiseSection />
 
       <SiteFooter />
     </main>

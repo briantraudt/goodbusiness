@@ -2959,6 +2959,13 @@ a {
   margin-top: clamp(28px, 3.8vw, 46px);
 }
 
+.promise-section {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: clamp(46px, 6vw, 82px) clamp(20px, 5vw, 72px) clamp(58px, 7vw, 96px);
+  border-top: 1px solid var(--line);
+}
+
 @media (max-width: 1180px) {
   .quiet-hero {
     grid-template-columns: 1fr;
@@ -3012,6 +3019,11 @@ a {
   .quiet-model .simple-steps {
     margin-top: 28px;
   }
+
+  .promise-section {
+    padding-top: 42px;
+    padding-bottom: 60px;
+  }
 }
 
 @media (max-width: 520px) {
@@ -3056,6 +3068,10 @@ a {
 
   .industries-section {
     padding: 54px 20px;
+  }
+
+  .promise-section {
+    padding: 34px 20px 54px;
   }
 
   .industries-head h2 {
