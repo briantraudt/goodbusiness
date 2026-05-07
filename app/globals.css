@@ -2903,30 +2903,27 @@ a {
 }
 
 .industry-card {
-  min-height: 190px;
-  padding: 22px;
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
   border-right: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.7);
 }
 
 .industry-card svg {
+  flex: 0 0 auto;
   color: var(--ink);
 }
 
 .industry-card h3 {
-  margin: 48px 0 0;
-  font-size: clamp(19px, 1.7vw, 26px);
+  margin: 0;
+  font-size: clamp(16px, 1.25vw, 20px);
   font-weight: 850;
   letter-spacing: 0;
-  line-height: 1;
-}
-
-.industry-card p {
-  margin: 12px 0 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.36;
+  line-height: 1.08;
 }
 
 .quiet-model {
@@ -3001,7 +2998,7 @@ a {
   }
 
   .industry-card {
-    min-height: 172px;
+    min-height: 70px;
   }
 
   .quiet-model {
@@ -3084,10 +3081,10 @@ a {
 
   .industry-card {
     min-height: 0;
-    padding: 20px;
+    padding: 16px 14px;
   }
 
   .industry-card h3 {
-    margin-top: 34px;
+    font-size: 16px;
   }
 }

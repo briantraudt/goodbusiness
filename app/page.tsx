@@ -19,63 +19,51 @@ import { SiteNav } from "./components/SiteNav";
 const industries = [
   {
     icon: BriefcaseBusiness,
-    title: "Professional Services",
-    pain: "Manual workflows, repeated admin, operational bottlenecks."
+    title: "Professional Services"
   },
   {
     icon: HomeIcon,
-    title: "Home Services",
-    pain: "Slow quoting, scattered intake, missed follow-up."
+    title: "Home Services"
   },
   {
     icon: HeartPulse,
-    title: "Healthcare & Wellness",
-    pain: "Messy scheduling, repeated questions, staff drag."
+    title: "Healthcare & Wellness"
   },
   {
     icon: Building2,
-    title: "Real Estate",
-    pain: "Lead follow-up, document flow, scattered deal context."
+    title: "Real Estate"
   },
   {
     icon: Store,
-    title: "Ecommerce",
-    pain: "Support volume, ops cleanup, fulfillment blind spots."
+    title: "Ecommerce"
   },
   {
     icon: UsersRound,
-    title: "Consulting & Coaching",
-    pain: "Expertise trapped in calls, docs, and custom delivery."
+    title: "Consulting & Coaching"
   },
   {
     icon: Factory,
-    title: "Trades & Manufacturing",
-    pain: "Quoting delays, job tracking, handoff problems."
+    title: "Trades & Manufacturing"
   },
   {
     icon: PanelsTopLeft,
-    title: "Agencies",
-    pain: "Too much custom work and not enough systems."
+    title: "Agencies"
   },
   {
     icon: HousePlus,
-    title: "Franchises",
-    pain: "Inconsistent processes across teams and locations."
+    title: "Franchises"
   },
   {
     icon: MapPinned,
-    title: "Multi-location Businesses",
-    pain: "No clean view of what is happening where."
+    title: "Multi-location Businesses"
   },
   {
     icon: Package,
-    title: "Service Businesses",
-    pain: "Manual intake, dispatch, follow-up, and reporting."
+    title: "Service Businesses"
   },
   {
     icon: UsersRound,
-    title: "Founder-Led Companies",
-    pain: "The owner is still holding too many processes together."
+    title: "Founder-Led Companies"
   }
 ];
 
@@ -94,7 +82,6 @@ function IndustriesSection() {
             <article className="industry-card" key={item.title}>
               <Icon aria-hidden="true" size={22} strokeWidth={1.7} />
               <h3>{item.title}</h3>
-              <p>{item.pain}</p>
             </article>
           );
         })}
