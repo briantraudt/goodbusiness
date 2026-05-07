@@ -2738,23 +2738,23 @@ a {
 
 .quiet-hero {
   display: grid;
-  grid-template-columns: minmax(0, 0.94fr) minmax(360px, 0.62fr);
-  gap: clamp(42px, 8vw, 124px);
+  grid-template-columns: 1fr;
+  gap: 0;
   align-items: center;
   max-width: 1480px;
-  min-height: min(760px, calc(100vh - 72px));
+  min-height: min(680px, calc(100vh - 72px));
   margin: 0 auto;
   padding: clamp(70px, 8vw, 112px) clamp(20px, 5vw, 72px);
 }
 
 .quiet-hero-copy {
-  max-width: 770px;
+  max-width: 880px;
   animation: fade-up 620ms ease both;
 }
 
 .quiet-hero h1 {
   margin: 0;
-  max-width: 740px;
+  max-width: 820px;
   font-size: clamp(58px, 7.1vw, 112px);
   font-weight: 890;
   letter-spacing: 0;
@@ -2937,11 +2937,6 @@ a {
   .quiet-hero {
     grid-template-columns: 1fr;
     min-height: auto;
-  }
-
-  .outcome-signal {
-    justify-self: start;
-    max-width: 620px;
   }
 
   .industries-head {

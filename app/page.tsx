@@ -16,13 +16,6 @@ import Link from "next/link";
 import { SiteFooter } from "./components/SiteFooter";
 import { SiteNav } from "./components/SiteNav";
 
-const outcomeMetrics = [
-  ["Hours saved", "less manual work"],
-  ["Faster response", "fewer missed leads"],
-  ["Lower admin", "cleaner systems"],
-  ["Revenue captured", "measured upside"]
-];
-
 const industries = [
   {
     icon: BriefcaseBusiness,
@@ -100,20 +93,6 @@ const modelSteps = [
     text: "Time saved, costs reduced, revenue improved."
   }
 ];
-
-function OutcomeSignal() {
-  return (
-    <div className="outcome-signal" aria-label="Measured business outcomes">
-      <div className="signal-line" aria-hidden="true" />
-      {outcomeMetrics.map(([label, detail], index) => (
-        <article className={index === 3 ? "signal-card signal-card-accent" : "signal-card"} key={label}>
-          <span>{label}</span>
-          <p>{detail}</p>
-        </article>
-      ))}
-    </div>
-  );
-}
 
 function IndustriesSection() {
   return (
@@ -193,7 +172,6 @@ export default function Home() {
           </div>
         </div>
 
-        <OutcomeSignal />
       </section>
 
       <IndustriesSection />
