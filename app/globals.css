@@ -2752,6 +2752,10 @@ a {
   animation: fade-up 620ms ease both;
 }
 
+.quiet-hero .eyebrow {
+  display: none;
+}
+
 .quiet-hero h1 {
   margin: 0;
   max-width: 820px;
