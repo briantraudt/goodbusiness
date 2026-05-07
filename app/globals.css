@@ -191,6 +191,7 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   min-height: 48px;
   border-radius: 999px;
   padding: 0 20px;
@@ -215,6 +216,52 @@ a {
 .workflow-visual,
 .mockup-stage {
   position: relative;
+}
+
+.operator-strip {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: clamp(22px, 4vw, 48px);
+  align-items: center;
+  padding: 28px clamp(20px, 5vw, 88px);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+
+.operator-strip p {
+  margin: 0;
+  max-width: 120px;
+  color: var(--quiet);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.operator-strip > div {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  align-items: stretch;
+  border-left: 1px solid var(--line);
+}
+
+.operator-strip span {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  min-height: 56px;
+  padding: 0 20px;
+  border-right: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 720;
+  line-height: 1.2;
+}
+
+.operator-strip svg {
+  flex: 0 0 auto;
 }
 
 .workflow-visual {
@@ -349,11 +396,6 @@ a {
   text-transform: uppercase;
 }
 
-.ops-card-dark p,
-.ops-card-dark li {
-  color: #d5dbe0;
-}
-
 .ops-card h2 {
   margin: 0;
   font-size: clamp(22px, 1.85vw, 28px);
@@ -387,6 +429,15 @@ a {
   margin-top: 6px;
   background: currentColor;
   opacity: 0.42;
+}
+
+.ops-card.ops-card-dark p,
+.ops-card.ops-card-dark li {
+  color: #d5dbe0;
+}
+
+.ops-card.ops-card-dark li::before {
+  opacity: 0.7;
 }
 
 .ops-connector {
@@ -1560,6 +1611,23 @@ a {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .operator-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .operator-strip p {
+    max-width: none;
+  }
+
+  .operator-strip > div {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+  }
+
+  .operator-strip span {
+    border-bottom: 1px solid var(--line);
+  }
+
   .mockup-stage {
     min-height: 500px;
   }
@@ -1664,6 +1732,10 @@ a {
     min-height: auto;
   }
 
+  .operator-strip > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .audience-section,
   .service-grid,
   .problem-grid,
@@ -1746,5 +1818,20 @@ a {
 
   .ops-metrics {
     grid-template-columns: 1fr;
+  }
+
+  .operator-strip {
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+
+  .operator-strip > div {
+    grid-template-columns: 1fr;
+  }
+
+  .operator-strip span {
+    min-height: 50px;
+    padding: 0;
+    border-right: 0;
   }
 }

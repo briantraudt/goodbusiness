@@ -1,13 +1,21 @@
 import {
+  ArrowRight,
   BarChart3,
   Bell,
+  Briefcase,
+  Building2,
   Clock,
+  HeartPulse,
+  House,
   HelpCircle,
   Inbox,
   Lightbulb,
   Repeat2,
   Route,
+  Settings,
+  ShoppingCart,
   TrendingUp,
+  UserRound,
 } from "lucide-react";
 import Link from "next/link";
 import { SiteFooter } from "./components/SiteFooter";
@@ -120,6 +128,16 @@ const proof = [
   ["Practical systems", "Simple tools win when simple tools solve the problem."]
 ];
 
+const operatorMarkets = [
+  { icon: Briefcase, label: "Professional Services" },
+  { icon: House, label: "Home Services" },
+  { icon: HeartPulse, label: "Health & Wellness" },
+  { icon: ShoppingCart, label: "Ecommerce" },
+  { icon: Building2, label: "Real Estate" },
+  { icon: UserRound, label: "Consulting & Coaching" },
+  { icon: Settings, label: "Manufacturing & Trade" }
+];
+
 function SystemVisual() {
   const workflow = [
     {
@@ -188,7 +206,6 @@ export default function Home() {
       <SiteNav />
       <section className="hero outcome-hero">
         <div className="hero-copy">
-          <p className="eyebrow">Good Business</p>
           <h1>Fix Bottlenecks. Improve Profitability.</h1>
           <p>
             Good Business helps owners and operators reduce manual work, improve workflows, and
@@ -196,14 +213,29 @@ export default function Home() {
           </p>
           <div className="hero-actions">
             <Link className="button button-dark" href="/contact">
-              Book a Strategy Call
+              Book a Strategy Call <ArrowRight aria-hidden="true" size={17} />
             </Link>
             <Link className="button button-light" href="#process">
-              See How We Work
+              See How We Work <ArrowRight aria-hidden="true" size={17} />
             </Link>
           </div>
         </div>
         <SystemVisual />
+      </section>
+
+      <section className="operator-strip" aria-label="Industries served">
+        <p>Trusted by operators in</p>
+        <div>
+          {operatorMarkets.map((market) => {
+            const Icon = market.icon;
+            return (
+              <span key={market.label}>
+                <Icon aria-hidden="true" size={22} strokeWidth={1.8} />
+                {market.label}
+              </span>
+            );
+          })}
+        </div>
       </section>
 
       <section className="section compact-section" id="what-we-build">
