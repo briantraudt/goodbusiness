@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export function SiteFooter() {
   return (
@@ -9,12 +10,11 @@ export function SiteFooter() {
         </Link>
         <p>goodbusinesshq.com</p>
       </div>
+      <p className="footer-line">Practical systems. Measurable outcomes.</p>
       <div className="footer-links">
-        <Link href="/#what-we-build">What We Do</Link>
-        <Link href="/#process">How We Work</Link>
-        <Link href="/#services">Services</Link>
-        <Link href="/about">About</Link>
-        <Link href="/contact">Contact</Link>
+        <Link className="footer-cta" href="/contact">
+          Book a Strategy Call <ArrowRight aria-hidden="true" size={15} />
+        </Link>
       </div>
     </footer>
   );

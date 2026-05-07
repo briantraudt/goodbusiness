@@ -8,14 +8,12 @@ export function SiteNav() {
         Good Business
       </Link>
       <nav aria-label="Primary navigation">
-        <Link href="/#what-we-build">What We Do</Link>
-        <Link href="/#process">How We Work</Link>
-        <Link href="/#services">Services</Link>
-        <Link href="/about">About</Link>
+        <Link href="/#outcomes">Outcomes</Link>
+        <Link href="/#process">Process</Link>
         <Link href="/contact">Contact</Link>
       </nav>
       <Link className="nav-cta" href="/contact">
-        Book a Strategy Call <ArrowRight aria-hidden="true" size={15} />
+        Book a Call <ArrowRight aria-hidden="true" size={15} />
       </Link>
     </header>
   );
