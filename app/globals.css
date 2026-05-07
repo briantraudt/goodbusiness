@@ -2931,10 +2931,32 @@ a {
 
 .quiet-model {
   border-top: 1px solid var(--line);
+  padding-top: clamp(42px, 5vw, 74px);
 }
 
 .quiet-model .promise-block h2 {
   max-width: 1200px;
+}
+
+.quiet-model .model-head {
+  align-items: start;
+  gap: clamp(18px, 4vw, 56px);
+}
+
+.quiet-model .model-head .eyebrow {
+  margin-bottom: 0;
+}
+
+.quiet-model .model-head h2 {
+  font-size: clamp(44px, 5.2vw, 78px);
+}
+
+.quiet-model .model-head > p:not(.eyebrow) {
+  align-self: end;
+}
+
+.quiet-model .simple-steps {
+  margin-top: clamp(28px, 3.8vw, 46px);
 }
 
 @media (max-width: 1180px) {
@@ -2973,6 +2995,22 @@ a {
 
   .industry-card {
     min-height: 172px;
+  }
+
+  .quiet-model {
+    padding-top: 46px;
+  }
+
+  .quiet-model .model-head {
+    gap: 18px;
+  }
+
+  .quiet-model .model-head h2 {
+    font-size: clamp(40px, 10vw, 58px);
+  }
+
+  .quiet-model .simple-steps {
+    margin-top: 28px;
   }
 }
 
