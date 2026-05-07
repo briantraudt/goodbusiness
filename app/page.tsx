@@ -1,69 +1,147 @@
-import { ArrowRight } from "lucide-react";
+import {
+  ArrowRight,
+  BriefcaseBusiness,
+  Building2,
+  Factory,
+  HeartPulse,
+  Home as HomeIcon,
+  HousePlus,
+  MapPinned,
+  Package,
+  PanelsTopLeft,
+  Store,
+  UsersRound,
+} from "lucide-react";
 import Link from "next/link";
 import { SiteFooter } from "./components/SiteFooter";
 import { SiteNav } from "./components/SiteNav";
 
-const flowCards = [
-  {
-    label: "Problem",
-    title: "Wasted time. Manual work. Missed revenue."
-  },
-  {
-    label: "Solution",
-    title: "Practical systems. Useful automation."
-  },
-  {
-    label: "ROI",
-    title: "Time saved. Costs reduced. Revenue captured."
-  }
+const outcomeMetrics = [
+  ["Hours saved", "less manual work"],
+  ["Faster response", "fewer missed leads"],
+  ["Lower admin", "cleaner systems"],
+  ["Revenue captured", "measured upside"]
 ];
 
-const metrics = ["Hours saved", "Costs reduced", "Revenue captured", "Faster response"];
+const industries = [
+  {
+    icon: BriefcaseBusiness,
+    title: "Professional Services",
+    pain: "Manual workflows, repeated admin, operational bottlenecks."
+  },
+  {
+    icon: HomeIcon,
+    title: "Home Services",
+    pain: "Slow quoting, scattered intake, missed follow-up."
+  },
+  {
+    icon: HeartPulse,
+    title: "Healthcare & Wellness",
+    pain: "Messy scheduling, repeated questions, staff drag."
+  },
+  {
+    icon: Building2,
+    title: "Real Estate",
+    pain: "Lead follow-up, document flow, scattered deal context."
+  },
+  {
+    icon: Store,
+    title: "Ecommerce",
+    pain: "Support volume, ops cleanup, fulfillment blind spots."
+  },
+  {
+    icon: UsersRound,
+    title: "Consulting & Coaching",
+    pain: "Expertise trapped in calls, docs, and custom delivery."
+  },
+  {
+    icon: Factory,
+    title: "Trades & Manufacturing",
+    pain: "Quoting delays, job tracking, handoff problems."
+  },
+  {
+    icon: PanelsTopLeft,
+    title: "Agencies",
+    pain: "Too much custom work and not enough systems."
+  },
+  {
+    icon: HousePlus,
+    title: "Franchises",
+    pain: "Inconsistent processes across teams and locations."
+  },
+  {
+    icon: MapPinned,
+    title: "Multi-location Businesses",
+    pain: "No clean view of what is happening where."
+  },
+  {
+    icon: Package,
+    title: "Service Businesses",
+    pain: "Manual intake, dispatch, follow-up, and reporting."
+  },
+  {
+    icon: UsersRound,
+    title: "Founder-Led Companies",
+    pain: "The owner is still holding too many processes together."
+  }
+];
 
 const modelSteps = [
   {
     title: "Find the Leak",
-    text: "Find where time, margin, leads, or labor are being wasted."
+    text: "Where time, money, or attention is being wasted."
   },
   {
     title: "Fix the Work",
-    text: "Rebuild the workflow with the simplest useful mix of process, tools, automation, and AI."
+    text: "Use better systems, automation, and AI where useful."
   },
   {
-    title: "Measure the Outcome",
-    text: "Track what changed: time saved, cost reduced, revenue gained, or speed improved."
+    title: "Measure the Result",
+    text: "Time saved, costs reduced, revenue improved."
   }
 ];
 
-function OutcomeFlow() {
+function OutcomeSignal() {
   return (
-    <div className="minimal-flow" aria-label="Problem to solution to ROI">
-      <div className="flow-line" aria-hidden="true" />
-      <div className="flow-cards">
-        {flowCards.map((card, index) => (
-          <article className={`flow-card ${index === 1 ? "flow-card-dark" : ""} ${index === 2 ? "flow-card-roi" : ""}`} key={card.label}>
-            <span>{card.label}</span>
-            <h2>{card.title}</h2>
-            {index < flowCards.length - 1 ? (
-              <div className="flow-arrow" aria-hidden="true">
-                <ArrowRight size={22} strokeWidth={1.7} />
-              </div>
-            ) : null}
-          </article>
-        ))}
-      </div>
-      <div className="metric-float" aria-label="Outcome metrics">
-        {metrics.map((metric) => (
-          <span key={metric}>{metric}</span>
-        ))}
-      </div>
+    <div className="outcome-signal" aria-label="Measured business outcomes">
+      <div className="signal-line" aria-hidden="true" />
+      {outcomeMetrics.map(([label, detail], index) => (
+        <article className={index === 3 ? "signal-card signal-card-accent" : "signal-card"} key={label}>
+          <span>{label}</span>
+          <p>{detail}</p>
+        </article>
+      ))}
     </div>
+  );
+}
+
+function IndustriesSection() {
+  return (
+    <section className="industries-section" id="industries">
+      <div className="section-kicker">Industries</div>
+      <div className="industries-head">
+        <h2>Built for Businesses with Operational Complexity</h2>
+        <p>Teams with real work, real customers, and expensive drag hiding in the process.</p>
+      </div>
+      <div className="industry-grid">
+        {industries.map((item) => {
+          const Icon = item.icon;
+          return (
+            <article className="industry-card" key={item.title}>
+              <Icon aria-hidden="true" size={22} strokeWidth={1.7} />
+              <h3>{item.title}</h3>
+              <p>{item.pain}</p>
+            </article>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
 function SimpleModel() {
   return (
-    <section className="simple-model" id="process">
+    <section className="simple-model quiet-model" id="process">
       <div className="model-head">
         <p className="eyebrow">Process</p>
         <h2>The Model Is Simple</h2>
@@ -84,9 +162,9 @@ function SimpleModel() {
         <h2>
           You are not paying for hours.
           <br />
-          You are paying for results.
+          You are paying for measurable business outcomes.
         </h2>
-        <p>If we cannot identify a clear business outcome, we do not build.</p>
+        <p>If we cannot identify a clear operational benefit, we do not recommend building it.</p>
       </div>
     </section>
   );
@@ -94,30 +172,31 @@ function SimpleModel() {
 
 export default function Home() {
   return (
-    <main className="minimal-home">
+    <main className="minimal-home quiet-home">
       <SiteNav />
 
-      <section className="minimal-hero" id="outcomes">
-        <div className="minimal-hero-copy">
-          <p className="eyebrow">Good Business</p>
+      <section className="quiet-hero" id="outcomes">
+        <div className="quiet-hero-copy">
           <h1>Outcomes. Not Consultants.</h1>
           <p>
-            We find the work slowing your business down, fix it with practical systems, and use AI
-            where it helps increase revenue, reduce costs, or save time.
+            We help businesses find operational inefficiencies, improve workflows, and use modern
+            tools where they create measurable business results.
           </p>
+          <p className="brand-promise">You pay for outcomes, not presentations.</p>
           <div className="hero-actions">
             <Link className="button button-dark" href="/contact">
               Book a Strategy Call <ArrowRight aria-hidden="true" size={17} />
             </Link>
             <Link className="button button-light" href="#process">
-              See the Model <ArrowRight aria-hidden="true" size={17} />
+              How It Works <ArrowRight aria-hidden="true" size={17} />
             </Link>
           </div>
         </div>
 
-        <OutcomeFlow />
+        <OutcomeSignal />
       </section>
 
+      <IndustriesSection />
       <SimpleModel />
 
       <SiteFooter />
