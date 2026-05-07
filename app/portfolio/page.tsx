@@ -2,126 +2,91 @@ import Link from "next/link";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteNav } from "../components/SiteNav";
 
-const cases = [
+const examples = [
   {
-    name: "SideStage",
-    type: "Event discovery platform",
-    challenge: "Local live music discovery is fragmented across venues, artists, and listings.",
-    approach: "Design a cleaner way to search, follow, and surface relevant events.",
-    product: "Consumer event platform with venue and artist workflows.",
-    system: "Structured event data, recommendations, and admin tooling.",
-    result: "Rapid prototype built to test discovery, listing, and engagement flows."
+    title: "AI intake assistant for a law firm",
+    problem: "New matters arrive with missing context.",
+    build: "A guided intake assistant that gathers details and routes the request.",
+    value: "Faster review and cleaner handoffs."
   },
   {
-    name: "FoodPersonal",
-    type: "AI nutrition product",
-    challenge: "Personalized meal planning is hard to make useful in daily life.",
-    approach: "Turn preferences, goals, and constraints into simple meal decisions.",
-    product: "AI-assisted food planning experience.",
-    system: "Preference memory, generation workflows, and nutrition logic.",
-    result: "Prototype for a practical consumer AI assistant."
+    title: "Customer support knowledge bot",
+    problem: "The same questions keep pulling the team away from higher-value work.",
+    build: "A controlled assistant connected to approved company knowledge.",
+    value: "Faster answers and fewer repeated replies."
   },
   {
-    name: "NDA.company",
-    type: "Legal workflow SaaS",
-    challenge: "Simple legal paperwork creates slow back-and-forth for teams.",
-    approach: "Make intake, review, and document flow faster and easier to manage.",
-    product: "NDA workflow platform for business users.",
-    system: "Structured intake, document routing, and admin review.",
-    result: "Built as a focused SaaS workflow prototype."
+    title: "Internal quoting tool for a contractor",
+    problem: "Estimates rely on manual work and inconsistent rules.",
+    build: "A quoting workflow with pricing logic, review steps, and saved context.",
+    value: "More consistent quotes with less admin time."
   },
   {
-    name: "Dental AI",
-    type: "Practice operations tools",
-    challenge: "Dental teams lose time on repetitive admin and patient communication.",
-    approach: "Map front-office bottlenecks and build tools around the daily workflow.",
-    product: "AI-powered practice support tools.",
-    system: "Patient intake, summaries, follow-up workflows, and task support.",
-    result: "Prototype suite for clinical and operational efficiency."
+    title: "AI training portal for a consulting firm",
+    problem: "Expertise is valuable but hard to deliver repeatedly.",
+    build: "A paid portal with lessons, resources, prompts, and AI guidance.",
+    value: "A scalable product built from existing knowledge."
   },
   {
-    name: "Pardners",
-    type: "Relationship platform",
-    challenge: "Partnerships and communities need better coordination than spreadsheets.",
-    approach: "Create a structured system for people, activity, and follow-through.",
-    product: "Network and relationship management platform.",
-    system: "Member data, workflows, permissions, and CRM-style views.",
-    result: "Platform concept built around organized action."
+    title: "Operations dashboard for a service business",
+    problem: "Work status is spread across tools, people, and notes.",
+    build: "A dashboard that tracks jobs, tasks, bottlenecks, and follow-up.",
+    value: "Clearer decisions and fewer missed steps."
   },
   {
-    name: "Race",
-    type: "Interactive learning product",
-    challenge: "Educational content needs better engagement and replay value.",
-    approach: "Use game mechanics to make learning competitive and memorable.",
-    product: "Interactive quiz and gameplay platform.",
-    system: "Content management, scoring, multiplayer flows, and progression.",
-    result: "Prototype showing how niche expertise can become a product."
-  },
-  {
-    name: "AI Growth Tools",
-    type: "GTM systems",
-    challenge: "Early products need faster ways to test channels, messaging, and demand.",
-    approach: "Build small tools that support outreach, landing pages, research, and feedback.",
-    product: "AI-assisted growth and experimentation workflows.",
-    system: "Generation, tracking, automation, and lightweight analytics.",
-    result: "Reusable systems for product validation and early traction."
+    title: "AI workflow engine for an agency",
+    problem: "Client work requires repeated research, drafts, and approvals.",
+    build: "A system that standardizes inputs, drafts, routing, and review.",
+    value: "More output without lowering quality."
   }
 ];
 
 export const metadata = {
-  title: "Portfolio | Good Business",
-  description: "Venture studio prototypes and platforms built by Good Business."
+  title: "Example Builds | Good Business HQ",
+  description: "Example B2B AI software build types from Good Business HQ."
 };
 
-export default function PortfolioPage() {
+export default function ExampleBuildsPage() {
   return (
     <main className="marketing-page">
       <SiteNav />
       <section className="page-hero">
-        <p className="eyebrow">Portfolio</p>
-        <h1>Examples of rapid product development capability.</h1>
+        <p className="eyebrow">Example build types</p>
+        <h1>B2B AI software built around real work.</h1>
         <p>
-          Venture studio prototypes and platforms built to test markets, automate workflows, and
-          turn business knowledge into software.
+          These are example build types. The point is simple: find the business problem, design the
+          workflow, and build the tool.
         </p>
       </section>
       <section className="case-study-list">
-        {cases.map((item, index) => (
-          <article className="case-study" key={item.name}>
+        {examples.map((item, index) => (
+          <article className="case-study" key={item.title}>
             <div className="case-index">{String(index + 1).padStart(2, "0")}</div>
             <div>
-              <p className="case-type">{item.type}</p>
-              <h2>{item.name}</h2>
+              <p className="case-type">Example build</p>
+              <h2>{item.title}</h2>
             </div>
             <div className="case-details">
               <p>
-                <strong>Challenge</strong>
-                {item.challenge}
+                <strong>Problem</strong>
+                {item.problem}
               </p>
               <p>
-                <strong>Approach</strong>
-                {item.approach}
+                <strong>Build</strong>
+                {item.build}
               </p>
               <p>
-                <strong>Product</strong>
-                {item.product}
-              </p>
-              <p>
-                <strong>AI / system</strong>
-                {item.system}
-              </p>
-              <p>
-                <strong>Execution</strong>
-                {item.result}
+                <strong>Business value</strong>
+                {item.value}
               </p>
             </div>
           </article>
         ))}
       </section>
       <section className="final-cta slim">
-        <h2>Have a similar problem worth productizing?</h2>
+        <h2>Have a workflow that should become software?</h2>
         <Link className="button button-dark" href="/contact">
-          Book Strategy Call
+          Book a Strategy Call
         </Link>
       </section>
       <SiteFooter />

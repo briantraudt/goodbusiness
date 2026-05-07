@@ -3,8 +3,8 @@ import { SiteFooter } from "../components/SiteFooter";
 import { SiteNav } from "../components/SiteNav";
 
 export const metadata = {
-  title: "About | Good Business",
-  description: "Good Business is an AI venture studio and rapid product development firm."
+  title: "About | Good Business HQ",
+  description: "Good Business HQ builds practical AI-powered software for business problems."
 };
 
 export default function AboutPage() {
@@ -15,8 +15,8 @@ export default function AboutPage() {
         <p className="eyebrow">About</p>
         <h1>Built for owners who need working software, not a long innovation project.</h1>
         <p>
-          Good Business is led by Brian Traudt, a founder, operator, and builder focused on turning
-          clear business problems into usable AI-powered products.
+          Good Business HQ is led by Brian Traudt, a founder, operator, and builder focused on
+          turning clear business problems into usable AI-powered software.
         </p>
       </section>
       <section className="operator-section">
@@ -27,9 +27,9 @@ export default function AboutPage() {
         <div className="operator-copy">
           <p>
             Brian has worked inside startups, led operating teams, built products from scratch, and
-            been through the company sale process. That background shapes how Good Business works:
-            understand the business model, find the highest-value opportunity, build the smallest
-            useful version, and learn from real usage.
+            been through the company sale process. That background shapes how Good Business HQ
+            works: understand the business model, find the highest-value opportunity, build the
+            smallest useful version, and learn from real usage.
           </p>
           <p>
             The work is practical by design. No theater. No generic AI roadmap. The goal is to help
@@ -52,7 +52,7 @@ export default function AboutPage() {
       <section className="final-cta slim">
         <h2>Have a product idea or workflow problem?</h2>
         <Link className="button button-dark" href="/contact">
-          Book Strategy Call
+          Book a Strategy Call
         </Link>
       </section>
       <SiteFooter />

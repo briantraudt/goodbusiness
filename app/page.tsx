@@ -2,149 +2,155 @@ import Link from "next/link";
 import { SiteFooter } from "./components/SiteFooter";
 import { SiteNav } from "./components/SiteNav";
 
-const audiences = [
-  {
-    title: "For founders",
-    text: "You have an idea but no technical team."
-  },
-  {
-    title: "For SMB owners",
-    text: "You know AI matters but do not know what to build."
-  },
-  {
-    title: "For operators",
-    text: "You want to automate, productize, or scale workflows."
-  }
+const problems = [
+  ["Manual workflows", "Work still depends on spreadsheets, inboxes, and repeated handoffs."],
+  ["Repetitive customer questions", "Your team answers the same questions instead of moving work forward."],
+  ["Trapped internal knowledge", "Important expertise lives in people’s heads, notes, and scattered files."],
+  ["No technical team", "The product idea is clear, but the build keeps getting delayed."]
 ];
 
-const services = [
-  ["AI SaaS Products", "New products with accounts, payments, dashboards, and AI features."],
-  ["Internal AI Tools", "Private tools for research, intake, reporting, support, and admin work."],
-  ["AI Automations", "Systems that move work between apps, people, data, and decisions."],
-  ["Customer Portals", "Secure places for clients to submit, track, approve, and manage work."],
-  ["AI Chat Interfaces", "Useful assistants built around your data, workflows, and customer needs."],
-  ["Workflow Systems", "Operational software that replaces spreadsheets, email chains, and manual steps."],
-  ["MVP Development", "A working first version built to test demand and learn from real users."],
-  ["Product Strategy", "Clear scope, business model, user flow, and build plan before code starts."],
-  ["Go-To-Market Systems", "Landing pages, lead flows, onboarding, feedback loops, and analytics."],
-  ["Subscription Platforms", "Products with pricing, billing, access control, and customer accounts."]
+const buildTypes = [
+  ["Internal AI tools", "Private tools for research, admin, reporting, intake, and daily operations."],
+  ["Customer-facing AI assistants", "Useful assistants that answer, guide, qualify, or support customers."],
+  ["Workflow automation systems", "Software that moves work between people, tools, data, and decisions."],
+  ["SaaS MVPs", "Working first versions with accounts, core flows, and launch-ready infrastructure."],
+  ["Client portals", "Secure places for clients to submit, approve, track, and manage work."],
+  ["Knowledge-base chat systems", "Chat experiences trained around your documents, policies, and expertise."],
+  ["Lead generation tools", "Qualification, intake, follow-up, and routing systems for sales teams."],
+  ["Subscription products", "Products with payments, access control, customer accounts, and admin tools."],
+  ["Custom dashboards", "Operational views that show the numbers, tasks, and signals that matter."],
+  ["AI onboarding flows", "Guided flows that collect context and move users toward the right next step."]
+];
+
+const audiences = [
+  {
+    title: "Business Owners",
+    text: "You see the opportunity but need help turning it into a real product or system."
+  },
+  {
+    title: "Operators",
+    text: "You know where the work is breaking and need software that fixes it."
+  },
+  {
+    title: "Founders",
+    text: "You have the idea, market, or domain expertise, but not the full product team."
+  }
 ];
 
 const steps = [
-  ["Strategy", "We identify the highest-value opportunity."],
-  ["Validation", "We refine the product, workflow, and business model."],
-  ["Build", "We rapidly develop the MVP using modern AI-assisted workflows."],
-  ["Launch", "We deploy, iterate, and help drive initial traction."]
-];
-
-const projects = [
-  {
-    name: "SideStage",
-    type: "Event platform",
-    problem: "Live event discovery is scattered.",
-    solution: "A cleaner way to find, follow, and manage local shows.",
-    angle: "Structured event data, discovery flows, admin tools.",
-    speed: "Rapid platform prototype"
-  },
-  {
-    name: "FoodPersonal",
-    type: "AI consumer product",
-    problem: "Meal decisions are personal and repetitive.",
-    solution: "AI-assisted food planning around real preferences.",
-    angle: "Preference memory, generation, nutrition logic.",
-    speed: "Working assistant prototype"
-  },
-  {
-    name: "NDA.company",
-    type: "Workflow SaaS",
-    problem: "Simple legal work slows teams down.",
-    solution: "A focused intake and document workflow.",
-    angle: "Structured forms, review flow, document routing.",
-    speed: "Focused SaaS build"
-  },
-  {
-    name: "Dental AI",
-    type: "Practice tools",
-    problem: "Front-office work eats valuable time.",
-    solution: "AI support for intake, follow-up, and summaries.",
-    angle: "Patient workflows, task support, knowledge capture.",
-    speed: "Ops tool prototype"
-  },
-  {
-    name: "Pardners",
-    type: "Network platform",
-    problem: "Partnership work gets lost in loose systems.",
-    solution: "A structured place to manage people and activity.",
-    angle: "CRM-style workflows, permissions, member data.",
-    speed: "Platform concept build"
-  },
-  {
-    name: "Race",
-    type: "Interactive product",
-    problem: "Learning content needs more engagement.",
-    solution: "A competitive quiz and gameplay system.",
-    angle: "Scoring, content management, multiplayer flows.",
-    speed: "Interactive MVP"
-  },
-  {
-    name: "AI Growth Tools",
-    type: "GTM systems",
-    problem: "Early products need faster market feedback.",
-    solution: "Tools for messaging, pages, outreach, and learning.",
-    angle: "AI generation, tracking, lightweight analytics.",
-    speed: "Reusable growth workflows"
-  }
+  ["Diagnose", "Find the highest-value business problem or product opportunity."],
+  ["Design", "Map the workflow, user experience, data, and business model."],
+  ["Build", "Rapidly develop the product using modern AI-assisted development."],
+  ["Launch", "Deploy, test, refine, and prepare for real-world use."]
 ];
 
 const models = [
   {
     title: "AI Opportunity Audit",
-    text: "Find the best places to use AI inside your business or product idea.",
-    items: ["Workflow analysis", "Opportunity map", "Build roadmap"]
+    text: "For owners who need clarity on what AI should actually do in their business.",
+    items: [
+      "Workflow audit",
+      "Product opportunity map",
+      "Recommended build roadmap",
+      "Prioritized automation and product ideas"
+    ]
   },
   {
-    title: "MVP Sprint",
-    text: "Turn a clear opportunity into a working product people can use.",
-    items: ["UX", "Backend", "AI integration", "Launch-ready build"]
+    title: "AI MVP Sprint",
+    text: "For founders and businesses ready to build.",
+    items: [
+      "Product scope",
+      "UX/UI",
+      "Working MVP",
+      "AI integration",
+      "Database and backend setup",
+      "Launch-ready deployment"
+    ]
   },
   {
-    title: "Growth & Optimization",
-    text: "Improve the product after launch and build systems around traction.",
-    items: ["Iteration", "Analytics", "Automation", "GTM systems"]
+    title: "AI Systems Buildout",
+    text: "For companies ready to automate or productize a major workflow.",
+    items: [
+      "Custom AI workflow system",
+      "Internal tools",
+      "Integrations",
+      "Analytics",
+      "Iteration support",
+      "Launch and growth support"
+    ]
   }
 ];
 
-function MockupStage() {
+const examples = [
+  {
+    title: "AI intake assistant for a law firm",
+    problem: "New matters arrive with missing details.",
+    build: "A guided intake assistant that collects context and routes the request.",
+    value: "Cleaner handoffs and faster first review."
+  },
+  {
+    title: "Customer support knowledge bot",
+    problem: "A service team answers the same questions all day.",
+    build: "A support assistant connected to approved company knowledge.",
+    value: "Fewer repeated replies and faster customer answers."
+  },
+  {
+    title: "Internal quoting tool for a contractor",
+    problem: "Quotes depend on manual pricing and tribal knowledge.",
+    build: "A quoting workflow with rules, data, and review steps.",
+    value: "More consistent estimates and less admin time."
+  },
+  {
+    title: "Lead qualification assistant",
+    problem: "Good leads get mixed with low-fit inquiries.",
+    build: "An intake flow that scores, summarizes, and routes leads.",
+    value: "Better sales focus and faster follow-up."
+  },
+  {
+    title: "AI training portal for a consulting firm",
+    problem: "Expertise is hard to package and deliver repeatedly.",
+    build: "A training portal with lessons, prompts, resources, and progress.",
+    value: "A repeatable product built from existing expertise."
+  },
+  {
+    title: "Subscription product for a niche expert",
+    problem: "Knowledge is valuable but trapped in one-to-one delivery.",
+    build: "A paid product with accounts, content, tools, and AI guidance.",
+    value: "A scalable offer beyond consulting hours."
+  },
+  {
+    title: "Operations dashboard for a service business",
+    problem: "Work status is spread across tools and people.",
+    build: "A dashboard that tracks jobs, tasks, bottlenecks, and follow-up.",
+    value: "Clearer decisions and fewer missed steps."
+  },
+  {
+    title: "AI workflow engine for an agency",
+    problem: "Client work requires repeated research, drafts, and approvals.",
+    build: "A workflow system that standardizes inputs, drafts, and reviews.",
+    value: "More output without lowering quality."
+  }
+];
+
+function WorkflowVisual() {
   return (
-    <div className="mockup-stage" aria-label="Product interface examples">
-      <div className="mockup-card mockup-dashboard">
-        <div className="mockup-top">
-          <span />
-          <span />
-          <span />
-        </div>
-        <div className="mockup-title">Operations dashboard</div>
-        <div className="metric-row">
-          <strong>42</strong>
-          <span>Tasks routed</span>
-        </div>
-        <div className="bar-grid">
-          <span />
-          <span />
-          <span />
-          <span />
-        </div>
+    <div className="workflow-visual" aria-label="Workflow to AI system to business outcome">
+      <div className="workflow-panel">
+        <span>Workflow</span>
+        <strong>Intake</strong>
+        <p>Manual steps, scattered inputs, repeated work.</p>
       </div>
-      <div className="mockup-card mockup-chat">
-        <div className="chat-line wide" />
-        <div className="chat-line" />
-        <div className="chat-response">Drafted client summary</div>
+      <div className="workflow-arrow" />
+      <div className="workflow-panel dark">
+        <span>AI System</span>
+        <strong>Build</strong>
+        <p>Rules, data, interface, automation, handoffs.</p>
       </div>
-      <div className="mockup-card mockup-mobile">
-        <div className="phone-notch" />
-        <div className="phone-line" />
-        <div className="phone-line short" />
-        <div className="phone-action" />
+      <div className="workflow-arrow" />
+      <div className="workflow-panel">
+        <span>Outcome</span>
+        <strong>Use</strong>
+        <p>Faster work, cleaner decisions, usable software.</p>
       </div>
     </div>
   );
@@ -156,40 +162,36 @@ export default function Home() {
       <SiteNav />
       <section className="hero">
         <div className="hero-copy">
-          <p className="eyebrow">AI Venture Studio + Rapid Product Development</p>
-          <h1>From Idea to AI Product in Days</h1>
+          <p className="eyebrow">Good Business HQ</p>
+          <h1>Turn Your Business Problem Into AI Software</h1>
           <p>
-            We help founders and business owners rapidly design, validate, and launch AI-powered
-            products, workflows, and business systems without hiring a full product team.
+            Good Business HQ helps business owners, operators, and founders turn workflows,
+            expertise, and ideas into working AI-powered products and systems.
           </p>
           <div className="hero-actions">
             <Link className="button button-dark" href="/contact">
-              Book Strategy Call
+              Book a Strategy Call
             </Link>
-            <Link className="button button-light" href="#process">
-              See How We Work
+            <Link className="button button-light" href="#what-we-build">
+              See What We Build
             </Link>
           </div>
         </div>
-        <MockupStage />
+        <WorkflowVisual />
       </section>
 
-      <section className="audience-section">
-        {audiences.map((item) => (
-          <article key={item.title}>
-            <h2>{item.title}</h2>
-            <p>{item.text}</p>
-          </article>
-        ))}
-      </section>
-
-      <section className="section" id="services">
+      <section className="problem-section">
         <div className="section-heading">
-          <p className="eyebrow">What we build</p>
-          <h2>Software that removes bottlenecks or becomes a product.</h2>
+          <p className="eyebrow">The problem</p>
+          <h2>Most Businesses Don&apos;t Need “AI Strategy.” They Need Something Built.</h2>
+          <p>
+            Your business has repetitive work, buried knowledge, manual processes, customer friction,
+            or an idea that keeps getting delayed. We help identify the highest-value opportunity and
+            turn it into usable software.
+          </p>
         </div>
-        <div className="service-grid">
-          {services.map(([title, text]) => (
+        <div className="problem-grid">
+          {problems.map(([title, text]) => (
             <article className="service-card" key={title}>
               <h3>{title}</h3>
               <p>{text}</p>
@@ -198,10 +200,38 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="section" id="what-we-build">
+        <div className="section-heading">
+          <p className="eyebrow">What we build</p>
+          <h2>Practical AI Software for Real Business Problems</h2>
+        </div>
+        <div className="service-grid">
+          {buildTypes.map(([title, text]) => (
+            <article className="service-card" key={title}>
+              <h3>{title}</h3>
+              <p>{text}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="audience-section">
+        <div className="audience-heading">
+          <p className="eyebrow">Who it is for</p>
+          <h2>Built for Operators, Not Committees</h2>
+        </div>
+        {audiences.map((item) => (
+          <article key={item.title}>
+            <h2>{item.title}</h2>
+            <p>{item.text}</p>
+          </article>
+        ))}
+      </section>
+
       <section className="process-section" id="process">
         <div className="section-heading">
-          <p className="eyebrow">How it works</p>
-          <h2>Simple. Fast. Focused.</h2>
+          <p className="eyebrow">Process</p>
+          <h2>From Clarity to Working Software</h2>
         </div>
         <div className="timeline">
           {steps.map(([title, text], index) => (
@@ -214,74 +244,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="portfolio-preview" id="portfolio">
-        <div className="section-heading split">
-          <div>
-            <p className="eyebrow">Portfolio</p>
-            <h2>Venture studio prototypes and platforms.</h2>
-          </div>
-          <Link className="text-link" href="/portfolio">
-            View portfolio
-          </Link>
-        </div>
-        <div className="project-grid">
-          {projects.map((project) => (
-            <article className="project-card" key={project.name}>
-              <p>{project.type}</p>
-              <h3>{project.name}</h3>
-              <dl>
-                <div>
-                  <dt>Problem</dt>
-                  <dd>{project.problem}</dd>
-                </div>
-                <div>
-                  <dt>Solution</dt>
-                  <dd>{project.solution}</dd>
-                </div>
-                <div>
-                  <dt>System</dt>
-                  <dd>{project.angle}</dd>
-                </div>
-                <div>
-                  <dt>Speed</dt>
-                  <dd>{project.speed}</dd>
-                </div>
-              </dl>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="why-section">
-        <div>
-          <p className="eyebrow">Why Good Business</p>
-          <h2>Built by Operators, Not Just Developers</h2>
-        </div>
-        <div className="why-copy">
-          <p>
-            Good software starts with a real business problem. We bring startup experience,
-            acquisition experience, operational leadership, and AI-first build workflows to the same
-            table.
-          </p>
-          <div className="proof-grid">
-            {[
-              "Business-first thinking",
-              "Rapid execution",
-              "Shipping over theory",
-              "Modern AI workflows",
-              "Monetization judgment",
-              "GTM awareness"
-            ].map((point) => (
-              <span key={point}>{point}</span>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="models-section">
+      <section className="models-section" id="services">
         <div className="section-heading">
-          <p className="eyebrow">Engagement models</p>
-          <h2>Pick the level of build support you need.</h2>
+          <p className="eyebrow">Services</p>
+          <h2>Engagements</h2>
         </div>
         <div className="model-grid">
           {models.map((model) => (
@@ -298,11 +264,67 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="examples-section">
+        <div className="section-heading">
+          <p className="eyebrow">Example build types</p>
+          <h2>Examples of What We Can Build</h2>
+        </div>
+        <div className="example-grid">
+          {examples.map((example) => (
+            <article className="example-card" key={example.title}>
+              <h3>{example.title}</h3>
+              <dl>
+                <div>
+                  <dt>Problem</dt>
+                  <dd>{example.problem}</dd>
+                </div>
+                <div>
+                  <dt>Build</dt>
+                  <dd>{example.build}</dd>
+                </div>
+                <div>
+                  <dt>Business value</dt>
+                  <dd>{example.value}</dd>
+                </div>
+              </dl>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="why-section">
+        <div>
+          <p className="eyebrow">Why Good Business HQ</p>
+          <h2>Business-First. AI-Enabled. Built Fast.</h2>
+        </div>
+        <div className="why-copy">
+          <p>
+            We connect strategy, product, and launch. The work starts with the business model and
+            the workflow, then moves quickly into a usable build. Not just code. Not just consulting.
+          </p>
+          <div className="proof-grid">
+            {[
+              "Business model thinking",
+              "Startup and operator experience",
+              "Fast prototyping",
+              "Modern AI development workflows",
+              "Practical execution",
+              "Launch-minded product work"
+            ].map((point) => (
+              <span key={point}>{point}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="final-cta">
-        <h2>You Don&apos;t Need a Huge Team to Build Something Valuable.</h2>
-        <p>You need clarity, speed, execution, and the right AI workflows.</p>
+        <h2>Stop Talking About AI. Build the Thing.</h2>
+        <p>
+          If there is a workflow, idea, or business problem you know should become software, Good
+          Business HQ can help you shape it and ship it.
+        </p>
         <Link className="button button-dark" href="/contact">
-          Book Strategy Call
+          Book a Strategy Call
         </Link>
       </section>
       <SiteFooter />

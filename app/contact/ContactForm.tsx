@@ -78,7 +78,7 @@ export function ContactForm() {
         </select>
       </label>
       <button className="button button-dark" type="submit" disabled={status === "sending"}>
-        {status === "sending" ? "Sending..." : "Book Strategy Call"}
+        {status === "sending" ? "Sending..." : "Book a Strategy Call"}
       </button>
       {status === "sent" ? <p className="form-note">Thanks. We got it and will follow up soon.</p> : null}
       {status === "error" ? <p className="form-note form-error">{error}</p> : null}

@@ -4,18 +4,17 @@ export function SiteNav() {
   return (
     <header className="site-nav">
       <Link className="brand" href="/">
-        Good Business
+        Good Business HQ
       </Link>
       <nav aria-label="Primary navigation">
-        <Link href="/">Home</Link>
-        <Link href="/#services">Services</Link>
+        <Link href="/#what-we-build">What We Build</Link>
         <Link href="/#process">Process</Link>
-        <Link href="/portfolio">Portfolio</Link>
+        <Link href="/#services">Services</Link>
         <Link href="/about">About</Link>
         <Link href="/contact">Contact</Link>
       </nav>
       <Link className="nav-cta" href="/contact">
-        Book Strategy Call
+        Book a Strategy Call
       </Link>
     </header>
   );
