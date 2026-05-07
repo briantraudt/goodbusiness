@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export function SiteNav() {
   return (
@@ -14,7 +15,7 @@ export function SiteNav() {
         <Link href="/contact">Contact</Link>
       </nav>
       <Link className="nav-cta" href="/contact">
-        Book a Strategy Call
+        Book a Strategy Call <ArrowRight aria-hidden="true" size={15} />
       </Link>
     </header>
   );

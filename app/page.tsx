@@ -1,21 +1,24 @@
 import {
+  AlertCircle,
   ArrowRight,
   BarChart3,
-  Bell,
   Briefcase,
   Building2,
+  CheckCircle2,
   Clock,
+  DollarSign,
   HeartPulse,
   House,
   HelpCircle,
   Inbox,
   Lightbulb,
   Repeat2,
-  Route,
   Settings,
   ShoppingCart,
+  Sparkles,
   TrendingUp,
   UserRound,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { SiteFooter } from "./components/SiteFooter";
@@ -135,7 +138,7 @@ const operatorMarkets = [
   { icon: ShoppingCart, label: "Ecommerce" },
   { icon: Building2, label: "Real Estate" },
   { icon: UserRound, label: "Consulting & Coaching" },
-  { icon: Settings, label: "Manufacturing & Trade" }
+  { icon: Settings, label: "Manufacturing & Trades" }
 ];
 
 function SystemVisual() {
@@ -143,56 +146,79 @@ function SystemVisual() {
     {
       title: "Bottleneck",
       label: "Manual Quote Process",
-      items: ["Multiple tools", "Re-entering data", "Slow follow-up", "Staff bottlenecks"]
+      icon: AlertCircle,
+      items: ["Multiple tools", "Re-entering data", "Back and forth", "Slow responses"]
     },
     {
       title: "System",
-      label: "Workflow System",
-      items: ["Intake captured", "Drafts prepared", "Team alerts", "CRM updated", "Follow-up sent"]
+      label: "Workflow +\u00a0Automation",
+      icon: Sparkles,
+      items: ["Intake captured", "AI builds draft", "Auto follow-up", "Team notified"]
     },
     {
       title: "Outcome",
-      label: "Better Flow",
-      items: ["Faster response", "Less admin", "Better customer experience", "More visibility"]
+      label: "Faster Process. Better Results.",
+      icon: CheckCircle2,
+      items: ["Quotes in minutes", "Fewer errors", "Happier customers", "More revenue"]
     }
   ];
 
   const metrics = [
-    ["10+ hrs", "saved / week"],
-    ["$18K+", "estimated value"],
-    ["2 days → 20 min", "quote speed"],
-    ["100%", "follow-up coverage"]
+    { icon: Clock, label: "Time Saved", value: "10+", detail: "Hrs / Week" },
+    { icon: DollarSign, label: "Est. Value", value: "$18K+", detail: "/ Month" },
+    { icon: TrendingUp, label: "Quote Speed", value: "2 Days", detail: "to 20 Min" },
+    { icon: UserRound, label: "Follow-Up", value: "100%", detail: "Automated" }
   ];
 
   return (
     <div className="hero-ops-map" aria-label="Business bottleneck to system to measurable outcome">
-      <div className="ops-flow">
+      <div className="ops-diagram">
+        <div className="ops-flow">
         {workflow.map((card, index) => (
-          <article className={`ops-card ${index === 1 ? "ops-card-dark" : ""}`} key={card.title}>
-            <div className="ops-card-icon" aria-hidden="true">
-              {index === 0 ? <Route size={18} /> : null}
-              {index === 1 ? <Bell size={18} /> : null}
-              {index === 2 ? <TrendingUp size={18} /> : null}
-            </div>
-            <p>{card.title}</p>
-            <h2>{card.label}</h2>
-            <ul>
-              {card.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </article>
+          <div className="ops-step" key={card.title}>
+            <article className={`ops-card ${index === 1 ? "ops-card-dark" : ""} ${index === 2 ? "ops-card-outcome" : ""}`}>
+              <div className="ops-card-icon" aria-hidden="true">
+                <card.icon size={22} strokeWidth={1.9} />
+              </div>
+              <p>{card.title}</p>
+              <h2>{card.label}</h2>
+              <ul>
+                {card.items.map((item) => (
+                  <li key={item}>
+                    {index === 0 ? <X aria-hidden="true" size={12} strokeWidth={2.4} /> : null}
+                    {index === 1 ? <CheckCircle2 aria-hidden="true" size={13} strokeWidth={2.1} /> : null}
+                    {index === 2 ? <CheckCircle2 aria-hidden="true" size={13} strokeWidth={2.1} /> : null}
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+            {index < workflow.length - 1 ? (
+              <div className={`ops-arrow ${index === 0 ? "ops-arrow-warm" : ""}`} aria-hidden="true">
+                <span />
+                <ArrowRight size={24} strokeWidth={1.7} />
+              </div>
+            ) : null}
+          </div>
         ))}
+        </div>
+        <div className="roi-path" aria-hidden="true">
+          <span className="roi-path-left" />
+          <span className="roi-path-base" />
+          <span className="roi-path-right" />
+          <strong>Measurable ROI</strong>
+        </div>
       </div>
-      <div className="ops-connector" aria-hidden="true">
-        <span />
-        <span />
-      </div>
+      <div className="metric-rail" aria-hidden="true" />
       <div className="ops-metrics">
-        {metrics.map(([value, label]) => (
-          <div className="ops-metric" key={label}>
-            <strong>{value}</strong>
-            <span>{label}</span>
+        {metrics.map((metric) => (
+          <div className="ops-metric" key={metric.label}>
+            <div>
+              <metric.icon aria-hidden="true" size={19} strokeWidth={1.9} />
+              <span>{metric.label}</span>
+            </div>
+            <strong>{metric.value}</strong>
+            <small>{metric.detail}</small>
           </div>
         ))}
       </div>
@@ -206,6 +232,7 @@ export default function Home() {
       <SiteNav />
       <section className="hero outcome-hero">
         <div className="hero-copy">
+          <p className="eyebrow">Good Business</p>
           <h1>Fix Bottlenecks. Improve Profitability.</h1>
           <p>
             Good Business helps owners and operators reduce manual work, improve workflows, and
