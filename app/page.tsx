@@ -1,10 +1,13 @@
 import {
   BarChart3,
+  Bell,
   Clock,
   HelpCircle,
   Inbox,
   Lightbulb,
   Repeat2,
+  Route,
+  TrendingUp,
 } from "lucide-react";
 import Link from "next/link";
 import { SiteFooter } from "./components/SiteFooter";
@@ -118,38 +121,62 @@ const proof = [
 ];
 
 function SystemVisual() {
+  const workflow = [
+    {
+      title: "Bottleneck",
+      label: "Manual Quote Process",
+      items: ["Multiple tools", "Re-entering data", "Slow follow-up", "Staff bottlenecks"]
+    },
+    {
+      title: "System",
+      label: "Workflow System",
+      items: ["Intake captured", "Drafts prepared", "Team alerts", "CRM updated", "Follow-up sent"]
+    },
+    {
+      title: "Outcome",
+      label: "Better Flow",
+      items: ["Faster response", "Less admin", "Better customer experience", "More visibility"]
+    }
+  ];
+
+  const metrics = [
+    ["10+ hrs", "saved / week"],
+    ["$18K+", "estimated value"],
+    ["2 days → 20 min", "quote speed"],
+    ["100%", "follow-up coverage"]
+  ];
+
   return (
-    <div className="system-visual" aria-label="Example quote workflow cleanup">
-      <div className="system-context">
-        <span>Example operating cleanup</span>
-        <strong>Quote requests stop sitting in inboxes.</strong>
-        <p>Intake, routing, quote prep, and follow-up move through one clear system.</p>
-      </div>
-      <div className="system-flow">
-        {["Lead in", "Info clean", "Quote ready", "Follow up"].map((item, index) => (
-          <div className="system-node" key={item}>
-            <span>{String(index + 1).padStart(2, "0")}</span>
-            <strong>{item}</strong>
-          </div>
+    <div className="hero-ops-map" aria-label="Business bottleneck to system to measurable outcome">
+      <div className="ops-flow">
+        {workflow.map((card, index) => (
+          <article className={`ops-card ${index === 1 ? "ops-card-dark" : ""}`} key={card.title}>
+            <div className="ops-card-icon" aria-hidden="true">
+              {index === 0 ? <Route size={18} /> : null}
+              {index === 1 ? <Bell size={18} /> : null}
+              {index === 2 ? <TrendingUp size={18} /> : null}
+            </div>
+            <p>{card.title}</p>
+            <h2>{card.label}</h2>
+            <ul>
+              {card.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
         ))}
       </div>
-      <div className="metric-board">
-        <div className="metric-card large">
-          <span>Time saved</span>
-          <strong>10 hrs/week</strong>
-        </div>
-        <div className="metric-card">
-          <span>Quote time</span>
-          <strong>2 days → 20 min</strong>
-        </div>
-        <div className="metric-card">
-          <span>Manual steps</span>
-          <strong>Removed</strong>
-        </div>
-        <div className="metric-card">
-          <span>Follow-ups</span>
-          <strong>Auto-sent</strong>
-        </div>
+      <div className="ops-connector" aria-hidden="true">
+        <span />
+        <span />
+      </div>
+      <div className="ops-metrics">
+        {metrics.map(([value, label]) => (
+          <div className="ops-metric" key={label}>
+            <strong>{value}</strong>
+            <span>{label}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
@@ -161,10 +188,11 @@ export default function Home() {
       <SiteNav />
       <section className="hero outcome-hero">
         <div className="hero-copy">
-          <h1>Fix the Work Slowing the Business Down</h1>
+          <p className="eyebrow">Good Business</p>
+          <h1>Fix Bottlenecks. Improve Profitability.</h1>
           <p>
-            Good Business helps owners and operators improve workflows, reduce manual work, and
-            build practical systems that save time and increase profitability.
+            Good Business helps owners and operators reduce manual work, improve workflows, and
+            build practical systems that create measurable business outcomes.
           </p>
           <div className="hero-actions">
             <Link className="button button-dark" href="/contact">
