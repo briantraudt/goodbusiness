@@ -119,9 +119,14 @@ const proof = [
 
 function SystemVisual() {
   return (
-    <div className="system-visual" aria-label="Bottleneck to better system to faster workflow to measurable ROI">
+    <div className="system-visual" aria-label="Example quote workflow cleanup">
+      <div className="system-context">
+        <span>Example operating cleanup</span>
+        <strong>Quote requests stop sitting in inboxes.</strong>
+        <p>Intake, routing, quote prep, and follow-up move through one clear system.</p>
+      </div>
       <div className="system-flow">
-        {["Bottleneck", "Better System", "Faster Workflow", "Measurable ROI"].map((item, index) => (
+        {["Lead in", "Info clean", "Quote ready", "Follow up"].map((item, index) => (
           <div className="system-node" key={item}>
             <span>{String(index + 1).padStart(2, "0")}</span>
             <strong>{item}</strong>
@@ -134,10 +139,6 @@ function SystemVisual() {
           <strong>10 hrs/week</strong>
         </div>
         <div className="metric-card">
-          <span>Lead response</span>
-          <strong>5 min</strong>
-        </div>
-        <div className="metric-card">
           <span>Quote time</span>
           <strong>2 days → 20 min</strong>
         </div>
@@ -147,7 +148,7 @@ function SystemVisual() {
         </div>
         <div className="metric-card">
           <span>Follow-ups</span>
-          <strong>Automated</strong>
+          <strong>Auto-sent</strong>
         </div>
       </div>
     </div>
@@ -160,7 +161,6 @@ export default function Home() {
       <SiteNav />
       <section className="hero outcome-hero">
         <div className="hero-copy">
-          <p className="eyebrow">Good Business</p>
           <h1>Fix the Work Slowing the Business Down</h1>
           <p>
             Good Business helps owners and operators improve workflows, reduce manual work, and
@@ -188,7 +188,9 @@ export default function Home() {
             const Icon = item.icon;
             return (
               <article className="fix-card" key={item.title}>
-                <Icon aria-hidden="true" size={22} strokeWidth={1.8} />
+                <div className="fix-icon">
+                  <Icon aria-hidden="true" size={30} strokeWidth={1.7} />
+                </div>
                 <h3>{item.title}</h3>
                 <p>{item.text}</p>
               </article>
