@@ -4,7 +4,7 @@ import { SiteNav } from "../components/SiteNav";
 
 const examples = [
   {
-    title: "AI intake assistant for a law firm",
+    title: "Intake assistant for a law firm",
     problem: "New matters arrive with missing context.",
     build: "A guided intake assistant that gathers details and routes the request.",
     value: "Faster review and cleaner handoffs."
@@ -22,9 +22,9 @@ const examples = [
     value: "More consistent quotes with less admin time."
   },
   {
-    title: "AI training portal for a consulting firm",
+    title: "Training portal for a consulting firm",
     problem: "Expertise is valuable but hard to deliver repeatedly.",
-    build: "A paid portal with lessons, resources, prompts, and AI guidance.",
+    build: "A paid portal with lessons, resources, prompts, and guided support.",
     value: "A scalable product built from existing knowledge."
   },
   {
@@ -34,7 +34,7 @@ const examples = [
     value: "Clearer decisions and fewer missed steps."
   },
   {
-    title: "AI workflow engine for an agency",
+    title: "Workflow engine for an agency",
     problem: "Client work requires repeated research, drafts, and approvals.",
     build: "A system that standardizes inputs, drafts, routing, and review.",
     value: "More output without lowering quality."
@@ -42,8 +42,8 @@ const examples = [
 ];
 
 export const metadata = {
-  title: "Example Builds | Good Business HQ",
-  description: "Example AI and automation systems Good Business HQ can help build."
+  title: "Example Builds | Good Business",
+  description: "Example automation and operations systems Good Business can help build."
 };
 
 export default function ExampleBuildsPage() {

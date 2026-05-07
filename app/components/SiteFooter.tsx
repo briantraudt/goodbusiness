@@ -5,9 +5,9 @@ export function SiteFooter() {
     <footer className="site-footer">
       <div>
         <Link className="footer-brand" href="/">
-          Good Business HQ
+          Good Business
         </Link>
-        <p>AI, automation, and modern tools for better business operations.</p>
+        <p>goodbusinesshq.com</p>
       </div>
       <div className="footer-links">
         <Link href="/#what-we-build">What We Fix</Link>

@@ -4,7 +4,7 @@ export function SiteNav() {
   return (
     <header className="site-nav">
       <Link className="brand" href="/">
-        Good Business HQ
+        Good Business
       </Link>
       <nav aria-label="Primary navigation">
         <Link href="/#what-we-build">What We Fix</Link>

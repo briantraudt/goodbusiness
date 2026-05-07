@@ -3,8 +3,8 @@ import { SiteNav } from "../components/SiteNav";
 import { ContactForm } from "./ContactForm";
 
 export const metadata = {
-  title: "Contact | Good Business HQ",
-  description: "Book a strategy call with Good Business HQ."
+  title: "Contact | Good Business",
+  description: "Book a strategy call with Good Business."
 };
 
 export default function ContactPage() {
@@ -28,7 +28,7 @@ export default function ContactPage() {
           </p>
           <div className="contact-points">
             <span>Rapid MVPs</span>
-            <span>Internal AI tools</span>
+            <span>Internal tools</span>
             <span>Workflow systems</span>
           </div>
         </div>

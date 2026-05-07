@@ -3,8 +3,8 @@ import { SiteFooter } from "../components/SiteFooter";
 import { SiteNav } from "../components/SiteNav";
 
 export const metadata = {
-  title: "About | Good Business HQ",
-  description: "Good Business HQ helps businesses reduce waste, speed up work, and improve profit."
+  title: "About | Good Business",
+  description: "Good Business helps businesses reduce waste, speed up work, and improve profit."
 };
 
 export default function AboutPage() {
@@ -15,8 +15,8 @@ export default function AboutPage() {
         <p className="eyebrow">About</p>
         <h1>Built for owners who want the business to run better.</h1>
         <p>
-          Good Business HQ is led by Brian Traudt, a founder, operator, and builder focused on
-          using AI, automation, and practical tools to reduce waste and improve operations.
+          Good Business is led by Brian Traudt, a founder, operator, and builder focused on
+          using automation, practical tools, and clear systems to reduce waste and improve operations.
         </p>
       </section>
       <section className="operator-section">
@@ -26,31 +26,31 @@ export default function AboutPage() {
         </div>
         <div className="operator-copy">
           <p>
-            Brian has worked inside startups, led operating teams, built products from scratch, and
-            been through the company sale process. That background shapes how Good Business HQ
-            works: understand the business model, find the highest-value opportunity, build the
-            smallest useful version, and learn from real usage.
+            Brian has worked inside growing companies, led operating teams, built products from
+            scratch, and been through the company sale process. That background shapes how Good
+            Business works: understand the business model, find the highest-value opportunity, build
+            the smallest useful version, and learn from real usage.
           </p>
           <p>
-            The work is practical by design. No theater. No generic AI roadmap. The goal is to help
+            The work is practical by design. No theater. No generic roadmap. The goal is to help
             business owners move faster with systems that fit how the business actually runs.
           </p>
         </div>
       </section>
       <section className="proof-strip">
         {[
-          "Startup experience",
+          "Builder experience",
           "Company sale history",
           "Operational leadership",
           "Rapid prototyping",
-          "AI-first workflows",
+          "Modern workflows",
           "Business model thinking"
         ].map((item) => (
           <span key={item}>{item}</span>
         ))}
       </section>
       <section className="final-cta slim">
-        <h2>Have a product idea or workflow problem?</h2>
+        <h2>Have a workflow slowing the business down?</h2>
         <Link className="button button-dark" href="/contact">
           Book a Strategy Call
         </Link>

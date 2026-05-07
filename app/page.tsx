@@ -1,16 +1,10 @@
 import {
   BarChart3,
-  ClipboardList,
   Clock,
   HelpCircle,
   Inbox,
   Lightbulb,
-  MessageSquare,
-  MousePointerClick,
   Repeat2,
-  Search,
-  TimerReset,
-  Workflow
 } from "lucide-react";
 import Link from "next/link";
 import { SiteFooter } from "./components/SiteFooter";
@@ -50,7 +44,7 @@ const fixes = [
 ];
 
 const tools = [
-  "AI assistants",
+  "smart assistants",
   "workflow automation",
   "custom dashboards",
   "CRM cleanup",
@@ -68,7 +62,7 @@ const roiExamples = [
   {
     title: "Service Business Intake",
     problem: "Calls, texts, and emails scattered.",
-    fix: "Central intake, AI summary, automated follow-up.",
+    fix: "Central intake, clean summary, automated follow-up.",
     value: "Fewer missed leads, faster response, less admin."
   },
   {
@@ -80,7 +74,7 @@ const roiExamples = [
   {
     title: "Customer Support",
     problem: "Repeated questions consume staff time.",
-    fix: "Trained AI assistant with escalation rules.",
+    fix: "Answer assistant with escalation rules.",
     value: "Faster answers, fewer interruptions, better customer experience."
   },
   {
@@ -94,25 +88,25 @@ const roiExamples = [
 const steps = [
   ["Find the Money Leak", "Identify where time, leads, margin, or attention is being wasted."],
   ["Map the Workflow", "Understand how the business actually runs."],
-  ["Build the System", "Use AI, automation, and modern tools to solve the problem."],
+  ["Build the System", "Use the right tools to remove the drag."],
   ["Measure the Result", "Track time saved, speed gained, cost reduced, or revenue captured."]
 ];
 
 const services = [
   {
-    title: "Business AI Audit",
-    text: "For owners who need to know where AI can actually improve the business.",
+    title: "Operations Audit",
+    text: "For owners who need to know where the business is wasting time or money.",
     items: ["workflow review", "bottleneck map", "ROI opportunities", "recommended build plan"]
   },
   {
     title: "Workflow Build Sprint",
     text: "For teams ready to fix a specific process.",
-    items: ["intake/system design", "AI or automation setup", "dashboards/tools", "testing and rollout"]
+    items: ["intake/system design", "automation setup", "dashboards/tools", "testing and rollout"]
   },
   {
-    title: "AI Operating System",
+    title: "Connected Operating System",
     text: "For businesses that want connected systems across sales, operations, support, and reporting.",
-    items: ["connected workflows", "AI assistants", "reporting", "integrations", "ongoing improvement"]
+    items: ["connected workflows", "assistants", "reporting", "integrations", "ongoing improvement"]
   }
 ];
 
@@ -125,9 +119,9 @@ const proof = [
 
 function SystemVisual() {
   return (
-    <div className="system-visual" aria-label="Bottleneck to AI tool to faster workflow to measurable ROI">
+    <div className="system-visual" aria-label="Bottleneck to better system to faster workflow to measurable ROI">
       <div className="system-flow">
-        {["Bottleneck", "AI Tool", "Faster Workflow", "Measurable ROI"].map((item, index) => (
+        {["Bottleneck", "Better System", "Faster Workflow", "Measurable ROI"].map((item, index) => (
           <div className="system-node" key={item}>
             <span>{String(index + 1).padStart(2, "0")}</span>
             <strong>{item}</strong>
@@ -166,11 +160,11 @@ export default function Home() {
       <SiteNav />
       <section className="hero outcome-hero">
         <div className="hero-copy">
-          <p className="eyebrow">Good Business HQ</p>
-          <h1>Use AI to Make the Business Run Better</h1>
+          <p className="eyebrow">Good Business</p>
+          <h1>Fix the Work Slowing the Business Down</h1>
           <p>
-            We help owners and operators find expensive bottlenecks, replace manual work, and build
-            practical systems that save time, increase profit, and make growth easier.
+            Good Business helps owners and operators improve workflows, reduce manual work, and
+            build practical systems that save time and increase profitability.
           </p>
           <div className="hero-actions">
             <Link className="button button-dark" href="/contact">
@@ -307,14 +301,14 @@ export default function Home() {
 
       <section className="why-section">
         <div>
-          <p className="eyebrow">Why Good Business HQ</p>
+          <p className="eyebrow">Why Good Business</p>
           <h2>Business First. Tools Second.</h2>
         </div>
         <div className="why-copy">
           <p>
-            We are not here to sell AI experiments. We look for practical ways to save time, reduce
+            We are not here to sell experiments. We look for practical ways to save time, reduce
             waste, increase speed, and improve profitability. If a simple tool solves the problem, we
-            use the simple tool. If AI helps, we use AI.
+            use the simple tool. When automation or AI makes sense, we use it.
           </p>
           <div className="proof-grid proof-cards">
             {proof.map(([title, text]) => (
