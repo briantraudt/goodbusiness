@@ -44,10 +44,10 @@ export async function POST(request: Request) {
     `Company: ${company}`,
     `Budget: ${budget}`,
     "",
-    "What are they trying to build?",
+    "What work needs to improve?",
     project,
     "",
-    "Biggest bottleneck",
+    "What is the biggest bottleneck?",
     bottleneck
   ].join("\n");
   const html = `
@@ -58,9 +58,9 @@ export async function POST(request: Request) {
   <p><strong>Company:</strong> ${escapeHtml(company)}</p>
   <p><strong>Budget:</strong> ${escapeHtml(budget)}</p>
   <div style="border-top:1px solid #e0e0da;padding-top:20px">
-    <h3 style="margin:0 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:#666">What are they trying to build?</h3>
+    <h3 style="margin:0 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:#666">What work needs to improve?</h3>
     <div style="white-space:pre-wrap">${escapeHtml(project)}</div>
-    <h3 style="margin:24px 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:#666">Biggest bottleneck</h3>
+    <h3 style="margin:24px 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:#666">What is the biggest bottleneck?</h3>
     <div style="white-space:pre-wrap">${escapeHtml(bottleneck)}</div>
   </div>
 </div>`.trim();

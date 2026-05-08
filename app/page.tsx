@@ -70,10 +70,10 @@ const industries = [
 function IndustriesSection() {
   return (
     <section className="industries-section" id="industries">
-      <div className="section-kicker">Industries</div>
+      <div className="section-kicker">Where We Help</div>
       <div className="industries-head">
-        <h2>Built for Businesses with Operational Complexity</h2>
-        <p>Teams with real work, real customers, and expensive drag hiding in the process.</p>
+        <h2>For Businesses Where Work Gets Messy</h2>
+        <p>Calls, quotes, intake, scheduling, reporting, follow-up. That is where money leaks.</p>
       </div>
       <div className="industry-grid">
         {industries.map((item) => {
@@ -95,11 +95,16 @@ function PromiseSection() {
     <section className="promise-section" id="process">
       <div className="promise-block">
         <h2>
-          You are not paying for hours.
+          Find the leak.
           <br />
-          You are paying for measurable business outcomes.
+          Fix the work.
+          <br />
+          Measure the result.
         </h2>
-        <p>If we cannot identify a clear operational benefit, we do not recommend building it.</p>
+        <p>
+          If we cannot point to saved time, lower cost, faster response, or more revenue, we do not
+          recommend building it.
+        </p>
       </div>
     </section>
   );
@@ -124,13 +129,12 @@ export default function Home() {
         </div>
         <div className="quiet-hero-copy">
           <div className="hero-text-stack">
-            <h1>Are You AI?</h1>
+            <h1>Stop Losing Money to Slow Work.</h1>
             <p>
-              Successful companies are <strong>A</strong>lways <strong>I</strong>nnovating. We help
-              find the operational drag, fix the work, and turn better systems into measurable
-              results.
+              We find the handoffs, admin, delays, and missed follow-up draining profit. Then we
+              fix the workflow with practical systems, automation, and AI only where it helps.
             </p>
-            <p className="brand-promise">We provide outcomes, nothing else.</p>
+            <p className="brand-promise">No decks. No busywork. Just better operations.</p>
           </div>
           <div className="hero-actions">
             <Link className="button button-dark" href="/contact">

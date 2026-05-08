@@ -57,11 +57,11 @@ export function ContactForm() {
         <input name="company" autoComplete="organization" required />
       </label>
       <label>
-        What are you trying to build?
+        What work needs to improve?
         <textarea name="project" rows={5} required />
       </label>
       <label>
-        Biggest bottleneck
+        What is the biggest bottleneck?
         <textarea name="bottleneck" rows={4} required />
       </label>
       <label>

@@ -10,7 +10,7 @@ export function SiteFooter() {
         </Link>
         <p>goodbusinesshq.com</p>
       </div>
-      <p className="footer-line">Practical systems. Measurable outcomes.</p>
+      <p className="footer-line">Less drag. Better margins.</p>
       <div className="footer-links">
         <Link className="footer-cta" href="/contact">
           Book a Strategy Call <ArrowRight aria-hidden="true" size={15} />
