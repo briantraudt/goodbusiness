@@ -19,9 +19,9 @@ async function checkHealth() {
   try {
     const response = await fetch("/api/health");
     const data = await response.json();
-    modePill.textContent = data.aiConfigured ? "Live studio" : "Local studio";
+    modePill.textContent = data.aiConfigured ? "AI ready" : "Preview mode";
   } catch {
-    modePill.textContent = "Local studio";
+    modePill.textContent = "Preview mode";
   }
 }
 
@@ -30,12 +30,12 @@ async function generateBrief() {
 
   if (!projectIdea) {
     renderBrief({
-      headline: "Start with the people, not the platform.",
+      headline: "Start with humanity, then build the technology.",
       bullets: [
-        "Name who should find, remember, coordinate with, or care for each other.",
-        "Describe the real-world connection the technology should unlock.",
+        "Name the people who should find, remember, coordinate with, or care for each other.",
+        "Describe the real-world moment the technology should make easier, warmer, or more possible.",
       ],
-      metric: "Connection signal: someone shows up in real life.",
+      metric: "Humanity signal: someone connects, helps, gathers, or shows up in real life.",
     });
     return;
   }
@@ -43,8 +43,8 @@ async function generateBrief() {
   button.disabled = true;
   button.textContent = "Shaping...";
   output.innerHTML = `
-    <strong>Finding the connective layer...</strong>
-    <span>Looking for the people, the signal, the system, and the smallest useful next step.</span>
+    <strong>Finding the human layer...</strong>
+    <span>Looking for the people, the technology, the trust, and the smallest beautiful first version.</span>
   `;
 
   try {
@@ -64,35 +64,35 @@ async function generateBrief() {
     renderBrief(createFallbackBrief(projectIdea, error));
   } finally {
     button.disabled = false;
-    button.textContent = "Shape the system";
+    button.textContent = "Shape the technology";
   }
 }
 
 function renderBrief(brief) {
   const bullets = Array.isArray(brief.bullets) ? brief.bullets.slice(0, 4) : [];
   output.innerHTML = `
-    <strong>${escapeHtml(brief.headline || "A human-centered technology direction")}</strong>
+    <strong>${escapeHtml(brief.headline || "A technology direction for human connection")}</strong>
     <ul>
       ${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
     </ul>
-    <span>${escapeHtml(brief.metric || "Connection signal: someone shows up in real life.")}</span>
+    <span>${escapeHtml(brief.metric || "Humanity signal: someone shows up in real life.")}</span>
   `;
 }
 
 function createFallbackBrief(projectIdea, error) {
   const plainIdea = truncateText(projectIdea, 118);
   return {
-    headline: "Build the smallest technology that helps people show up.",
+    headline: "Build remarkable technology around a deeply human moment.",
     bullets: [
-      `Center the technology on this human moment: ${plainIdea}`,
-      "Make the first version about one connection behavior: discover, coordinate, remember, invite, care, or follow through.",
-      "Define what trust requires before anyone shares too much.",
-      "Keep the system small enough that people actually use it this week.",
+      `Center the product on this human moment: ${plainIdea}`,
+      "Make the first version excellent at one behavior: discover, coordinate, remember, invite, care, or follow through.",
+      "Design the trust layer clearly: consent, privacy, timing, tone, and the right amount of memory.",
+      "Keep the technology focused enough that people can use it in real life this week.",
     ],
     metric:
       error instanceof Error
-        ? "Fallback direction shown locally. Live studio output unlocks when the API is configured."
-        : "Connection signal: someone gets outside, accepts help, offers care, or comes back tomorrow.",
+        ? "Preview direction shown locally. AI-shaped output unlocks when the API is configured."
+        : "Humanity signal: someone gets outside, accepts help, offers care, or comes back tomorrow.",
   };
 }
 

@@ -81,10 +81,10 @@ async function generateBuildBriefWithOpenAI(projectIdea) {
     name: "good_business_build_brief",
     schema,
     developerPrompt:
-      "You are Good Business, a small studio that builds warm technology for human connection: software, systems, interfaces, memory layers, and coordination products that help people show up for each other. " +
-      "Turn a messy idea about people, community, care, memory, love, place, or collaboration into a concise product direction. " +
+      "You are Good Business, a technology company that builds remarkable software, systems, interfaces, intelligent products, memory layers, and coordination tools that foster humanity. " +
+      "Turn a messy idea about people, community, care, memory, love, place, or collaboration into a concise product direction that feels both technically excellent and deeply human. " +
       "Be personal, practical, specific, optimistic, and plain-spoken. Do not overpromise. " +
-      "Mention the people involved, the technology layer, the real-world moment, trust/privacy boundaries, smallest first version, or connection signal where relevant.",
+      "Mention the people involved, the technology layer, the real-world moment, trust/privacy boundaries, smallest excellent first version, or humanity signal where relevant.",
     input: {
       project_idea: projectIdea,
     },
@@ -96,14 +96,14 @@ async function generateBuildBriefWithOpenAI(projectIdea) {
 function createFallbackBrief(projectIdea) {
   const idea = truncateText(projectIdea || "the people you want to bring together", 118);
   return {
-    headline: "Build the smallest technology that helps people show up.",
+    headline: "Build remarkable technology around a deeply human moment.",
     bullets: [
       `Start with the people in the moment: ${idea}`,
-      "Make the first version about one connection behavior: discover, coordinate, remember, invite, care, or follow through.",
+      "Make the first version excellent at one connection behavior: discover, coordinate, remember, invite, care, or follow through.",
       "Name what trust requires: consent, privacy, timing, tone, memory, and the right to say no.",
-      "Ship one simple system, then watch whether people actually show up for each other.",
+      "Ship one focused system, then watch whether people actually show up for each other.",
     ],
-    metric: "Connection signal: someone gets outside, accepts help, offers care, or comes back tomorrow.",
+    metric: "Humanity signal: someone gets outside, accepts help, offers care, or comes back tomorrow.",
   };
 }
 
@@ -117,9 +117,9 @@ function normalizeBrief(result) {
   }
 
   return {
-    headline: sanitizeText(result.headline, 110) || "A human-centered technology direction",
+    headline: sanitizeText(result.headline, 110) || "A technology direction for human connection",
     bullets,
-    metric: sanitizeText(result.metric, 180) || "Connection signal: someone shows up in real life.",
+    metric: sanitizeText(result.metric, 180) || "Humanity signal: someone shows up in real life.",
   };
 }
 
