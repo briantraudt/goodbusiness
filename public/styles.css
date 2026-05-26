@@ -92,25 +92,6 @@ figure {
   border: 0;
 }
 
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 30;
-  height: 56px;
-  background: #ffffff;
-}
-
-.nav {
-  width: min(1120px, calc(100% - 32px));
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin: 0 auto;
-  color: rgba(0, 0, 0, 0.76);
-  font-size: 14px;
-}
-
 .brand {
   display: inline-flex;
   align-items: center;
@@ -119,16 +100,8 @@ figure {
   letter-spacing: -0.055em;
 }
 
-.brand-o {
-  color: inherit;
-}
-
-.nav a:hover {
-  color: #000000;
-}
-
 .panel {
-  min-height: calc(100svh - 56px);
+  min-height: 100svh;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -137,7 +110,8 @@ figure {
 
 .hero {
   position: relative;
-  padding: 58px 22px 34px;
+  place-items: start center;
+  padding: 0 22px 34px;
   text-align: center;
   background: #ffffff;
 }
@@ -218,6 +192,19 @@ h1 {
   background: #ffffff;
   box-shadow: none;
   animation: floatDevice 9s ease-in-out infinite;
+}
+
+.hero-brand {
+  position: absolute;
+  top: clamp(18px, 3vw, 34px);
+  left: clamp(20px, 3.5vw, 42px);
+  z-index: 3;
+  color: #ffffff;
+  text-shadow: 0 8px 28px rgba(0, 0, 0, 0.34);
+}
+
+.hero-brand:hover {
+  color: #ffffff;
 }
 
 .device-frame::before {
@@ -460,12 +447,8 @@ textarea:focus {
 }
 
 @media (max-width: 740px) {
-  .nav {
-    width: min(100% - 24px, 1120px);
-  }
-
   .hero {
-    padding-top: 26px;
+    padding-top: 0;
   }
 
   h1 {
