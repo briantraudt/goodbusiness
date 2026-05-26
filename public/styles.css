@@ -95,9 +95,10 @@ figure {
 .brand {
   display: inline-flex;
   align-items: center;
+  font-family: var(--font);
   font-size: 22px;
   font-weight: 850;
-  letter-spacing: -0.055em;
+  letter-spacing: 0;
 }
 
 .panel {
@@ -200,7 +201,7 @@ h1 {
   top: clamp(18px, 3vw, 34px);
   left: clamp(20px, 3.5vw, 42px);
   z-index: 3;
-  color: #ffffff;
+  color: rgb(255, 255, 255);
   text-shadow: 0 8px 28px rgba(0, 0, 0, 0.34);
 }
 
@@ -233,6 +234,7 @@ h1 {
   width: calc(100% - clamp(32px, 6vw, 76px));
   color: #ffffff;
   font-size: clamp(28px, 6.7vw, 84px);
+  letter-spacing: 0;
   white-space: nowrap;
   text-shadow: 0 18px 50px rgba(0, 0, 0, 0.42);
   transform: translateX(-50%);
