@@ -213,10 +213,10 @@ h1 {
   position: relative;
   height: clamp(460px, 56vw, 620px);
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: 0;
   border-radius: clamp(20px, 3vw, 36px);
-  background: #dfe8ef;
-  box-shadow: var(--shadow), inset 0 0 0 8px rgba(255, 255, 255, 0.24);
+  background: #ffffff;
+  box-shadow: none;
   animation: floatDevice 9s ease-in-out infinite;
 }
 
