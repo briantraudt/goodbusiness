@@ -121,9 +121,7 @@ figure {
 }
 
 .brand-o {
-  color: #ffffff;
-  -webkit-text-stroke: 1.35px var(--ink);
-  text-stroke: 1.35px var(--ink);
+  color: inherit;
 }
 
 .nav-links {
