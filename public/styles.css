@@ -112,7 +112,7 @@ figure {
   position: relative;
   place-items: start center;
   min-height: auto;
-  padding: 0 22px 18px;
+  padding: clamp(18px, 3vw, 38px) 22px 18px;
   text-align: center;
   background: #ffffff;
 }
@@ -454,7 +454,7 @@ textarea:focus {
 
 @media (max-width: 740px) {
   .hero {
-    padding-top: 0;
+    padding-top: 16px;
   }
 
   h1 {
