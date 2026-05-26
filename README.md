@@ -1,6 +1,6 @@
 # Good Business
 
-Good Business is a lightweight website for a technology company building remarkable software, systems, and digital experiences that foster humanity. It positions the firm around excellent product craft, memory, coordination, care, and the small brave act of showing up.
+Good Business is a lightweight website for a consumer technology company building apps and intelligent products for real life. It positions the firm around products that help people connect, remember, choose, care, gather, practice faith, make better decisions, and spend more time being human.
 
 ## What it includes
 
