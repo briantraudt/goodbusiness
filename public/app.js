@@ -3,16 +3,41 @@ const ideaInput = document.querySelector("#project-idea");
 const output = document.querySelector("#brief-output");
 const button = document.querySelector("#brief-button");
 const modePill = document.querySelector("#mode-pill");
+const menuToggle = document.querySelector(".menu-toggle");
+const mobileMenu = document.querySelector("#mobile-menu");
 
 boot();
 
 function boot() {
   checkHealth();
+  setupMobileMenu();
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
     void generateBrief();
   });
+}
+
+function setupMobileMenu() {
+  if (!menuToggle || !mobileMenu) {
+    return;
+  }
+
+  menuToggle.addEventListener("click", () => {
+    const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+    setMenuOpen(!isOpen);
+  });
+
+  mobileMenu.addEventListener("click", (event) => {
+    if (event.target instanceof HTMLAnchorElement) {
+      setMenuOpen(false);
+    }
+  });
+}
+
+function setMenuOpen(isOpen) {
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
+  mobileMenu.hidden = !isOpen;
 }
 
 async function checkHealth() {
