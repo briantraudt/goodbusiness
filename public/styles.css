@@ -121,7 +121,15 @@ figure {
 }
 
 .brand-o {
-  color: var(--warm);
+  width: 0.82em;
+  height: 0.82em;
+  display: inline-grid;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  background: #ffffff;
+  color: transparent;
+  transform: translateY(0.06em);
 }
 
 .nav-links {
