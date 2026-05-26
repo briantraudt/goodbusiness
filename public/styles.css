@@ -320,76 +320,106 @@ h2 {
 
 .builder-card {
   display: grid;
-  gap: 14px;
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 20px;
-  padding: 22px;
+  gap: 18px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 18px;
+  padding: clamp(20px, 3vw, 30px);
   background: var(--surface);
-  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.08);
+  box-shadow: none;
 }
 
 label {
-  font-size: 21px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 750;
+  letter-spacing: 0;
+  line-height: 1.05;
 }
 
 textarea {
   width: 100%;
-  min-height: 174px;
+  min-height: 150px;
   resize: vertical;
-  border: 1px solid rgba(0, 0, 0, 0.16);
-  border-radius: 12px;
-  padding: 16px;
-  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 14px;
+  padding: 18px;
+  background: rgba(0, 0, 0, 0.018);
   outline: none;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.45;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+textarea::placeholder {
+  color: rgba(0, 0, 0, 0.44);
 }
 
 textarea:focus {
-  border-color: var(--warm);
-  box-shadow: 0 0 0 4px rgba(255, 111, 60, 0.14);
+  border-color: rgba(0, 0, 0, 0.34);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.045);
 }
 
 .builder-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .builder-actions button {
-  min-height: 44px;
+  min-height: 42px;
   border: 0;
-  border-radius: 10px;
+  border-radius: 999px;
   padding: 0 18px;
   background: var(--ink);
   color: #ffffff;
   font-weight: 600;
+  font-size: 15px;
+  transition:
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.builder-actions button:hover {
+  background: #000000;
+  transform: translateY(-1px);
 }
 
 .builder-actions button:disabled {
   opacity: 0.55;
+  transform: none;
 }
 
 .mode-pill {
-  color: var(--muted);
-  font-size: 13px;
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0 11px;
+  background: rgba(0, 0, 0, 0.045);
+  color: rgba(0, 0, 0, 0.58);
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .builder-output {
   display: grid;
   gap: 10px;
-  min-height: 152px;
-  border-radius: 22px;
-  padding: 18px;
+  min-height: 128px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 18px 0 0;
   background: #ffffff;
 }
 
 .builder-output strong {
-  font-size: 24px;
+  font-size: clamp(21px, 2vw, 26px);
   font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.06;
+  letter-spacing: 0;
+  line-height: 1.12;
 }
 
 .builder-output span,
