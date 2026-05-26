@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Good Business | Technology for human connection</title>
+    <meta
+      name="description"
+      content="Good Business builds elegant human technology for presence, care, memory, community, and real-world connection."
+    />
+    <meta property="og:title" content="Good Business | Technology for human connection" />
+    <meta
+      property="og:description"
+      content="Software, systems, and digital experiences that help people find each other, remember each other, and show up in the real world."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#connection-builder">Skip to connection builder</a>
+
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="Good Business home">
+          <span>Good Business</span>
+        </a>
+        <div class="nav-links" aria-label="Page sections">
+          <a href="#presence">Presence</a>
+          <a href="#connection-builder">Start</a>
+        </div>
+        <a class="nav-button" href="mailto:hello@goodbusinesshq.com">Contact</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero panel" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <h1 id="hero-title">Made for More.</h1>
+          <p class="lede">
+            We design software, systems, and digital experiences that help people find each other,
+            remember each other, and show up in the real world.
+          </p>
+          <div class="link-row">
+            <a class="primary-link" href="mailto:hello@goodbusinesshq.com">Start a project</a>
+            <a href="#presence">Explore the approach</a>
+          </div>
+        </div>
+
+        <div class="device-stage" aria-label="Good Business connection interface concept">
+          <div class="device-frame">
+            <img
+              src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=86"
+              alt="Friends spending time together outdoors"
+            />
+            <div class="glass-card primary-card">
+              <span>Signal</span>
+              <strong>4 people nearby</strong>
+            </div>
+            <div class="glass-card secondary-card">
+              <span>Moment</span>
+              <strong>Dinner at 7</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel light-panel" id="presence" aria-labelledby="presence-title">
+        <div class="center-copy">
+          <p class="eyebrow">Presence</p>
+          <h2 id="presence-title">Made to leave the screen.</h2>
+          <p>
+            The interface is only successful when it becomes a bridge to something human:
+            a conversation, a meal, a walk, a check-in, a first hello.
+          </p>
+        </div>
+        <div class="wide-photo">
+          <img
+            src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&w=1600&q=86"
+            alt="Friends gathered outside sharing a moment"
+          />
+        </div>
+      </section>
+
+      <section class="statement-panel panel" aria-label="Good Business belief">
+        <h2>Technology should feel less like a feed and more like a hand extended.</h2>
+      </section>
+
+      <section class="panel builder-section" id="connection-builder" aria-labelledby="builder-title">
+        <div class="builder-copy">
+          <p class="eyebrow">Start</p>
+          <h2 id="builder-title">What connection should technology unlock?</h2>
+          <p>Tell us about the people, the context, and the moment you want to make possible.</p>
+        </div>
+
+        <form class="builder-card" id="brief-form">
+          <label for="project-idea">Describe the human connection.</label>
+          <textarea
+            id="project-idea"
+            name="projectIdea"
+            maxlength="900"
+            placeholder="Example: New neighbors should be able to discover each other, coordinate walks, share meals, and know when someone needs a hand."
+          ></textarea>
+          <div class="builder-actions">
+            <button id="brief-button" type="submit">Shape the system</button>
+            <span class="mode-pill" id="mode-pill">Warming up...</span>
+          </div>
+          <output class="builder-output" id="brief-output" aria-live="polite">
+            <strong>Start with real people.</strong>
+            <span>Then build the smallest technology that helps them show up for each other.</span>
+          </output>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <strong>Good Business</strong>
+      <span>Technology for human connection.</span>
+      <a href="mailto:hello@goodbusinesshq.com">hello@goodbusinesshq.com</a>
+    </footer>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
