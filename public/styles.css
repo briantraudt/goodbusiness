@@ -104,18 +104,6 @@ figure {
   letter-spacing: 0;
 }
 
-.site-nav {
-  display: flex;
-  gap: 20px;
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 650;
-}
-
-.site-nav a:hover {
-  color: var(--ink);
-}
-
 .hero {
   min-height: calc(100svh - 72px);
   display: grid;
@@ -205,10 +193,20 @@ h1 {
 }
 
 .hero-visual {
+  position: relative;
   height: clamp(440px, 62vw, 720px);
   overflow: hidden;
   border-radius: clamp(18px, 3vw, 34px);
   background: var(--soft);
+}
+
+.hero-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  display: none;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.72));
+  pointer-events: none;
 }
 
 .hero-visual img {
@@ -536,12 +534,61 @@ h2 {
     padding-top: 20px;
   }
 
-  .site-nav {
-    gap: 14px;
+  .hero {
+    position: relative;
+    min-height: calc(100svh - 92px);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    border-radius: 26px;
+    padding: 0;
+    background: #111111;
+  }
+
+  .hero-copy {
+    position: relative;
+    z-index: 2;
+    max-width: none;
+    padding: clamp(22px, 6vw, 34px);
+    color: #ffffff;
   }
 
   h1 {
-    font-size: clamp(48px, 15vw, 72px);
+    margin-top: 0;
+    font-size: clamp(45px, 13.6vw, 68px);
+    line-height: 0.94;
+  }
+
+  .hero-subhead,
+  .hero-support {
+    color: rgba(255, 255, 255, 0.88);
+    text-shadow: 0 10px 34px rgba(0, 0, 0, 0.34);
+  }
+
+  .hero-subhead {
+    margin-top: 22px;
+    font-size: clamp(20px, 6vw, 25px);
+    line-height: 1.14;
+  }
+
+  .hero-support {
+    margin-top: 16px;
+    font-size: 17px;
+  }
+
+  .hero-visual {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .hero-visual::after {
+    display: block;
+  }
+
+  .hero-visual img {
+    object-position: center 42%;
   }
 
   .hero-actions,
@@ -549,9 +596,25 @@ h2 {
     display: grid;
   }
 
+  .hero-actions {
+    margin-top: 26px;
+  }
+
   .button,
   .idea-form button {
     width: 100%;
+  }
+
+  .hero .button.primary {
+    border-color: #ffffff;
+    background: #ffffff;
+    color: var(--ink);
+  }
+
+  .hero .button.secondary {
+    border-color: rgba(255, 255, 255, 0.76);
+    background: transparent;
+    color: #ffffff;
   }
 
   .moment-grid,
