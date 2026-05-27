@@ -295,9 +295,9 @@ h2 {
 }
 
 .moment-photo {
-  min-height: 560px;
+  min-height: 458px;
   overflow: hidden;
-  border-radius: 24px;
+  border-radius: 20px;
   background: var(--soft);
 }
 
@@ -308,17 +308,17 @@ h2 {
 .moment-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  gap: 14px;
 }
 
 .moment-grid article {
-  min-height: 270px;
+  min-height: 222px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
   border: 1px solid var(--line);
-  border-radius: 24px;
-  padding: clamp(22px, 3vw, 30px);
+  border-radius: 20px;
+  padding: clamp(20px, 2.5vw, 28px);
   background:
     linear-gradient(135deg, rgba(155, 78, 47, 0.08), transparent 44%),
     #ffffff;
@@ -333,7 +333,7 @@ h2 {
 
 .moment-grid h3 {
   max-width: 320px;
-  font-size: clamp(25px, 2.8vw, 38px);
+  font-size: clamp(24px, 2.4vw, 34px);
   font-weight: 820;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -341,7 +341,7 @@ h2 {
 
 .moment-grid p {
   max-width: 340px;
-  margin-top: 16px;
+  margin-top: 12px;
   font-size: 16px;
   line-height: 1.36;
 }
@@ -727,8 +727,22 @@ h2 {
     grid-template-columns: 1fr;
   }
 
+  .moment-grid {
+    gap: 12px;
+  }
+
   .moment-grid article {
-    min-height: 220px;
+    min-height: auto;
+    border-radius: 20px;
+    padding: 24px;
+  }
+
+  .moment-grid h3 {
+    font-size: clamp(28px, 8vw, 38px);
+  }
+
+  .moment-grid p {
+    font-size: 17px;
   }
 
   .principle-strip article,
