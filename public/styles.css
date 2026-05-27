@@ -134,6 +134,23 @@ figure {
   letter-spacing: 0;
 }
 
+.header-contact {
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  padding: 0 15px;
+  font-size: 14px;
+  font-weight: 720;
+}
+
+.header-contact:hover {
+  background: var(--ink);
+  color: #ffffff;
+}
+
 .hero {
   min-height: calc(100svh - 72px);
   display: grid;
