@@ -563,6 +563,7 @@ h2 {
   .hero-support {
     color: rgba(255, 255, 255, 0.88);
     text-shadow: 0 10px 34px rgba(0, 0, 0, 0.34);
+    visibility: hidden;
   }
 
   .hero-subhead {
