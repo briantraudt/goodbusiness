@@ -67,6 +67,36 @@ figure {
   outline-offset: 4px;
 }
 
+.motion-ready .reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 760ms ease,
+    transform 760ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.motion-ready .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.motion-ready .hero-visual.reveal,
+.motion-ready .moment-photo.reveal,
+.motion-ready .philosophy-photo.reveal,
+.motion-ready .principles-photo.reveal,
+.motion-ready .idea-photo.reveal {
+  transform: translateY(34px) scale(0.985);
+}
+
+.motion-ready .hero-visual.reveal.is-visible,
+.motion-ready .moment-photo.reveal.is-visible,
+.motion-ready .philosophy-photo.reveal.is-visible,
+.motion-ready .principles-photo.reveal.is-visible,
+.motion-ready .idea-photo.reveal.is-visible {
+  transform: translateY(0) scale(1);
+}
+
 .skip-link {
   position: absolute;
   left: -999px;
@@ -211,6 +241,22 @@ h1 {
 
 .hero-visual img {
   object-position: center 46%;
+}
+
+.hero-visual img,
+.moment-photo img,
+.philosophy-photo img,
+.principles-photo img,
+.idea-photo img {
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-visual:hover img,
+.moment-photo:hover img,
+.philosophy-photo:hover img,
+.principles-photo:hover img,
+.idea-photo:hover img {
+  transform: scale(1.025);
 }
 
 .section {
@@ -519,6 +565,24 @@ h2 {
   .philosophy-photo,
   .philosophy-panel {
     min-height: 420px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+
+  .hero-visual:hover img,
+  .moment-photo:hover img,
+  .philosophy-photo:hover img,
+  .principles-photo:hover img,
+  .idea-photo:hover img {
+    transform: none;
   }
 }
 
