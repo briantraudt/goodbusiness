@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/social-arb-nightly",
+      "schedule": "30 8 * * *"
+    }
+  ]
+}
