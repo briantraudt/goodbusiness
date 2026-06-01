@@ -13,6 +13,14 @@ export default async function handler(req, res) {
     return res.status(401).json({ error: "Unauthorized." });
   }
 
+  if (isVercelCron(req) && !isMarketMorningWindow()) {
+    return res.status(200).json({
+      ok: true,
+      skipped: true,
+      reason: "Outside 8:20 AM America/Chicago market-morning window.",
+    });
+  }
+
   try {
     const result = await runSocialArbNightly({
       hours: req.query?.hours,
@@ -36,4 +44,28 @@ function isAuthorized(req) {
   const header = req.headers.authorization || "";
   const expected = `Bearer ${secret}`;
   return header === expected || req.query?.secret === secret;
+}
+
+function isVercelCron(req) {
+  return String(req.headers["user-agent"] || "").toLowerCase().includes("vercel-cron");
+}
+
+function isMarketMorningWindow(date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Chicago",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).formatToParts(date);
+  const values = Object.fromEntries(parts.map((part) => [part.type, part.value]));
+  const weekday = values.weekday;
+  const hour = Number(values.hour);
+  const minute = Number(values.minute);
+
+  if (weekday === "Sat" || weekday === "Sun") {
+    return false;
+  }
+
+  return hour === 8 && minute >= 15 && minute <= 25;
 }
