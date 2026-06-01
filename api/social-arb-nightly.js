@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 }
 
 function isAuthorized(req) {
-  const secret = process.env.SOCIAL_ARB_CRON_SECRET || process.env.CRON_SECRET;
+  const secret = process.env.CRON_SECRET || process.env.SOCIAL_ARB_CRON_SECRET;
   if (!secret) {
     return true;
   }
