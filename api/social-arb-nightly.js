@@ -28,11 +28,12 @@ export default async function handler(req, res) {
 }
 
 function isAuthorized(req) {
-  if (!process.env.SOCIAL_ARB_CRON_SECRET) {
+  const secret = process.env.SOCIAL_ARB_CRON_SECRET || process.env.CRON_SECRET;
+  if (!secret) {
     return true;
   }
 
   const header = req.headers.authorization || "";
-  const expected = `Bearer ${process.env.SOCIAL_ARB_CRON_SECRET}`;
-  return header === expected || req.query?.secret === process.env.SOCIAL_ARB_CRON_SECRET;
+  const expected = `Bearer ${secret}`;
+  return header === expected || req.query?.secret === secret;
 }
