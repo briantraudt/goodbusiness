@@ -50,9 +50,16 @@ The Vercel cron in `vercel.json` runs daily at `08:30 UTC`, which is `3:30 AM Am
 Social inputs are free/public only:
 
 - Stocktwits public streams
+- Bluesky public search
+- Mastodon public hashtag RSS
+- 4chan read-only JSON catalogs for public boards
+- DEV/Forem public article API
 - Hacker News Algolia public API
+- Hacker News RSS
 - Lobsters RSS
 - Lemmy RSS
+- Product Hunt RSS
+- Slashdot RSS
 - Reddit RSS when reachable; the job skips it if Reddit blocks the request
 
 Manual run:
