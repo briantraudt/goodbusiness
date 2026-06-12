@@ -54,13 +54,17 @@ Social inputs are free/public only:
 - Mastodon public hashtag RSS
 - 4chan read-only JSON catalogs for public boards
 - DEV/Forem public article API
+- Public Discourse `latest.json` forums for Hugging Face, OpenAI Developer Community, and Polkadot
 - Hacker News Algolia public API
 - Hacker News RSS
 - Lobsters RSS
 - Lemmy RSS
 - Product Hunt RSS
 - Slashdot RSS
+- Stack Exchange public API for live `artificial-intelligence`, `machine-learning`, `cybersecurity`, and `cryptocurrency` questions
 - Reddit RSS when reachable; the job skips it if Reddit blocks the request
+
+Recent source expansion intentionally skipped public news-only feeds such as Investing.com RSS and noisy activity-only endpoints such as GitHub public events. The collector prioritizes user-generated discussion or user-generated Q&A over headline syndication or undifferentiated event firehoses.
 
 Manual run:
 
