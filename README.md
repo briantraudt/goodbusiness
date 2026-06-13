@@ -55,6 +55,7 @@ Social inputs are free/public only:
 - 4chan read-only JSON catalogs for public boards
 - DEV/Forem public article API
 - Public Discourse `latest.json` forums for Hugging Face, OpenAI Developer Community, and Polkadot
+- Additional official public Discourse `latest.json` forums for Google AI Developers, PyTorch, Fly.io, Solana, Optimism, and Uniswap
 - Hacker News Algolia public API
 - Hacker News RSS
 - Lobsters RSS
@@ -64,7 +65,7 @@ Social inputs are free/public only:
 - Stack Exchange public API for live `artificial-intelligence`, `machine-learning`, `cybersecurity`, and `cryptocurrency` questions
 - Reddit RSS when reachable; the job skips it if Reddit blocks the request
 
-Recent source expansion intentionally skipped public news-only feeds such as Investing.com RSS and noisy activity-only endpoints such as GitHub public events. The collector prioritizes user-generated discussion or user-generated Q&A over headline syndication or undifferentiated event firehoses.
+Recent source expansion intentionally skipped public news-only feeds such as Investing.com RSS, challenge-gated or broken community feeds such as Intel Community RSS and AMD Community RSS redirects, and noisy activity-only endpoints such as GitHub public events. The collector prioritizes user-generated discussion or user-generated Q&A over headline syndication or undifferentiated event firehoses.
 
 Manual run:
 
