@@ -1,21 +1,26 @@
-const form = document.querySelector("#human-need-form");
-const textarea = document.querySelector("#human-need");
+const form = document.querySelector("#contact-form");
 const header = document.querySelector(".site-header");
 
 setupMotion();
 setupHeader();
 
-if (form && textarea) {
+if (form) {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const idea = textarea.value.trim();
-    const subject = encodeURIComponent("A human need for Good Business");
-    const body = encodeURIComponent(
-      idea
-        ? `What should technology make more human?\n\n${idea}`
-        : "What should technology make more human?\n\n"
-    );
+    const name = form.querySelector("#contact-name")?.value.trim() || "";
+    const email = form.querySelector("#contact-email")?.value.trim() || "";
+    const message = form.querySelector("#contact-message")?.value.trim() || "";
+
+    const subject = encodeURIComponent("AI consulting inquiry");
+    const bodyParts = [
+      name ? `Name: ${name}` : "",
+      email ? `Email: ${email}` : "",
+      "",
+      message ? `Message:\n${message}` : "",
+    ].filter((part, index, arr) => part || (index === 2 && arr.some(Boolean)));
+
+    const body = encodeURIComponent(bodyParts.join("\n"));
 
     window.location.href = `mailto:hello@goodbusinesshq.com?subject=${subject}&body=${body}`;
   });
@@ -35,7 +40,7 @@ function setupMotion() {
     ".principles-photo",
     ".principles-content",
     ".begin-copy",
-    ".idea-form",
+    ".contact-form",
   ];
 
   const elements = document.querySelectorAll(revealItems.join(","));

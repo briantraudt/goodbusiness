@@ -98,16 +98,14 @@ h3 {
 .motion-ready .hero-visual.reveal,
 .motion-ready .moment-photo.reveal,
 .motion-ready .philosophy-photo.reveal,
-.motion-ready .principles-photo.reveal,
-.motion-ready .idea-photo.reveal {
+.motion-ready .principles-photo.reveal {
   transform: translateY(34px) scale(0.985);
 }
 
 .motion-ready .hero-visual.reveal.is-visible,
 .motion-ready .moment-photo.reveal.is-visible,
 .motion-ready .philosophy-photo.reveal.is-visible,
-.motion-ready .principles-photo.reveal.is-visible,
-.motion-ready .idea-photo.reveal.is-visible {
+.motion-ready .principles-photo.reveal.is-visible {
   transform: translateY(0) scale(1);
 }
 
@@ -254,8 +252,6 @@ h1 {
 .philosophy-copy p,
 .principle-strip p,
 .begin-copy p,
-.begin-copy span,
-.form-row p,
 .site-footer span,
 .footer-links a {
   color: var(--muted);
@@ -275,7 +271,7 @@ h1 {
 }
 
 .button,
-.idea-form button {
+.contact-form button {
   min-height: 46px;
   display: inline-flex;
   align-items: center;
@@ -294,18 +290,18 @@ h1 {
 }
 
 .button:hover,
-.idea-form button:hover {
+.contact-form button:hover {
   transform: translateY(-1px);
 }
 
 .button.primary,
-.idea-form button {
+.contact-form button {
   background: var(--ink);
   color: #ffffff;
 }
 
 .button.primary:hover,
-.idea-form button:hover {
+.contact-form button:hover {
   background: #2a2724;
 }
 
@@ -351,8 +347,7 @@ h1 {
 .hero-visual:hover img,
 .moment-photo:hover img,
 .philosophy-photo:hover img,
-.principles-photo:hover img,
-.idea-photo:hover img {
+.principles-photo:hover img {
   transform: scale(1.03);
 }
 
@@ -619,51 +614,36 @@ h2 {
   line-height: 1.28;
 }
 
-.begin-copy span {
-  display: block;
-  margin-top: 20px;
-  font-size: 16px;
-}
-
-.idea-form {
+.contact-form {
   display: grid;
-  gap: 16px;
+  gap: 18px;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
-  padding: clamp(22px, 3.4vw, 36px);
+  padding: clamp(24px, 3.4vw, 36px);
   background: var(--surface);
   box-shadow: var(--shadow-md);
 }
 
-.idea-photo {
-  height: clamp(180px, 22vw, 260px);
-  overflow: hidden;
-  border-radius: var(--radius-sm);
-  background: var(--soft);
+.form-field {
+  display: grid;
+  gap: 8px;
 }
 
-.idea-photo img {
-  object-position: center 42%;
+.contact-form label {
+  font-size: 14px;
+  font-weight: 620;
+  color: var(--ink);
 }
 
-.idea-form label {
-  font-family: var(--display);
-  font-size: clamp(22px, 2.6vw, 30px);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.08;
-}
-
-.idea-form textarea {
+.contact-form input,
+.contact-form textarea {
   width: 100%;
-  min-height: 160px;
-  resize: vertical;
   border: 1px solid rgba(20, 18, 16, 0.12);
   border-radius: var(--radius-sm);
-  padding: 18px;
+  padding: 14px 16px;
   background: var(--page);
   outline: none;
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.45;
   transition:
     border-color 200ms ease,
@@ -671,27 +651,26 @@ h2 {
     box-shadow 200ms ease;
 }
 
-.idea-form textarea:focus {
+.contact-form textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
   border-color: rgba(155, 78, 47, 0.45);
   background: var(--surface);
   box-shadow: 0 0 0 3px rgba(155, 78, 47, 0.1);
 }
 
-.idea-form textarea::placeholder {
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
   color: rgba(20, 18, 16, 0.42);
 }
 
-.form-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  align-items: center;
-}
-
-.form-row p {
-  flex: 1 1 220px;
-  font-size: 14px;
-  line-height: 1.35;
+.contact-form button {
+  width: 100%;
+  margin-top: 4px;
 }
 
 .site-footer {
@@ -786,10 +765,9 @@ h2 {
   .moment-photo:hover img,
   .philosophy-photo:hover img,
   .principles-photo:hover img,
-  .idea-photo:hover img,
   .moment-grid article:hover,
   .button:hover,
-  .idea-form button:hover {
+  .contact-form button:hover {
     transform: none;
   }
 }
@@ -885,8 +863,7 @@ h2 {
     width: calc(100% - 44px);
   }
 
-  .hero-actions,
-  .form-row {
+  .hero-actions {
     display: grid;
   }
 
@@ -895,7 +872,7 @@ h2 {
   }
 
   .button,
-  .idea-form button {
+  .contact-form button {
     width: 100%;
   }
 
