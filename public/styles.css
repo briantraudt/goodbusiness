@@ -8,9 +8,8 @@
   --line: rgba(20, 18, 16, 0.1);
   --warm: #9b4e2f;
   --warm-soft: #ede0d4;
-  --heart: #c94432;
-  --display: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --shadow-sm: 0 1px 2px rgba(20, 18, 16, 0.04);
   --shadow-md: 0 8px 32px rgba(20, 18, 16, 0.06);
   --radius-sm: 16px;
@@ -79,6 +78,7 @@ h2,
 h3 {
   font-family: var(--display);
   font-weight: 600;
+  font-feature-settings: "kern";
 }
 
 :focus-visible {
@@ -194,19 +194,11 @@ h3 {
 }
 
 .brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
   font-family: var(--display);
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   color: var(--ink);
-}
-
-.brand-mark {
-  flex-shrink: 0;
-  color: var(--heart);
 }
 
 .header-nav {
@@ -270,10 +262,10 @@ h3 {
 
 h1 {
   margin-top: 14px;
-  font-size: clamp(44px, 6.4vw, 84px);
+  font-size: clamp(44px, 6.4vw, 80px);
   font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.02;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
 }
 
 .hero-subhead {
@@ -439,10 +431,10 @@ h1 {
 
 h2 {
   margin-top: 10px;
-  font-size: clamp(32px, 4.8vw, 64px);
+  font-size: clamp(32px, 4.8vw, 56px);
   font-weight: 600;
-  letter-spacing: -0.028em;
-  line-height: 1.06;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
 }
 
 .section-header p {
@@ -619,11 +611,11 @@ h2 {
   display: block;
   margin-bottom: 14px;
   color: var(--warm);
-  font-family: var(--display);
-  font-size: 15px;
+  font-family: var(--font);
+  font-size: 13px;
   font-weight: 600;
-  font-style: italic;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .principle-strip h3 {
