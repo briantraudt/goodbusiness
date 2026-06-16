@@ -789,9 +789,9 @@ h2 {
   .hero {
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    min-height: auto;
-    padding: 8px 0 40px;
+    gap: 20px;
+    min-height: calc(100svh - 72px);
+    padding: 8px 0 max(12px, env(safe-area-inset-bottom));
     background: transparent;
     border-radius: 0;
     overflow: visible;
@@ -801,8 +801,9 @@ h2 {
     position: relative;
     order: -1;
     inset: auto;
+    flex-shrink: 0;
     width: 100%;
-    height: clamp(220px, 52vw, 300px);
+    height: clamp(200px, 36svh, 280px);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
   }
@@ -814,6 +815,10 @@ h2 {
   .hero-copy {
     position: static;
     z-index: auto;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
     max-width: none;
     padding: 0;
     color: var(--ink);
@@ -845,7 +850,8 @@ h2 {
   .hero-actions {
     display: grid;
     gap: 10px;
-    margin-top: 22px;
+    margin-top: auto;
+    padding-top: 24px;
   }
 
   .button,
