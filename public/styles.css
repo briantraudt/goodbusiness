@@ -24,6 +24,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 body {
@@ -32,6 +33,10 @@ body {
   color: var(--ink);
   font-family: var(--font);
   -webkit-font-smoothing: antialiased;
+}
+
+body.menu-open {
+  overflow: hidden;
 }
 
 body,
@@ -133,8 +138,8 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-  padding: 16px 0;
+  gap: 16px;
+  padding: 18px 0;
   transition:
     background 280ms ease,
     box-shadow 280ms ease,
@@ -142,9 +147,43 @@ h3 {
 }
 
 .site-header.is-scrolled {
-  background: rgba(250, 248, 245, 0.82);
+  background: rgba(250, 248, 245, 0.92);
   backdrop-filter: blur(14px);
   box-shadow: 0 1px 0 var(--line);
+}
+
+.menu-toggle {
+  display: none;
+  position: relative;
+  z-index: 60;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.menu-toggle-bar {
+  display: block;
+  width: 16px;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transition: transform 220ms ease, opacity 220ms ease;
+}
+
+.menu-toggle[aria-expanded="true"] .menu-toggle-bar:first-child {
+  transform: translateY(4px) rotate(45deg);
+}
+
+.menu-toggle[aria-expanded="true"] .menu-toggle-bar:last-child {
+  transform: translateY(-4px) rotate(-45deg);
 }
 
 .hero,
@@ -177,13 +216,13 @@ h3 {
 }
 
 .header-nav a {
-  min-height: 36px;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  padding: 0 14px;
-  font-size: 14px;
+  padding: 0 16px;
+  font-size: 15px;
   font-weight: 520;
   color: var(--muted);
   transition:
@@ -208,16 +247,16 @@ h3 {
 }
 
 .hero {
-  min-height: calc(100svh - 72px);
+  min-height: auto;
   display: grid;
   grid-template-columns: minmax(0, 0.92fr) minmax(360px, 0.78fr);
   gap: clamp(34px, 6vw, 78px);
   align-items: center;
-  padding: clamp(32px, 6vw, 72px) 0 clamp(32px, 5vw, 62px);
+  padding: clamp(24px, 4vw, 56px) 0 clamp(48px, 6vw, 80px);
 }
 
 .hero-copy {
-  max-width: 720px;
+  max-width: 640px;
 }
 
 .eyebrow {
@@ -231,19 +270,19 @@ h3 {
 
 h1 {
   margin-top: 14px;
-  font-size: clamp(48px, 7.2vw, 96px);
+  font-size: clamp(44px, 6.4vw, 84px);
   font-weight: 600;
   letter-spacing: -0.03em;
-  line-height: 0.98;
+  line-height: 1.02;
 }
 
 .hero-subhead {
-  max-width: 580px;
-  margin-top: 24px;
+  max-width: 520px;
+  margin-top: 20px;
   color: var(--ink);
-  font-size: clamp(20px, 2.2vw, 28px);
+  font-size: clamp(19px, 2vw, 26px);
   letter-spacing: -0.012em;
-  line-height: 1.2;
+  line-height: 1.28;
 }
 
 .hero-support,
@@ -258,21 +297,21 @@ h1 {
 }
 
 .hero-support {
-  margin-top: 16px;
-  font-size: clamp(17px, 1.6vw, 20px);
-  line-height: 1.4;
+  margin-top: 14px;
+  font-size: clamp(16px, 1.5vw, 18px);
+  line-height: 1.45;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 32px;
+  margin-top: 28px;
 }
 
 .button,
 .contact-form button {
-  min-height: 46px;
+  min-height: 48px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -316,7 +355,7 @@ h1 {
 
 .hero-visual {
   position: relative;
-  height: clamp(440px, 62vw, 720px);
+  height: clamp(380px, 52vw, 640px);
   overflow: hidden;
   border-radius: var(--radius-lg);
   background: var(--soft);
@@ -339,8 +378,7 @@ h1 {
 .hero-visual img,
 .moment-photo img,
 .philosophy-photo img,
-.principles-photo img,
-.idea-photo img {
+.principles-photo img {
   transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -352,8 +390,9 @@ h1 {
 }
 
 .section {
-  padding: clamp(72px, 10vw, 120px) 0;
+  padding: clamp(64px, 8vw, 104px) 0;
   border-top: 1px solid var(--line);
+  scroll-margin-top: 80px;
 }
 
 .moments-section {
@@ -400,10 +439,10 @@ h1 {
 
 h2 {
   margin-top: 10px;
-  font-size: clamp(36px, 5.4vw, 72px);
+  font-size: clamp(32px, 4.8vw, 64px);
   font-weight: 600;
   letter-spacing: -0.028em;
-  line-height: 1.02;
+  line-height: 1.06;
 }
 
 .section-header p {
@@ -439,10 +478,11 @@ h2 {
 }
 
 .moment-grid article {
-  min-height: 222px;
+  min-height: 200px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 8px;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   padding: clamp(20px, 2.5vw, 28px);
@@ -567,7 +607,7 @@ h2 {
 }
 
 .principle-strip article {
-  padding: 28px 28px 0 0;
+  padding: 28px 28px 28px 0;
 }
 
 .principle-strip article + article {
@@ -601,8 +641,8 @@ h2 {
 
 .begin-section {
   display: grid;
-  grid-template-columns: minmax(0, 0.78fr) minmax(360px, 0.72fr);
-  gap: clamp(30px, 6vw, 82px);
+  grid-template-columns: minmax(0, 0.78fr) minmax(380px, 0.72fr);
+  gap: clamp(32px, 5vw, 72px);
   align-items: start;
 }
 
@@ -638,7 +678,8 @@ h2 {
 .contact-form input,
 .contact-form textarea {
   width: 100%;
-  border: 1px solid rgba(20, 18, 16, 0.12);
+  min-height: 48px;
+  border: 1px solid rgba(20, 18, 16, 0.14);
   border-radius: var(--radius-sm);
   padding: 14px 16px;
   background: var(--page);
@@ -652,7 +693,7 @@ h2 {
 }
 
 .contact-form textarea {
-  min-height: 140px;
+  min-height: 128px;
   resize: vertical;
 }
 
@@ -671,6 +712,14 @@ h2 {
 .contact-form button {
   width: 100%;
   margin-top: 4px;
+}
+
+.form-note {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--muted);
+  text-align: center;
 }
 
 .site-footer {
@@ -729,21 +778,36 @@ h2 {
   }
 
   .hero {
-    min-height: auto;
-    padding-top: 48px;
+    padding-top: 16px;
   }
 
   .hero-visual {
-    height: clamp(360px, 72vw, 620px);
+    height: clamp(300px, 56vw, 480px);
   }
 
   .moment-photo {
-    min-height: 420px;
+    min-height: 320px;
   }
 
   .philosophy-photo,
   .philosophy-panel {
-    min-height: 420px;
+    min-height: auto;
+  }
+
+  .principle-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .principle-strip article,
+  .principle-strip article + article {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+    padding: 24px 0;
+  }
+
+  .principle-strip article:first-child {
+    border-top: 0;
+    padding-top: 0;
   }
 
   .site-footer {
@@ -773,102 +837,141 @@ h2 {
 }
 
 @media (max-width: 700px) {
+  html {
+    scroll-padding-top: 72px;
+  }
+
   .site-header,
   .hero,
   .section,
   .philosophy-section,
   .principles-section,
   .site-footer {
-    width: min(100% - 28px, 1180px);
+    width: min(100% - 32px, 1180px);
   }
 
   .site-header {
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding: 14px 0;
   }
 
-  .header-nav a:not(.header-contact) {
-    display: none;
+  .menu-toggle {
+    display: inline-flex;
+  }
+
+  .header-nav {
+    position: fixed;
+    inset: 0;
+    z-index: 55;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 8px;
+    padding: 96px 32px 40px;
+    background: rgba(250, 248, 245, 0.98);
+    backdrop-filter: blur(16px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 240ms ease,
+      visibility 240ms ease;
+  }
+
+  .header-nav.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .header-nav a {
+    width: 100%;
+    min-height: 52px;
+    justify-content: flex-start;
+    padding: 0 20px;
+    font-size: 18px;
+    font-weight: 560;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .header-nav a:hover {
+    background: var(--soft);
+  }
+
+  .header-contact {
+    margin-top: 8px;
+    justify-content: center !important;
+    background: var(--ink) !important;
+    color: #ffffff !important;
+    border-color: var(--ink) !important;
+  }
+
+  .header-contact:hover {
+    background: #2a2724 !important;
   }
 
   .hero {
-    position: relative;
-    min-height: calc(100svh - 80px);
     display: flex;
-    align-items: flex-end;
-    overflow: hidden;
-    border-radius: var(--radius-lg);
-    padding: 0;
-    background: var(--ink);
+    flex-direction: column;
+    gap: 24px;
+    min-height: auto;
+    padding: 8px 0 40px;
+    background: transparent;
+    border-radius: 0;
+    overflow: visible;
+  }
+
+  .hero-visual {
+    position: relative;
+    order: -1;
+    inset: auto;
+    width: 100%;
+    height: clamp(220px, 52vw, 300px);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .hero-visual::after {
+    display: none;
   }
 
   .hero-copy {
-    position: relative;
-    z-index: 2;
+    position: static;
+    z-index: auto;
     max-width: none;
-    padding: clamp(22px, 6vw, 34px);
-    color: #ffffff;
+    padding: 0;
+    color: var(--ink);
   }
 
   h1 {
     margin-top: 0;
-    font-size: clamp(42px, 12.5vw, 64px);
-    line-height: 0.98;
+    font-size: clamp(36px, 10.5vw, 48px);
+    line-height: 1.04;
   }
 
   .hero-subhead,
   .hero-support {
-    color: rgba(255, 255, 255, 0.86);
-    text-shadow: 0 8px 28px rgba(0, 0, 0, 0.28);
+    color: var(--muted);
+    text-shadow: none;
   }
 
   .hero-subhead {
-    margin-top: 18px;
-    font-size: clamp(18px, 5.5vw, 24px);
-    line-height: 1.18;
+    margin-top: 14px;
+    font-size: 18px;
+    line-height: 1.32;
   }
 
   .hero-support {
-    margin-top: 14px;
+    margin-top: 10px;
     font-size: 16px;
-  }
-
-  .hero-visual {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .hero-visual::after {
-    display: block;
-  }
-
-  .hero-visual img {
-    object-position: center 42%;
-  }
-
-  .principles-photo {
-    height: clamp(340px, 92vw, 520px);
-  }
-
-  .principles-photo::after {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.72));
-  }
-
-  .principles-photo figcaption {
-    left: 22px;
-    bottom: 24px;
-    width: calc(100% - 44px);
   }
 
   .hero-actions {
     display: grid;
-  }
-
-  .hero-actions {
-    margin-top: 24px;
+    gap: 10px;
+    margin-top: 22px;
   }
 
   .button,
@@ -877,15 +980,56 @@ h2 {
   }
 
   .hero .button.primary {
-    border-color: #ffffff;
-    background: #ffffff;
-    color: var(--ink);
+    border-color: var(--ink);
+    background: var(--ink);
+    color: #ffffff;
   }
 
   .hero .button.secondary {
-    border-color: rgba(255, 255, 255, 0.72);
-    background: transparent;
-    color: #ffffff;
+    border-color: var(--line);
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .section {
+    scroll-margin-top: 72px;
+  }
+
+  .section-header p {
+    font-size: 17px;
+  }
+
+  .principles-photo {
+    height: clamp(280px, 72vw, 400px);
+  }
+
+  .principles-photo::after {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.72));
+  }
+
+  .principles-photo figcaption {
+    left: 20px;
+    bottom: 20px;
+    width: calc(100% - 40px);
+  }
+
+  .moment-photo {
+    min-height: 260px;
+  }
+
+  .philosophy-photo,
+  .philosophy-panel {
+    min-height: auto;
+  }
+
+  .philosophy-panel {
+    gap: 28px;
+    padding: 28px 24px;
+  }
+
+  .philosophy-copy p {
+    font-size: 18px;
+    line-height: 1.36;
   }
 
   .moment-grid,
@@ -899,22 +1043,22 @@ h2 {
 
   .moment-grid article {
     min-height: auto;
-    padding: 24px;
+    padding: 20px;
   }
 
   .moment-grid h3 {
-    font-size: clamp(24px, 7vw, 32px);
+    font-size: 22px;
   }
 
   .moment-grid p {
-    font-size: 17px;
+    font-size: 16px;
   }
 
   .principle-strip article,
   .principle-strip article + article {
     border-left: 0;
     border-top: 1px solid var(--line);
-    padding: 20px 0 0;
+    padding: 20px 0;
   }
 
   .principle-strip article:first-child {
@@ -922,7 +1066,23 @@ h2 {
     padding-top: 0;
   }
 
+  .begin-section {
+    gap: 28px;
+  }
+
+  .begin-copy p {
+    font-size: 18px;
+  }
+
+  .contact-form {
+    padding: 20px;
+  }
+
   .footer-links {
     order: 3;
+  }
+
+  .site-footer {
+    padding-bottom: 32px;
   }
 }

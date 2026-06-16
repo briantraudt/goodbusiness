@@ -36,7 +36,19 @@
         </svg>
         Good Business
       </a>
-      <nav class="header-nav" aria-label="Page sections">
+
+      <button
+        class="menu-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        aria-label="Open menu"
+      >
+        <span class="menu-toggle-bar" aria-hidden="true"></span>
+        <span class="menu-toggle-bar" aria-hidden="true"></span>
+      </button>
+
+      <nav class="header-nav" id="site-nav" aria-label="Page sections">
         <a href="#services">Services</a>
         <a href="#approach">Approach</a>
         <a class="header-contact" href="#contact">Contact</a>
@@ -51,7 +63,7 @@
             We help people use AI in practical ways — at home, at work, and everywhere in
             between.
           </p>
-          <p class="hero-support">No jargon. No hype. Just tools that actually save you time.</p>
+          <p class="hero-support">Practical AI help. No jargon.</p>
           <div class="hero-actions" aria-label="Homepage actions">
             <a class="button primary" href="#contact">Get started</a>
             <a class="button secondary" href="#services">How we help</a>
@@ -201,6 +213,7 @@
             ></textarea>
           </div>
           <button type="submit">Send message</button>
+          <p class="form-note">We typically reply within one business day.</p>
         </form>
       </section>
     </main>
