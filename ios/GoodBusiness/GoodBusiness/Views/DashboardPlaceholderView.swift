@@ -5,12 +5,12 @@ struct DashboardPlaceholderView: View {
     @State private var selectedService: DashboardService?
 
     private let services: [DashboardService] = [
-        DashboardService(title: "Plumbing", subtitle: "Leaks, drains, water", iconName: "drop", color: AppPalette.sage),
-        DashboardService(title: "Electrical", subtitle: "Outlets, lights, panel", iconName: "bolt", color: AppPalette.gold),
-        DashboardService(title: "HVAC", subtitle: "Heating & cooling", iconName: "wind", color: AppPalette.blueGray),
-        DashboardService(title: "Appliance", subtitle: "Fridge, washer, oven", iconName: "refrigerator", color: AppPalette.teal),
-        DashboardService(title: "Lawn / Yard", subtitle: "Mowing, cleanup", iconName: "sprout", color: AppPalette.leaf),
-        DashboardService(title: "Handyman", subtitle: "Repairs & mounting", iconName: "wrench", color: AppPalette.stone)
+        DashboardService(title: "Plumbing", subtitle: "Leaks, drains, water", kind: .plumbing, color: AppPalette.sage),
+        DashboardService(title: "Electrical", subtitle: "Outlets, lights, panel", kind: .electrical, color: AppPalette.gold),
+        DashboardService(title: "HVAC", subtitle: "Heating & cooling", kind: .hvac, color: AppPalette.blueGray),
+        DashboardService(title: "Appliance", subtitle: "Fridge, washer, oven", kind: .appliance, color: AppPalette.teal),
+        DashboardService(title: "Lawn / Yard", subtitle: "Mowing, cleanup", kind: .lawn, color: AppPalette.leaf),
+        DashboardService(title: "Handyman", subtitle: "Repairs & mounting", kind: .handyman, color: AppPalette.stone)
     ]
 
     private let columns = [
@@ -49,7 +49,7 @@ struct DashboardPlaceholderView: View {
                         }
 
                         DescribeItButton()
-                            .padding(.top, 88)
+                            .padding(.top, 14)
                     }
                     .padding(.horizontal, 22)
                     .padding(.bottom, 18)
@@ -113,7 +113,7 @@ private struct DashboardService: Identifiable {
     let id = UUID()
     let title: String
     let subtitle: String
-    let iconName: String
+    let kind: ServiceGlyphKind
     let color: Color
 }
 
@@ -123,11 +123,11 @@ private struct CalmStatusCard: View {
         } label: {
             HStack(spacing: 14) {
                 Circle()
-                    .fill(Color(red: 0.494, green: 0.604, blue: 0.431))
+                    .fill(AppPalette.calmPulse)
                     .frame(width: 11, height: 11)
                     .overlay {
                         Circle()
-                            .stroke(Color(red: 0.494, green: 0.604, blue: 0.431).opacity(0.22), lineWidth: 10)
+                            .stroke(AppPalette.calmPulse.opacity(0.22), lineWidth: 10)
                     }
                     .padding(.horizontal, 5)
 
@@ -138,7 +138,7 @@ private struct CalmStatusCard: View {
 
                     Text("No active requests · Last: water heater flush, Apr")
                         .font(.system(size: 12.5, weight: .medium))
-                        .foregroundStyle(Color(red: 0.647, green: 0.612, blue: 0.545))
+                        .foregroundStyle(AppPalette.muted)
                         .lineLimit(1)
                         .minimumScaleFactor(0.78)
                 }
@@ -166,8 +166,7 @@ private struct DashboardServiceTile: View {
     var body: some View {
         Button(action: action) {
             VStack(alignment: .leading, spacing: 11) {
-                Image(systemName: service.iconName)
-                    .font(.system(size: 21, weight: .medium))
+                ServiceGlyph(kind: service.kind, size: 22)
                     .foregroundStyle(service.color)
                     .frame(width: 42, height: 42)
                     .background(service.color.opacity(0.14), in: RoundedRectangle(cornerRadius: 13, style: .continuous))
@@ -287,8 +286,7 @@ private struct DashboardServicePreview: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 22) {
             HStack(alignment: .top) {
-                Image(systemName: service.iconName)
-                    .font(.system(size: 30, weight: .medium))
+                ServiceGlyph(kind: service.kind, size: 32)
                     .foregroundStyle(service.color)
                     .frame(width: 64, height: 64)
                     .background(service.color.opacity(0.14), in: RoundedRectangle(cornerRadius: 20, style: .continuous))

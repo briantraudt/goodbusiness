@@ -19,6 +19,7 @@
 		81A8006C0C0DC308E4781973 /* AppDesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4688F145198DDF778789BD8 /* AppDesignSystem.swift */; };
 		9A16503CD300CBE94F3C7444 /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723D125A02B6CBC383975015 /* AppRootView.swift */; };
 		A2A8DA5D970F12A37E110300 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EA075FF9E142EB8819D1976 /* Assets.xcassets */; };
+		A8AA1CA1CEF3F69D3C677BB7 /* AppIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10C554DA1D796AAD534E3F3C /* AppIcons.swift */; };
 		A8E6EC83104B4CD6FB3EF460 /* ServiceRequestDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B361BB1F9354652C1F092 /* ServiceRequestDraft.swift */; };
 		AA0426DED455B51C060FE5F6 /* OnboardingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D28C2F90539FF9A86AB4C4E /* OnboardingStore.swift */; };
 		B4308F732BBA54C15A21568C /* GoodBusinessApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAC30C54C2F48413342C3C0 /* GoodBusinessApp.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		10C554DA1D796AAD534E3F3C /* AppIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcons.swift; sourceTree = "<group>"; };
 		1266C9E42E9CC5DC0DA6013F /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
 		1EA075FF9E142EB8819D1976 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4BCC07B6F9B2E8E41A77C16C /* OnboardingComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingComponents.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				F4688F145198DDF778789BD8 /* AppDesignSystem.swift */,
+				10C554DA1D796AAD534E3F3C /* AppIcons.swift */,
 				723D125A02B6CBC383975015 /* AppRootView.swift */,
 				E29C4A1E2DF00BE07020785A /* DashboardPlaceholderView.swift */,
 				934F0CDD81DC824336616547 /* HomeView.swift */,
@@ -257,6 +260,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81A8006C0C0DC308E4781973 /* AppDesignSystem.swift in Sources */,
+				A8AA1CA1CEF3F69D3C677BB7 /* AppIcons.swift in Sources */,
 				9A16503CD300CBE94F3C7444 /* AppRootView.swift in Sources */,
 				E670085CA4C7B2AD6C6D75F9 /* Color+Hex.swift in Sources */,
 				04A0B0CFF82CB223F680CADF /* DashboardPlaceholderView.swift in Sources */,

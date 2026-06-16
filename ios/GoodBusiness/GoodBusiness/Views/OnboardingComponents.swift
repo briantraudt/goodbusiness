@@ -20,22 +20,22 @@ struct OnboardingShell<Content: View>: View {
 
                     VStack(alignment: .leading, spacing: 9) {
                         Text(title)
-                            .font(.system(size: 38, weight: .bold, design: .rounded))
-                            .tracking(-0.6)
+                            .font(.system(size: showsProgress ? 28 : 34, weight: .bold))
+                            .tracking(showsProgress ? -0.7 : -1.02)
                             .foregroundStyle(AppPalette.text)
                             .lineLimit(3)
                             .minimumScaleFactor(0.82)
 
                         Text(subtitle)
-                            .font(.system(size: 18, weight: .medium))
+                            .font(.system(size: showsProgress ? 15.5 : 17, weight: .regular))
                             .foregroundStyle(AppPalette.secondaryText)
                             .lineSpacing(2)
                     }
 
                     content
                 }
-                .padding(.horizontal, 22)
-                .padding(.top, 24)
+                .padding(.horizontal, showsProgress ? 24 : 26)
+                .padding(.top, showsProgress ? 8 : 30)
                 .padding(.bottom, 34)
             }
         }
@@ -43,31 +43,50 @@ struct OnboardingShell<Content: View>: View {
 }
 
 struct OnboardingProgressView: View {
+    @EnvironmentObject private var onboardingStore: OnboardingStore
     let step: OnboardingStep
 
+    private var visibleIndex: Int {
+        switch step {
+        case .contact: 1
+        case .address: 2
+        case .basics: 3
+        case .access: 4
+        case .systems, .review: 5
+        case .welcome: 0
+        }
+    }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Text("Step \(step.progressIndex) of \(OnboardingStep.count)")
-                    .font(.system(size: 13, weight: .bold))
-                    .foregroundStyle(AppPalette.muted)
-
-                Spacer()
-
-                Text(step.title)
-                    .font(.system(size: 13, weight: .bold))
+        HStack(spacing: 12) {
+            Button {
+                onboardingStore.goBack()
+            } label: {
+                Image(systemName: "chevron.left")
+                    .font(.system(size: 17, weight: .semibold))
                     .foregroundStyle(AppPalette.text)
+                    .frame(width: 38, height: 38)
+                    .background(AppPalette.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .stroke(AppPalette.border, lineWidth: 1)
+                    }
             }
+            .buttonStyle(.plain)
+            .opacity(step == .contact ? 0 : 1)
 
-            GeometryReader { proxy in
-                ZStack(alignment: .leading) {
-                    Capsule().fill(AppPalette.surfaceLedge.opacity(0.78))
+            HStack(spacing: 6) {
+                ForEach(1...5, id: \.self) { index in
                     Capsule()
-                        .fill(AppPalette.brand)
-                        .frame(width: proxy.size.width * CGFloat(step.progressIndex) / CGFloat(OnboardingStep.count))
+                        .fill(index <= visibleIndex ? AppPalette.brand : AppPalette.progressTrack)
+                        .frame(height: 4)
                 }
             }
-            .frame(height: 6)
+            .frame(maxWidth: .infinity)
+
+            Text("\(visibleIndex)/5")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundStyle(AppPalette.muted)
         }
     }
 }
@@ -79,8 +98,12 @@ struct OnboardingCard<Content: View>: View {
         VStack(alignment: .leading, spacing: 16) {
             content
         }
-        .padding(16)
-        .appTactileSurface(cornerRadius: 20)
+        .background(AppPalette.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(AppPalette.border, lineWidth: 1)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 }
 
@@ -96,7 +119,9 @@ struct OnboardingTextField: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 5) {
                 Text(title)
-                    .font(.system(size: 13, weight: .bold))
+                    .font(.system(size: 11, weight: .semibold))
+                    .textCase(.uppercase)
+                    .tracking(0.55)
                     .foregroundStyle(AppPalette.muted)
 
                 if optional {
@@ -112,13 +137,9 @@ struct OnboardingTextField: View {
                 .autocorrectionDisabled(keyboardType == .emailAddress)
                 .font(.system(size: 17, weight: .medium))
                 .foregroundStyle(AppPalette.text)
-                .padding(.horizontal, 14)
-                .frame(height: 52)
-                .background(AppPalette.elevatedSurface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(error == nil ? AppPalette.border.opacity(0.75) : AppPalette.error.opacity(0.65), lineWidth: 1)
-                }
+                .padding(.horizontal, 16)
+                .frame(height: 48)
+                .background(AppPalette.surface)
 
             if let error {
                 Text(error)
@@ -140,7 +161,9 @@ struct OptionGroup: View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 5) {
                 Text(title)
-                    .font(.system(size: 13, weight: .bold))
+                    .font(.system(size: 11, weight: .semibold))
+                    .textCase(.uppercase)
+                    .tracking(0.55)
                     .foregroundStyle(AppPalette.muted)
 
                 if optional {
@@ -161,11 +184,11 @@ struct OptionGroup: View {
                             .lineLimit(2)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 13)
-                            .padding(.vertical, 11)
-                            .background(selection == option ? AppPalette.charcoal : AppPalette.elevatedSurface, in: Capsule())
+                            .padding(.vertical, 10)
+                            .background(selection == option ? AppPalette.brand : AppPalette.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
                             .overlay {
-                                Capsule()
-                                    .stroke(selection == option ? AppPalette.charcoal : AppPalette.border, lineWidth: 1)
+                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                    .stroke(selection == option ? AppPalette.brand : AppPalette.border, lineWidth: 1)
                             }
                     }
                     .buttonStyle(.plain)
@@ -204,8 +227,8 @@ struct OnboardingFooter: View {
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 17)
-                .background(primaryDisabled ? AppPalette.secondaryText.opacity(0.34) : AppPalette.charcoal, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .shadow(color: primaryDisabled ? .clear : AppPalette.charcoal.opacity(0.2), radius: 14, x: 0, y: 8)
+                .background(primaryDisabled ? AppPalette.faintText.opacity(0.42) : AppPalette.brand, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                .shadow(color: primaryDisabled ? .clear : AppPalette.brand.opacity(0.36), radius: 22, x: 0, y: 10)
             }
             .disabled(primaryDisabled || primaryLoading)
 

@@ -11,15 +11,7 @@ struct ServiceTile: View {
             action()
         } label: {
             VStack(alignment: .leading, spacing: 13) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .fill(service.accentColor.opacity(0.13))
-
-                    Image(systemName: service.iconName)
-                        .font(.system(size: 25, weight: .semibold))
-                        .foregroundStyle(service.accentColor)
-                }
-                .frame(width: 56, height: 56)
+                ServiceIconBadge(service: service, size: 42, glyphSize: 22)
 
                 VStack(alignment: .leading, spacing: 5) {
                     Text(service.name)
@@ -40,7 +32,7 @@ struct ServiceTile: View {
                 HStack(spacing: 6) {
                     Text(service.estimatedArrival)
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(service.accentColor)
+                        .foregroundStyle(AppPalette.brand)
 
                     Spacer(minLength: 0)
 
@@ -78,8 +70,7 @@ struct FeaturedServiceCard: View {
                             RoundedRectangle(cornerRadius: 22, style: .continuous)
                                 .fill(.white.opacity(0.18))
 
-                            Image(systemName: service.iconName)
-                                .font(.system(size: 29, weight: .bold))
+                            ServiceGlyph(kind: service.specGlyphKind, size: 29)
                                 .foregroundStyle(.white)
                         }
                         .frame(width: 64, height: 64)
