@@ -1,12 +1,8 @@
 const form = document.querySelector("#contact-form");
 const header = document.querySelector(".site-header");
-const menuToggle = document.querySelector(".menu-toggle");
-const nav = document.querySelector("#site-nav");
-const navLinks = nav ? nav.querySelectorAll("a") : [];
 
 setupMotion();
 setupHeader();
-setupMobileMenu();
 
 if (form) {
   form.addEventListener("submit", (event) => {
@@ -31,51 +27,6 @@ if (form) {
     const body = encodeURIComponent(bodyParts.join("\n"));
 
     window.location.href = `mailto:hello@goodbusinesshq.com?subject=${subject}&body=${body}`;
-  });
-}
-
-function setupMobileMenu() {
-  if (!menuToggle || !nav) {
-    return;
-  }
-
-  const closeMenu = () => {
-    menuToggle.setAttribute("aria-expanded", "false");
-    menuToggle.setAttribute("aria-label", "Open menu");
-    nav.classList.remove("is-open");
-    document.body.classList.remove("menu-open");
-  };
-
-  const openMenu = () => {
-    menuToggle.setAttribute("aria-expanded", "true");
-    menuToggle.setAttribute("aria-label", "Close menu");
-    nav.classList.add("is-open");
-    document.body.classList.add("menu-open");
-  };
-
-  menuToggle.addEventListener("click", () => {
-    const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
-    if (isOpen) {
-      closeMenu();
-    } else {
-      openMenu();
-    }
-  });
-
-  navLinks.forEach((link) => {
-    link.addEventListener("click", closeMenu);
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeMenu();
-    }
-  });
-
-  window.addEventListener("resize", () => {
-    if (window.innerWidth > 700) {
-      closeMenu();
-    }
   });
 }
 
