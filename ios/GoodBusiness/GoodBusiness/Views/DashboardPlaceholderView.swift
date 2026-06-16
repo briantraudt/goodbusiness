@@ -1,83 +1,361 @@
 import SwiftUI
 
 struct DashboardPlaceholderView: View {
-    private let services = [
-        ("Plumbing", "wrench.and.screwdriver.fill"),
-        ("Electrical", "bolt.fill"),
-        ("HVAC", "fan.fill"),
-        ("Appliance Repair", "oven.fill"),
-        ("Lawn / Yard", "leaf.fill"),
-        ("Handyman", "hammer.fill")
+    @EnvironmentObject private var onboardingStore: OnboardingStore
+    @State private var selectedService: DashboardService?
+
+    private let services: [DashboardService] = [
+        DashboardService(title: "Plumbing", subtitle: "Leaks, drains, water", iconName: "drop", color: DashboardPalette.sage),
+        DashboardService(title: "Electrical", subtitle: "Outlets, lights, panel", iconName: "bolt", color: DashboardPalette.gold),
+        DashboardService(title: "HVAC", subtitle: "Heating & cooling", iconName: "wind", color: DashboardPalette.blueGray),
+        DashboardService(title: "Appliance", subtitle: "Fridge, washer, oven", iconName: "refrigerator", color: DashboardPalette.teal),
+        DashboardService(title: "Lawn / Yard", subtitle: "Mowing, cleanup", iconName: "sprout", color: DashboardPalette.leaf),
+        DashboardService(title: "Handyman", subtitle: "Repairs & mounting", iconName: "wrench", color: DashboardPalette.stone)
     ]
 
     private let columns = [
-        GridItem(.flexible(), spacing: 12),
-        GridItem(.flexible(), spacing: 12)
+        GridItem(.flexible(), spacing: 11),
+        GridItem(.flexible(), spacing: 11)
     ]
 
     var body: some View {
         ZStack {
-            HomeBackground()
+            DashboardPalette.canvas
+                .ignoresSafeArea()
 
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading, spacing: 22) {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("What do you need help with?")
-                            .font(.system(size: 38, weight: .bold, design: .rounded))
-                            .foregroundStyle(.primary)
-                            .lineLimit(2)
-                            .minimumScaleFactor(0.86)
+            VStack(spacing: 0) {
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        header
+                            .padding(.top, 18)
+                            .padding(.bottom, 13)
 
-                        Text("Your home profile is saved. Next we'll build the six service buttons.")
-                            .font(.system(size: 17, weight: .medium))
-                            .foregroundStyle(.secondary)
-                    }
-                    .padding(.top, 28)
+                        CalmStatusCard()
+                            .padding(.bottom, 18)
 
-                    HStack(spacing: 10) {
-                        HomeStatusPill(iconName: "house.fill", title: "Profile saved", detail: "Ready for routing")
-                        HomeStatusPill(iconName: "sparkles", title: "Next up", detail: "Service booking")
-                    }
+                        Text("What needs fixing?")
+                            .font(.system(size: 12, weight: .bold))
+                            .textCase(.uppercase)
+                            .tracking(0.8)
+                            .foregroundStyle(DashboardPalette.muted)
+                            .padding(.bottom, 10)
 
-                    LazyVGrid(columns: columns, spacing: 12) {
-                        ForEach(services, id: \.0) { service in
-                            VStack(alignment: .leading, spacing: 16) {
-                                Image(systemName: service.1)
-                                    .font(.system(size: 24, weight: .semibold))
-                                    .foregroundStyle(.secondary)
-                                    .frame(width: 54, height: 54)
-                                    .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-
-                                Text(service.0)
-                                    .font(.system(size: 20, weight: .bold, design: .rounded))
-                                    .foregroundStyle(.primary)
-                                    .lineLimit(2)
-                                    .minimumScaleFactor(0.82)
-
-                                Spacer(minLength: 0)
-
-                                Text("Coming soon")
-                                    .font(.system(size: 12, weight: .bold))
-                                    .foregroundStyle(.secondary)
+                        LazyVGrid(columns: columns, spacing: 11) {
+                            ForEach(services) { service in
+                                DashboardServiceTile(service: service) {
+                                    selectedService = service
+                                }
                             }
-                            .frame(maxWidth: .infinity, minHeight: 164, alignment: .topLeading)
-                            .padding(15)
-                            .background(.white.opacity(0.78), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                                    .stroke(.white.opacity(0.9), lineWidth: 1)
-                            }
-                            .opacity(0.72)
                         }
+
+                        DescribeItButton()
+                            .padding(.top, 88)
                     }
+                    .padding(.horizontal, 22)
+                    .padding(.bottom, 18)
                 }
-                .padding(.horizontal, 18)
-                .padding(.bottom, 34)
+
+                DashboardTabBar()
             }
         }
+        .sheet(item: $selectedService) { service in
+            DashboardServicePreview(service: service)
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+        }
+    }
+
+    private var header: some View {
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 1) {
+                Text(greeting)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(DashboardPalette.secondaryText)
+
+                Text("Your home")
+                    .font(.system(size: 21, weight: .bold))
+                    .tracking(-0.4)
+                    .foregroundStyle(DashboardPalette.text)
+            }
+
+            Spacer()
+
+            Text(initials)
+                .font(.system(size: 15, weight: .bold))
+                .foregroundStyle(DashboardPalette.brand)
+                .frame(width: 42, height: 42)
+                .background(DashboardPalette.profileFill, in: Circle())
+        }
+    }
+
+    private var greeting: String {
+        let firstName = onboardingStore.userProfile?.firstName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard let firstName, firstName.isEmpty == false else {
+            return "Good morning"
+        }
+
+        return "Good morning, \(firstName)"
+    }
+
+    private var initials: String {
+        guard let profile = onboardingStore.userProfile else {
+            return "GB"
+        }
+
+        let first = profile.firstName.first.map(String.init) ?? ""
+        let last = profile.lastName.first.map(String.init) ?? ""
+        let value = "\(first)\(last)"
+        return value.isEmpty ? "GB" : value.uppercased()
+    }
+}
+
+private enum DashboardPalette {
+    static let canvas = Color(red: 0.953, green: 0.929, blue: 0.878)
+    static let surface = Color(red: 0.988, green: 0.984, blue: 0.965)
+    static let surfaceLedge = Color(red: 0.902, green: 0.871, blue: 0.812)
+    static let border = Color(red: 0.918, green: 0.89, blue: 0.831)
+    static let dashed = Color(red: 0.812, green: 0.776, blue: 0.698)
+    static let charcoal = Color(red: 0.137, green: 0.153, blue: 0.169)
+    static let text = Color(red: 0.137, green: 0.149, blue: 0.165)
+    static let secondaryText = Color(red: 0.541, green: 0.518, blue: 0.471)
+    static let muted = Color(red: 0.604, green: 0.576, blue: 0.518)
+    static let brand = Color(red: 0.184, green: 0.49, blue: 0.447)
+    static let profileFill = Color(red: 0.871, green: 0.929, blue: 0.91)
+    static let sage = Color(red: 0.373, green: 0.451, blue: 0.337)
+    static let gold = Color(red: 0.71, green: 0.506, blue: 0.122)
+    static let blueGray = Color(red: 0.35, green: 0.443, blue: 0.455)
+    static let teal = Color(red: 0.184, green: 0.49, blue: 0.447)
+    static let leaf = Color(red: 0.31, green: 0.45, blue: 0.337)
+    static let stone = Color(red: 0.29, green: 0.271, blue: 0.231)
+}
+
+private struct DashboardService: Identifiable {
+    let id = UUID()
+    let title: String
+    let subtitle: String
+    let iconName: String
+    let color: Color
+}
+
+private struct CalmStatusCard: View {
+    var body: some View {
+        Button {
+        } label: {
+            HStack(spacing: 14) {
+                Circle()
+                    .fill(Color(red: 0.494, green: 0.604, blue: 0.431))
+                    .frame(width: 11, height: 11)
+                    .overlay {
+                        Circle()
+                            .stroke(Color(red: 0.494, green: 0.604, blue: 0.431).opacity(0.22), lineWidth: 10)
+                    }
+                    .padding(.horizontal, 5)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("All calm at home")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(Color(red: 0.945, green: 0.941, blue: 0.914))
+
+                    Text("No active requests · Last: water heater flush, Apr")
+                        .font(.system(size: 12.5, weight: .medium))
+                        .foregroundStyle(Color(red: 0.647, green: 0.612, blue: 0.545))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.78)
+                }
+
+                Spacer(minLength: 8)
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(Color(red: 0.945, green: 0.941, blue: 0.914).opacity(0.48))
+            }
+            .padding(.horizontal, 18)
+            .padding(.vertical, 16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(DashboardPalette.charcoal, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private struct DashboardServiceTile: View {
+    let service: DashboardService
+    let action: () -> Void
+    @State private var isPressed = false
+
+    var body: some View {
+        Button(action: action) {
+            VStack(alignment: .leading, spacing: 11) {
+                Image(systemName: service.iconName)
+                    .font(.system(size: 21, weight: .medium))
+                    .foregroundStyle(service.color)
+                    .frame(width: 42, height: 42)
+                    .background(service.color.opacity(0.14), in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+
+                VStack(alignment: .leading, spacing: 1) {
+                    Text(service.title)
+                        .font(.system(size: 16, weight: .semibold))
+                        .tracking(-0.2)
+                        .foregroundStyle(DashboardPalette.text)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.78)
+
+                    Text(service.subtitle)
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(DashboardPalette.secondaryText)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.72)
+                }
+
+                Spacer(minLength: 0)
+            }
+            .frame(maxWidth: .infinity, minHeight: 118, alignment: .topLeading)
+            .padding(15)
+            .background(DashboardPalette.surface, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .stroke(DashboardPalette.border, lineWidth: 1)
+            }
+            .shadow(color: DashboardPalette.surfaceLedge, radius: 0, x: 0, y: isPressed ? 1 : 2)
+            .shadow(color: Color(red: 0.157, green: 0.141, blue: 0.118).opacity(isPressed ? 0.12 : 0.22), radius: isPressed ? 9 : 16, x: 0, y: isPressed ? 5 : 7)
+            .offset(y: isPressed ? 1 : 0)
+            .animation(.spring(response: 0.22, dampingFraction: 0.78), value: isPressed)
+        }
+        .buttonStyle(.plain)
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in isPressed = true }
+                .onEnded { _ in isPressed = false }
+        )
+    }
+}
+
+private struct DescribeItButton: View {
+    var body: some View {
+        Button {
+        } label: {
+            HStack(spacing: 11) {
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 17, weight: .medium))
+                    .foregroundStyle(DashboardPalette.secondaryText)
+
+                Text("Not sure what it is? ")
+                    .font(.system(size: 14.5, weight: .medium))
+                    .foregroundStyle(Color(red: 0.431, green: 0.408, blue: 0.357))
+                + Text("Describe it")
+                    .font(.system(size: 14.5, weight: .semibold))
+                    .foregroundStyle(DashboardPalette.text)
+            }
+            .lineLimit(1)
+            .minimumScaleFactor(0.82)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .background(Color(red: 0.937, green: 0.914, blue: 0.863), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .stroke(DashboardPalette.dashed, style: StrokeStyle(lineWidth: 1, dash: [4, 3]))
+            }
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private struct DashboardTabBar: View {
+    var body: some View {
+        HStack {
+            TabItem(iconName: "house", title: "Home", isActive: true)
+            Spacer()
+            TabItem(iconName: "clock", title: "Activity", isActive: false)
+            Spacer()
+            TabItem(iconName: "person", title: "Profile", isActive: false)
+        }
+        .padding(.horizontal, 56)
+        .padding(.top, 8)
+        .padding(.bottom, 6)
+        .background(Color(red: 0.984, green: 0.973, blue: 0.945))
+        .overlay(alignment: .top) {
+            Rectangle()
+                .fill(Color(red: 0.906, green: 0.878, blue: 0.82))
+                .frame(height: 1)
+        }
+    }
+}
+
+private struct TabItem: View {
+    let iconName: String
+    let title: String
+    let isActive: Bool
+
+    var body: some View {
+        VStack(spacing: 3) {
+            Image(systemName: iconName)
+                .font(.system(size: 21, weight: .medium))
+
+            Text(title)
+                .font(.system(size: 10.5, weight: isActive ? .semibold : .medium))
+        }
+        .foregroundStyle(isActive ? DashboardPalette.brand : Color(red: 0.659, green: 0.631, blue: 0.573))
+        .frame(width: 62)
+    }
+}
+
+private struct DashboardServicePreview: View {
+    let service: DashboardService
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 22) {
+            HStack(alignment: .top) {
+                Image(systemName: service.iconName)
+                    .font(.system(size: 30, weight: .medium))
+                    .foregroundStyle(service.color)
+                    .frame(width: 64, height: 64)
+                    .background(service.color.opacity(0.14), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+
+                Spacer()
+
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundStyle(DashboardPalette.text)
+                        .frame(width: 34, height: 34)
+                        .background(.white.opacity(0.8), in: Circle())
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text(service.title)
+                    .font(.system(size: 34, weight: .bold, design: .rounded))
+                    .foregroundStyle(DashboardPalette.text)
+
+                Text("This button will start a guided \(service.title.lowercased()) request using your saved home profile.")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundStyle(DashboardPalette.secondaryText)
+                    .lineSpacing(2)
+            }
+
+            Button {
+                dismiss()
+            } label: {
+                Text("Done")
+                    .font(.system(size: 17, weight: .bold))
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(DashboardPalette.charcoal, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            }
+
+            Spacer()
+        }
+        .padding(22)
+        .background(DashboardPalette.canvas)
     }
 }
 
 #Preview {
     DashboardPlaceholderView()
+        .environmentObject(OnboardingStore())
 }
