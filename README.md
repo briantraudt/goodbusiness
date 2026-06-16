@@ -56,7 +56,7 @@ Social inputs are free/public only:
 - DEV/Forem public article API
 - Public Discourse `latest.json` forums for Hugging Face, OpenAI Developer Community, and Polkadot
 - Additional official public Discourse `latest.json` forums for Google AI Developers, PyTorch, Fly.io, Solana, Optimism, and Uniswap
-- Additional verified official public Discourse forums for DeepLearning.AI, NVIDIA Developer Forums, Vercel Community, Arbitrum Governance, Ethereum Magicians, the Swift Forums, Python Discuss, Ray Discuss, the Cosmos Forum, the Celestia Forum, and the Sky Ecosystem Forum
+- Additional verified official public Discourse forums for DeepLearning.AI, NVIDIA Developer Forums, Vercel Community, Arbitrum Governance, Ethereum Magicians, the Swift Forums, Python Discuss, Ray Discuss, the Cosmos Forum, the Celestia Forum, the Sky Ecosystem Forum, the Alpaca Forum, the Cursor Forum, Discuss Kubernetes, Elastic Discuss, and the Rust Users Forum
 - Hacker News Algolia public API
 - Hacker News RSS
 - Lobsters RSS
@@ -66,7 +66,7 @@ Social inputs are free/public only:
 - Stack Exchange public API for live `artificial-intelligence`, `machine-learning`, `cybersecurity`, and `cryptocurrency` questions
 - Reddit RSS when reachable; the job skips it if Reddit blocks the request
 
-Recent source expansion intentionally skipped public news-only feeds such as Investing.com RSS, challenge-gated or unstable community feeds such as Cloudflare Community and Anthropic Community, weak or low-signal candidates such as the AVAX forum, Intel Community RSS HTML challenge responses, AMD Community RSS redirects, noisy activity-only endpoints such as GitHub public events, DNS-dead candidates such as `forum.aave.com` and `community.ollama.com`, and lower-signal general community mixes such as the DFINITY forum and Cardano forum. The collector prioritizes user-generated discussion or user-generated Q&A over headline syndication, support-site anti-bot pages, broad general chat, or undifferentiated event firehoses.
+Recent source expansion intentionally skipped public news-only feeds such as Investing.com RSS and the GitHub blog feed, challenge-gated or unstable community feeds such as Cloudflare Community, Anthropic Community, Intel Community RSS, and Bogleheads feeds, weak or low-signal candidates such as the AVAX forum, DNS-dead candidates such as `forum.aave.com`, `community.ollama.com`, `forum.pinecone.io`, `discuss.docker.com`, and `community.webull.com`, SSL-failing endpoints such as `community.robinhood.com`, and brittle forum RSS mappings such as Tesla Motors Club and MacRumors forum IDs. The collector prioritizes user-generated discussion or user-generated Q&A over headline syndication, support-site anti-bot pages, broad general chat, and endpoints that do not resolve cleanly without auth.
 
 Manual run:
 
