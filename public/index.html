@@ -15,14 +15,32 @@
     />
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <a class="skip-link" href="#begin">Skip to contact</a>
 
     <header class="site-header" aria-label="Good Business">
-      <a class="brand" href="#top" aria-label="Good Business home">Good Business</a>
-      <a class="header-contact" href="#begin">Contact</a>
+      <a class="brand" href="#top" aria-label="Good Business home">
+        <svg class="brand-mark" width="22" height="22" viewBox="0 0 256 256" aria-hidden="true">
+          <path
+            fill="currentColor"
+            d="M128 222S36 170 36 92c0-33 25-58 57-58 19 0 36 9 46 24 10-15 27-24 46-24 32 0 57 25 57 58 0 78-114 130-114 130Z"
+          />
+        </svg>
+        Good Business
+      </a>
+      <nav class="header-nav" aria-label="Page sections">
+        <a href="#moments">Moments</a>
+        <a href="#why">Philosophy</a>
+        <a class="header-contact" href="#begin">Contact</a>
+      </nav>
     </header>
 
     <main id="top">
@@ -48,7 +66,7 @@
         </figure>
       </section>
 
-      <section class="section moments-section" aria-labelledby="moments-title">
+      <section class="section moments-section" id="moments" aria-labelledby="moments-title">
         <div class="section-header">
           <p class="eyebrow">Where we begin</p>
           <h2 id="moments-title">Start with the human moment.</h2>
@@ -123,14 +141,17 @@
         <div class="principles-content">
           <div class="principle-strip">
             <article>
+              <span class="principle-index" aria-hidden="true">01</span>
               <h3>Presence over distraction</h3>
               <p>Tools should help people return to real life.</p>
             </article>
             <article>
+              <span class="principle-index" aria-hidden="true">02</span>
               <h3>People over platforms</h3>
               <p>The human need comes before the technology.</p>
             </article>
             <article>
+              <span class="principle-index" aria-hidden="true">03</span>
               <h3>Meaning over noise</h3>
               <p>Useful products should make life clearer, not louder.</p>
             </article>
@@ -172,9 +193,16 @@
     </main>
 
     <footer class="site-footer">
-      <strong>Good Business</strong>
-      <span>Technology for being human.</span>
-      <a href="mailto:hello@goodbusinesshq.com">hello@goodbusinesshq.com</a>
+      <div class="footer-brand">
+        <strong>Good Business</strong>
+        <span>Technology for being human.</span>
+      </div>
+      <div class="footer-links">
+        <a href="#moments">Moments</a>
+        <a href="#why">Philosophy</a>
+        <a href="#begin">Contact</a>
+      </div>
+      <a class="footer-email" href="mailto:hello@goodbusinesshq.com">hello@goodbusinesshq.com</a>
     </footer>
 
     <script type="module" src="/app.js"></script>

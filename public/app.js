@@ -1,7 +1,9 @@
 const form = document.querySelector("#human-need-form");
 const textarea = document.querySelector("#human-need");
+const header = document.querySelector(".site-header");
 
 setupMotion();
+setupHeader();
 
 if (form && textarea) {
   form.addEventListener("submit", (event) => {
@@ -65,4 +67,17 @@ function setupMotion() {
   );
 
   elements.forEach((element) => observer.observe(element));
+}
+
+function setupHeader() {
+  if (!header) {
+    return;
+  }
+
+  const updateHeader = () => {
+    header.classList.toggle("is-scrolled", window.scrollY > 24);
+  };
+
+  updateHeader();
+  window.addEventListener("scroll", updateHeader, { passive: true });
 }
