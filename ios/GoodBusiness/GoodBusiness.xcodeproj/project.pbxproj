@@ -11,6 +11,7 @@
 		1129859740E35E5FC1F28E8D /* ServiceRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580443F137828613EE1898D3 /* ServiceRequestView.swift */; };
 		3155BC50B535F8ABD14A1953 /* HomeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CAD8D261D85707ADC3FE1D /* HomeService.swift */; };
 		3A4EC860C2345102A176D6EE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934F0CDD81DC824336616547 /* HomeView.swift */; };
+		3ACBD093B2AC0A57961A0CE5 /* RequestComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFE2B2EDCE1ADDA89428A9B /* RequestComponents.swift */; };
 		5B06D359A923CBC0184B0135 /* SupabaseRESTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44A13D6C0802E3A77CA2967 /* SupabaseRESTClient.swift */; };
 		A2A8DA5D970F12A37E110300 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EA075FF9E142EB8819D1976 /* Assets.xcassets */; };
 		A8E6EC83104B4CD6FB3EF460 /* ServiceRequestDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B361BB1F9354652C1F092 /* ServiceRequestDraft.swift */; };
@@ -25,6 +26,7 @@
 		580443F137828613EE1898D3 /* ServiceRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRequestView.swift; sourceTree = "<group>"; };
 		69314DF241E9037130860CA9 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
 		810B361BB1F9354652C1F092 /* ServiceRequestDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRequestDraft.swift; sourceTree = "<group>"; };
+		8FFE2B2EDCE1ADDA89428A9B /* RequestComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestComponents.swift; sourceTree = "<group>"; };
 		934F0CDD81DC824336616547 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		9FAC30C54C2F48413342C3C0 /* GoodBusinessApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodBusinessApp.swift; sourceTree = "<group>"; };
 		A1FEA4D537E0CE68F9F50190 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				934F0CDD81DC824336616547 /* HomeView.swift */,
+				8FFE2B2EDCE1ADDA89428A9B /* RequestComponents.swift */,
 				580443F137828613EE1898D3 /* ServiceRequestView.swift */,
 				FC1AA5C103B614FEDF677C3C /* ServiceTile.swift */,
 			);
@@ -194,6 +197,7 @@
 				B4308F732BBA54C15A21568C /* GoodBusinessApp.swift in Sources */,
 				3155BC50B535F8ABD14A1953 /* HomeService.swift in Sources */,
 				3A4EC860C2345102A176D6EE /* HomeView.swift in Sources */,
+				3ACBD093B2AC0A57961A0CE5 /* RequestComponents.swift in Sources */,
 				A8E6EC83104B4CD6FB3EF460 /* ServiceRequestDraft.swift in Sources */,
 				1129859740E35E5FC1F28E8D /* ServiceRequestView.swift in Sources */,
 				C9A6CC81650A2F1268A4E504 /* ServiceStore.swift in Sources */,

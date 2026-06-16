@@ -15,6 +15,36 @@ struct HomeService: Identifiable, Decodable, Hashable {
         Color(hex: accentHex) ?? .blue
     }
 
+    var shortSummary: String {
+        switch slug {
+        case "plumbing":
+            return "Leaks and drains"
+        case "electrical":
+            return "Lighting and power"
+        case "landscaping":
+            return "Lawn and outdoor"
+        case "painting":
+            return "Interior and exterior"
+        case "cleaning":
+            return "Deep home resets"
+        case "hvac":
+            return "Heating and cooling"
+        default:
+            return summary
+        }
+    }
+
+    var estimatedArrival: String {
+        switch slug {
+        case "plumbing", "electrical":
+            return "Today"
+        case "cleaning", "hvac":
+            return "Tomorrow"
+        default:
+            return "This week"
+        }
+    }
+
     enum CodingKeys: String, CodingKey {
         case slug
         case name
