@@ -9,6 +9,8 @@ Good Business is a lightweight website for a consumer technology company buildin
 - Real people imagery, movement, and tech-forward sections about matching, syncing, remembering, and caring
 - Connection technology direction builder backed by `/api/brief`
 - Local fallback direction generation when no OpenAI key is configured
+- Native iOS home-services app scaffold in `ios/GoodBusiness`
+- Supabase-backed home service categories, providers, profiles, and service requests
 
 ## Run it locally
 
@@ -40,6 +42,27 @@ SOCIAL_ARB_CRON_SECRET=optional_shared_secret
 ```
 
 If no API key is present, the site still runs and returns a practical local brief.
+
+## Native iOS App
+
+The iOS app lives in `ios/GoodBusiness` and is generated with XcodeGen.
+
+```sh
+cd ios/GoodBusiness
+xcodegen generate
+open GoodBusiness.xcodeproj
+```
+
+The home screen shows the six primary service buttons:
+
+- Plumbing
+- Electrical
+- Landscaping
+- Painting
+- Cleaning
+- HVAC
+
+`GoodBusiness/Support/Config.xcconfig` points to the Good Business Supabase project URL. Replace `SUPABASE_ANON_KEY` with the project's publishable/anon key before testing live Supabase reads.
 
 ## Social ARB Nightly Email
 

@@ -1,0 +1,29 @@
+name: GoodBusiness
+options:
+  bundleIdPrefix: com.goodbusiness
+  deploymentTarget:
+    iOS: "18.0"
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+targets:
+  GoodBusiness:
+    type: application
+    platform: iOS
+    sources:
+      - path: GoodBusiness
+    configFiles:
+      Debug: GoodBusiness/Support/Config.xcconfig
+      Release: GoodBusiness/Support/Config.xcconfig
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.goodbusiness.HomeServices
+        PRODUCT_NAME: Good Business
+        INFOPLIST_FILE: GoodBusiness/Support/Info.plist
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: ""
+    scheme:
+      testTargets: []
