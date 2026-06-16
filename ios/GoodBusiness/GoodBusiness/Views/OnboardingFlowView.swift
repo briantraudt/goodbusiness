@@ -107,12 +107,14 @@ struct ContactStepView: View {
 
     var body: some View {
         OnboardingShell(title: "Your details", subtitle: "So a pro can reach you. Never shared or sold.") {
-            OnboardingCard {
+            OnboardingFieldGroup {
                 OnboardingTextField(title: "First name", text: $store.draft.firstName, prompt: "First", error: store.validationMessage(for: "firstName"))
                 OnboardingTextField(title: "Last name", text: $store.draft.lastName, prompt: "Last", error: store.validationMessage(for: "lastName"))
                 OnboardingTextField(title: "Email", text: $store.draft.email, prompt: "you@example.com", error: store.validationMessage(for: "email"), keyboardType: .emailAddress)
-                OnboardingTextField(title: "Phone", text: $store.draft.phone, prompt: "(555) 555-5555", error: store.validationMessage(for: "phone"), keyboardType: .phonePad)
+                OnboardingTextField(title: "Phone", text: $store.draft.phone, prompt: "(555) 555-5555", error: store.validationMessage(for: "phone"), keyboardType: .phonePad, showsDivider: false)
             }
+
+            PreferredContactPicker(selection: $store.draft.preferredContactMethod)
 
             OnboardingFooter(
                 primaryTitle: "Continue",
@@ -133,12 +135,12 @@ struct AddressStepView: View {
         OnboardingShell(title: "Where's home?", subtitle: "We'll route every future repair here - no re-typing.") {
             AddressMapPreview()
 
-            OnboardingCard {
+            OnboardingFieldGroup {
                 OnboardingTextField(title: "Street address", text: $store.draft.addressLine1, prompt: "123 Main St", error: store.validationMessage(for: "addressLine1"))
                 OnboardingTextField(title: "Unit / Apt / Suite", text: $store.draft.addressLine2, prompt: "Unit 2", optional: true)
                 OnboardingTextField(title: "City", text: $store.draft.city, prompt: "Austin", error: store.validationMessage(for: "city"))
                 OnboardingTextField(title: "State", text: $store.draft.state, prompt: "TX", error: store.validationMessage(for: "state"))
-                OnboardingTextField(title: "ZIP code", text: $store.draft.zip, prompt: "78701", error: store.validationMessage(for: "zip"), keyboardType: .numberPad)
+                OnboardingTextField(title: "ZIP code", text: $store.draft.zip, prompt: "78701", error: store.validationMessage(for: "zip"), keyboardType: .numberPad, showsDivider: false)
             }
 
             OnboardingFooter(
@@ -183,14 +185,30 @@ struct AccessNotesStepView: View {
 
     var body: some View {
         OnboardingShell(title: "Getting in", subtitle: "Anything a pro should know before arriving.") {
-            OnboardingCard {
-                OptionGroup(title: "Preferred contact method", options: OnboardingOptions.contactMethods, selection: $store.draft.preferredContactMethod, error: store.validationMessage(for: "preferredContactMethod"))
+            OnboardingFieldGroup {
                 OnboardingTextField(title: "Gate code", text: $store.draft.gateCode, prompt: "Code or call box", optional: true)
                 OnboardingTextField(title: "Parking notes", text: $store.draft.parkingNotes, prompt: "Driveway, street, garage", optional: true)
-                OptionGroup(title: "Pets in home?", options: OnboardingOptions.petTypes, selection: $store.draft.petsType, error: store.validationMessage(for: "petsType"))
-                OnboardingTextField(title: "Pet notes", text: $store.draft.petNotes, prompt: "Friendly dog, keep cat inside", optional: true)
-                OptionGroup(title: "Can a provider enter if you are not home?", options: OnboardingOptions.entryPreferences, selection: $store.draft.providerEntryPreference, error: store.validationMessage(for: "providerEntryPreference"))
-                OnboardingTextField(title: "General access notes", text: $store.draft.accessNotes, prompt: "Side door, lockbox, special instructions", optional: true)
+                OnboardingTextField(title: "Pets", text: $store.draft.petNotes, prompt: "Friendly dog - Bodie", optional: true, showsDivider: false)
+            }
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Access notes")
+                    .font(.system(size: 11, weight: .semibold))
+                    .textCase(.uppercase)
+                    .tracking(0.55)
+                    .foregroundStyle(AppPalette.muted)
+
+                TextField("Side gate, lockbox, special instructions", text: $store.draft.accessNotes, axis: .vertical)
+                    .font(.system(size: 15.5, weight: .regular))
+                    .foregroundStyle(AppPalette.bodyText)
+                    .lineLimit(3...5)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .background(AppPalette.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .stroke(AppPalette.border, lineWidth: 1)
             }
 
             OnboardingFooter(
@@ -219,11 +237,11 @@ struct OptionalHomeDetailsStepView: View {
 
     var body: some View {
         OnboardingShell(title: "Know your home", subtitle: "Optional now - but it makes future repairs faster.") {
-            OnboardingCard {
+            OnboardingFieldGroup {
                 OnboardingTextField(title: "Water heater location", text: $store.draft.waterHeaterLocation, prompt: "Garage, attic, closet", optional: true)
                 OnboardingTextField(title: "Main water shutoff location", text: $store.draft.waterShutoffLocation, prompt: "Front yard, garage wall", optional: true)
                 OnboardingTextField(title: "Electrical panel location", text: $store.draft.electricalPanelLocation, prompt: "Garage, basement, exterior", optional: true)
-                OptionGroup(title: "HVAC system", options: OnboardingOptions.hvacUnitCounts, selection: $store.draft.hvacUnitsCount, optional: true)
+                OnboardingTextField(title: "HVAC system", text: $store.draft.hvacUnitsCount, prompt: "Add brand & filter size", optional: true, showsDivider: false)
             }
 
             OnboardingFooter(
@@ -374,6 +392,41 @@ struct AddressMapPreview: View {
         .overlay {
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .stroke(AppPalette.border, lineWidth: 1)
+        }
+    }
+}
+
+struct PreferredContactPicker: View {
+    @Binding var selection: String
+    private let options = ["Text", "Call", "Email"]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Preferred contact")
+                .font(.system(size: 11, weight: .semibold))
+                .textCase(.uppercase)
+                .tracking(0.55)
+                .foregroundStyle(AppPalette.muted)
+                .padding(.horizontal, 4)
+
+            HStack(spacing: 0) {
+                ForEach(options, id: \.self) { option in
+                    Button {
+                        selection = option
+                    } label: {
+                        Text(option)
+                            .font(.system(size: 14, weight: selection == option ? .semibold : .medium))
+                            .foregroundStyle(selection == option ? AppPalette.text : AppPalette.muted)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 9)
+                            .background(selection == option ? AppPalette.surface : .clear, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+                            .shadow(color: selection == option ? .black.opacity(0.07) : .clear, radius: 2, x: 0, y: 1)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(4)
+            .background(AppPalette.elevatedSurface, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
         }
     }
 }

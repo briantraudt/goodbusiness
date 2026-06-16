@@ -107,6 +107,22 @@ struct OnboardingCard<Content: View>: View {
     }
 }
 
+struct OnboardingFieldGroup<Content: View>: View {
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        VStack(spacing: 0) {
+            content
+        }
+        .background(AppPalette.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(AppPalette.border, lineWidth: 1)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+}
+
 struct OnboardingTextField: View {
     let title: String
     @Binding var text: String
@@ -114,22 +130,15 @@ struct OnboardingTextField: View {
     var error: String?
     var optional = false
     var keyboardType: UIKeyboardType = .default
+    var showsDivider = true
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 5) {
-                Text(title)
-                    .font(.system(size: 11, weight: .semibold))
-                    .textCase(.uppercase)
-                    .tracking(0.55)
-                    .foregroundStyle(AppPalette.muted)
-
-                if optional {
-                    Text("Optional")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(AppPalette.secondaryText.opacity(0.72))
-                }
-            }
+        VStack(alignment: .leading, spacing: 0) {
+            Text(title)
+                .font(.system(size: 11, weight: .semibold))
+                .textCase(.uppercase)
+                .tracking(0.55)
+                .foregroundStyle(AppPalette.muted)
 
             TextField(prompt, text: $text)
                 .keyboardType(keyboardType)
@@ -137,14 +146,32 @@ struct OnboardingTextField: View {
                 .autocorrectionDisabled(keyboardType == .emailAddress)
                 .font(.system(size: 17, weight: .medium))
                 .foregroundStyle(AppPalette.text)
-                .padding(.horizontal, 16)
-                .frame(height: 48)
-                .background(AppPalette.surface)
+                .padding(.top, 4)
+
+            if optional, text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                Text("Optional")
+                    .font(.system(size: 17, weight: .regular))
+                    .foregroundStyle(AppPalette.faintText)
+                    .padding(.top, -22)
+                    .allowsHitTesting(false)
+            }
 
             if let error {
                 Text(error)
                     .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(AppPalette.error)
+                    .padding(.top, 6)
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .overlay(alignment: .bottom) {
+            if showsDivider {
+                Rectangle()
+                    .fill(AppPalette.subtleLine)
+                    .frame(height: 1)
+                    .padding(.leading, 16)
             }
         }
     }

@@ -214,8 +214,6 @@ enum OnboardingValidator {
     static func validateAccess(_ draft: OnboardingDraft) -> [String: String] {
         var errors: [String: String] = [:]
         if draft.preferredContactMethod.isEmpty { errors["preferredContactMethod"] = "Choose a contact method." }
-        if draft.petsType.isEmpty { errors["petsType"] = "Choose a pet option." }
-        if draft.providerEntryPreference.isEmpty { errors["providerEntryPreference"] = "Choose an entry preference." }
         return errors
     }
 
