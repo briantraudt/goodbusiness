@@ -23,14 +23,14 @@ struct ServiceTile: View {
 
                 VStack(alignment: .leading, spacing: 5) {
                     Text(service.name)
-                        .font(.system(size: 20, weight: .bold, design: .rounded))
-                        .foregroundStyle(.primary)
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundStyle(AppPalette.text)
                         .lineLimit(1)
                         .minimumScaleFactor(0.78)
 
                     Text(service.shortSummary)
                         .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppPalette.secondaryText)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -46,18 +46,12 @@ struct ServiceTile: View {
 
                     Image(systemName: "chevron.right")
                         .font(.system(size: 11, weight: .bold))
-                        .foregroundStyle(.tertiary)
+                        .foregroundStyle(AppPalette.muted.opacity(0.72))
                 }
             }
             .frame(maxWidth: .infinity, minHeight: 174, alignment: .topLeading)
             .padding(15)
-            .background(.white.opacity(0.86), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
-            .overlay {
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .stroke(.white.opacity(0.9), lineWidth: 1)
-            }
-            .shadow(color: .black.opacity(0.06), radius: 18, x: 0, y: 10)
-            .scaleEffect(isPressed ? 0.975 : 1)
+            .appTactileSurface(cornerRadius: 20, isPressed: isPressed)
             .animation(.spring(response: 0.24, dampingFraction: 0.72), value: isPressed)
         }
         .buttonStyle(.plain)
@@ -76,24 +70,7 @@ struct FeaturedServiceCard: View {
     var body: some View {
         Button(action: action) {
             ZStack(alignment: .bottomLeading) {
-                LinearGradient(
-                    colors: [
-                        service.accentColor.opacity(0.9),
-                        Color(red: 0.08, green: 0.1, blue: 0.14)
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-
-                Circle()
-                    .fill(.white.opacity(0.12))
-                    .frame(width: 180, height: 180)
-                    .offset(x: 190, y: -60)
-
-                Circle()
-                    .stroke(.white.opacity(0.18), lineWidth: 22)
-                    .frame(width: 142, height: 142)
-                    .offset(x: 226, y: 44)
+                AppPalette.charcoal
 
                 VStack(alignment: .leading, spacing: 22) {
                     HStack(alignment: .top) {
@@ -111,20 +88,21 @@ struct FeaturedServiceCard: View {
 
                         Text("Available \(service.estimatedArrival.lowercased())")
                             .font(.system(size: 12, weight: .bold))
-                            .foregroundStyle(.white.opacity(0.92))
+                            .foregroundStyle(AppPalette.elevatedSurface)
                             .padding(.horizontal, 11)
                             .padding(.vertical, 8)
-                            .background(.white.opacity(0.16), in: Capsule())
+                            .background(.white.opacity(0.12), in: Capsule())
                     }
 
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Priority \(service.name)")
-                            .font(.system(size: 28, weight: .bold, design: .rounded))
+                            .font(.system(size: 28, weight: .bold))
+                            .tracking(-0.4)
                             .foregroundStyle(.white)
 
                         Text(service.summary)
                             .font(.system(size: 15, weight: .medium))
-                            .foregroundStyle(.white.opacity(0.74))
+                            .foregroundStyle(Color(red: 0.647, green: 0.612, blue: 0.545))
                             .lineLimit(2)
                     }
 
@@ -135,16 +113,16 @@ struct FeaturedServiceCard: View {
                         Image(systemName: "arrow.right")
                             .font(.system(size: 13, weight: .bold))
                     }
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(AppPalette.text)
                     .padding(.horizontal, 15)
                     .padding(.vertical, 11)
-                    .background(.white, in: Capsule())
+                    .background(AppPalette.elevatedSurface, in: Capsule())
                 }
                 .padding(20)
             }
             .frame(maxWidth: .infinity, minHeight: 236)
-            .clipShape(RoundedRectangle(cornerRadius: 32, style: .continuous))
-            .shadow(color: service.accentColor.opacity(0.26), radius: 24, x: 0, y: 16)
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .shadow(color: Color(red: 0.157, green: 0.141, blue: 0.118).opacity(0.18), radius: 14, x: 0, y: 7)
         }
         .buttonStyle(.plain)
     }
@@ -161,18 +139,18 @@ struct HomeStatusPill: View {
                 .font(.system(size: 14, weight: .bold))
                 .foregroundStyle(.white)
                 .frame(width: 30, height: 30)
-                .background(Color(red: 0.1, green: 0.12, blue: 0.16), in: Circle())
+                .background(AppPalette.charcoal, in: Circle())
 
             VStack(alignment: .leading, spacing: 1) {
                 Text(title)
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(AppPalette.text)
                     .lineLimit(1)
                     .minimumScaleFactor(0.8)
 
                 Text(detail)
                     .font(.system(size: 11, weight: .medium))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppPalette.secondaryText)
                     .lineLimit(1)
                     .minimumScaleFactor(0.75)
             }
@@ -180,40 +158,7 @@ struct HomeStatusPill: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 12)
         .padding(.vertical, 11)
-        .background(.white.opacity(0.76), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .stroke(.white.opacity(0.9), lineWidth: 1)
-        }
-    }
-}
-
-struct HomeBackground: View {
-    var body: some View {
-        LinearGradient(
-            colors: [
-                Color(red: 0.96, green: 0.97, blue: 0.99),
-                Color(red: 0.9, green: 0.94, blue: 0.96),
-                Color(red: 0.98, green: 0.98, blue: 0.96)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        .ignoresSafeArea()
-        .overlay(alignment: .topTrailing) {
-            Circle()
-                .fill(Color(red: 0.22, green: 0.54, blue: 0.86).opacity(0.18))
-                .frame(width: 220, height: 220)
-                .blur(radius: 24)
-                .offset(x: 76, y: -84)
-        }
-        .overlay(alignment: .bottomLeading) {
-            Circle()
-                .fill(Color(red: 0.1, green: 0.66, blue: 0.48).opacity(0.12))
-                .frame(width: 260, height: 260)
-                .blur(radius: 30)
-                .offset(x: -110, y: 70)
-        }
+        .appTactileSurface(cornerRadius: 20)
     }
 }
 

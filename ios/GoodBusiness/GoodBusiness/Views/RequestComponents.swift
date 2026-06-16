@@ -16,19 +16,14 @@ struct RequestSurface<Content: View>: View {
                     .background(color.opacity(0.12), in: Circle())
 
                 Text(title)
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
-                    .foregroundStyle(.primary)
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundStyle(AppPalette.text)
             }
 
             content
         }
         .padding(16)
-        .background(.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 26, style: .continuous)
-                .stroke(.white.opacity(0.9), lineWidth: 1)
-        }
-        .shadow(color: .black.opacity(0.05), radius: 18, x: 0, y: 10)
+        .appTactileSurface(cornerRadius: 20)
     }
 }
 
@@ -43,15 +38,20 @@ struct RequestField: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.system(size: 12, weight: .bold))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(AppPalette.muted)
 
             TextField(prompt, text: $text)
                 .keyboardType(keyboardType)
                 .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(AppPalette.text)
                 .textInputAutocapitalization(.words)
                 .padding(.horizontal, 14)
                 .frame(height: 50)
-                .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                .background(AppPalette.elevatedSurface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(AppPalette.border.opacity(0.75), lineWidth: 1)
+                }
         }
         .frame(width: width)
         .frame(maxWidth: width == nil ? .infinity : width, alignment: .leading)
@@ -101,7 +101,11 @@ struct FlexibleTagRow: View {
                 .lineLimit(1)
                 .padding(.horizontal, 10)
                 .padding(.vertical, 8)
-                .background(accentColor.opacity(0.1), in: Capsule())
+                .background(AppPalette.elevatedSurface, in: Capsule())
+                .overlay {
+                    Capsule()
+                        .stroke(accentColor.opacity(0.26), lineWidth: 1)
+                }
         }
         .buttonStyle(.plain)
     }
@@ -111,15 +115,7 @@ struct RequestBackground: View {
     let color: Color
 
     var body: some View {
-        LinearGradient(
-            colors: [
-                color.opacity(0.12),
-                Color(.systemGroupedBackground),
-                Color(.systemBackground)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        .ignoresSafeArea()
+        AppPalette.canvas
+            .ignoresSafeArea()
     }
 }

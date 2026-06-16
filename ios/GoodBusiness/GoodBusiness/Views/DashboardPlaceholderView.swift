@@ -5,12 +5,12 @@ struct DashboardPlaceholderView: View {
     @State private var selectedService: DashboardService?
 
     private let services: [DashboardService] = [
-        DashboardService(title: "Plumbing", subtitle: "Leaks, drains, water", iconName: "drop", color: DashboardPalette.sage),
-        DashboardService(title: "Electrical", subtitle: "Outlets, lights, panel", iconName: "bolt", color: DashboardPalette.gold),
-        DashboardService(title: "HVAC", subtitle: "Heating & cooling", iconName: "wind", color: DashboardPalette.blueGray),
-        DashboardService(title: "Appliance", subtitle: "Fridge, washer, oven", iconName: "refrigerator", color: DashboardPalette.teal),
-        DashboardService(title: "Lawn / Yard", subtitle: "Mowing, cleanup", iconName: "sprout", color: DashboardPalette.leaf),
-        DashboardService(title: "Handyman", subtitle: "Repairs & mounting", iconName: "wrench", color: DashboardPalette.stone)
+        DashboardService(title: "Plumbing", subtitle: "Leaks, drains, water", iconName: "drop", color: AppPalette.sage),
+        DashboardService(title: "Electrical", subtitle: "Outlets, lights, panel", iconName: "bolt", color: AppPalette.gold),
+        DashboardService(title: "HVAC", subtitle: "Heating & cooling", iconName: "wind", color: AppPalette.blueGray),
+        DashboardService(title: "Appliance", subtitle: "Fridge, washer, oven", iconName: "refrigerator", color: AppPalette.teal),
+        DashboardService(title: "Lawn / Yard", subtitle: "Mowing, cleanup", iconName: "sprout", color: AppPalette.leaf),
+        DashboardService(title: "Handyman", subtitle: "Repairs & mounting", iconName: "wrench", color: AppPalette.stone)
     ]
 
     private let columns = [
@@ -20,7 +20,7 @@ struct DashboardPlaceholderView: View {
 
     var body: some View {
         ZStack {
-            DashboardPalette.canvas
+            AppPalette.canvas
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
@@ -37,7 +37,7 @@ struct DashboardPlaceholderView: View {
                             .font(.system(size: 12, weight: .bold))
                             .textCase(.uppercase)
                             .tracking(0.8)
-                            .foregroundStyle(DashboardPalette.muted)
+                            .foregroundStyle(AppPalette.muted)
                             .padding(.bottom, 10)
 
                         LazyVGrid(columns: columns, spacing: 11) {
@@ -70,21 +70,21 @@ struct DashboardPlaceholderView: View {
             VStack(alignment: .leading, spacing: 1) {
                 Text(greeting)
                     .font(.system(size: 13, weight: .medium))
-                    .foregroundStyle(DashboardPalette.secondaryText)
+                    .foregroundStyle(AppPalette.secondaryText)
 
                 Text("Your home")
                     .font(.system(size: 21, weight: .bold))
                     .tracking(-0.4)
-                    .foregroundStyle(DashboardPalette.text)
+                    .foregroundStyle(AppPalette.text)
             }
 
             Spacer()
 
             Text(initials)
                 .font(.system(size: 15, weight: .bold))
-                .foregroundStyle(DashboardPalette.brand)
+                .foregroundStyle(AppPalette.brand)
                 .frame(width: 42, height: 42)
-                .background(DashboardPalette.profileFill, in: Circle())
+                .background(AppPalette.profileFill, in: Circle())
         }
     }
 
@@ -107,26 +107,6 @@ struct DashboardPlaceholderView: View {
         let value = "\(first)\(last)"
         return value.isEmpty ? "GB" : value.uppercased()
     }
-}
-
-private enum DashboardPalette {
-    static let canvas = Color(red: 0.953, green: 0.929, blue: 0.878)
-    static let surface = Color(red: 0.988, green: 0.984, blue: 0.965)
-    static let surfaceLedge = Color(red: 0.902, green: 0.871, blue: 0.812)
-    static let border = Color(red: 0.918, green: 0.89, blue: 0.831)
-    static let dashed = Color(red: 0.812, green: 0.776, blue: 0.698)
-    static let charcoal = Color(red: 0.137, green: 0.153, blue: 0.169)
-    static let text = Color(red: 0.137, green: 0.149, blue: 0.165)
-    static let secondaryText = Color(red: 0.541, green: 0.518, blue: 0.471)
-    static let muted = Color(red: 0.604, green: 0.576, blue: 0.518)
-    static let brand = Color(red: 0.184, green: 0.49, blue: 0.447)
-    static let profileFill = Color(red: 0.871, green: 0.929, blue: 0.91)
-    static let sage = Color(red: 0.373, green: 0.451, blue: 0.337)
-    static let gold = Color(red: 0.71, green: 0.506, blue: 0.122)
-    static let blueGray = Color(red: 0.35, green: 0.443, blue: 0.455)
-    static let teal = Color(red: 0.184, green: 0.49, blue: 0.447)
-    static let leaf = Color(red: 0.31, green: 0.45, blue: 0.337)
-    static let stone = Color(red: 0.29, green: 0.271, blue: 0.231)
 }
 
 private struct DashboardService: Identifiable {
@@ -172,7 +152,7 @@ private struct CalmStatusCard: View {
             .padding(.horizontal, 18)
             .padding(.vertical, 16)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(DashboardPalette.charcoal, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .background(AppPalette.charcoal, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
         }
         .buttonStyle(.plain)
     }
@@ -196,13 +176,13 @@ private struct DashboardServiceTile: View {
                     Text(service.title)
                         .font(.system(size: 16, weight: .semibold))
                         .tracking(-0.2)
-                        .foregroundStyle(DashboardPalette.text)
+                        .foregroundStyle(AppPalette.text)
                         .lineLimit(2)
                         .minimumScaleFactor(0.78)
 
                     Text(service.subtitle)
                         .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(DashboardPalette.secondaryText)
+                        .foregroundStyle(AppPalette.secondaryText)
                         .lineLimit(1)
                         .minimumScaleFactor(0.72)
                 }
@@ -211,12 +191,12 @@ private struct DashboardServiceTile: View {
             }
             .frame(maxWidth: .infinity, minHeight: 118, alignment: .topLeading)
             .padding(15)
-            .background(DashboardPalette.surface, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .background(AppPalette.surface, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .stroke(DashboardPalette.border, lineWidth: 1)
+                    .stroke(AppPalette.border, lineWidth: 1)
             }
-            .shadow(color: DashboardPalette.surfaceLedge, radius: 0, x: 0, y: isPressed ? 1 : 2)
+            .shadow(color: AppPalette.surfaceLedge, radius: 0, x: 0, y: isPressed ? 1 : 2)
             .shadow(color: Color(red: 0.157, green: 0.141, blue: 0.118).opacity(isPressed ? 0.12 : 0.22), radius: isPressed ? 9 : 16, x: 0, y: isPressed ? 5 : 7)
             .offset(y: isPressed ? 1 : 0)
             .animation(.spring(response: 0.22, dampingFraction: 0.78), value: isPressed)
@@ -237,14 +217,14 @@ private struct DescribeItButton: View {
             HStack(spacing: 11) {
                 Image(systemName: "magnifyingglass")
                     .font(.system(size: 17, weight: .medium))
-                    .foregroundStyle(DashboardPalette.secondaryText)
+                    .foregroundStyle(AppPalette.secondaryText)
 
                 Text("Not sure what it is? ")
                     .font(.system(size: 14.5, weight: .medium))
                     .foregroundStyle(Color(red: 0.431, green: 0.408, blue: 0.357))
                 + Text("Describe it")
                     .font(.system(size: 14.5, weight: .semibold))
-                    .foregroundStyle(DashboardPalette.text)
+                    .foregroundStyle(AppPalette.text)
             }
             .lineLimit(1)
             .minimumScaleFactor(0.82)
@@ -254,7 +234,7 @@ private struct DescribeItButton: View {
             .background(Color(red: 0.937, green: 0.914, blue: 0.863), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .stroke(DashboardPalette.dashed, style: StrokeStyle(lineWidth: 1, dash: [4, 3]))
+                    .stroke(AppPalette.dashed, style: StrokeStyle(lineWidth: 1, dash: [4, 3]))
             }
         }
         .buttonStyle(.plain)
@@ -295,7 +275,7 @@ private struct TabItem: View {
             Text(title)
                 .font(.system(size: 10.5, weight: isActive ? .semibold : .medium))
         }
-        .foregroundStyle(isActive ? DashboardPalette.brand : Color(red: 0.659, green: 0.631, blue: 0.573))
+        .foregroundStyle(isActive ? AppPalette.brand : Color(red: 0.659, green: 0.631, blue: 0.573))
         .frame(width: 62)
     }
 }
@@ -320,7 +300,7 @@ private struct DashboardServicePreview: View {
                 } label: {
                     Image(systemName: "xmark")
                         .font(.system(size: 13, weight: .bold))
-                        .foregroundStyle(DashboardPalette.text)
+                        .foregroundStyle(AppPalette.text)
                         .frame(width: 34, height: 34)
                         .background(.white.opacity(0.8), in: Circle())
                 }
@@ -329,11 +309,11 @@ private struct DashboardServicePreview: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(service.title)
                     .font(.system(size: 34, weight: .bold, design: .rounded))
-                    .foregroundStyle(DashboardPalette.text)
+                    .foregroundStyle(AppPalette.text)
 
                 Text("This button will start a guided \(service.title.lowercased()) request using your saved home profile.")
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(DashboardPalette.secondaryText)
+                    .foregroundStyle(AppPalette.secondaryText)
                     .lineSpacing(2)
             }
 
@@ -345,13 +325,13 @@ private struct DashboardServicePreview: View {
                     .foregroundStyle(.white)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 16)
-                    .background(DashboardPalette.charcoal, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                    .background(AppPalette.charcoal, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
             }
 
             Spacer()
         }
         .padding(22)
-        .background(DashboardPalette.canvas)
+        .background(AppPalette.canvas)
     }
 }
 

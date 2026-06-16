@@ -12,7 +12,8 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                HomeBackground()
+                AppPalette.canvas
+                    .ignoresSafeArea()
 
                 ScrollView(showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 18) {
@@ -56,11 +57,11 @@ struct HomeView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Good Business")
                         .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppPalette.secondaryText)
 
                     Text("Home")
                         .font(.system(size: 17, weight: .semibold))
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(AppPalette.text)
                 }
 
                 Spacer()
@@ -69,12 +70,12 @@ struct HomeView: View {
                 } label: {
                     Image(systemName: "person.crop.circle")
                         .font(.system(size: 24, weight: .medium))
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(AppPalette.text)
                         .frame(width: 42, height: 42)
-                        .background(.white.opacity(0.78), in: Circle())
+                        .background(AppPalette.surface, in: Circle())
                         .overlay {
                             Circle()
-                                .stroke(.white.opacity(0.9), lineWidth: 1)
+                                .stroke(AppPalette.border, lineWidth: 1)
                         }
                 }
                 .accessibilityLabel("Account")
@@ -83,13 +84,14 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Get the house handled.")
                     .font(.system(size: 40, weight: .bold, design: .rounded))
+                    .tracking(-0.7)
                     .lineSpacing(-2)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(AppPalette.text)
                     .minimumScaleFactor(0.82)
 
                 Text("Book trusted help for repairs, upkeep, and reset days.")
                     .font(.system(size: 17, weight: .regular))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppPalette.secondaryText)
                     .lineLimit(2)
             }
         }
@@ -106,8 +108,10 @@ struct HomeView: View {
     private var sectionHeader: some View {
         HStack {
             Text("Popular services")
-                .font(.system(size: 20, weight: .bold, design: .rounded))
-                .foregroundStyle(.primary)
+                .font(.system(size: 12, weight: .bold))
+                .textCase(.uppercase)
+                .tracking(0.8)
+                .foregroundStyle(AppPalette.muted)
 
             Spacer()
 

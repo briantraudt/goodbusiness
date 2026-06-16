@@ -16,6 +16,7 @@
 		3ACBD093B2AC0A57961A0CE5 /* RequestComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFE2B2EDCE1ADDA89428A9B /* RequestComponents.swift */; };
 		5B06D359A923CBC0184B0135 /* SupabaseRESTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44A13D6C0802E3A77CA2967 /* SupabaseRESTClient.swift */; };
 		7A618BEB5C053292C8D5B6B3 /* OnboardingComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BCC07B6F9B2E8E41A77C16C /* OnboardingComponents.swift */; };
+		81A8006C0C0DC308E4781973 /* AppDesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4688F145198DDF778789BD8 /* AppDesignSystem.swift */; };
 		9A16503CD300CBE94F3C7444 /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723D125A02B6CBC383975015 /* AppRootView.swift */; };
 		A2A8DA5D970F12A37E110300 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EA075FF9E142EB8819D1976 /* Assets.xcassets */; };
 		A8E6EC83104B4CD6FB3EF460 /* ServiceRequestDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B361BB1F9354652C1F092 /* ServiceRequestDraft.swift */; };
@@ -59,6 +60,7 @@
 		D44A13D6C0802E3A77CA2967 /* SupabaseRESTClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseRESTClient.swift; sourceTree = "<group>"; };
 		DC1B2D5B29D774B81ED84CE9 /* ServiceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceStore.swift; sourceTree = "<group>"; };
 		E29C4A1E2DF00BE07020785A /* DashboardPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPlaceholderView.swift; sourceTree = "<group>"; };
+		F4688F145198DDF778789BD8 /* AppDesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDesignSystem.swift; sourceTree = "<group>"; };
 		FC1AA5C103B614FEDF677C3C /* ServiceTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -134,6 +136,7 @@
 		9F249449BFF1A7ACEFAC40F6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F4688F145198DDF778789BD8 /* AppDesignSystem.swift */,
 				723D125A02B6CBC383975015 /* AppRootView.swift */,
 				E29C4A1E2DF00BE07020785A /* DashboardPlaceholderView.swift */,
 				934F0CDD81DC824336616547 /* HomeView.swift */,
@@ -253,6 +256,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81A8006C0C0DC308E4781973 /* AppDesignSystem.swift in Sources */,
 				9A16503CD300CBE94F3C7444 /* AppRootView.swift in Sources */,
 				E670085CA4C7B2AD6C6D75F9 /* Color+Hex.swift in Sources */,
 				04A0B0CFF82CB223F680CADF /* DashboardPlaceholderView.swift in Sources */,

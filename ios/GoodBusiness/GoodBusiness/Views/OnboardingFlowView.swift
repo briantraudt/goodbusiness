@@ -190,7 +190,7 @@ struct OptionalHomeDetailsStepView: View {
                 store.goBack()
             }
             .font(.system(size: 15, weight: .bold))
-            .foregroundStyle(.secondary)
+            .foregroundStyle(AppPalette.secondaryText)
             .frame(maxWidth: .infinity)
         }
     }
@@ -248,10 +248,14 @@ struct ReviewFinishStepView: View {
             if let saveError = store.saveError {
                 Text(saveError)
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.red)
+                    .foregroundStyle(AppPalette.error)
                     .padding(14)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.red.opacity(0.08), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                    .background(AppPalette.error.opacity(0.08), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(AppPalette.error.opacity(0.18), lineWidth: 1)
+                    }
             }
 
             OnboardingFooter(
@@ -277,19 +281,19 @@ struct WelcomePoint: View {
                 .font(.system(size: 18, weight: .bold))
                 .foregroundStyle(.white)
                 .frame(width: 44, height: 44)
-                .background(Color(red: 0.09, green: 0.12, blue: 0.14), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .background(AppPalette.charcoal, in: RoundedRectangle(cornerRadius: 15, style: .continuous))
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
                     .font(.system(size: 17, weight: .bold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(AppPalette.text)
                 Text(detail)
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppPalette.secondaryText)
             }
         }
         .padding(14)
-        .background(.white.opacity(0.82), in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .appTactileSurface(cornerRadius: 20)
     }
 }
 
@@ -306,32 +310,32 @@ struct ReviewSection: View {
         OnboardingCard {
             HStack {
                 Text(title)
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
-                    .foregroundStyle(.primary)
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundStyle(AppPalette.text)
 
                 Spacer()
 
                 Button("Edit", action: editAction)
                     .font(.system(size: 14, weight: .bold))
-                    .foregroundStyle(Color(red: 0.09, green: 0.12, blue: 0.14))
+                    .foregroundStyle(AppPalette.brand)
             }
 
             if visibleRows.isEmpty {
                 Text("No details added.")
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppPalette.secondaryText)
             } else {
                 VStack(spacing: 10) {
                     ForEach(visibleRows, id: \.0) { row in
                         HStack(alignment: .top) {
                             Text(row.0)
                                 .font(.system(size: 13, weight: .bold))
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(AppPalette.muted)
                                 .frame(width: 92, alignment: .leading)
 
                             Text(row.1)
                                 .font(.system(size: 14, weight: .semibold))
-                                .foregroundStyle(.primary)
+                                .foregroundStyle(AppPalette.text)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }

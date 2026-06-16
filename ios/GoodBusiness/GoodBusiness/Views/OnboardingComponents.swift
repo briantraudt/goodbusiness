@@ -9,16 +9,8 @@ struct OnboardingShell<Content: View>: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(red: 0.97, green: 0.98, blue: 0.98),
-                    Color(red: 0.93, green: 0.95, blue: 0.94),
-                    Color(red: 0.99, green: 0.98, blue: 0.96)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+            AppPalette.canvas
+                .ignoresSafeArea()
 
             ScrollView(showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 22) {
@@ -28,20 +20,21 @@ struct OnboardingShell<Content: View>: View {
 
                     VStack(alignment: .leading, spacing: 9) {
                         Text(title)
-                            .font(.system(size: 36, weight: .bold, design: .rounded))
-                            .foregroundStyle(.primary)
+                            .font(.system(size: 38, weight: .bold, design: .rounded))
+                            .tracking(-0.6)
+                            .foregroundStyle(AppPalette.text)
                             .lineLimit(3)
                             .minimumScaleFactor(0.82)
 
                         Text(subtitle)
-                            .font(.system(size: 17, weight: .medium))
-                            .foregroundStyle(.secondary)
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundStyle(AppPalette.secondaryText)
                             .lineSpacing(2)
                     }
 
                     content
                 }
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 22)
                 .padding(.top, 24)
                 .padding(.bottom, 34)
             }
@@ -57,20 +50,20 @@ struct OnboardingProgressView: View {
             HStack {
                 Text("Step \(step.progressIndex) of \(OnboardingStep.count)")
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppPalette.muted)
 
                 Spacer()
 
                 Text(step.title)
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(AppPalette.text)
             }
 
             GeometryReader { proxy in
                 ZStack(alignment: .leading) {
-                    Capsule().fill(.black.opacity(0.08))
+                    Capsule().fill(AppPalette.surfaceLedge.opacity(0.78))
                     Capsule()
-                        .fill(Color(red: 0.09, green: 0.12, blue: 0.14))
+                        .fill(AppPalette.brand)
                         .frame(width: proxy.size.width * CGFloat(step.progressIndex) / CGFloat(OnboardingStep.count))
                 }
             }
@@ -87,12 +80,7 @@ struct OnboardingCard<Content: View>: View {
             content
         }
         .padding(16)
-        .background(.white.opacity(0.88), in: RoundedRectangle(cornerRadius: 28, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 28, style: .continuous)
-                .stroke(.white.opacity(0.9), lineWidth: 1)
-        }
-        .shadow(color: .black.opacity(0.05), radius: 20, x: 0, y: 12)
+        .appTactileSurface(cornerRadius: 20)
     }
 }
 
@@ -109,12 +97,12 @@ struct OnboardingTextField: View {
             HStack(spacing: 5) {
                 Text(title)
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppPalette.muted)
 
                 if optional {
                     Text("Optional")
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(.tertiary)
+                        .foregroundStyle(AppPalette.secondaryText.opacity(0.72))
                 }
             }
 
@@ -123,18 +111,19 @@ struct OnboardingTextField: View {
                 .textInputAutocapitalization(keyboardType == .emailAddress ? .never : .words)
                 .autocorrectionDisabled(keyboardType == .emailAddress)
                 .font(.system(size: 17, weight: .medium))
+                .foregroundStyle(AppPalette.text)
                 .padding(.horizontal, 14)
                 .frame(height: 52)
-                .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                .background(AppPalette.elevatedSurface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .overlay {
-                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .stroke(error == nil ? .clear : Color.red.opacity(0.55), lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(error == nil ? AppPalette.border.opacity(0.75) : AppPalette.error.opacity(0.65), lineWidth: 1)
                 }
 
             if let error {
                 Text(error)
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(.red)
+                    .foregroundStyle(AppPalette.error)
             }
         }
     }
@@ -152,12 +141,12 @@ struct OptionGroup: View {
             HStack(spacing: 5) {
                 Text(title)
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppPalette.muted)
 
                 if optional {
                     Text("Optional")
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(.tertiary)
+                        .foregroundStyle(AppPalette.secondaryText.opacity(0.72))
                 }
             }
 
@@ -168,12 +157,16 @@ struct OptionGroup: View {
                     } label: {
                         Text(option)
                             .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(selection == option ? .white : .primary)
+                            .foregroundStyle(selection == option ? .white : AppPalette.text)
                             .lineLimit(2)
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 13)
                             .padding(.vertical, 11)
-                            .background(selection == option ? Color(red: 0.09, green: 0.12, blue: 0.14) : Color(.secondarySystemBackground), in: Capsule())
+                            .background(selection == option ? AppPalette.charcoal : AppPalette.elevatedSurface, in: Capsule())
+                            .overlay {
+                                Capsule()
+                                    .stroke(selection == option ? AppPalette.charcoal : AppPalette.border, lineWidth: 1)
+                            }
                     }
                     .buttonStyle(.plain)
                 }
@@ -182,7 +175,7 @@ struct OptionGroup: View {
             if let error {
                 Text(error)
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(.red)
+                    .foregroundStyle(AppPalette.error)
             }
         }
     }
@@ -211,14 +204,15 @@ struct OnboardingFooter: View {
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 17)
-                .background(primaryDisabled ? Color(.systemGray3) : Color(red: 0.09, green: 0.12, blue: 0.14), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .background(primaryDisabled ? AppPalette.secondaryText.opacity(0.34) : AppPalette.charcoal, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .shadow(color: primaryDisabled ? .clear : AppPalette.charcoal.opacity(0.2), radius: 14, x: 0, y: 8)
             }
             .disabled(primaryDisabled || primaryLoading)
 
             if let secondaryTitle, let secondaryAction {
                 Button(secondaryTitle, action: secondaryAction)
                     .font(.system(size: 15, weight: .bold))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppPalette.secondaryText)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
             }

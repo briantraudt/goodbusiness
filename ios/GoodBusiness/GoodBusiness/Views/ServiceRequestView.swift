@@ -67,11 +67,12 @@ struct ServiceRequestView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text(draft.service.name)
                     .font(.system(size: 36, weight: .bold, design: .rounded))
-                    .foregroundStyle(.primary)
+                    .tracking(-0.5)
+                    .foregroundStyle(AppPalette.text)
 
                 Text(draft.service.summary)
                     .font(.system(size: 16, weight: .medium))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(AppPalette.secondaryText)
                     .lineLimit(2)
             }
         }
@@ -83,9 +84,13 @@ struct ServiceRequestView: View {
         } label: {
             Image(systemName: "xmark")
                 .font(.system(size: 13, weight: .bold))
-                .foregroundStyle(.primary)
+                .foregroundStyle(AppPalette.text)
                 .frame(width: 34, height: 34)
-                .background(.white.opacity(0.85), in: Circle())
+                .background(AppPalette.surface, in: Circle())
+                .overlay {
+                    Circle()
+                        .stroke(AppPalette.border, lineWidth: 1)
+                }
         }
         .accessibilityLabel("Close")
     }
@@ -98,13 +103,18 @@ struct ServiceRequestView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Details")
                         .font(.system(size: 12, weight: .bold))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(AppPalette.muted)
 
                     TextField("Anything the pro should know?", text: $draft.description, axis: .vertical)
                         .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(AppPalette.text)
                         .lineLimit(4...7)
                         .padding(14)
-                        .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                        .background(AppPalette.elevatedSurface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .stroke(AppPalette.border.opacity(0.75), lineWidth: 1)
+                        }
                 }
 
                 FlexibleTagRow(tags: quickNotes, accentColor: draft.service.accentColor) { note in
@@ -138,6 +148,7 @@ struct ServiceRequestView: View {
             VStack(spacing: 14) {
                 DatePicker("Preferred date", selection: $draft.preferredDate, displayedComponents: .date)
                     .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(AppPalette.text)
 
                 Picker("Time window", selection: $draft.preferredTimeWindow) {
                     ForEach(windows, id: \.self) { window in
@@ -163,8 +174,8 @@ struct ServiceRequestView: View {
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 17)
-            .background(canStart ? draft.service.accentColor : Color(.systemGray3), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .shadow(color: canStart ? draft.service.accentColor.opacity(0.26) : .clear, radius: 18, x: 0, y: 10)
+            .background(canStart ? AppPalette.charcoal : AppPalette.secondaryText.opacity(0.34), in: RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .shadow(color: canStart ? AppPalette.charcoal.opacity(0.2) : .clear, radius: 14, x: 0, y: 8)
         }
         .disabled(canStart == false)
         .padding(.top, 4)
