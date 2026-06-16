@@ -20,10 +20,22 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.goodbusiness.HomeServices
-        PRODUCT_NAME: Good Business
+        PRODUCT_NAME: GoodBusiness
         INFOPLIST_FILE: GoodBusiness/Support/Info.plist
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: ""
     scheme:
-      testTargets: []
+      testTargets:
+        - GoodBusinessTests
+  GoodBusinessTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: GoodBusinessTests
+    dependencies:
+      - target: GoodBusiness
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.goodbusiness.HomeServicesTests
+        GENERATE_INFOPLIST_FILE: YES

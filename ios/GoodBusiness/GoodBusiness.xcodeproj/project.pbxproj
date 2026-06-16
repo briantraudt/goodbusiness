@@ -7,33 +7,58 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04A0B0CFF82CB223F680CADF /* DashboardPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29C4A1E2DF00BE07020785A /* DashboardPlaceholderView.swift */; };
 		07C09E89EEE4504A9E36E43A /* ServiceTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC1AA5C103B614FEDF677C3C /* ServiceTile.swift */; };
 		1129859740E35E5FC1F28E8D /* ServiceRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580443F137828613EE1898D3 /* ServiceRequestView.swift */; };
+		12F87BA643183C990548A1FC /* OnboardingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1266C9E42E9CC5DC0DA6013F /* OnboardingModels.swift */; };
 		3155BC50B535F8ABD14A1953 /* HomeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57CAD8D261D85707ADC3FE1D /* HomeService.swift */; };
 		3A4EC860C2345102A176D6EE /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934F0CDD81DC824336616547 /* HomeView.swift */; };
 		3ACBD093B2AC0A57961A0CE5 /* RequestComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FFE2B2EDCE1ADDA89428A9B /* RequestComponents.swift */; };
 		5B06D359A923CBC0184B0135 /* SupabaseRESTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44A13D6C0802E3A77CA2967 /* SupabaseRESTClient.swift */; };
+		7A618BEB5C053292C8D5B6B3 /* OnboardingComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BCC07B6F9B2E8E41A77C16C /* OnboardingComponents.swift */; };
+		9A16503CD300CBE94F3C7444 /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723D125A02B6CBC383975015 /* AppRootView.swift */; };
 		A2A8DA5D970F12A37E110300 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EA075FF9E142EB8819D1976 /* Assets.xcassets */; };
 		A8E6EC83104B4CD6FB3EF460 /* ServiceRequestDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B361BB1F9354652C1F092 /* ServiceRequestDraft.swift */; };
+		AA0426DED455B51C060FE5F6 /* OnboardingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D28C2F90539FF9A86AB4C4E /* OnboardingStore.swift */; };
 		B4308F732BBA54C15A21568C /* GoodBusinessApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAC30C54C2F48413342C3C0 /* GoodBusinessApp.swift */; };
 		C9A6CC81650A2F1268A4E504 /* ServiceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1B2D5B29D774B81ED84CE9 /* ServiceStore.swift */; };
+		DA851A37743AFEE10366D735 /* OnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9915673044F3471DCFA39985 /* OnboardingTests.swift */; };
 		E670085CA4C7B2AD6C6D75F9 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69314DF241E9037130860CA9 /* Color+Hex.swift */; };
+		EE50C60E69B46155A3132805 /* OnboardingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DBE3B9080BEF645313F3EE1 /* OnboardingFlowView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7ECEC4373FFC0642FFBB51D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F827CA5D2F90E20B997B950C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 64C6B2AFEE74137C2DD18E6D;
+			remoteInfo = GoodBusiness;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		1266C9E42E9CC5DC0DA6013F /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
 		1EA075FF9E142EB8819D1976 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4BCC07B6F9B2E8E41A77C16C /* OnboardingComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingComponents.swift; sourceTree = "<group>"; };
+		4D28C2F90539FF9A86AB4C4E /* OnboardingStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStore.swift; sourceTree = "<group>"; };
 		57CAD8D261D85707ADC3FE1D /* HomeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeService.swift; sourceTree = "<group>"; };
 		580443F137828613EE1898D3 /* ServiceRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRequestView.swift; sourceTree = "<group>"; };
 		69314DF241E9037130860CA9 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Hex.swift"; sourceTree = "<group>"; };
+		723D125A02B6CBC383975015 /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
+		7DBE3B9080BEF645313F3EE1 /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
 		810B361BB1F9354652C1F092 /* ServiceRequestDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceRequestDraft.swift; sourceTree = "<group>"; };
 		8FFE2B2EDCE1ADDA89428A9B /* RequestComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestComponents.swift; sourceTree = "<group>"; };
 		934F0CDD81DC824336616547 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		9915673044F3471DCFA39985 /* OnboardingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingTests.swift; sourceTree = "<group>"; };
 		9FAC30C54C2F48413342C3C0 /* GoodBusinessApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodBusinessApp.swift; sourceTree = "<group>"; };
 		A1FEA4D537E0CE68F9F50190 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A5D8856C0608C7D2069DBF34 /* GoodBusiness.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = GoodBusiness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFACF30297E0110712DFD9CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C29383A8B7489CCBF85FFE39 /* GoodBusinessTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = GoodBusinessTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D44A13D6C0802E3A77CA2967 /* SupabaseRESTClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupabaseRESTClient.swift; sourceTree = "<group>"; };
 		DC1B2D5B29D774B81ED84CE9 /* ServiceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceStore.swift; sourceTree = "<group>"; };
+		E29C4A1E2DF00BE07020785A /* DashboardPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPlaceholderView.swift; sourceTree = "<group>"; };
 		FC1AA5C103B614FEDF677C3C /* ServiceTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceTile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -65,15 +90,25 @@
 			isa = PBXGroup;
 			children = (
 				57CAD8D261D85707ADC3FE1D /* HomeService.swift */,
+				1266C9E42E9CC5DC0DA6013F /* OnboardingModels.swift */,
 				810B361BB1F9354652C1F092 /* ServiceRequestDraft.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		4151B788C055A19D1A371B1D /* GoodBusinessTests */ = {
+			isa = PBXGroup;
+			children = (
+				9915673044F3471DCFA39985 /* OnboardingTests.swift */,
+			);
+			path = GoodBusinessTests;
 			sourceTree = "<group>";
 		};
 		47E0E6FF5252B98E53184C2A = {
 			isa = PBXGroup;
 			children = (
 				149D7546E711FF96712E82B0 /* GoodBusiness */,
+				4151B788C055A19D1A371B1D /* GoodBusinessTests */,
 				E1635EAA846AE29897D16972 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +125,7 @@
 		6D25E57C448DC2185EE690AF /* Stores */ = {
 			isa = PBXGroup;
 			children = (
+				4D28C2F90539FF9A86AB4C4E /* OnboardingStore.swift */,
 				DC1B2D5B29D774B81ED84CE9 /* ServiceStore.swift */,
 			);
 			path = Stores;
@@ -98,7 +134,11 @@
 		9F249449BFF1A7ACEFAC40F6 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				723D125A02B6CBC383975015 /* AppRootView.swift */,
+				E29C4A1E2DF00BE07020785A /* DashboardPlaceholderView.swift */,
 				934F0CDD81DC824336616547 /* HomeView.swift */,
+				4BCC07B6F9B2E8E41A77C16C /* OnboardingComponents.swift */,
+				7DBE3B9080BEF645313F3EE1 /* OnboardingFlowView.swift */,
 				8FFE2B2EDCE1ADDA89428A9B /* RequestComponents.swift */,
 				580443F137828613EE1898D3 /* ServiceRequestView.swift */,
 				FC1AA5C103B614FEDF677C3C /* ServiceTile.swift */,
@@ -118,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				A5D8856C0608C7D2069DBF34 /* GoodBusiness.app */,
+				C29383A8B7489CCBF85FFE39 /* GoodBusinessTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -142,6 +183,24 @@
 			productName = GoodBusiness;
 			productReference = A5D8856C0608C7D2069DBF34 /* GoodBusiness.app */;
 			productType = "com.apple.product-type.application";
+		};
+		6BD5A0E33441984283ACF32E /* GoodBusinessTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FDC050FC8302FA6FE600495A /* Build configuration list for PBXNativeTarget "GoodBusinessTests" */;
+			buildPhases = (
+				86D3EF8962982C06DA380774 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D5ED4E252E077C3683DC4E44 /* PBXTargetDependency */,
+			);
+			name = GoodBusinessTests;
+			packageProductDependencies = (
+			);
+			productName = GoodBusinessTests;
+			productReference = C29383A8B7489CCBF85FFE39 /* GoodBusinessTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -173,6 +232,7 @@
 			projectRoot = "";
 			targets = (
 				64C6B2AFEE74137C2DD18E6D /* GoodBusiness */,
+				6BD5A0E33441984283ACF32E /* GoodBusinessTests */,
 			);
 		};
 /* End PBXProject section */
@@ -193,10 +253,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A16503CD300CBE94F3C7444 /* AppRootView.swift in Sources */,
 				E670085CA4C7B2AD6C6D75F9 /* Color+Hex.swift in Sources */,
+				04A0B0CFF82CB223F680CADF /* DashboardPlaceholderView.swift in Sources */,
 				B4308F732BBA54C15A21568C /* GoodBusinessApp.swift in Sources */,
 				3155BC50B535F8ABD14A1953 /* HomeService.swift in Sources */,
 				3A4EC860C2345102A176D6EE /* HomeView.swift in Sources */,
+				7A618BEB5C053292C8D5B6B3 /* OnboardingComponents.swift in Sources */,
+				EE50C60E69B46155A3132805 /* OnboardingFlowView.swift in Sources */,
+				12F87BA643183C990548A1FC /* OnboardingModels.swift in Sources */,
+				AA0426DED455B51C060FE5F6 /* OnboardingStore.swift in Sources */,
 				3ACBD093B2AC0A57961A0CE5 /* RequestComponents.swift in Sources */,
 				A8E6EC83104B4CD6FB3EF460 /* ServiceRequestDraft.swift in Sources */,
 				1129859740E35E5FC1F28E8D /* ServiceRequestView.swift in Sources */,
@@ -206,7 +272,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		86D3EF8962982C06DA380774 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA851A37743AFEE10366D735 /* OnboardingTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D5ED4E252E077C3683DC4E44 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 64C6B2AFEE74137C2DD18E6D /* GoodBusiness */;
+			targetProxy = 7ECEC4373FFC0642FFBB51D8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		122290C6517B8A866BD11DC2 /* Release */ = {
@@ -267,6 +349,40 @@
 			};
 			name = Release;
 		};
+		23FFD642291B3098A53F53A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.goodbusiness.HomeServicesTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GoodBusiness.app/GoodBusiness";
+			};
+			name = Debug;
+		};
+		24B6A2504AA3E36FEF2817F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.goodbusiness.HomeServicesTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GoodBusiness.app/GoodBusiness";
+			};
+			name = Release;
+		};
 		4375B66A8506CD2FB2197979 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A1FEA4D537E0CE68F9F50190 /* Config.xcconfig */;
@@ -281,7 +397,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.goodbusiness.HomeServices;
-				PRODUCT_NAME = "Good Business";
+				PRODUCT_NAME = GoodBusiness;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -366,7 +482,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.goodbusiness.HomeServices;
-				PRODUCT_NAME = "Good Business";
+				PRODUCT_NAME = GoodBusiness;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -389,6 +505,15 @@
 			buildConfigurations = (
 				4375B66A8506CD2FB2197979 /* Debug */,
 				B11F0E6BD531B31C3B50F82E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FDC050FC8302FA6FE600495A /* Build configuration list for PBXNativeTarget "GoodBusinessTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				23FFD642291B3098A53F53A8 /* Debug */,
+				24B6A2504AA3E36FEF2817F5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
