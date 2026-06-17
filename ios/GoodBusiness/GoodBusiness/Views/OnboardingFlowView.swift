@@ -335,50 +335,172 @@ struct AccessNotesStepView: View {
     @EnvironmentObject private var store: OnboardingStore
 
     var body: some View {
-        OnboardingShell(title: "Getting in", subtitle: "Anything a pro should know before arriving.") {
-            OnboardingFieldGroup {
-                OnboardingTextField(title: "Gate code", text: $store.draft.gateCode, prompt: "Code or call box", optional: true)
-                OnboardingTextField(title: "Parking notes", text: $store.draft.parkingNotes, prompt: "Driveway, street, garage", optional: true)
-                OnboardingTextField(title: "Pets", text: $store.draft.petNotes, prompt: "Friendly dog - Bodie", optional: true, showsDivider: false)
-            }
+        ZStack {
+            AppPalette.canvas
+                .ignoresSafeArea()
 
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Access notes")
-                    .font(.system(size: 11, weight: .semibold))
+            VStack(spacing: 0) {
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 18) {
+                        OnboardingProgressView(step: store.currentStep)
+
+                        VStack(alignment: .leading, spacing: 9) {
+                            Text("Getting in")
+                                .font(.system(size: 28, weight: .bold))
+                                .tracking(-0.7)
+                                .foregroundStyle(AppPalette.text)
+
+                            Text("Anything a pro should know before arriving.")
+                                .font(.system(size: 15.5, weight: .regular))
+                                .foregroundStyle(AppPalette.secondaryText)
+                                .lineSpacing(2)
+                        }
+
+                        VStack(spacing: 11) {
+                            AccessFieldCard {
+                                AccessEntryField(title: "Gate code", text: $store.draft.gateCode, prompt: "Code or call box")
+                                AccessEntryField(title: "Parking notes", text: $store.draft.parkingNotes, prompt: "Driveway, street, garage")
+                                AccessEntryField(title: "Pets", text: $store.draft.petNotes, prompt: "Friendly dog, cat, no pets", showsDivider: false)
+                            }
+
+                            AccessNotesCard(text: $store.draft.accessNotes)
+                        }
+                    }
+                    .frame(maxWidth: 390, alignment: .leading)
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 24)
+                    .padding(.top, 8)
+                    .padding(.bottom, 20)
+                }
+
+                VStack(spacing: 12) {
+                    OnboardingFooter(
+                        primaryTitle: "Continue",
+                        primaryDisabled: store.canContinue() == false,
+                        primaryLoading: false,
+                        primaryAction: { store.advance() },
+                        secondaryTitle: "Back",
+                        secondaryAction: { store.goBack() }
+                    )
+
+                    HStack(spacing: 9) {
+                        Image(systemName: "shield")
+                            .font(.system(size: 14, weight: .medium))
+                        Text("Shared only with your assigned pro.")
+                            .font(.system(size: 13, weight: .semibold))
+                            .lineLimit(2)
+                    }
+                    .foregroundStyle(AppPalette.sage)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 6)
+                }
+                .frame(maxWidth: 390)
+                .padding(.horizontal, 24)
+                .padding(.top, 14)
+                .padding(.bottom, 18)
+                .background {
+                    LinearGradient(
+                        colors: [
+                            AppPalette.canvas.opacity(0),
+                            AppPalette.canvas,
+                            AppPalette.canvas
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .ignoresSafeArea()
+                }
+            }
+        }
+    }
+}
+
+struct AccessFieldCard<Content: View>: View {
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        VStack(spacing: 0) {
+            content
+        }
+        .background(AppPalette.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(AppPalette.border, lineWidth: 1)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+}
+
+struct AccessEntryField: View {
+    let title: String
+    @Binding var text: String
+    let prompt: String
+    var showsDivider = true
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 6) {
+                Text(title)
+                    .font(.system(size: 10.5, weight: .semibold))
                     .textCase(.uppercase)
                     .tracking(0.55)
                     .foregroundStyle(AppPalette.muted)
 
-                TextField("Side gate, lockbox, special instructions", text: $store.draft.accessNotes, axis: .vertical)
-                    .font(.system(size: 15.5, weight: .regular))
-                    .foregroundStyle(AppPalette.bodyText)
-                    .lineLimit(3...5)
-            }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 12)
-            .background(AppPalette.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-            .overlay {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .stroke(AppPalette.border, lineWidth: 1)
+                Text("Optional")
+                    .font(.system(size: 11.5, weight: .semibold))
+                    .foregroundStyle(AppPalette.secondaryText.opacity(0.72))
             }
 
-            OnboardingFooter(
-                primaryTitle: "Continue",
-                primaryDisabled: store.canContinue() == false,
-                primaryLoading: false,
-                primaryAction: { store.advance() },
-                secondaryTitle: "Back",
-                secondaryAction: { store.goBack() }
-            )
-
-            HStack(spacing: 9) {
-                Image(systemName: "shield")
-                    .font(.system(size: 14, weight: .medium))
-                Text("Shared only with your assigned pro.")
-                    .font(.system(size: 13, weight: .semibold))
+            TextField("", text: $text, prompt: Text(prompt).foregroundStyle(AppPalette.faintText.opacity(0.62)))
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(AppPalette.text)
+                .textInputAutocapitalization(.sentences)
+                .lineLimit(1)
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 13)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .overlay(alignment: .bottom) {
+            if showsDivider {
+                Rectangle()
+                    .fill(AppPalette.subtleLine)
+                    .frame(height: 1)
+                    .padding(.leading, 16)
             }
-            .foregroundStyle(AppPalette.sage)
-            .padding(.horizontal, 4)
+        }
+    }
+}
+
+struct AccessNotesCard: View {
+    @Binding var text: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 9) {
+            HStack(spacing: 6) {
+                Text("Access notes")
+                    .font(.system(size: 10.5, weight: .semibold))
+                    .textCase(.uppercase)
+                    .tracking(0.55)
+                    .foregroundStyle(AppPalette.muted)
+
+                Text("Optional")
+                    .font(.system(size: 11.5, weight: .semibold))
+                    .foregroundStyle(AppPalette.secondaryText.opacity(0.72))
+            }
+
+            TextField("", text: $text, prompt: Text("Side gate, lockbox, special instructions").foregroundStyle(AppPalette.faintText.opacity(0.62)), axis: .vertical)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(AppPalette.text)
+                .textInputAutocapitalization(.sentences)
+                .lineLimit(3...5)
+                .frame(minHeight: 86, alignment: .topLeading)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppPalette.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(AppPalette.border, lineWidth: 1)
         }
     }
 }

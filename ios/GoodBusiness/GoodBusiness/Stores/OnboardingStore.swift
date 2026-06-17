@@ -212,9 +212,7 @@ enum OnboardingValidator {
     }
 
     static func validateAccess(_ draft: OnboardingDraft) -> [String: String] {
-        var errors: [String: String] = [:]
-        if draft.preferredContactMethod.isEmpty { errors["preferredContactMethod"] = "Choose a contact method." }
-        return errors
+        [:]
     }
 
     static func isValidEmail(_ value: String) -> Bool {
