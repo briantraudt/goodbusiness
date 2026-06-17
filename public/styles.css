@@ -476,15 +476,15 @@ h2 {
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
 }
 
 .project-card {
-  min-height: 230px;
+  min-height: 430px;
   display: grid;
-  align-content: space-between;
-  gap: 26px;
+  align-content: start;
+  gap: 20px;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   padding: clamp(22px, 2.6vw, 28px);
@@ -502,12 +502,51 @@ h2 {
   transform: translateY(-2px);
 }
 
+.project-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.project-logo {
+  width: 54px;
+  height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--page);
+}
+
+.project-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8px;
+}
+
+.project-logo-wide {
+  width: 108px;
+}
+
+.project-logo-wide img {
+  padding: 7px 10px;
+}
+
 .project-label {
   color: var(--warm);
   font-size: 12px;
   font-weight: 650;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.project-card-main {
+  display: grid;
+  gap: 10px;
 }
 
 .project-card strong {
@@ -518,10 +557,25 @@ h2 {
   line-height: 1.04;
 }
 
-.project-card span:last-child {
+.project-card-main > span,
+.project-detail > span:last-child {
   color: var(--muted);
   font-size: 16px;
   line-height: 1.42;
+}
+
+.project-detail {
+  display: grid;
+  gap: 7px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.detail-label {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: -0.004em;
 }
 
 .philosophy-photo {
@@ -838,6 +892,7 @@ h2 {
   .philosophy-photo:hover img,
   .principles-photo:hover img,
   .moment-grid article:hover,
+  .project-card:hover,
   .button:hover,
   .contact-form button:hover {
     transform: none;
@@ -1005,7 +1060,7 @@ h2 {
   }
 
   .project-card {
-    min-height: 210px;
+    min-height: auto;
   }
 
   .moment-grid h3 {
