@@ -40,7 +40,7 @@ struct WelcomeStepView: View {
                 KeplyMark(size: 46)
                     .padding(.top, 30)
 
-                Spacer(minLength: 0)
+                Spacer(minLength: 40)
 
                 VStack(alignment: .leading, spacing: 0) {
                     Text("Set up your home once.")
@@ -63,38 +63,42 @@ struct WelcomeStepView: View {
                         WelcomePoint(number: "3", title: "They arrive, you relax")
                     }
                     .padding(.top, 26)
-
-                    VStack(spacing: 12) {
-                        Button {
-                            store.advance()
-                        } label: {
-                            Text("Get started")
-                                .font(.system(size: 17, weight: .semibold))
-                                .foregroundStyle(Color(red: 0.988, green: 0.969, blue: 0.937))
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 17)
-                                .background(AppPalette.brand, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
-                                .shadow(color: AppPalette.brand.opacity(0.36), radius: 22, x: 0, y: 10)
-                        }
-                        .buttonStyle(.plain)
-
-                        Button {
-                        } label: {
-                            Text("I already have an account")
-                                .font(.system(size: 15, weight: .semibold))
-                                .foregroundStyle(Color(red: 0.486, green: 0.459, blue: 0.404))
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 8)
-                        }
-                        .buttonStyle(.plain)
-
-                        Text("About 2 minutes · Your details stay private")
-                            .font(.system(size: 12.5, weight: .regular))
-                            .foregroundStyle(AppPalette.muted)
-                            .frame(maxWidth: .infinity)
-                    }
-                    .padding(.top, 28)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Spacer(minLength: 34)
+
+                VStack(spacing: 12) {
+                    Button {
+                        store.advance()
+                    } label: {
+                        Text("Get started")
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundStyle(Color(red: 0.988, green: 0.969, blue: 0.937))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 17)
+                            .background(AppPalette.brand, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
+                            .shadow(color: AppPalette.brand.opacity(0.36), radius: 22, x: 0, y: 10)
+                    }
+                    .buttonStyle(.plain)
+
+                    Button {
+                    } label: {
+                        Text("I already have an account")
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundStyle(Color(red: 0.486, green: 0.459, blue: 0.404))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 8)
+                    }
+                    .buttonStyle(.plain)
+
+                    Text("About 2 minutes · Your details stay private")
+                        .font(.system(size: 12.5, weight: .regular))
+                        .foregroundStyle(AppPalette.muted)
+                        .frame(maxWidth: .infinity)
+                }
+
+                Spacer(minLength: 0)
             }
             .padding(.horizontal, 26)
             .padding(.bottom, 28)
