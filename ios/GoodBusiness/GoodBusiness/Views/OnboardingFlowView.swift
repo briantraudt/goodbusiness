@@ -187,24 +187,147 @@ struct HomeBasicsStepView: View {
     @EnvironmentObject private var store: OnboardingStore
 
     var body: some View {
-        OnboardingShell(title: "About your home", subtitle: "Helps us match the right pro the first time.") {
-            OnboardingCard {
-                OptionGroup(title: "Home type", options: OnboardingOptions.homeTypes, selection: $store.draft.homeType, error: store.validationMessage(for: "homeType"))
-                OptionGroup(title: "Ownership status", options: OnboardingOptions.ownershipStatuses, selection: $store.draft.ownershipStatus, error: store.validationMessage(for: "ownershipStatus"))
-                OptionGroup(title: "Approximate year built", options: OnboardingOptions.yearBuiltRanges, selection: $store.draft.yearBuiltRange, optional: true)
-                OptionGroup(title: "Square footage", options: OnboardingOptions.squareFootageRanges, selection: $store.draft.squareFootageRange, optional: true)
-                OptionGroup(title: "Number of stories", options: OnboardingOptions.stories, selection: $store.draft.stories, optional: true)
+        ZStack {
+            AppPalette.canvas
+                .ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading, spacing: 18) {
+                        OnboardingProgressView(step: store.currentStep)
+
+                        VStack(alignment: .leading, spacing: 9) {
+                            Text("About your home")
+                                .font(.system(size: 28, weight: .bold))
+                                .tracking(-0.7)
+                                .foregroundStyle(AppPalette.text)
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.86)
+
+                            Text("Helps us match the right pro the first time.")
+                                .font(.system(size: 15.5, weight: .regular))
+                                .foregroundStyle(AppPalette.secondaryText)
+                                .lineSpacing(2)
+                        }
+
+                        VStack(spacing: 11) {
+                            BasicsOptionSection(title: "Home type", options: OnboardingOptions.homeTypes, selection: $store.draft.homeType, error: store.validationMessage(for: "homeType"))
+                            BasicsOptionSection(title: "Ownership status", options: OnboardingOptions.ownershipStatuses, selection: $store.draft.ownershipStatus, error: store.validationMessage(for: "ownershipStatus"))
+                            BasicsOptionSection(title: "Approximate year built", options: OnboardingOptions.yearBuiltRanges, selection: $store.draft.yearBuiltRange, optional: true)
+                            BasicsOptionSection(title: "Square footage", options: OnboardingOptions.squareFootageRanges, selection: $store.draft.squareFootageRange, optional: true)
+                            BasicsOptionSection(title: "Number of stories", options: OnboardingOptions.stories, selection: $store.draft.stories, optional: true)
+                        }
+                    }
+                    .frame(maxWidth: 390, alignment: .leading)
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 24)
+                    .padding(.top, 8)
+                    .padding(.bottom, 20)
+                }
+
+                OnboardingFooter(
+                    primaryTitle: "Continue",
+                    primaryDisabled: store.canContinue() == false,
+                    primaryLoading: false,
+                    primaryAction: { store.advance() },
+                    secondaryTitle: "Back",
+                    secondaryAction: { store.goBack() }
+                )
+                .frame(maxWidth: 390)
+                .padding(.horizontal, 24)
+                .padding(.top, 14)
+                .padding(.bottom, 18)
+                .background {
+                    LinearGradient(
+                        colors: [
+                            AppPalette.canvas.opacity(0),
+                            AppPalette.canvas,
+                            AppPalette.canvas
+                        ],
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .ignoresSafeArea()
+                }
+            }
+        }
+    }
+}
+
+struct BasicsOptionSection: View {
+    let title: String
+    let options: [String]
+    @Binding var selection: String
+    var error: String?
+    var optional = false
+
+    private let columns = [
+        GridItem(.adaptive(minimum: 86, maximum: 180), spacing: 8, alignment: .leading)
+    ]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 9) {
+            HStack(spacing: 6) {
+                Text(title)
+                    .font(.system(size: 10.5, weight: .semibold))
+                    .textCase(.uppercase)
+                    .tracking(0.55)
+                    .foregroundStyle(AppPalette.muted)
+
+                if optional {
+                    Text("Optional")
+                        .font(.system(size: 11.5, weight: .semibold))
+                        .foregroundStyle(AppPalette.secondaryText.opacity(0.72))
+                }
             }
 
-            OnboardingFooter(
-                primaryTitle: "Continue",
-                primaryDisabled: store.canContinue() == false,
-                primaryLoading: false,
-                primaryAction: { store.advance() },
-                secondaryTitle: "Back",
-                secondaryAction: { store.goBack() }
-            )
+            LazyVGrid(columns: columns, alignment: .leading, spacing: 8) {
+                ForEach(options, id: \.self) { option in
+                    BasicsOptionChip(title: option, isSelected: selection == option) {
+                        selection = option
+                    }
+                }
+            }
+
+            if let error {
+                Text(error)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(AppPalette.error)
+            }
         }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppPalette.surface, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(AppPalette.border, lineWidth: 1)
+        }
+    }
+}
+
+struct BasicsOptionChip: View {
+    let title: String
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .font(.system(size: 13.5, weight: .bold))
+                .foregroundStyle(isSelected ? .white : AppPalette.text)
+                .lineLimit(3)
+                .multilineTextAlignment(.center)
+                .minimumScaleFactor(0.86)
+                .frame(maxWidth: .infinity, minHeight: 38)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 6)
+                .background(isSelected ? AppPalette.brand : AppPalette.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .stroke(isSelected ? AppPalette.brand : AppPalette.border, lineWidth: 1)
+                }
+        }
+        .buttonStyle(.plain)
     }
 }
 

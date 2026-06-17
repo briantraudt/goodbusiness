@@ -9,7 +9,7 @@ struct ResolvedAddress: Equatable {
 }
 
 @MainActor
-final class LocationAddressResolver: NSObject, ObservableObject, @preconcurrency CLLocationManagerDelegate {
+final class LocationAddressResolver: NSObject, ObservableObject, CLLocationManagerDelegate {
     @Published private(set) var isLocating = false
     @Published private(set) var errorMessage: String?
     @Published private(set) var resolvedAddress: ResolvedAddress?
