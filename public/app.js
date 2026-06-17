@@ -39,6 +39,8 @@ function setupMotion() {
     ".section-header",
     ".moment-photo",
     ".moment-grid article",
+    ".projects-section .section-header",
+    ".project-card",
     ".philosophy-photo",
     ".philosophy-panel",
     ".principles-photo",
