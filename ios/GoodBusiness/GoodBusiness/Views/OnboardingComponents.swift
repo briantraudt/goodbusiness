@@ -140,21 +140,13 @@ struct OnboardingTextField: View {
                 .tracking(0.55)
                 .foregroundStyle(AppPalette.muted)
 
-            TextField(prompt, text: $text)
+            TextField("", text: $text, prompt: Text(prompt).foregroundStyle(AppPalette.faintText))
                 .keyboardType(keyboardType)
                 .textInputAutocapitalization(keyboardType == .emailAddress ? .never : .words)
                 .autocorrectionDisabled(keyboardType == .emailAddress)
                 .font(.system(size: 17, weight: .medium))
                 .foregroundStyle(AppPalette.text)
                 .padding(.top, 4)
-
-            if optional, text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                Text("Optional")
-                    .font(.system(size: 17, weight: .regular))
-                    .foregroundStyle(AppPalette.faintText)
-                    .padding(.top, -22)
-                    .allowsHitTesting(false)
-            }
 
             if let error {
                 Text(error)

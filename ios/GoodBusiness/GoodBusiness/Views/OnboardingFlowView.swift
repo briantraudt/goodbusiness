@@ -134,14 +134,23 @@ struct ContactStepView: View {
 
 struct AddressStepView: View {
     @EnvironmentObject private var store: OnboardingStore
+    @StateObject private var locationResolver = LocationAddressResolver()
 
     var body: some View {
         OnboardingShell(title: "Where's home?", subtitle: "We'll route every future repair here - no re-typing.") {
-            AddressMapPreview()
+            AddressMapPreview(
+                isLocating: locationResolver.isLocating,
+                errorMessage: locationResolver.errorMessage,
+                action: { locationResolver.requestCurrentAddress() }
+            )
+            .onChange(of: locationResolver.resolvedAddress) { _, resolvedAddress in
+                guard let resolvedAddress else { return }
+                applyResolvedAddress(resolvedAddress)
+            }
 
             OnboardingFieldGroup {
                 OnboardingTextField(title: "Street address", text: $store.draft.addressLine1, prompt: "123 Main St", error: store.validationMessage(for: "addressLine1"))
-                OnboardingTextField(title: "Unit / Apt / Suite", text: $store.draft.addressLine2, prompt: "Unit 2", optional: true)
+                OnboardingTextField(title: "Unit / Apt / Suite", text: $store.draft.addressLine2, prompt: "Optional", optional: true)
                 OnboardingTextField(title: "City", text: $store.draft.city, prompt: "Austin", error: store.validationMessage(for: "city"))
                 OnboardingTextField(title: "State", text: $store.draft.state, prompt: "TX", error: store.validationMessage(for: "state"))
                 OnboardingTextField(title: "ZIP code", text: $store.draft.zip, prompt: "78701", error: store.validationMessage(for: "zip"), keyboardType: .numberPad, showsDivider: false)
@@ -155,6 +164,21 @@ struct AddressStepView: View {
                 secondaryTitle: "Back",
                 secondaryAction: { store.goBack() }
             )
+        }
+    }
+
+    private func applyResolvedAddress(_ resolvedAddress: ResolvedAddress) {
+        if resolvedAddress.street.isEmpty == false {
+            store.draft.addressLine1 = resolvedAddress.street
+        }
+        if resolvedAddress.city.isEmpty == false {
+            store.draft.city = resolvedAddress.city
+        }
+        if resolvedAddress.state.isEmpty == false {
+            store.draft.state = resolvedAddress.state
+        }
+        if resolvedAddress.postalCode.isEmpty == false {
+            store.draft.zip = resolvedAddress.postalCode
         }
     }
 }
@@ -354,48 +378,71 @@ struct WelcomePoint: View {
 }
 
 struct AddressMapPreview: View {
+    let isLocating: Bool
+    let errorMessage: String?
+    let action: () -> Void
+
     var body: some View {
-        ZStack {
-            LinearGradient(
-                colors: [
-                    Color(red: 0.906, green: 0.878, blue: 0.812),
-                    Color(red: 0.847, green: 0.847, blue: 0.769)
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
+        VStack(alignment: .leading, spacing: 8) {
+            Button(action: action) {
+                ZStack {
+                    LinearGradient(
+                        colors: [
+                            Color(red: 0.906, green: 0.878, blue: 0.812),
+                            Color(red: 0.847, green: 0.847, blue: 0.769)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
 
-            GridPattern()
-                .stroke(.white.opacity(0.5), lineWidth: 1)
+                    GridPattern()
+                        .stroke(.white.opacity(0.5), lineWidth: 1)
 
-            VStack(spacing: 0) {
-                Image(systemName: "mappin.circle.fill")
-                    .font(.system(size: 31, weight: .semibold))
-                    .foregroundStyle(AppPalette.brand)
-                Spacer()
+                    VStack(spacing: 0) {
+                        if isLocating {
+                            ProgressView()
+                                .tint(AppPalette.brand)
+                                .controlSize(.regular)
+                        } else {
+                            Image(systemName: "mappin.circle.fill")
+                                .font(.system(size: 31, weight: .semibold))
+                                .foregroundStyle(AppPalette.brand)
+                        }
+                        Spacer()
+                    }
+                    .padding(.top, 46)
+
+                    HStack(spacing: 6) {
+                        Circle()
+                            .fill(isLocating ? AppPalette.muted : AppPalette.sage)
+                            .frame(width: 7, height: 7)
+                        Text(isLocating ? "Finding location" : "Use current location")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundStyle(isLocating ? AppPalette.muted : AppPalette.sage)
+                    }
+                    .padding(.horizontal, 11)
+                    .padding(.vertical, 6)
+                    .background(AppPalette.surface.opacity(0.92), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+                    .padding(.leading, 12)
+                    .padding(.bottom, 10)
+                }
+                .frame(height: 124)
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(AppPalette.border, lineWidth: 1)
+                }
             }
-            .padding(.top, 46)
+            .buttonStyle(.plain)
+            .disabled(isLocating)
 
-            HStack(spacing: 6) {
-                Circle()
-                    .fill(AppPalette.sage)
-                    .frame(width: 7, height: 7)
-                Text("Use current location")
+            if let errorMessage {
+                Text(errorMessage)
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(AppPalette.sage)
+                    .foregroundStyle(AppPalette.error)
+                    .padding(.horizontal, 2)
             }
-            .padding(.horizontal, 11)
-            .padding(.vertical, 6)
-            .background(AppPalette.surface.opacity(0.92), in: RoundedRectangle(cornerRadius: 9, style: .continuous))
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
-            .padding(.leading, 12)
-            .padding(.bottom, 10)
-        }
-        .frame(height: 124)
-        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay {
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(AppPalette.border, lineWidth: 1)
         }
     }
 }

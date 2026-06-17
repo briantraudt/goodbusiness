@@ -22,6 +22,7 @@
 		A8AA1CA1CEF3F69D3C677BB7 /* AppIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10C554DA1D796AAD534E3F3C /* AppIcons.swift */; };
 		A8E6EC83104B4CD6FB3EF460 /* ServiceRequestDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 810B361BB1F9354652C1F092 /* ServiceRequestDraft.swift */; };
 		AA0426DED455B51C060FE5F6 /* OnboardingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D28C2F90539FF9A86AB4C4E /* OnboardingStore.swift */; };
+		B18DE34C5A1B45404C489D63 /* LocationAddressResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A65D11946394A4A07F2237 /* LocationAddressResolver.swift */; };
 		B4308F732BBA54C15A21568C /* GoodBusinessApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FAC30C54C2F48413342C3C0 /* GoodBusinessApp.swift */; };
 		C9A6CC81650A2F1268A4E504 /* ServiceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1B2D5B29D774B81ED84CE9 /* ServiceStore.swift */; };
 		DA851A37743AFEE10366D735 /* OnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9915673044F3471DCFA39985 /* OnboardingTests.swift */; };
@@ -43,6 +44,7 @@
 		10C554DA1D796AAD534E3F3C /* AppIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcons.swift; sourceTree = "<group>"; };
 		1266C9E42E9CC5DC0DA6013F /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
 		1EA075FF9E142EB8819D1976 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		46A65D11946394A4A07F2237 /* LocationAddressResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationAddressResolver.swift; sourceTree = "<group>"; };
 		4BCC07B6F9B2E8E41A77C16C /* OnboardingComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingComponents.swift; sourceTree = "<group>"; };
 		4D28C2F90539FF9A86AB4C4E /* OnboardingStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingStore.swift; sourceTree = "<group>"; };
 		57CAD8D261D85707ADC3FE1D /* HomeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeService.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		327ABF5FD146A3E42F34FBD1 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				46A65D11946394A4A07F2237 /* LocationAddressResolver.swift */,
 				D44A13D6C0802E3A77CA2967 /* SupabaseRESTClient.swift */,
 			);
 			path = Services;
@@ -267,6 +270,7 @@
 				B4308F732BBA54C15A21568C /* GoodBusinessApp.swift in Sources */,
 				3155BC50B535F8ABD14A1953 /* HomeService.swift in Sources */,
 				3A4EC860C2345102A176D6EE /* HomeView.swift in Sources */,
+				B18DE34C5A1B45404C489D63 /* LocationAddressResolver.swift in Sources */,
 				7A618BEB5C053292C8D5B6B3 /* OnboardingComponents.swift in Sources */,
 				EE50C60E69B46155A3132805 /* OnboardingFlowView.swift in Sources */,
 				12F87BA643183C990548A1FC /* OnboardingModels.swift in Sources */,
