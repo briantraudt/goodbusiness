@@ -61,12 +61,17 @@ Social inputs are free/public only:
 - Hacker News RSS
 - Lobsters RSS
 - Lemmy RSS
+- Bogleheads forum Atom feed
+- MQL5 forum RSS
+- MacRumors forum RSS
+- Tesla Motors Club forum RSS
 - Product Hunt RSS
 - Slashdot RSS
+- Additional verified official public Discourse `latest.json` forums for Ubuntu Discourse, Home Assistant Community, Unreal Engine Forums, Mozilla Discourse, and the OpenWrt Forum
 - Stack Exchange public API for live `artificial-intelligence`, `machine-learning`, `cybersecurity`, and `cryptocurrency` questions
 - Reddit RSS when reachable; the job skips it if Reddit blocks the request
 
-Recent source expansion intentionally skipped public news-only feeds such as Investing.com RSS and the GitHub blog feed, timeout-prone or unstable community feeds such as OpenBB Community, the Coinbase CDP forum, the Sui forum, ENS governance, and BNB Chain governance, low-cadence or stale candidates such as Render Community and RedwoodJS Community, overlap-heavy crypto forums such as MakerDAO because the collector already ingests the Sky Ecosystem Forum, weak or low-signal candidates such as the AVAX forum, DNS-dead candidates such as `forum.aave.com`, `community.ollama.com`, `forum.pinecone.io`, `discuss.docker.com`, and `community.webull.com`, SSL-failing endpoints such as `community.robinhood.com`, and brittle forum RSS mappings such as Tesla Motors Club and MacRumors forum IDs. The collector prioritizes user-generated discussion or user-generated Q&A over headline syndication, support-site anti-bot pages, broad general chat, and endpoints that do not resolve cleanly without auth.
+Recent source expansion intentionally skipped public news-only feeds such as Investing.com RSS and the GitHub blog feed, timeout-prone or unstable community feeds such as OpenBB Community, the Coinbase CDP forum, the Sui forum, ENS governance, and BNB Chain governance, low-cadence or stale candidates such as Render Community and RedwoodJS Community, overlap-heavy crypto forums such as MakerDAO because the collector already ingests the Sky Ecosystem Forum, weak or low-signal candidates such as the AVAX forum, DNS-dead candidates such as `forum.aave.com`, `community.ollama.com`, `forum.pinecone.io`, `discuss.docker.com`, and `community.webull.com`, SSL-failing endpoints such as `community.robinhood.com`, and endpoints that do not resolve cleanly without auth such as Cloudflare Community's `latest.json`. The collector prioritizes user-generated discussion or user-generated Q&A over headline syndication, support-site anti-bot pages, broad general chat, and endpoints that do not resolve cleanly without auth.
 
 Manual run:
 
