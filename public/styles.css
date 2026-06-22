@@ -749,11 +749,12 @@ h2 {
 
 .contact-card strong {
   color: var(--ink);
-  font-size: clamp(24px, 3vw, 38px);
+  font-size: clamp(24px, 2.4vw, 32px);
   font-weight: 650;
   letter-spacing: -0.04em;
   line-height: 1;
-  overflow-wrap: anywhere;
+  overflow-wrap: normal;
+  white-space: nowrap;
 }
 
 .site-footer {
@@ -1067,6 +1068,11 @@ h2 {
 
   .contact-options {
     padding: 20px;
+  }
+
+  .contact-card strong {
+    overflow-wrap: anywhere;
+    white-space: normal;
   }
 
   .footer-links {
