@@ -296,41 +296,16 @@
           </p>
         </div>
 
-        <form class="contact-form" id="contact-form">
-          <div class="form-field">
-            <label for="contact-name">Your name</label>
-            <input
-              type="text"
-              id="contact-name"
-              name="name"
-              autocomplete="name"
-              placeholder="Jane Smith"
-            />
-          </div>
-          <div class="form-field">
-            <label for="contact-email">Email</label>
-            <input
-              type="email"
-              id="contact-email"
-              name="email"
-              autocomplete="email"
-              placeholder="you@example.com"
-              required
-            />
-          </div>
-          <div class="form-field">
-            <label for="contact-message">What do you want to build, and who should it help?</label>
-            <textarea
-              id="contact-message"
-              name="message"
-              maxlength="900"
-              placeholder="e.g. A tool that helps families manage medication routines, a better intake flow for care teams, an app that helps people make healthier choices..."
-              required
-            ></textarea>
-          </div>
-          <button type="submit">Start a good project</button>
-          <p class="form-note">We typically reply within one business day.</p>
-        </form>
+        <div class="contact-options" aria-label="Contact options">
+          <a class="contact-card" href="mailto:info@goodbusinesshq.com">
+            <span>Email</span>
+            <strong>info@goodbusinesshq.com</strong>
+          </a>
+          <a class="contact-card" href="sms:+15127745010">
+            <span>Text</span>
+            <strong>512-774-5010</strong>
+          </a>
+        </div>
       </section>
     </main>
 
@@ -345,7 +320,7 @@
         <a href="#approach">Approach</a>
         <a href="#contact">Contact</a>
       </div>
-      <a class="footer-email" href="mailto:hello@goodbusinesshq.com">hello@goodbusinesshq.com</a>
+      <a class="footer-email" href="mailto:info@goodbusinesshq.com">info@goodbusinesshq.com</a>
     </footer>
 
     <script type="module" src="/app.js"></script>

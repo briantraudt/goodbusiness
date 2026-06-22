@@ -264,8 +264,7 @@ h1 {
   margin-top: 28px;
 }
 
-.button,
-.contact-form button {
+.button {
   min-height: 48px;
   display: inline-flex;
   align-items: center;
@@ -283,19 +282,16 @@ h1 {
     transform 220ms ease;
 }
 
-.button:hover,
-.contact-form button:hover {
+.button:hover {
   transform: translateY(-1px);
 }
 
-.button.primary,
-.contact-form button {
+.button.primary {
   background: var(--ink);
   color: #ffffff;
 }
 
-.button.primary:hover,
-.contact-form button:hover {
+.button.primary:hover {
   background: #2a2724;
 }
 
@@ -712,7 +708,7 @@ h2 {
   line-height: 1.28;
 }
 
-.contact-form {
+.contact-options {
   display: grid;
   gap: 18px;
   border: 1px solid var(--line);
@@ -722,62 +718,42 @@ h2 {
   box-shadow: var(--shadow-md);
 }
 
-.form-field {
+.contact-card {
   display: grid;
   gap: 8px;
-}
-
-.contact-form label {
-  font-size: 14px;
-  font-weight: 620;
-  color: var(--ink);
-}
-
-.contact-form input,
-.contact-form textarea {
-  width: 100%;
-  min-height: 48px;
   border: 1px solid rgba(20, 18, 16, 0.14);
   border-radius: var(--radius-sm);
-  padding: 14px 16px;
+  padding: 22px;
   background: var(--page);
-  outline: none;
-  font-size: 16px;
-  line-height: 1.45;
   transition:
     border-color 200ms ease,
     background 200ms ease,
-    box-shadow 200ms ease;
+    box-shadow 200ms ease,
+    transform 200ms ease;
 }
 
-.contact-form textarea {
-  min-height: 128px;
-  resize: vertical;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-  border-color: rgba(155, 78, 47, 0.45);
+.contact-card:hover {
+  border-color: rgba(20, 18, 16, 0.34);
   background: var(--surface);
-  box-shadow: 0 0 0 3px rgba(155, 78, 47, 0.1);
+  box-shadow: 0 16px 36px rgba(20, 18, 16, 0.08);
+  transform: translateY(-2px);
 }
 
-.contact-form input::placeholder,
-.contact-form textarea::placeholder {
-  color: rgba(20, 18, 16, 0.42);
-}
-
-.contact-form button {
-  width: 100%;
-  margin-top: 4px;
-}
-
-.form-note {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.4;
+.contact-card span {
   color: var(--muted);
-  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.contact-card strong {
+  color: var(--ink);
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  overflow-wrap: anywhere;
 }
 
 .site-footer {
@@ -893,8 +869,7 @@ h2 {
   .principles-photo:hover img,
   .moment-grid article:hover,
   .project-card:hover,
-  .button:hover,
-  .contact-form button:hover {
+  .button:hover {
     transform: none;
   }
 }
@@ -985,8 +960,7 @@ h2 {
     padding-top: 24px;
   }
 
-  .button,
-  .contact-form button {
+  .button {
     width: 100%;
   }
 
@@ -1091,7 +1065,7 @@ h2 {
     font-size: 18px;
   }
 
-  .contact-form {
+  .contact-options {
     padding: 20px;
   }
 

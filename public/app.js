@@ -1,34 +1,7 @@
-const form = document.querySelector("#contact-form");
 const header = document.querySelector(".site-header");
 
 setupMotion();
 setupHeader();
-
-if (form) {
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const name = form.querySelector("#contact-name")?.value.trim() || "";
-    const email = form.querySelector("#contact-email")?.value.trim() || "";
-    const message = form.querySelector("#contact-message")?.value.trim() || "";
-
-    if (!email || !message) {
-      return;
-    }
-
-    const subject = encodeURIComponent("Good project inquiry");
-    const bodyParts = [
-      name ? `Name: ${name}` : "",
-      `Email: ${email}`,
-      "",
-      `Message:\n${message}`,
-    ];
-
-    const body = encodeURIComponent(bodyParts.join("\n"));
-
-    window.location.href = `mailto:hello@goodbusinesshq.com?subject=${subject}&body=${body}`;
-  });
-}
 
 function setupMotion() {
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -46,7 +19,7 @@ function setupMotion() {
     ".principles-photo",
     ".principles-content",
     ".begin-copy",
-    ".contact-form",
+    ".contact-options",
   ];
 
   const elements = document.querySelectorAll(revealItems.join(","));
