@@ -16,7 +16,7 @@ if (form) {
       return;
     }
 
-    const subject = encodeURIComponent("AI consulting inquiry");
+    const subject = encodeURIComponent("Good project inquiry");
     const bodyParts = [
       name ? `Name: ${name}` : "",
       `Email: ${email}`,
