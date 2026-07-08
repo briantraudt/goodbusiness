@@ -3,10 +3,9 @@
   --ink: #f7f2e8;
   --muted: rgba(247, 242, 232, 0.72);
   --bg: #07090c;
-  --cyan: #8fd7ff;
-  --blue: #5c7cff;
-  --rose: #ff7aa2;
-  --warm: #f0d28a;
+  --red: #ff3b30;
+  --orange: #ff8a1f;
+  --yellow: #ffd84d;
   --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -88,11 +87,11 @@ a {
   width: 92px;
   height: 6px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--cyan) 0%, var(--blue) 34%, var(--rose) 68%, var(--warm) 100%);
+  background: linear-gradient(90deg, var(--red) 0%, var(--orange) 48%, var(--yellow) 100%);
   box-shadow:
-    0 0 28px rgba(143, 215, 255, 0.34),
-    0 0 44px rgba(255, 122, 162, 0.22),
-    0 0 58px rgba(240, 210, 138, 0.18);
+    0 0 28px rgba(255, 59, 48, 0.28),
+    0 0 44px rgba(255, 138, 31, 0.2),
+    0 0 58px rgba(255, 216, 77, 0.16);
 }
 
 h1 {
@@ -123,12 +122,12 @@ h1 {
 
 .email-link:hover {
   color: var(--ink);
-  text-shadow: 0 0 22px rgba(143, 215, 255, 0.36);
+  text-shadow: 0 0 22px rgba(255, 138, 31, 0.34);
   transform: translateY(-1px);
 }
 
 .email-link:focus-visible {
-  outline: 3px solid rgba(143, 215, 255, 0.72);
+  outline: 3px solid rgba(255, 138, 31, 0.72);
   outline-offset: 8px;
 }
 
