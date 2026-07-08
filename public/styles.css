@@ -1,13 +1,12 @@
 :root {
   color-scheme: dark;
-  --ink: #f7f2e8;
-  --muted: rgba(247, 242, 232, 0.72);
-  --bg: #080908;
-  --bg-soft: #12120f;
-  --cyan: #61e6d6;
-  --coral: #ff6b4a;
-  --gold: #f3c542;
-  --violet: #8b6cff;
+  --ink: #f5f7ef;
+  --muted: rgba(245, 247, 239, 0.66);
+  --bg: #050605;
+  --graphite: #151713;
+  --steel: #242923;
+  --accent: #b7ff4a;
+  --accent-soft: #e6ff94;
   --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -25,10 +24,9 @@ body {
   margin: 0;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at 18% 28%, rgba(97, 230, 214, 0.28), transparent 28rem),
-    radial-gradient(circle at 82% 22%, rgba(255, 107, 74, 0.2), transparent 25rem),
-    radial-gradient(circle at 68% 86%, rgba(243, 197, 66, 0.14), transparent 28rem),
-    linear-gradient(135deg, #080908 0%, #15120e 42%, #0b1010 100%);
+    radial-gradient(circle at 76% 18%, rgba(183, 255, 74, 0.16), transparent 25rem),
+    radial-gradient(circle at 12% 88%, rgba(245, 247, 239, 0.08), transparent 28rem),
+    linear-gradient(135deg, #050605 0%, #12140f 48%, #080a08 100%);
   color: var(--ink);
   font-family: var(--font);
   -webkit-font-smoothing: antialiased;
@@ -59,20 +57,20 @@ a {
 }
 
 .hero::before {
-  opacity: 0.42;
+  opacity: 0.34;
   background-image:
-    linear-gradient(rgba(247, 242, 232, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(247, 242, 232, 0.08) 1px, transparent 1px);
-  background-size: 72px 72px;
+    linear-gradient(rgba(245, 247, 239, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 247, 239, 0.07) 1px, transparent 1px);
+  background-size: 64px 64px;
   mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), transparent 78%);
 }
 
 .hero::after {
   z-index: -1;
   background:
-    linear-gradient(120deg, rgba(8, 9, 8, 0.1), rgba(8, 9, 8, 0.9) 72%),
-    repeating-linear-gradient(90deg, rgba(247, 242, 232, 0.035) 0 1px, transparent 1px 18px);
-  mix-blend-mode: screen;
+    linear-gradient(110deg, rgba(5, 6, 5, 0.12), rgba(5, 6, 5, 0.92) 74%),
+    repeating-linear-gradient(90deg, rgba(245, 247, 239, 0.028) 0 1px, transparent 1px 19px);
+  mix-blend-mode: normal;
 }
 
 .ambient {
@@ -88,10 +86,10 @@ a {
   left: 50%;
   top: 50%;
   width: 150vmax;
-  height: 18vmax;
-  border: 1px solid rgba(247, 242, 232, 0.12);
-  background: linear-gradient(90deg, transparent, rgba(97, 230, 214, 0.2), rgba(255, 107, 74, 0.18), transparent);
-  filter: blur(0.5px);
+  height: 16vmax;
+  border: 1px solid rgba(245, 247, 239, 0.1);
+  background: linear-gradient(90deg, transparent, rgba(183, 255, 74, 0.18), rgba(245, 247, 239, 0.09), transparent);
+  filter: blur(0.3px);
   transform-origin: center;
   animation: drift 16s ease-in-out infinite alternate;
 }
@@ -101,7 +99,7 @@ a {
 }
 
 .beam-two {
-  background: linear-gradient(90deg, transparent, rgba(139, 108, 255, 0.14), rgba(243, 197, 66, 0.16), transparent);
+  background: linear-gradient(90deg, transparent, rgba(245, 247, 239, 0.08), rgba(183, 255, 74, 0.13), transparent);
   transform: translate(-50%, -50%) rotate(28deg);
   animation-delay: -5s;
 }
@@ -110,7 +108,7 @@ a {
   position: absolute;
   inset: -20% 0 auto;
   height: 34%;
-  background: linear-gradient(180deg, transparent, rgba(247, 242, 232, 0.08), transparent);
+  background: linear-gradient(180deg, transparent, rgba(183, 255, 74, 0.08), transparent);
   transform: translateY(-120%);
   animation: scan 7s ease-in-out infinite;
 }
@@ -132,10 +130,10 @@ a {
   width: 92px;
   height: 6px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--cyan), var(--coral), var(--gold));
+  background: linear-gradient(90deg, var(--ink), var(--accent), var(--accent-soft));
   box-shadow:
-    0 0 28px rgba(97, 230, 214, 0.42),
-    0 0 46px rgba(255, 107, 74, 0.26);
+    0 0 28px rgba(183, 255, 74, 0.3),
+    0 0 56px rgba(183, 255, 74, 0.16);
 }
 
 h1 {
@@ -145,6 +143,8 @@ h1 {
   font-weight: 900;
   line-height: 0.92;
   letter-spacing: 0;
+  color: var(--ink);
+  text-shadow: 0 18px 64px rgba(183, 255, 74, 0.12);
   text-wrap: balance;
 }
 
@@ -164,12 +164,12 @@ h1 {
 
 .email-link:hover {
   color: var(--ink);
-  text-shadow: 0 0 22px rgba(97, 230, 214, 0.42);
+  text-shadow: 0 0 22px rgba(183, 255, 74, 0.32);
   transform: translateY(-1px);
 }
 
 .email-link:focus-visible {
-  outline: 3px solid rgba(97, 230, 214, 0.72);
+  outline: 3px solid rgba(183, 255, 74, 0.72);
   outline-offset: 8px;
 }
 
@@ -212,9 +212,9 @@ h1 {
 @media (max-width: 640px) {
   body {
     background:
-      radial-gradient(circle at 24% 22%, rgba(97, 230, 214, 0.24), transparent 18rem),
-      radial-gradient(circle at 76% 74%, rgba(255, 107, 74, 0.18), transparent 18rem),
-      linear-gradient(135deg, #080908 0%, #15120e 52%, #0b1010 100%);
+      radial-gradient(circle at 72% 20%, rgba(183, 255, 74, 0.14), transparent 17rem),
+      radial-gradient(circle at 18% 82%, rgba(245, 247, 239, 0.08), transparent 18rem),
+      linear-gradient(135deg, #050605 0%, #12140f 52%, #080a08 100%);
   }
 
   .hero {
