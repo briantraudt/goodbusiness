@@ -99,6 +99,7 @@ Social inputs are free/public only:
 - Additional GitHub Discussions Atom feeds for ClickHouse, Drizzle ORM, Payload CMS, Strapi, and Apache SeaTunnel
 - Additional GitHub Discussions Atom feeds for Zed, OpenBB, Appwrite, NocoDB, RustDesk, and Immich
 - Additional GitHub Discussions Atom feeds for Google Gemini CLI, Hugging Face Smolagents, Microsoft MarkItDown, Delta Lake, and assistant-ui
+- Additional GitHub Discussions Atom feeds for Ruff, Sentry, and Firebase JS SDK
 - Google Trends public RSS for U.S. trending public attention
 - HotUKDeals public RSS for user-submitted retail-demand and deal-attention signals
 - RedFlagDeals and OzBargain public RSS feeds for user-submitted retail-demand and deal-attention signals
@@ -119,11 +120,13 @@ Social inputs are free/public only:
 - Additional verified public Discourse forums for Weaviate, OpenCV, EigenLayer, Flashbots, StakeWise, 1inch, Frax, Rari Foundation, Mantle, Portfolio123, and Seeed Studio
 - Additional verified public Discourse forums for CircleCI, Make, and Yearn Governance
 - Additional verified public Discourse forums for Let's Encrypt, Confluent Kafka, OctoPrint, Tron DAO, and Algorand
+- Additional verified public Discourse forums for Signal Users, Snapcraft, and openHAB
 - Additional GitHub Discussions Atom feeds for DuckDB, Expo, Nuxt, Dify, and Open Interpreter
 - Cybertruck Owners Club and Lucid Owners public RSS feeds for EV owner/product sentiment
 - Mach-E Forum, F-150 Lightning Forum, Kia EV Forum, Inside EVs Forum, and Ford Tremor Forum public RSS feeds for auto and EV owner/product sentiment
 - Chevy Bolt EV Forum, VW ID Talk, Hyundai Ioniq Forum, and Tesla Owners Online public RSS feeds for EV owner/product sentiment
 - Porsche Taycan Forum, BMW iX Forums, and Toyota RAV4 World public RSS feeds for owner/product sentiment
+- Bronco6G, F-150 Gen14, Toyota Tacoma 4G, and 5th Gen Ram public forum RSS feeds for owner/product sentiment
 - Android Central and SmallNetBuilder public forum RSS feeds for mobile-device and networking-hardware chatter
 - Wilders Security public forum RSS for cybersecurity and software-user chatter
 - Proxmox and Netgate public forum RSS feeds for infrastructure, homelab, and network-security product chatter
@@ -138,6 +141,8 @@ Recent source expansion intentionally skipped public news-only feeds such as Inv
 The latest expansion also skipped live-tested candidates that were blocked, stale, empty, HTML-only, duplicative, too broad/news-only, or unavailable under the collector fetch path: Rivian Forums RSS, Apple Discussions RSS guesses, Steam Deck Community RSS, Bimmerpost EV RSS, Apache Discourse, Prefect Linen, Prusa Forum `latest.json`, Rational Reminder Community, Playwright Discussions Atom, Astro Discussions Atom, NestJS Discussions Atom, Apache Iceberg Discussions Atom, Grafana k6 Discussions Atom, Garmin forum RSS, Intel community pages, Roborock Forum `latest.json`, Roku Community RSS, Unraid forum RSS, Zotero forum RSS, Fedora Discussion, Mattermost Forum, NVIDIA Developer Forum RSS duplicate, Framework Community RSS duplicate, Grafana Alloy Discussions, Apache Flink Discussions, ElasticSearch Discussions, Materialize Discussions, MetaFilter RSS, HN/Lobsters duplicate topic feeds, LinuxQuestions RSS, Product Hunt topic RSS, DPReview forum RSS, Tailscale Forum, Dune Community, Microsoft Fabric Community, Golem Network Forum, Homebrew Discourse, OpenAI status incidents JSON, and broad personal/blog feeds such as Marginal Revolution, AVC, MacObserver, and Mac news RSS.
 
 The 2026-07-08 expansion also skipped live-tested candidates that were blocked, duplicate, weak, or unavailable under the collector fetch path: Elastic Path Community `latest.json`, ApeCoin Governance `latest.json`, OpenMediaVault Forum `latest.json`, Open Collective Forum `latest.json`, iMore forum RSS, Android Forums root RSS, GitHub Discussions Atom feeds for Anthropic Claude Code, Temporal TypeScript SDK, Apache Spark, and Vercel AI Chatbot, duplicate public sources for Dfinity Forum, Kia EV Forum, Cybertruck Owners Club, and Microsoft Semantic Kernel, and low-signal or previously skipped crypto governance candidates such as Avalanche Forum and Mina Protocol Forum.
+
+The 2026-07-09 expansion also skipped live-tested candidates that were blocked, stale, duplicate, intermittent, or unavailable under the collector fetch path: Maverick Truck Club RSS and Jeep Gladiator Forum RSS returned 403 anti-bot pages, Mustang7G RSS and GolfMK8 RSS returned 404, 11th Gen Civic Forum RSS became timeout-prone during smoke testing, Hyundai Ioniq Forum was already covered, Tailscale Forum remained stale, category JSON feeds for ESPHome and Grafana Loki were not suitable as broad current-source additions, and GitHub Discussions Atom feeds for tldraw, Home Assistant Core, Hugging Face Transformers, OpenAI Agents JS, and Microsoft Playwright returned 404.
 
 Manual run:
 
