@@ -55,6 +55,7 @@ Social inputs are free/public only:
 - 4chan read-only JSON catalogs for public boards
 - DEV/Forem public article API
 - Public Discourse `latest.json` forums for Hugging Face, OpenAI Developer Community, and Polkadot
+- Coda Community public Discourse `latest.json` for user-generated SaaS, workflow, and product sentiment
 - Additional official public Discourse `latest.json` forums for Google AI Developers, PyTorch, Fly.io, Solana, Optimism, and Uniswap
 - Additional verified official public Discourse forums for DeepLearning.AI, NVIDIA Developer Forums, Vercel Community, Arbitrum Governance, Shopify Developer Community, Atlassian Developer Community, Aave Governance, the Safe Community, the Dfinity Forum, the Posit Community, Grafana Community, Ethereum Magicians, the Swift Forums, Python Discuss, Ray Discuss, HashiCorp Discuss, the Temporal Community, the Auth0 Community, the Cosmos Forum, the Celestia Forum, the Sky Ecosystem Forum, the Alpaca Forum, the Cursor Forum, Discuss Kubernetes, Elastic Discuss, the Rust Users Forum, and the Polygon Governance Forum
 - Hacker News Algolia public API
@@ -151,6 +152,8 @@ The 2026-07-09 expansion also skipped live-tested candidates that were blocked, 
 The 2026-07-10 expansion also skipped live-tested candidates that were unavailable, duplicate, or not enabled under the collector fetch path: EthStaker Community, BanklessDAO Forum, EthFinance Forum, and Ethereum Cat Herders failed during fetch; Cadillac Lyriq Forum RSS and Corvette E-Ray Forum RSS failed during fetch; OpenAI Codex GitHub Discussions was already covered; Vercel AI, Mastra, and Microsoft AI Agents for Beginners GitHub Discussions Atom feeds returned 404.
 
 The 2026-07-11 expansion also skipped live-tested candidates that were unavailable, stale, or did not expose public JSON under the collector fetch path: Ring Community, eero Community, Reolink Community, Snowflake Community, Alteryx Community, Samsung Developer Forum, Cloudron Forum, and Hetzner Community returned 404 or HTML instead of JSON; ZKsync, Immutable, Aerodrome, and Rivian community endpoints failed during fetch; ZK Nation, Shopify Community, Hubitat Community, and the tested Grafana endpoint were stale or already covered.
+
+The 2026-07-12 expansion added the live, no-auth Coda Community Discourse JSON endpoint. It skipped Base Research, Base Forum, Synthetix Forum, Euler Governance, and the tested Espressif endpoint because their hosts did not resolve; Zoom, Zapier, ElevenLabs, and the tested GoPro community endpoints returned HTML errors or required authentication; Meraki failed TLS validation; and PyTorch was already covered.
 
 Manual run:
 
