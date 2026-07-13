@@ -134,6 +134,9 @@ Social inputs are free/public only:
 - Wilders Security public forum RSS for cybersecurity and software-user chatter
 - Proxmox and Netgate public forum RSS feeds for infrastructure, homelab, and network-security product chatter
 - Sonos public community RSS for consumer-audio product sentiment
+- SmartThings public Discourse JSON for smart-home product and integration sentiment
+- Klaviyo, Zapier, and Zoom public community RSS feeds for SaaS customer demand, workflow, and product sentiment
+- Rivian Owners public forum RSS for EV-owner and vehicle-product sentiment
 - TrueNAS, Wyze, Homey, and Obsidian public Discourse `latest.json` forums for storage, smart-home, IoT, and productivity product sentiment
 - Reddit RSS when reachable; the job skips it if Reddit blocks the request
 - Manifold public search-market JSON endpoint for no-auth prediction-market sentiment around AI, semiconductors, macro, EVs, and crypto
@@ -154,6 +157,8 @@ The 2026-07-10 expansion also skipped live-tested candidates that were unavailab
 The 2026-07-11 expansion also skipped live-tested candidates that were unavailable, stale, or did not expose public JSON under the collector fetch path: Ring Community, eero Community, Reolink Community, Snowflake Community, Alteryx Community, Samsung Developer Forum, Cloudron Forum, and Hetzner Community returned 404 or HTML instead of JSON; ZKsync, Immutable, Aerodrome, and Rivian community endpoints failed during fetch; ZK Nation, Shopify Community, Hubitat Community, and the tested Grafana endpoint were stale or already covered.
 
 The 2026-07-12 expansion added the live, no-auth Coda Community Discourse JSON endpoint. It skipped Base Research, Base Forum, Synthetix Forum, Euler Governance, and the tested Espressif endpoint because their hosts did not resolve; Zoom, Zapier, ElevenLabs, and the tested GoPro community endpoints returned HTML errors or required authentication; Meraki failed TLS validation; and PyTorch was already covered.
+
+The 2026-07-13 expansion added live, no-auth SmartThings Discourse JSON plus Klaviyo, Zapier, Zoom, and Rivian Owners community RSS feeds. The working `/feed/topics` endpoints made Zapier and Zoom usable after earlier URL guesses failed. It skipped Honda Prologue and Espressif community endpoints because their hosts did not resolve, Blazer Forum and MicroPython feed guesses because they returned 404, ST Community and Snowflake JSON guesses because they returned HTML instead of public JSON, Esri and Databricks feeds because they returned 403, GM-Trucks because it timed out, Roku because it redirected to HTML, and the stale/empty Prusa feed. Live but overlapping JL Wrangler, GR86, and Equinox EV feeds were not added to keep this expansion focused.
 
 Manual run:
 
