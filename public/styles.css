@@ -186,10 +186,10 @@ a {
   min-height: 34px;
   color: #fff;
   font-family: var(--font);
-  font-size: clamp(1.58rem, 2.7vw, 2.65rem);
-  font-weight: 900;
-  letter-spacing: -0.035em;
-  line-height: 0.88;
+  font-size: clamp(1.24rem, 2.05vw, 2.05rem);
+  font-weight: 820;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
   text-shadow: 0 12px 34px rgba(0, 0, 0, 0.5);
   transition:
     color 180ms ease,
@@ -523,7 +523,7 @@ h1 {
   }
 
   .brand {
-    font-size: clamp(1.35rem, 8vw, 1.9rem);
+    font-size: clamp(1.18rem, 6vw, 1.55rem);
   }
 
   .hero-content {
