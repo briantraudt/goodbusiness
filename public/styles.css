@@ -504,29 +504,40 @@ h1 {
   }
 
   .hero-content {
+    display: flex;
+    flex-direction: column;
     gap: 32px;
     padding: 66px 0 30px;
   }
 
   .hero-copy {
-    gap: 18px;
+    display: contents;
+  }
+
+  .headline-break {
+    display: none;
   }
 
   h1 {
-    max-width: 11.5ch;
-    font-size: 3rem;
+    order: 1;
+    max-width: 100%;
+    font-size: clamp(2.72rem, 12vw, 3.04rem);
     line-height: 1;
   }
 
   .lede {
+    order: 2;
+    max-width: 100%;
     font-size: 1.07rem;
   }
 
   .hero-actions {
+    order: 4;
     align-items: stretch;
     flex-direction: column;
     gap: 14px;
     width: 100%;
+    padding-top: 4px;
   }
 
   .primary-link {
@@ -537,6 +548,7 @@ h1 {
   }
 
   .method-rail {
+    order: 3;
     gap: 20px;
   }
 
