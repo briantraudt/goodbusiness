@@ -6,7 +6,8 @@
   --bg: #07090c;
   --line: rgba(247, 242, 232, 0.18);
   --panel: rgba(7, 9, 12, 0.46);
-  --accent: #83f6d8;
+  --accent: #70d8c4;
+  --accent-soft: rgba(112, 216, 196, 0.14);
   --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -114,11 +115,15 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   min-height: 38px;
-  padding: 0 16px;
-  border: 1px solid rgba(247, 242, 232, 0.24);
-  border-radius: 999px;
-  background: rgba(7, 9, 12, 0.28);
+  padding: 0 14px 0 10px;
+  border: 1px solid rgba(247, 242, 232, 0.28);
+  border-radius: 4px;
+  background:
+    linear-gradient(135deg, rgba(247, 242, 232, 0.08), rgba(247, 242, 232, 0) 46%),
+    rgba(7, 9, 12, 0.3);
+  clip-path: polygon(9px 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%, 0 9px);
   color: rgba(247, 242, 232, 0.82);
   font-size: 0.88rem;
   font-weight: 720;
@@ -130,10 +135,19 @@ a {
     transform 180ms ease;
 }
 
+.button-mark {
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(112, 216, 196, 0.8);
+  background:
+    linear-gradient(90deg, transparent 45%, rgba(112, 216, 196, 0.75) 45% 55%, transparent 55%),
+    linear-gradient(0deg, transparent 45%, rgba(112, 216, 196, 0.75) 45% 55%, transparent 55%);
+}
+
 .hero-content {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
   align-items: end;
   gap: clamp(28px, 5vw, 84px);
   width: min(100%, 1360px);
@@ -162,23 +176,23 @@ a {
 }
 
 h1 {
-  max-width: 11.5ch;
+  max-width: 12.4ch;
   margin: 0;
-  font-size: clamp(4.4rem, 8.6vw, 8.9rem);
-  font-weight: 900;
-  line-height: 0.92;
+  font-size: clamp(3.7rem, 6.35vw, 6.9rem);
+  font-weight: 880;
+  line-height: 0.94;
   letter-spacing: 0;
   text-shadow: 0 24px 74px rgba(0, 0, 0, 0.52);
   text-wrap: balance;
 }
 
 .lede {
-  max-width: 690px;
+  max-width: 620px;
   margin: 0;
-  color: rgba(247, 242, 232, 0.82);
-  font-size: clamp(1.14rem, 1.8vw, 1.55rem);
+  color: rgba(247, 242, 232, 0.78);
+  font-size: clamp(1.05rem, 1.45vw, 1.32rem);
   font-weight: 560;
-  line-height: 1.38;
+  line-height: 1.43;
   text-shadow: 0 16px 44px rgba(0, 0, 0, 0.54);
 }
 
@@ -193,11 +207,15 @@ h1 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding: 0 20px;
-  border: 1px solid rgba(131, 246, 216, 0.58);
-  border-radius: 999px;
-  background: rgba(131, 246, 216, 0.14);
+  gap: 12px;
+  min-height: 50px;
+  padding: 0 18px 0 12px;
+  border: 1px solid rgba(112, 216, 196, 0.68);
+  border-radius: 5px;
+  background:
+    linear-gradient(135deg, rgba(112, 216, 196, 0.2), rgba(112, 216, 196, 0.04) 62%),
+    rgba(7, 9, 12, 0.42);
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
   color: var(--ink);
   font-size: 0.98rem;
   font-weight: 820;
@@ -212,9 +230,31 @@ h1 {
 }
 
 .primary-link:hover {
-  border-color: rgba(131, 246, 216, 0.86);
-  background: rgba(131, 246, 216, 0.2);
+  border-color: rgba(112, 216, 196, 0.92);
+  background:
+    linear-gradient(135deg, rgba(112, 216, 196, 0.26), rgba(112, 216, 196, 0.06) 62%),
+    rgba(7, 9, 12, 0.48);
   transform: translateY(-1px);
+}
+
+.button-icon {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(112, 216, 196, 0.66);
+  background: rgba(112, 216, 196, 0.1);
+}
+
+.button-icon svg,
+.capability-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke-width: 1.7;
 }
 
 .email-link {
@@ -245,13 +285,14 @@ h1 {
 
 .signal-panel {
   display: grid;
-  gap: 22px;
-  padding: 24px;
+  gap: 20px;
+  padding: 22px;
   border: 1px solid var(--line);
-  border-radius: 28px;
+  border-radius: 6px;
   background:
     linear-gradient(180deg, rgba(247, 242, 232, 0.08), rgba(247, 242, 232, 0.03)),
     var(--panel);
+  clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.44);
   backdrop-filter: blur(18px);
 }
@@ -266,8 +307,8 @@ h1 {
 
 .capability-list li {
   display: grid;
-  grid-template-columns: 38px minmax(0, 1fr);
-  column-gap: 14px;
+  grid-template-columns: 42px minmax(0, 1fr);
+  column-gap: 16px;
   row-gap: 5px;
   padding-bottom: 18px;
   border-bottom: 1px solid rgba(247, 242, 232, 0.14);
@@ -278,7 +319,25 @@ h1 {
   border-bottom: 0;
 }
 
-.capability-list span {
+.capability-icon {
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(247, 242, 232, 0.2);
+  background:
+    linear-gradient(135deg, rgba(112, 216, 196, 0.12), transparent 66%),
+    rgba(247, 242, 232, 0.03);
+  color: rgba(112, 216, 196, 0.9);
+}
+
+.capability-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.capability-list span:not(.capability-icon) {
   grid-row: span 2;
   color: var(--quiet);
   font-size: 0.78rem;
@@ -306,7 +365,7 @@ h1 {
   gap: 1px;
   overflow: hidden;
   border: 1px solid rgba(247, 242, 232, 0.13);
-  border-radius: 18px;
+  border-radius: 5px;
   background: rgba(247, 242, 232, 0.12);
 }
 
