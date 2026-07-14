@@ -182,15 +182,32 @@ a {
 .brand {
   display: inline-flex;
   align-items: center;
+  gap: 0;
   min-height: 34px;
-  color: rgba(243, 238, 231, 0.88);
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
+  color: #fff;
+  font-family: var(--font);
+  font-size: clamp(1.58rem, 2.7vw, 2.65rem);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 0.88;
   text-shadow: 0 12px 34px rgba(0, 0, 0, 0.5);
   transition:
     color 180ms ease,
     transform 180ms ease;
+}
+
+.brand-text {
+  display: inline-block;
+}
+
+.brand-dot {
+  display: inline-block;
+  margin-left: 0.04em;
+  color: var(--cyan);
+  line-height: 0.75;
+  text-shadow:
+    0 0 18px rgba(114, 210, 214, 0.36),
+    0 0 28px rgba(240, 138, 121, 0.18);
 }
 
 .brand:hover,
@@ -524,6 +541,10 @@ h1 {
     min-height: 36px;
     padding: 0 12px 0 9px;
     font-size: 0.76rem;
+  }
+
+  .brand {
+    font-size: clamp(1.35rem, 8vw, 1.9rem);
   }
 
   .hero-content {
