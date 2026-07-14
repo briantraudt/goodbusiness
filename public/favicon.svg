@@ -1,0 +1,17 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Good Business favicon">
+  <title>Good Business</title>
+  <defs>
+    <style>
+      .letter {
+        font-family: "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
+        font-size: 158px;
+        font-weight: 900;
+        letter-spacing: -18px;
+      }
+    </style>
+  </defs>
+  <text class="letter" x="20" y="178" fill="#F3EEE7">G</text>
+  <text class="letter" x="104" y="178" fill="#72D2D6">B</text>
+  <path d="M114 84H155V124H123V132H158V172H114V84Z" fill="#070B10"/>
+  <path d="M122 123H157" stroke="#72D2D6" stroke-width="8" stroke-linecap="square"/>
+</svg>
