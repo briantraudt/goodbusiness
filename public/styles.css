@@ -212,16 +212,14 @@ a {
 
 .brand:hover,
 .header-link:hover,
-.primary-link:hover,
-.email-link:hover {
+.primary-link:hover {
   color: var(--ink);
   transform: translateY(-1px);
 }
 
 .brand:focus-visible,
 .header-link:focus-visible,
-.primary-link:focus-visible,
-.email-link:focus-visible {
+.primary-link:focus-visible {
   outline: 3px solid rgba(114, 210, 214, 0.4);
   outline-offset: 6px;
 }
@@ -374,25 +372,6 @@ h1 {
 .button-icon svg {
   width: 22px;
   height: 22px;
-}
-
-.email-link {
-  width: fit-content;
-  max-width: 100%;
-  color: var(--muted);
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.2;
-  overflow-wrap: anywhere;
-  text-shadow: 0 12px 38px rgba(0, 0, 0, 0.52);
-  transition:
-    color 180ms ease,
-    text-shadow 180ms ease,
-    transform 180ms ease;
-}
-
-.email-link:hover {
-  text-shadow: 0 0 22px rgba(114, 210, 214, 0.26);
 }
 
 .method-rail {
@@ -569,10 +548,6 @@ h1 {
   .primary-link {
     min-height: 48px;
     padding-right: 15px;
-  }
-
-  .email-link {
-    font-size: 0.98rem;
   }
 
   .method-rail li {
