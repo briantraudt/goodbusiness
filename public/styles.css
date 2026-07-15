@@ -52,6 +52,11 @@ a {
   background-size: cover;
 }
 
+.hero-image::after {
+  content: "";
+  display: none;
+}
+
 .hero-shade {
   z-index: -1;
   background: linear-gradient(
@@ -176,14 +181,31 @@ h1 {
     padding: 24px;
   }
 
+  .hero-image {
+    background-position: 50% 16%;
+    background-size: cover;
+  }
+
+  .hero-image::after {
+    position: absolute;
+    inset: 72px 0 auto;
+    display: block;
+    height: min(48svh, 430px);
+    background-image: url("/assets/hero-team-at-table.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: scale(0.94);
+  }
+
   .hero-shade {
     background: linear-gradient(
       180deg,
-      rgba(19, 17, 16, 0.58) 0%,
-      rgba(19, 17, 16, 0.18) 30%,
-      rgba(19, 17, 16, 0.34) 55%,
-      rgba(19, 17, 16, 0.9) 88%,
-      rgba(19, 17, 16, 0.42) 100%
+      rgba(19, 17, 16, 0.48) 0%,
+      rgba(19, 17, 16, 0.14) 24%,
+      rgba(19, 17, 16, 0.58) 58%,
+      rgba(19, 17, 16, 0.94) 82%,
+      rgba(19, 17, 16, 0.96) 100%
     );
   }
 
