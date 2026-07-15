@@ -71,7 +71,7 @@ a {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  font-size: clamp(1.22rem, 1.65vw, 1.62rem);
+  font-size: clamp(1.05rem, 1.35vw, 1.34rem);
   font-weight: 850;
   letter-spacing: 0;
   line-height: 1;
@@ -82,13 +82,13 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 46px;
-  padding: 0 25px;
+  min-height: 42px;
+  padding: 0 21px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--glass);
   color: rgba(255, 250, 245, 0.88);
-  font-size: clamp(0.96rem, 1.05vw, 1.16rem);
+  font-size: clamp(0.86rem, 0.92vw, 1rem);
   font-weight: 740;
   backdrop-filter: blur(14px);
   box-shadow: 0 16px 50px rgba(0, 0, 0, 0.18);
@@ -109,14 +109,14 @@ a {
   position: absolute;
   left: clamp(24px, 4.4vw, 78px);
   bottom: clamp(32px, 6.6vh, 76px);
-  width: min(100% - 48px, 980px);
+  width: min(100% - 48px, 820px);
 }
 
 h1 {
-  max-width: 880px;
+  max-width: 760px;
   margin: 0;
   color: var(--white);
-  font-size: clamp(4.5rem, 7.2vw, 8.35rem);
+  font-size: clamp(3.45rem, 5.35vw, 6.4rem);
   font-weight: 900;
   letter-spacing: 0;
   line-height: 0.96;
@@ -125,10 +125,10 @@ h1 {
 }
 
 .hero-copy p {
-  max-width: 720px;
+  max-width: 620px;
   margin: clamp(20px, 3.4vh, 32px) 0 0;
   color: var(--soft);
-  font-size: clamp(1.12rem, 1.65vw, 1.75rem);
+  font-size: clamp(1rem, 1.28vw, 1.34rem);
   font-weight: 620;
   line-height: 1.45;
   text-shadow: 0 14px 50px rgba(0, 0, 0, 0.4);
@@ -145,11 +145,11 @@ h1 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 58px;
-  min-width: 210px;
-  padding: 0 30px;
+  min-height: 50px;
+  min-width: 176px;
+  padding: 0 25px;
   border-radius: 999px;
-  font-size: clamp(1rem, 1.2vw, 1.24rem);
+  font-size: clamp(0.9rem, 1vw, 1.05rem);
   font-weight: 830;
   transition: background 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
 }
@@ -195,9 +195,9 @@ h1 {
   }
 
   .book-link {
-    min-height: 40px;
+    min-height: 38px;
     padding: 0 15px;
-    font-size: 0.88rem;
+    font-size: 0.82rem;
   }
 
   .hero-copy {
@@ -208,13 +208,13 @@ h1 {
 
   h1 {
     max-width: 100%;
-    font-size: clamp(3rem, 14vw, 4.1rem);
-    line-height: 0.95;
+    font-size: clamp(2.6rem, 11.8vw, 3.35rem);
+    line-height: 1;
   }
 
   .hero-copy p {
     max-width: 92%;
-    font-size: clamp(1.05rem, 5vw, 1.34rem);
+    font-size: clamp(0.95rem, 4.2vw, 1.12rem);
     line-height: 1.45;
   }
 
@@ -225,7 +225,7 @@ h1 {
 
   .button {
     width: 100%;
-    min-height: 54px;
+    min-height: 48px;
   }
 }
 
@@ -239,6 +239,6 @@ h1 {
   }
 
   h1 {
-    font-size: clamp(2.72rem, 13vw, 3.35rem);
+    font-size: clamp(2.35rem, 11.5vw, 2.86rem);
   }
 }
