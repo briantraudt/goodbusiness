@@ -46,8 +46,8 @@ a {
 }
 
 .hero-image {
-  background-image: url("/assets/cosmic-cliffs-hero.jpg");
-  background-position: center 54%;
+  background-image: url("/assets/spacecraft-earth-hero.jpg");
+  background-position: center 44%;
   background-size: cover;
   transform: scale(1.02);
 }
