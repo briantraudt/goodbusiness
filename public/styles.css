@@ -46,7 +46,7 @@ a {
 }
 
 .hero-image {
-  background-image: url("/assets/earth-orbit-hero.jpg");
+  background-image: url("/assets/earth-from-orbit.png");
   background-position: center;
   background-size: cover;
   transform: scale(1.02);
