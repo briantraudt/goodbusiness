@@ -143,6 +143,7 @@ Social inputs are free/public only:
 - Manifold public search-market JSON endpoint for no-auth prediction-market sentiment around AI, semiconductors, macro, EVs, and crypto
 - Klipper public Discourse `latest.json` for 3D-printer hardware/product community chatter
 - Additional verified public Discourse forums for Decentraland, Frappe, Ghost, and Lawrence Systems
+- Additional verified public Discourse forums for WeWeb, Plasmic, Three.js, and ODK
 - Additional verified public Discourse forums for Trading 212, Roon, SmartThings, and Netdata
 - Traefik Community public Discourse JSON for cloud infrastructure and networking product sentiment
 - Grist, Activepieces, Latenode, and Directus public Discourse JSON for no-code, workflow-automation, database, CMS, and AI-product sentiment
@@ -166,6 +167,8 @@ The 2026-07-13 expansion added live, no-auth SmartThings Discourse JSON plus Kla
 The 2026-07-14 expansion added live, no-auth community RSS feeds for Airtable, Miro, Typeform, DocuSign, and Freshworks plus Traefik Community's public Discourse JSON endpoint. It skipped Monday.com because `/feed/topics` returned an HTML not-found page, GoPro because it required authentication, Dropbox because the feed URL returned 404, HubSpot because it returned a 403 anti-bot page, Canva and Pulumi because their tested hosts did not resolve, Snowflake because it redirected to login HTML, dbt because it redirected to a marketing page, Datadog and Hetzner because their tested JSON endpoints returned 404, and Traefik's live endpoint was preferred over weaker overlapping infrastructure candidates.
 
 The 2026-07-15 expansion added live, no-auth Discourse JSON endpoints for Grist, Activepieces, Latenode, and Directus. It skipped Prismic and Penpot because their latest-topic listings were stale, Beehiiv and Cloudron because their tested JSON endpoints returned 404, ClickUp because it returned HTML instead of JSON, and Cal.com, ESPHome, and OpenPhone because their tested hosts failed under the collector fetch path. GitHub Discussions Atom candidates for Cal.com, Activepieces, Maybe Finance, and Actual Budget returned 404; Directus's live community forum was preferred over its duplicative GitHub Discussions feed.
+
+The 2026-07-16 expansion added live, no-auth Discourse JSON endpoints for WeWeb, Plasmic, Three.js, and ODK. Each returned 30 topics with current-day activity under the collector user agent. It skipped Postman and Dgraph because their latest activity was stale, FlutterFlow and Outline because the tested JSON URLs returned or redirected to HTML, Gelato, ToolJet, Budibase, Prefect, Windmill, and Metabase because their tested hosts did not resolve, and Appsmith, Cloudron, NodeBB, and Zapier JSON because the endpoints returned 404. Zapier remains covered through its working public RSS feed; n8n, Make, Retool, Bubble, Neo4j, Jupyter, Frappe, Ghost, and Weaviate were already collected.
 
 Manual run:
 
