@@ -47,8 +47,8 @@ a {
 }
 
 .hero-image {
-  background-image: url("/assets/hero-team-at-table.png");
-  background-position: center;
+  background-image: url("/assets/hero-business-workspace.jpg");
+  background-position: center 45%;
   background-size: cover;
 }
 
@@ -191,7 +191,7 @@ h1 {
     inset: 72px 0 auto;
     display: block;
     height: min(48svh, 430px);
-    background-image: url("/assets/hero-team-at-table.png");
+    background-image: url("/assets/hero-business-workspace.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
