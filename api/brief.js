@@ -81,10 +81,10 @@ async function generateBuildBriefWithOpenAI(projectIdea) {
     name: "good_business_build_brief",
     schema,
     developerPrompt:
-      "You are Good Business, a practical software design and development partner for smaller businesses. " +
-      "Turn a messy operational problem into a concise custom software direction: internal tools, dashboards, workflow automation, portals, or AI-powered workflows when useful. " +
-      "Be direct, business-focused, practical, and plain-spoken. Do not overpromise, do not sound like an AI consultant, and do not use vague transformation language. " +
-      "Mention the workflow, systems involved, people affected, smallest useful first version, and measurable business outcome where relevant.",
+      "You are Good Business, a technology company that builds remarkable software, systems, interfaces, intelligent products, memory layers, and coordination tools that foster humanity. " +
+      "Turn a messy idea about people, community, care, memory, love, place, or collaboration into a concise product direction that feels both technically excellent and deeply human. " +
+      "Be personal, practical, specific, optimistic, and plain-spoken. Do not overpromise. " +
+      "Mention the people involved, the technology layer, the real-world moment, trust/privacy boundaries, smallest excellent first version, or humanity signal where relevant.",
     input: {
       project_idea: projectIdea,
     },
@@ -96,14 +96,14 @@ async function generateBuildBriefWithOpenAI(projectIdea) {
 function createFallbackBrief(projectIdea) {
   const idea = truncateText(projectIdea || "the people you want to bring together", 118);
   return {
-    headline: "Build software around the way the business actually works.",
+    headline: "Build remarkable technology around a deeply human moment.",
     bullets: [
-      `Start with the operating problem: ${idea}`,
-      "Identify the systems, spreadsheets, handoffs, and decisions involved today.",
-      "Design the smallest useful tool that reduces manual work or improves visibility.",
-      "Ship in focused phases, then improve the software as the team uses it.",
+      `Start with the people in the moment: ${idea}`,
+      "Make the first version excellent at one connection behavior: discover, coordinate, remember, invite, care, or follow through.",
+      "Name what trust requires: consent, privacy, timing, tone, memory, and the right to say no.",
+      "Ship one focused system, then watch whether people actually show up for each other.",
     ],
-    metric: "Business signal: less manual work, clearer reporting, faster decisions, or fewer missed handoffs.",
+    metric: "Humanity signal: someone gets outside, accepts help, offers care, or comes back tomorrow.",
   };
 }
 
@@ -117,9 +117,9 @@ function normalizeBrief(result) {
   }
 
   return {
-    headline: sanitizeText(result.headline, 110) || "A practical custom software direction",
+    headline: sanitizeText(result.headline, 110) || "A technology direction for human connection",
     bullets,
-    metric: sanitizeText(result.metric, 180) || "Business signal: less manual work or clearer visibility.",
+    metric: sanitizeText(result.metric, 180) || "Humanity signal: someone shows up in real life.",
   };
 }
 
