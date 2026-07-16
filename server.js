@@ -15,6 +15,7 @@ const mimeTypes = {
   ".ico": "image/x-icon",
   ".js": "application/javascript; charset=utf-8",
   ".json": "application/json; charset=utf-8",
+  ".png": "image/png",
   ".svg": "image/svg+xml; charset=utf-8",
 };
 
@@ -141,10 +142,10 @@ async function generateBuildBriefWithOpenAI(projectIdea) {
     name: "good_business_build_brief",
     schema,
     developerPrompt:
-      "You are Good Business, a small studio that builds warm technology for human connection: software, systems, interfaces, memory layers, and coordination products that help people show up for each other. " +
-      "Turn a messy idea about people, community, care, memory, love, place, or collaboration into a concise product direction. " +
-      "Be personal, practical, specific, optimistic, and plain-spoken. Do not overpromise. " +
-      "Mention the people involved, the technology layer, the real-world moment, trust/privacy boundaries, smallest first version, or connection signal where relevant.",
+      "You are Good Business, a practical software design and development partner for smaller businesses. " +
+      "Turn a messy operational problem into a concise custom software direction: internal tools, dashboards, workflow automation, portals, or AI-powered workflows when useful. " +
+      "Be direct, business-focused, practical, and plain-spoken. Do not overpromise, do not sound like an AI consultant, and do not use vague transformation language. " +
+      "Mention the workflow, systems involved, people affected, smallest useful first version, and measurable business outcome where relevant.",
     input: {
       project_idea: projectIdea,
     },
@@ -156,14 +157,14 @@ async function generateBuildBriefWithOpenAI(projectIdea) {
 function createFallbackBrief(projectIdea) {
   const idea = truncateText(projectIdea || "the people you want to bring together", 118);
   return {
-    headline: "Build the smallest technology that helps people show up.",
+    headline: "Build software around the way the business actually works.",
     bullets: [
-      `Start with the people in the moment: ${idea}`,
-      "Make the first version about one connection behavior: discover, coordinate, remember, invite, care, or follow through.",
-      "Name what trust requires: consent, privacy, timing, tone, memory, and the right to say no.",
-      "Ship one simple system, then watch whether people actually show up for each other.",
+      `Start with the operating problem: ${idea}`,
+      "Identify the systems, spreadsheets, handoffs, and decisions involved today.",
+      "Design the smallest useful tool that reduces manual work or improves visibility.",
+      "Ship in focused phases, then improve the software as the team uses it.",
     ],
-    metric: "Connection signal: someone gets outside, accepts help, offers care, or comes back tomorrow.",
+    metric: "Business signal: less manual work, clearer reporting, faster decisions, or fewer missed handoffs.",
   };
 }
 
@@ -177,9 +178,9 @@ function normalizeBrief(result) {
   }
 
   return {
-    headline: sanitizeText(result.headline, 110) || "A human-centered technology direction",
+    headline: sanitizeText(result.headline, 110) || "A practical custom software direction",
     bullets,
-    metric: sanitizeText(result.metric, 180) || "Connection signal: someone shows up in real life.",
+    metric: sanitizeText(result.metric, 180) || "Business signal: less manual work or clearer visibility.",
   };
 }
 
