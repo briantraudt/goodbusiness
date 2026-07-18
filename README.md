@@ -137,6 +137,8 @@ Social inputs are free/public only:
 - SmartThings public Discourse JSON for smart-home product and integration sentiment
 - Klaviyo, Zapier, and Zoom public community RSS feeds for SaaS customer demand, workflow, and product sentiment
 - Airtable, Miro, Typeform, DocuSign, and Freshworks public community RSS feeds for SaaS product demand, workflows, and customer sentiment
+- Esri ArcGIS Pro public community RSS for geospatial-software product demand and user sentiment
+- UiPath, KiCad, and Pimoroni public Discourse JSON feeds for enterprise automation, electronics design, and maker-hardware product sentiment
 - Rivian Owners public forum RSS for EV-owner and vehicle-product sentiment
 - TrueNAS, Wyze, Homey, and Obsidian public Discourse `latest.json` forums for storage, smart-home, IoT, and productivity product sentiment
 - Reddit RSS when reachable; the job skips it if Reddit blocks the request
@@ -172,6 +174,8 @@ The 2026-07-15 expansion added live, no-auth Discourse JSON endpoints for Grist,
 The 2026-07-16 expansion added live, no-auth Discourse JSON endpoints for WeWeb, Plasmic, Three.js, and ODK. Each returned 30 topics with current-day activity under the collector user agent. It skipped Postman and Dgraph because their latest activity was stale, FlutterFlow and Outline because the tested JSON URLs returned or redirected to HTML, Gelato, ToolJet, Budibase, Prefect, Windmill, and Metabase because their tested hosts did not resolve, and Appsmith, Cloudron, NodeBB, and Zapier JSON because the endpoints returned 404. Zapier remains covered through its working public RSS feed; n8n, Make, Retool, Bubble, Neo4j, Jupyter, Frappe, Ghost, and Weaviate were already collected.
 
 The 2026-07-17 expansion added live, no-auth Discourse JSON endpoints for Wappler, Glide, and Pipedream. All three returned valid topic listings with July 2026 activity under the collector user agent. It skipped dbt and Ghost because they were already covered; Airbyte and RudderStack because their endpoints returned TLS/proxy errors; Snowplow, Render, and Microsoft Fabric because they returned HTML or anti-bot pages instead of public feed data; and Framer, OpenPhone, Cal.com, and Looker because their tested hosts failed under the collector fetch path.
+
+The 2026-07-18 expansion added live, no-auth Discourse JSON endpoints for UiPath, KiCad, and Pimoroni plus Esri's official ArcGIS Pro community RSS feed. Each returned valid user-generated discussions with July 2026 activity under the collector user agent. It skipped Processing because its creative-coding discussion was less directly relevant to market and product signals, DigitalOcean, ESPHome, and Onshape because their tested hosts did not resolve, Splunk because it returned a 403 anti-bot page, and Rapid7 because its endpoint redirected to HTML instead of public feed data.
 
 Manual run:
 
