@@ -139,6 +139,8 @@ Social inputs are free/public only:
 - Airtable, Miro, Typeform, DocuSign, and Freshworks public community RSS feeds for SaaS product demand, workflows, and customer sentiment
 - Esri ArcGIS Pro public community RSS for geospatial-software product demand and user sentiment
 - UiPath, KiCad, and Pimoroni public Discourse JSON feeds for enterprise automation, electronics design, and maker-hardware product sentiment
+- Core Electronics and OpenEnergyMonitor public Discourse JSON feeds for maker electronics, embedded hardware, home energy, and heat-pump product sentiment
+- FreeCAD and VideoLAN public forum Atom feeds for open-source CAD and consumer-media software product sentiment
 - Rivian Owners public forum RSS for EV-owner and vehicle-product sentiment
 - TrueNAS, Wyze, Homey, and Obsidian public Discourse `latest.json` forums for storage, smart-home, IoT, and productivity product sentiment
 - Reddit RSS when reachable; the job skips it if Reddit blocks the request
@@ -176,6 +178,8 @@ The 2026-07-16 expansion added live, no-auth Discourse JSON endpoints for WeWeb,
 The 2026-07-17 expansion added live, no-auth Discourse JSON endpoints for Wappler, Glide, and Pipedream. All three returned valid topic listings with July 2026 activity under the collector user agent. It skipped dbt and Ghost because they were already covered; Airbyte and RudderStack because their endpoints returned TLS/proxy errors; Snowplow, Render, and Microsoft Fabric because they returned HTML or anti-bot pages instead of public feed data; and Framer, OpenPhone, Cal.com, and Looker because their tested hosts failed under the collector fetch path.
 
 The 2026-07-18 expansion added live, no-auth Discourse JSON endpoints for UiPath, KiCad, and Pimoroni plus Esri's official ArcGIS Pro community RSS feed. Each returned valid user-generated discussions with July 2026 activity under the collector user agent. It skipped Processing because its creative-coding discussion was less directly relevant to market and product signals, DigitalOcean, ESPHome, and Onshape because their tested hosts did not resolve, Splunk because it returned a 403 anti-bot page, and Rapid7 because its endpoint redirected to HTML instead of public feed data.
+
+The 2026-07-19 expansion added live, no-auth Discourse JSON endpoints for Core Electronics and OpenEnergyMonitor plus public Atom feeds for the FreeCAD and VideoLAN forums. All four returned current July 2026 user-generated discussions under the collector user agent. It skipped McNeel and 3D Slicer because their tested top listings were pinned or stale enough to weaken freshness confidence, and Element14 and Cadence because their feed endpoints returned 403 or login HTML instead of public feed data.
 
 Manual run:
 
