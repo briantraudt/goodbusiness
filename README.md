@@ -122,6 +122,7 @@ Social inputs are free/public only:
 - Additional verified public Discourse forums for CircleCI, Make, and Yearn Governance
 - Additional verified public Discourse forums for Let's Encrypt, Confluent Kafka, OctoPrint, Tron DAO, and Algorand
 - Additional verified public Discourse forums for Signal Users, Snapcraft, and openHAB
+- Particle, Hubitat, and Mattermost public Discourse JSON feeds for IoT hardware, smart-home, and enterprise-collaboration product sentiment
 - Additional GitHub Discussions Atom feeds for DuckDB, Expo, Nuxt, Dify, and Open Interpreter
 - Additional GitHub Discussions Atom feeds for Google ADK Python, Composio, and Agno
 - Cybertruck Owners Club and Lucid Owners public RSS feeds for EV owner/product sentiment
@@ -180,6 +181,8 @@ The 2026-07-17 expansion added live, no-auth Discourse JSON endpoints for Wapple
 The 2026-07-18 expansion added live, no-auth Discourse JSON endpoints for UiPath, KiCad, and Pimoroni plus Esri's official ArcGIS Pro community RSS feed. Each returned valid user-generated discussions with July 2026 activity under the collector user agent. It skipped Processing because its creative-coding discussion was less directly relevant to market and product signals, DigitalOcean, ESPHome, and Onshape because their tested hosts did not resolve, Splunk because it returned a 403 anti-bot page, and Rapid7 because its endpoint redirected to HTML instead of public feed data.
 
 The 2026-07-19 expansion added live, no-auth Discourse JSON endpoints for Core Electronics and OpenEnergyMonitor plus public Atom feeds for the FreeCAD and VideoLAN forums. All four returned current July 2026 user-generated discussions under the collector user agent. It skipped McNeel and 3D Slicer because their tested top listings were pinned or stale enough to weaken freshness confidence, and Element14 and Cadence because their feed endpoints returned 403 or login HTML instead of public feed data.
+
+The 2026-07-20 expansion added live, no-auth Discourse JSON endpoints for Particle, Hubitat, and Mattermost. Each returned 30 public topics with same-day activity under the collector user agent. It skipped Flipper because its latest visible activity was stale, Sophos, Zendesk, and Cloudron because their tested endpoints returned 404 or non-JSON responses, and Canon because its endpoint returned a 403 anti-bot page. Seeed Studio, Arduino, and openHAB were live but already covered.
 
 Manual run:
 
