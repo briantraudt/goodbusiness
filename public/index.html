@@ -12,8 +12,9 @@
     <link rel="alternate icon" href="/favicon.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://images.unsplash.com" />
     <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="preload" href="/assets/hero-business-workspace.jpg" as="image" />
+    <link rel="preload" href="https://images.unsplash.com/photo-1774600134168-b9ebd714e4e1?auto=format&fit=crop&fm=jpg&q=82&w=2400" as="image" />
     <link rel="stylesheet" href="/styles.css" />
     <script src="/motion.js" defer></script>
   </head>
@@ -25,19 +26,23 @@
 
     <main id="top">
       <section class="hero">
-        <div class="hero-image" aria-hidden="true"></div>
+        <div
+          class="hero-image"
+          style="background-image:url('https://images.unsplash.com/photo-1774600134168-b9ebd714e4e1?auto=format&fit=crop&fm=jpg&q=82&w=2400')"
+          aria-hidden="true"
+        ></div>
         <div class="hero-overlay" aria-hidden="true"></div>
         <div class="orb orb-one" aria-hidden="true"></div>
         <div class="orb orb-two" aria-hidden="true"></div>
 
         <div class="hero-content">
-          <p class="kicker reveal">Your business. Your software.</p>
-          <h1 class="reveal">
+          <p class="kicker">Your business. Your software.</p>
+          <h1>
             Stop fitting your business
             <span class="swap-wrap">to <span id="swap-word">their software.</span></span>
           </h1>
-          <p class="hero-copy reveal">We build one simple system around the way you already work.</p>
-          <a class="primary-link magnetic reveal" href="mailto:info@goodbusinesshq.com?subject=What%27s%20not%20working">
+          <p class="hero-copy">We build one simple system around the way you already work.</p>
+          <a class="primary-link magnetic" href="mailto:info@goodbusinesshq.com?subject=What%27s%20not%20working">
             Tell us what’s not working <span>↗</span>
           </a>
         </div>
