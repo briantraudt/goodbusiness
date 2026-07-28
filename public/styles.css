@@ -142,7 +142,7 @@ h1 strong {
   .brand { font-size: 15px; }
   .contact-link { padding: 8px 12px; font-size: 12px; }
 
-  .hero-image { background-position: 63% center; }
+  .hero-image { background-position: 74% center; }
   .hero-overlay {
     background:
       linear-gradient(180deg, rgba(9,9,8,.14) 0%, rgba(9,9,8,.2) 34%, rgba(9,9,8,.94) 100%),
@@ -153,9 +153,9 @@ h1 strong {
     inset: auto 14px max(46px, calc(env(safe-area-inset-bottom) + 32px));
   }
   h1 {
-    max-width: 94%;
+    max-width: 100%;
     margin-bottom: 16px;
-    font-size: clamp(2.35rem, 10.4vw, 3.55rem);
+    font-size: clamp(2.15rem, 9.2vw, 3.25rem);
     line-height: .91;
   }
 
@@ -196,7 +196,7 @@ h1 strong {
   .hero-content {
     inset-bottom: max(34px, calc(env(safe-area-inset-bottom) + 24px));
   }
-  h1 { font-size: clamp(2.12rem, 10vw, 3rem); }
+  h1 { font-size: clamp(1.95rem, 8.8vw, 2.8rem); }
   .pillars article,
   .pillars article + article { padding-inline: 6px; }
   .pillars h2 { font-size: .74rem; }
@@ -214,7 +214,7 @@ h1 strong {
   .hero-content {
     inset: auto 14px max(24px, calc(env(safe-area-inset-bottom) + 16px));
   }
-  h1 { font-size: clamp(2rem, 9vw, 2.8rem); margin-bottom: 12px; }
+  h1 { font-size: clamp(1.8rem, 8.2vw, 2.55rem); margin-bottom: 12px; }
   .pillars article,
   .pillars article + article { padding-top: 8px; }
   .pillars p { font-size: .56rem; }
