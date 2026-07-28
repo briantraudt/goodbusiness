@@ -115,7 +115,7 @@ h1 strong {
 .pillars article:last-child { border-right: 0; }
 .number {
   padding-top: 4px;
-  color: rgba(255,255,255,.48);
+  color: #fff;
   font-size: 11px;
   letter-spacing: .1em;
 }
