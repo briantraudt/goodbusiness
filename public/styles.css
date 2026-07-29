@@ -145,7 +145,14 @@ h1 strong {
   .brand { font-size: 15px; }
   .contact-link { padding: 8px 12px; font-size: 12px; }
 
-  .hero-image { background-position: 74% center; }
+  .hero-image {
+    background-color: #11100f;
+    background-position: 72% 18%;
+    background-repeat: no-repeat;
+    background-size: auto 82%;
+    transform: none;
+    animation: none;
+  }
   .hero-overlay {
     background:
       linear-gradient(180deg, rgba(9,9,8,.14) 0%, rgba(9,9,8,.2) 34%, rgba(9,9,8,.94) 100%),
