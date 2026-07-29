@@ -147,9 +147,9 @@ h1 strong {
 
   .hero-image {
     background-color: #11100f;
-    background-position: 72% 18%;
+    background-position: 55% center;
     background-repeat: no-repeat;
-    background-size: auto 82%;
+    background-size: cover;
     transform: none;
     animation: none;
   }
