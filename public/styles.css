@@ -254,6 +254,7 @@ button, input, textarea { font: inherit; }
 .direct-email span { color: var(--signal-light); }
 .contact-copy small { display: block; margin-top: 8px; color: #777771; font-size: 13px; }
 .contact-form { padding-top: 10px; }
+.website-field { position: absolute !important; left: -9999px !important; width: 1px !important; height: 1px !important; overflow: hidden !important; }
 .contact-form label { display: block; margin-bottom: 28px; }
 .contact-form label > span { display: block; margin-bottom: 8px; color: #82827c; font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
 .contact-form input, .contact-form textarea {
@@ -287,6 +288,8 @@ button, input, textarea { font: inherit; }
   transition: background .2s ease, transform .2s ease;
 }
 .contact-form button:hover { background: var(--signal-light); transform: translateY(-2px); }
+.contact-form button:disabled { cursor: wait; opacity: .65; transform: none; }
+.contact-form.is-success button { background: var(--signal-light); }
 .form-note { display: inline; margin-left: 14px; color: var(--soft); font-size: 12px; }
 footer {
   display: flex;
