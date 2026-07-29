@@ -17,45 +17,141 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <main class="hero" aria-labelledby="hero-title">
-      <div class="hero-image" aria-hidden="true"></div>
-      <div class="hero-overlay" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Good Business home">Good Business</a>
+      <a class="contact-link" href="#contact">Contact <span aria-hidden="true">↗</span></a>
+    </header>
 
-      <header class="site-header">
-        <a class="brand" href="/" aria-label="Good Business home">Good Business</a>
-        <a class="contact-link" href="mailto:info@goodbusinesshq.com?subject=Let%27s%20talk">Contact <span aria-hidden="true">↗</span></a>
-      </header>
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-image" aria-hidden="true"></div>
+        <div class="hero-overlay" aria-hidden="true"></div>
 
-      <div class="hero-content">
-        <h1 id="hero-title">
-          <span>Stop buying software.</span>
-          <strong>Start building your operating system.</strong>
-        </h1>
+        <div class="hero-content">
+          <h1 id="hero-title">
+            <span>Stop buying software.</span>
+            <strong>Start building your operating system.</strong>
+          </h1>
 
-        <section class="pillars" aria-label="How Good Business works">
-          <article>
-            <span class="number">01</span>
-            <div>
-              <h2>Map.</h2>
-              <p>See how work, data, and decisions flow.</p>
+          <div class="pillars" aria-label="How Good Business works">
+            <article>
+              <span class="number">01</span>
+              <div>
+                <h2>Map.</h2>
+                <p>See how work, data, and decisions flow.</p>
+              </div>
+            </article>
+            <article>
+              <span class="number">02</span>
+              <div>
+                <h2>Connect.</h2>
+                <p>Bring your people, software, and data together.</p>
+              </div>
+            </article>
+            <article>
+              <span class="number">03</span>
+              <div>
+                <h2>Build.</h2>
+                <p>Create one operating system around your business.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="services" aria-labelledby="services-title">
+        <div class="section-intro reveal">
+          <span class="eyebrow">Services</span>
+          <h2 id="services-title"><span>Licensed software rents you</span> someone else’s process.</h2>
+          <p>We replace the tools you rent with software built around how your business already works—and owned by you.</p>
+        </div>
+
+        <div class="service-grid">
+          <article class="service-card reveal">
+            <div class="service-visual visual-ownership" aria-hidden="true">
+              <div class="window-bar"><i></i><i></i><i></i><span>YOUR SYSTEM</span></div>
+              <div class="ownership-stack">
+                <div class="stack-row muted"><span>Generic workflow</span><b>Rented</b></div>
+                <div class="stack-row"><span>Your workflow</span><b>Owned</b></div>
+              </div>
+              <div class="ownership-stamp">YOURS</div>
             </div>
+            <span class="card-number">01</span>
+            <h3>Own it, don’t rent it.</h3>
+            <p>Cancel the subscriptions. We rebuild what you actually use as software you own.</p>
           </article>
-          <article>
-            <span class="number">02</span>
-            <div>
-              <h2>Connect.</h2>
-              <p>Bring your people, software, and data together.</p>
+
+          <article class="service-card reveal">
+            <div class="service-visual visual-ai" aria-hidden="true">
+              <div class="ai-orbit">
+                <div class="ai-core">AI</div>
+                <span class="orbit-node node-one">Quote</span>
+                <span class="orbit-node node-two">Schedule</span>
+                <span class="orbit-node node-three">Report</span>
+              </div>
+              <div class="automation-line"><span></span><span></span><span></span><b>Handled</b></div>
             </div>
+            <span class="card-number">02</span>
+            <h3>AI on the busywork.</h3>
+            <p>Quotes, intake, scheduling, reporting—handled. Your people keep the decisions.</p>
           </article>
-          <article>
-            <span class="number">03</span>
-            <div>
-              <h2>Build.</h2>
-              <p>Create one operating system around your business.</p>
+
+          <article class="service-card reveal">
+            <div class="service-visual visual-system" aria-hidden="true">
+              <div class="mini-sidebar"><b>GB</b><i></i><i></i><i></i></div>
+              <div class="mini-dashboard">
+                <div class="dash-top"><span>Company</span><b>Live</b></div>
+                <div class="dash-metrics"><i></i><i></i><i></i></div>
+                <svg viewBox="0 0 300 90" role="presentation">
+                  <path class="grid-line" d="M0 25H300M0 55H300M0 85H300" />
+                  <path class="chart-line" d="M2 74 C42 66, 54 73, 84 51 S137 58, 161 37 S212 47, 238 22 S276 28, 298 9" />
+                  <path class="chart-area" d="M2 74 C42 66,54 73,84 51 S137 58,161 37 S212 47,238 22 S276 28,298 9 V90 H2Z" />
+                </svg>
+              </div>
             </div>
+            <span class="card-number">03</span>
+            <h3>One system, whole company.</h3>
+            <p>Jobs, customers, cash, and people in one place that grows as you do.</p>
           </article>
-        </section>
-      </div>
+        </div>
+      </section>
+
+      <section class="contact-section" id="contact" aria-labelledby="contact-title">
+        <div class="contact-copy reveal">
+          <span class="eyebrow">Start here</span>
+          <h2 id="contact-title"><span>Tell us what you’re</span> paying for.</h2>
+          <p>Send your tool list. We’ll tell you what we’d replace first.</p>
+          <a class="direct-email" href="mailto:info@goodbusinesshq.com">info@goodbusinesshq.com <span aria-hidden="true">↗</span></a>
+          <small>Usually a reply within two business days.</small>
+        </div>
+
+        <form class="contact-form reveal" id="contact-form">
+          <label>
+            <span>Name</span>
+            <input name="name" type="text" autocomplete="name" placeholder="Your name" required />
+          </label>
+          <label>
+            <span>Company</span>
+            <input name="company" type="text" autocomplete="organization" placeholder="Where you work" required />
+          </label>
+          <label>
+            <span>Email</span>
+            <input name="email" type="email" autocomplete="email" placeholder="you@company.com" required />
+          </label>
+          <label>
+            <span>What’s not working?</span>
+            <textarea name="message" rows="4" placeholder="The tools you pay for, and the part of the business that hurts." required></textarea>
+          </label>
+          <button type="submit">Send it over <span aria-hidden="true">↗</span></button>
+          <p class="form-note" role="status" aria-live="polite"></p>
+        </form>
+      </section>
     </main>
+
+    <footer>
+      <a class="brand" href="/">Good Business</a>
+      <span>Software you own.</span>
+    </footer>
+    <script src="/app.js" defer></script>
   </body>
 </html>
