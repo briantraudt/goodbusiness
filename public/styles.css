@@ -248,7 +248,8 @@ button, input, textarea { font: inherit; }
   padding: clamp(100px, 11vw, 170px) 0;
   border-top: 1px solid var(--line);
 }
-.contact-copy h2 { margin-top: clamp(36px, 5vw, 72px); color: #858581; }
+.contact-copy h2 { margin-top: clamp(36px, 5vw, 72px); color: #858581; font-size: clamp(3.4rem, 4.65vw, 5.8rem); line-height: .92; }
+.contact-copy h2 span { white-space: nowrap; }
 .contact-copy > p { max-width: 480px; margin: 42px 0 74px; color: var(--muted); font-size: clamp(1rem, 1.4vw, 1.3rem); line-height: 1.55; }
 .direct-email { display: inline-flex; gap: 10px; font-size: 18px; font-weight: 600; }
 .direct-email span { color: var(--signal-light); }
@@ -344,6 +345,8 @@ footer span { color: #666660; font-size: 14px; }
   .service-visual { height: min(78vw, 340px); }
   .card-number { margin-top: 22px; }
   .contact-section { display: block; margin-inline: 16px; padding: 90px 0 100px; }
+  .contact-copy h2 { font-size: clamp(2.9rem, 12vw, 4.6rem); }
+  .contact-copy h2 span { white-space: normal; }
   .contact-copy > p { margin: 28px 0 48px; }
   .contact-form { margin-top: 74px; }
   .contact-form label { margin-bottom: 24px; }
