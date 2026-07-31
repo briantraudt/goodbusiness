@@ -484,3 +484,217 @@ footer span { color: #666660; font-size: 14px; }
   border-color: var(--card-accent);
   background: rgba(var(--card-accent-rgb), .08);
 }
+
+
+/* Plain-language business stories */
+.story-visual { padding: 0; }
+.story-heading {
+  position: absolute;
+  top: 8%;
+  left: 7%;
+  right: 7%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.2);
+}
+.story-heading span {
+  color: rgba(255,255,255,.68);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+}
+.story-heading b { color: #fff; font-size: 13px; font-weight: 600; text-align: right; }
+
+.business-sources {
+  position: absolute;
+  top: 29%;
+  left: 7%;
+  display: grid;
+  width: 31%;
+  gap: 7px;
+}
+.business-sources span {
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.23);
+  border-radius: 2px;
+  background: rgba(255,255,255,.07);
+  color: rgba(255,255,255,.88);
+  font-size: 10px;
+  font-weight: 550;
+}
+.story-merge {
+  position: absolute;
+  top: 32%;
+  left: 39%;
+  width: 19%;
+  height: 39%;
+}
+.story-merge i {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255,255,255,.35), var(--card-accent));
+  transform-origin: right;
+}
+.story-merge i:nth-child(1) { top: 3%; transform: rotate(25deg); }
+.story-merge i:nth-child(2) { top: 31%; transform: rotate(8deg); }
+.story-merge i:nth-child(3) { top: 59%; transform: rotate(-8deg); }
+.story-merge i:nth-child(4) { top: 87%; transform: rotate(-25deg); }
+.story-merge i::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--card-glow);
+  box-shadow: 0 0 10px var(--card-accent);
+}
+.story-result {
+  position: absolute;
+  top: 35%;
+  right: 7%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 36%;
+  min-height: 126px;
+  padding: 17px;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 70%, transparent);
+  border-left: 4px solid var(--card-accent);
+  border-radius: 3px;
+  background: rgba(var(--card-accent-rgb), .14);
+}
+.story-result small {
+  color: var(--card-glow);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .1em;
+}
+.story-result b { margin-top: 9px; color: #fff; font-size: 14px; line-height: 1.15; }
+.story-result em { margin-top: 9px; color: rgba(255,255,255,.7); font-size: 9px; font-style: normal; line-height: 1.35; }
+
+.plain-workflow, .improvement-loop {
+  position: absolute;
+  top: 26%;
+  left: 7%;
+  right: 7%;
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: stretch;
+}
+.plain-workflow > div, .improvement-loop > div {
+  position: relative;
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  align-items: center;
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 2px;
+  background: rgba(255,255,255,.065);
+}
+.plain-workflow > i, .improvement-loop > i {
+  height: 16px;
+  color: var(--card-glow);
+  font-size: 12px;
+  font-style: normal;
+  line-height: 16px;
+  text-align: center;
+  transform: rotate(90deg);
+}
+.plain-workflow div > span, .improvement-loop div > span {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.12);
+  color: rgba(255,255,255,.72);
+  font-size: 8px;
+}
+.plain-workflow div > b, .improvement-loop div > b {
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+}
+.plain-workflow div > em, .improvement-loop div > em {
+  color: rgba(255,255,255,.65);
+  font-size: 9px;
+  font-style: normal;
+  text-align: right;
+}
+.plain-workflow .owner-step, .improvement-loop .better-step {
+  border-color: color-mix(in srgb, var(--card-accent) 72%, transparent);
+  background: rgba(var(--card-accent-rgb), .17);
+  box-shadow: inset 3px 0 0 var(--card-accent);
+}
+.plain-workflow .owner-step > span, .improvement-loop .better-step > span {
+  background: var(--card-accent);
+  color: #fff;
+}
+.story-payoff {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: 19%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: rgba(255,255,255,.72);
+  font-size: 8px;
+  font-weight: 600;
+}
+.story-payoff i {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--card-glow);
+}
+
+.improvement-loop { top: 25%; }
+.improvement-note {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: 18%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 12px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--card-accent);
+  background: rgba(var(--card-accent-rgb), .12);
+}
+.improvement-note span {
+  grid-row: 1 / span 2;
+  align-self: center;
+  color: var(--card-glow);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+.improvement-note b { color: #fff; font-size: 10px; }
+.improvement-note em { color: rgba(255,255,255,.62); font-size: 8px; font-style: normal; }
+
+@media (max-width: 1200px) and (min-width: 981px) {
+  .story-heading b { font-size: 11px; }
+  .story-heading span { font-size: 8px; }
+  .story-result b { font-size: 12px; }
+  .plain-workflow div > em, .improvement-loop div > em { font-size: 8px; }
+}
+@media (max-width: 420px) {
+  .story-heading { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .story-heading b { text-align: left; }
+  .business-sources span { padding: 8px 9px; font-size: 9px; }
+  .story-result { min-height: 116px; padding: 12px; }
+  .story-result b { font-size: 12px; }
+  .plain-workflow div > em, .improvement-loop div > em { max-width: 110px; font-size: 8px; }
+  .story-payoff { gap: 6px; font-size: 7px; }
+}
