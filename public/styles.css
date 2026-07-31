@@ -257,6 +257,7 @@ button, input, textarea { font: inherit; }
 .contact-form { padding-top: 10px; }
 .website-field { position: absolute !important; left: -9999px !important; width: 1px !important; height: 1px !important; overflow: hidden !important; }
 .contact-form label { display: block; margin-bottom: 28px; }
+.contact-form label:last-of-type { margin-bottom: 12px; }
 .contact-form label > span { display: block; margin-bottom: 8px; color: #82827c; font-size: 10px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
 .contact-form input, .contact-form textarea {
   width: 100%;
@@ -278,8 +279,8 @@ button, input, textarea { font: inherit; }
   display: inline-flex;
   align-items: center;
   gap: 18px;
-  margin-top: 8px;
-  padding: 17px 24px;
+  margin-top: 0;
+  padding: 15px 26px;
   border: 0;
   border-radius: 999px;
   background: var(--white);
