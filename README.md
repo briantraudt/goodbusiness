@@ -43,9 +43,9 @@ If no API key is present, the site still runs and returns a practical local brie
 
 ## Social ARB Nightly Email
 
-`/api/social-arb-nightly` collects free/public social data overnight, distills the top three market conversations with OpenAI, saves the report to Supabase, and emails it through Resend.
+`/api/social-arb-nightly` collects public social signals, combines them with late-session price, volume, liquidity, catalyst, and risk evidence, ranks qualified close-to-next-open setups, saves the auditable report to Supabase, and emails it through Resend. It explicitly sends `NO TRADE` when no setup clears every hard gate.
 
-The Vercel cron in `vercel.json` runs on weekdays at `13:20 UTC` and `14:20 UTC`. The API handler only executes when a Vercel Cron request lands in the `8:15-8:25 AM America/Chicago` market-morning window, which keeps the run aligned across daylight-saving changes.
+The Vercel cron checks hourly at `:45` from `17:45-20:45 UTC` on weekdays. The API handler runs only 15 minutes before the applicable US market close in `America/Chicago`: normally `2:45 PM CT`, with DST, weekends, common US exchange holidays, and common early-close sessions handled in code.
 
 Social inputs are free/public only:
 

@@ -2,11 +2,7 @@
   "crons": [
     {
       "path": "/api/social-arb-nightly",
-      "schedule": "20 13 * * 1-5"
-    },
-    {
-      "path": "/api/social-arb-nightly",
-      "schedule": "20 14 * * 1-5"
+      "schedule": "45 17-20 * * 1-5"
     }
   ]
 }
