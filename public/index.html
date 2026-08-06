@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="preload" href="/assets/public:assets:hero-factory-dashboard.png" as="image" />
-    <link rel="stylesheet" href="/styles.css?v=20260806-6" />
+    <link rel="stylesheet" href="/styles.css?v=20260806-7" />
   </head>
   <body>
     <div class="noise" aria-hidden="true"></div>
@@ -103,6 +103,34 @@
       <section class="capabilities scroll-scene" aria-labelledby="capabilities-title">
         <div class="capabilities-heading scene-reveal reveal">
           <h2 id="capabilities-title">A business built to <span>understand.</span><br />A system built to <span>move.</span></h2>
+          <div class="foundation-graphic" aria-hidden="true">
+            <svg viewBox="0 0 560 500" role="presentation">
+              <defs>
+                <radialGradient id="foundation-orb" cx="50%" cy="50%" r="50%">
+                  <stop offset="0" stop-color="#55dcff" stop-opacity=".42" />
+                  <stop offset=".5" stop-color="#5b8cff" stop-opacity=".16" />
+                  <stop offset="1" stop-color="#5b8cff" stop-opacity="0" />
+                </radialGradient>
+                <linearGradient id="foundation-line" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#55dcff" />
+                  <stop offset="1" stop-color="#5b8cff" />
+                </linearGradient>
+              </defs>
+              <g class="signal-cloud">
+                <path d="M72 118 L172 250 L84 376 M72 118 L204 164 L172 250 L84 376 L206 342 M72 118 L84 376" />
+                <circle cx="72" cy="118" r="9" /><circle cx="84" cy="376" r="9" /><circle cx="204" cy="164" r="7" /><circle cx="206" cy="342" r="7" /><circle cx="172" cy="250" r="13" />
+              </g>
+              <circle class="understanding-halo" cx="238" cy="250" r="112" />
+              <circle class="understanding-core" cx="238" cy="250" r="58" />
+              <path class="motion-path" d="M296 250 C340 250 350 250 390 250" />
+              <g class="motion-planes">
+                <rect x="384" y="186" width="92" height="128" rx="24" />
+                <rect x="408" y="164" width="92" height="172" rx="28" />
+                <path d="M436 250 H512 M491 229 L512 250 L491 271" />
+              </g>
+              <circle class="foundation-pulse" r="7"><animateMotion dur="2.6s" repeatCount="indefinite" path="M172 250 C255 250 310 250 512 250" /></circle>
+            </svg>
+          </div>
         </div>
 
         <div class="capability-list">
@@ -178,6 +206,6 @@
       <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i></span><span>GOOD BUSINESS</span></a>
       <span>© 2026 Good Business</span>
     </footer>
-    <script type="module" src="/app.js?v=20260806-6"></script>
+    <script type="module" src="/app.js?v=20260806-7"></script>
   </body>
 </html>
