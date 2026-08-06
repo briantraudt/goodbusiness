@@ -25,7 +25,11 @@ const story = document.querySelector('.system-story');
 const storySticky = document.querySelector('.system-sticky');
 const storySteps = [...document.querySelectorAll('.story-step')];
 const parallaxItems = [...document.querySelectorAll('.parallax')];
+const scrollScenes = [...document.querySelectorAll('.scroll-scene')];
+const motionPanels = [...document.querySelectorAll('.motion-panel')];
 let ticking = false;
+
+if (!reducedMotion) root.classList.add('motion-ready');
 
 function updatePageMotion() {
   const scrollTop = window.scrollY;
@@ -34,11 +38,42 @@ function updatePageMotion() {
   header.classList.toggle('scrolled', scrollTop > 42);
 
   if (!reducedMotion) {
+    const heroProgress = Math.max(0, Math.min(1, scrollTop / Math.max(window.innerHeight, 1)));
+    root.style.setProperty('--hero-y', `${heroProgress * -75}px`);
+    root.style.setProperty('--hero-opacity', String(1 - heroProgress * 0.7));
+
     parallaxItems.forEach((item) => {
       const rect = item.parentElement.getBoundingClientRect();
       const speed = Number(item.dataset.speed || 0.1);
       const offset = Math.max(-window.innerHeight, Math.min(window.innerHeight, -rect.top));
       item.style.translate = `0 ${offset * speed}px`;
+    });
+
+    scrollScenes.forEach((scene) => {
+      const rect = scene.getBoundingClientRect();
+      const enter = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / (window.innerHeight * 0.72)));
+      const fullJourney = window.innerHeight + rect.height;
+      const progress = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / fullJourney));
+      const center = 1 - Math.abs(progress * 2 - 1);
+      scene.style.setProperty('--scene-opacity', String(0.15 + enter * 0.85));
+      scene.style.setProperty('--scene-y', `${(1 - enter) * 72}px`);
+      scene.style.setProperty('--scene-scale', String(0.965 + enter * 0.035));
+      scene.style.setProperty('--scene-blur', `${(1 - enter) * 10}px`);
+      scene.style.setProperty('--scene-line-width', `${enter * 88}vw`);
+      scene.style.setProperty('--scene-line-opacity', String(0.15 + Math.max(0, center) * 0.65));
+    });
+
+    motionPanels.forEach((panel) => {
+      const rect = panel.getBoundingClientRect();
+      const enter = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / (window.innerHeight * 0.68)));
+      panel.style.setProperty('--panel-opacity', String(0.12 + enter * 0.88));
+      panel.style.setProperty('--panel-y', `${(1 - enter) * 90}px`);
+      panel.style.setProperty('--panel-scale', String(0.96 + enter * 0.04));
+      panel.style.setProperty('--panel-blur', `${(1 - enter) * 8}px`);
+      panel.style.setProperty('--panel-x', `${(1 - enter) * 8}%`);
+      panel.style.setProperty('--panel-x-reverse', `${(1 - enter) * -8}%`);
+      panel.style.setProperty('--panel-visual-scale', String(0.94 + enter * 0.06));
+      panel.style.setProperty('--panel-clip', `${(1 - enter) * 18}%`);
     });
 
     if (story && window.innerWidth > 760) {
