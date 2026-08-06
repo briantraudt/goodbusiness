@@ -3,7 +3,10 @@ const root = document.documentElement;
 const header = document.querySelector('.site-header');
 const progress = document.querySelector('.scroll-progress i');
 
-requestAnimationFrame(() => document.body.classList.add('loaded'));
+requestAnimationFrame(() => {
+  root.classList.add('loaded');
+  document.body.classList.add('loaded');
+});
 
 const revealItems = document.querySelectorAll('.reveal');
 if ('IntersectionObserver' in window && !reducedMotion) {
