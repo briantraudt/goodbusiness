@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="preload" href="/assets/public:assets:hero-factory-dashboard.png" as="image" />
-    <link rel="stylesheet" href="/styles.css?v=20260806-5" />
+    <link rel="stylesheet" href="/styles.css?v=20260806-6" />
   </head>
   <body>
     <div class="noise" aria-hidden="true"></div>
@@ -65,7 +65,30 @@
 
           <div class="system-core" aria-hidden="true">
             <div class="core-rings"><i></i><i></i><i></i></div>
+            <svg class="system-flow" viewBox="0 0 600 600" role="presentation">
+              <defs>
+                <linearGradient id="flow-gradient" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#55dcff" />
+                  <stop offset=".55" stop-color="#5b8cff" />
+                  <stop offset="1" stop-color="#9b7cff" />
+                </linearGradient>
+              </defs>
+              <g class="flow-inputs">
+                <circle cx="92" cy="176" r="10" /><circle cx="68" cy="300" r="10" /><circle cx="92" cy="424" r="10" />
+                <path d="M102 176 C190 176 190 258 252 280" /><path d="M78 300 H250" /><path d="M102 424 C190 424 190 342 252 320" />
+              </g>
+              <g class="flow-outputs">
+                <path d="M348 280 C410 258 410 176 498 176" /><path d="M350 300 H522" /><path d="M348 320 C410 342 410 424 498 424" />
+                <circle cx="508" cy="176" r="10" /><circle cx="532" cy="300" r="10" /><circle cx="508" cy="424" r="10" />
+              </g>
+              <path class="flow-feedback" d="M508 424 C482 530 118 530 92 424" />
+              <circle class="flow-pulse pulse-one" r="6"><animateMotion dur="3.8s" repeatCount="indefinite" path="M78 300 H522" /></circle>
+              <circle class="flow-pulse pulse-two" r="5"><animateMotion dur="5.6s" repeatCount="indefinite" path="M508 424 C482 530 118 530 92 424" /></circle>
+            </svg>
             <div class="core-center"><b>Connected</b></div>
+            <div class="phase-icon phase-connect"><i></i><i></i><i></i></div>
+            <div class="phase-icon phase-act">→</div>
+            <div class="phase-icon phase-improve">↻</div>
           </div>
 
           <div class="story-steps">
@@ -155,6 +178,6 @@
       <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i></span><span>GOOD BUSINESS</span></a>
       <span>© 2026 Good Business</span>
     </footer>
-    <script type="module" src="/app.js?v=20260806-5"></script>
+    <script type="module" src="/app.js?v=20260806-6"></script>
   </body>
 </html>
