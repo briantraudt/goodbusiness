@@ -21,8 +21,6 @@ if ('IntersectionObserver' in window && !reducedMotion) {
   revealItems.forEach((item) => item.classList.add('visible'));
 }
 
-const story = document.querySelector('.system-story');
-const storySticky = document.querySelector('.system-sticky');
 const storySteps = [...document.querySelectorAll('.story-step')];
 const parallaxItems = [...document.querySelectorAll('.parallax')];
 const scrollScenes = [...document.querySelectorAll('.scroll-scene')];
@@ -76,14 +74,15 @@ function updatePageMotion() {
       panel.style.setProperty('--panel-clip', `${(1 - enter) * 18}%`);
     });
 
-    if (story && window.innerWidth > 760) {
-      const rect = story.getBoundingClientRect();
-      const travel = Math.max(1, story.offsetHeight - window.innerHeight);
-      const value = Math.max(0, Math.min(0.999, -rect.top / travel));
-      const active = Math.min(2, Math.floor(value * 3));
-      storySticky.dataset.active = String(active);
-      storySteps.forEach((step, index) => step.classList.toggle('active', index === active));
-    }
+    storySteps.forEach((step, index) => {
+      const rect = step.getBoundingClientRect();
+      const enter = Math.max(0, Math.min(1, (window.innerHeight - rect.top) / (window.innerHeight * 0.42)));
+      step.style.setProperty('--step-opacity', String(0.16 + enter * 0.84));
+      step.style.setProperty('--step-x', `${(1 - enter) * (26 + index * 8)}px`);
+      step.style.setProperty('--step-y', `${(1 - enter) * 22}px`);
+      step.style.setProperty('--step-blur', `${(1 - enter) * 7}px`);
+      step.style.setProperty('--step-glow', String(enter));
+    });
   }
   ticking = false;
 }
