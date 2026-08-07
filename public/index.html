@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="preload" href="/assets/public:assets:hero-factory-dashboard.png" as="image" />
-    <link rel="stylesheet" href="/styles.css?v=20260807-7" />
+    <link rel="stylesheet" href="/styles.css?v=20260807-8" />
   </head>
   <body>
     <div class="noise" aria-hidden="true"></div>
@@ -104,34 +104,33 @@
       <section class="capabilities scroll-scene" aria-labelledby="capabilities-title">
         <div class="capabilities-heading scene-reveal reveal">
           <h2 id="capabilities-title">A business built to <span>understand.</span><br />A system built to <span>move.</span></h2>
-          <div class="foundation-graphic" aria-hidden="true">
-            <svg class="foundation-flow" viewBox="0 0 700 520" role="presentation">
+          <div class="foundation-graphic foundation-v2" aria-hidden="true">
+            <svg class="foundation-v2-flow" viewBox="0 0 1200 360" role="presentation">
               <defs>
-                <linearGradient id="foundation-line" x1="0" y1="0" x2="1" y2="0">
+                <linearGradient id="foundation-v2-line" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0" stop-color="#55dcff" />
                   <stop offset="1" stop-color="#5b8cff" />
                 </linearGradient>
               </defs>
-              <g class="foundation-paths foundation-forward">
-                <path d="M126 126 C185 126 176 220 230 238" />
-                <path d="M126 215 H230" />
-                <path d="M126 304 C185 304 176 242 230 238" />
-                <path class="move-path" d="M430 238 H478" />
-                <path class="move-arrow" d="M464 228 L478 238 L464 248" />
+              <g class="v2-input-lines">
+                <path d="M160 82 C250 82 238 180 338 180" />
+                <path d="M160 180 H338" />
+                <path d="M160 278 C250 278 238 180 338 180" />
               </g>
-              <g class="foundation-feedback">
-                <path d="M595 385 C595 468 330 478 330 378" />
-                <path d="M319 392 L330 378 L341 392" />
+              <path class="v2-forward-line" d="M556 180 H695" />
+              <path class="v2-forward-arrow" d="M681 168 L695 180 L681 192" />
+              <g class="v2-feedback-line">
+                <path d="M1080 280 C1080 342 470 350 470 286" />
+                <path d="M459 299 L470 286 L481 299" />
               </g>
-              <circle class="foundation-pulse" r="4"><animateMotion dur="3.2s" repeatCount="indefinite" path="M126 126 C185 126 176 220 230 238" /></circle>
-              <circle class="foundation-pulse" r="4"><animateMotion dur="3.8s" repeatCount="indefinite" path="M126 304 C185 304 176 242 230 238" /></circle>
-              <circle class="foundation-action-pulse" r="5"><animateMotion dur="1.9s" repeatCount="indefinite" path="M430 238 H595" /></circle>
-              <circle class="foundation-feedback-pulse" r="4"><animateMotion dur="4.2s" repeatCount="indefinite" path="M595 385 C595 468 330 478 330 378" /></circle>
+              <circle class="v2-input-pulse" r="4"><animateMotion dur="3.1s" repeatCount="indefinite" path="M160 82 C250 82 238 180 338 180" /></circle>
+              <circle class="v2-input-pulse" r="4"><animateMotion dur="3.7s" repeatCount="indefinite" path="M160 278 C250 278 238 180 338 180" /></circle>
+              <circle class="v2-work-pulse" r="5"><animateMotion dur="2s" repeatCount="indefinite" path="M556 180 H1080" /></circle>
             </svg>
-            <div class="business-signals"><small>Your business</small><span>Customers</span><span>Operations</span><span>Finance</span></div>
-            <div class="understanding-engine"><small>Business understanding</small><b>Know what matters</b><div><span>Context</span><span>Patterns</span><span>Priorities</span></div></div>
-            <div class="movement-engine"><small>System in motion</small><b>Move work forward</b><ol><li><i>01</i>Prepare</li><li><i>02</i>Route</li><li><i>03</i>Complete</li></ol></div>
-            <div class="learning-loop"><i></i><span>Results improve the next decision</span></div>
+            <div class="v2-sources"><span>Customers</span><span>Operations</span><span>Finance</span></div>
+            <div class="v2-understand"><i></i><small>Understand</small><b>See the whole business.</b></div>
+            <div class="v2-move"><small>Move</small><div><span><i>01</i>Prepare</span><span><i>02</i>Route</span><span><i>03</i>Complete</span></div></div>
+            <div class="v2-feedback"><i></i>Every result improves what happens next.</div>
           </div>
         </div>
 
@@ -171,6 +170,6 @@
       <a class="brand wordmark" href="#top">Good Business</a>
       <span>© 2026 Good Business</span>
     </footer>
-    <script type="module" src="/app.js?v=20260807-7"></script>
+    <script type="module" src="/app.js?v=20260807-8"></script>
   </body>
 </html>
