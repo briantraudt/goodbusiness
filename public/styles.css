@@ -131,3 +131,5 @@ footer{display:grid;grid-template-columns:1fr auto;align-items:center;padding:35
 
 .contact-form button{justify-content:center;min-width:150px;padding:16px 32px;border-color:rgba(85,220,255,.55);background:linear-gradient(135deg,rgba(85,220,255,.24),rgba(91,140,255,.34));box-shadow:0 0 34px rgba(85,220,255,.1),inset 0 1px rgba(255,255,255,.12);transition:background .3s,border-color .3s,box-shadow .3s,transform .25s ease}
 .contact-form button:hover{border-color:rgba(85,220,255,.85);background:linear-gradient(135deg,rgba(85,220,255,.34),rgba(91,140,255,.46));box-shadow:0 0 42px rgba(85,220,255,.18),inset 0 1px rgba(255,255,255,.16)}
+.ai-core b{max-width:82px;font-size:12px;line-height:1.15;letter-spacing:.06em;text-align:center}
+@media(max-width:420px){.ai-core b{max-width:58px;font-size:9px}}
