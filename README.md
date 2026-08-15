@@ -101,6 +101,8 @@ Social inputs are free/public only:
 - Additional GitHub Discussions Atom feeds for Zed, OpenBB, Appwrite, NocoDB, RustDesk, and Immich
 - Additional GitHub Discussions Atom feeds for Google Gemini CLI, Hugging Face Smolagents, Microsoft MarkItDown, Delta Lake, and assistant-ui
 - Additional GitHub Discussions Atom feeds for Ruff, Sentry, and Firebase JS SDK
+- Head-Fi public RSS for consumer-audio product demand
+- ResetEra and GBAtemp public forum RSS for gaming hardware, software, and launch sentiment
 - Google Trends public RSS for U.S. trending public attention
 - HotUKDeals public RSS for user-submitted retail-demand and deal-attention signals
 - RedFlagDeals and OzBargain public RSS feeds for user-submitted retail-demand and deal-attention signals
