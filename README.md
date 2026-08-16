@@ -103,6 +103,7 @@ Social inputs are free/public only:
 - Additional GitHub Discussions Atom feeds for Ruff, Sentry, and Firebase JS SDK
 - Head-Fi public RSS for consumer-audio product demand
 - ResetEra and GBAtemp public forum RSS for gaming hardware, software, and launch sentiment
+- Garmin, Zwift, and Peloton public forum RSS feeds for wearables, connected-fitness hardware, subscriptions, and product reliability sentiment
 - Google Trends public RSS for U.S. trending public attention
 - HotUKDeals public RSS for user-submitted retail-demand and deal-attention signals
 - RedFlagDeals and OzBargain public RSS feeds for user-submitted retail-demand and deal-attention signals
@@ -216,6 +217,8 @@ The 2026-08-12 expansion added Creality's and PlatformIO's official live, no-aut
 The 2026-08-13 expansion added Sui Developer Forum and Stacks Forum public Discourse JSON, the Stellar Protocol official GitHub Discussions Atom feed, and Fortinet Community RSS. The endpoints returned 30 Sui topics, 30 Stacks topics, 25 Stellar discussions, and 100 Fortinet topics without authentication; a live collector smoke test normalized three items from every new channel. Sui is now usable after failing an earlier collector-path check. Proxmox RSS was live but skipped because that forum is already collected.
 
 The 2026-08-14 expansion added Spiceworks Community's live, no-auth RSS feed. It returned current same-day user-generated enterprise IT discussions under the collector user agent, adding practitioner sentiment around hardware, software, security, infrastructure, and operational incidents. Windsurf and Bolt community endpoints failed under the collector fetch path, Replit redirected to HTML, Lovable returned 404, ServiceNow timed out, Alteryx returned a 403 anti-bot page, and Shopify's tested RSS returned 404. Make, n8n, Obsidian, Proxmox, and Elastic were live but already covered; eufy's live feed remained too low-context, and Monero Space plus the tested Optimism and Arbitrum listings were stale.
+
+The 2026-08-16 expansion added live, no-auth RSS feeds for Garmin Forums, Zwift Forums, and Peloton Forum. All three returned HTTP 200 and current same-day user discussions under the collector user agent, adding consumer sentiment around wearables, cycling and fitness software, connected hardware, subscriptions, integrations, and reliability. It skipped DPReview and COROS because they returned 403 anti-bot pages, DJI because its RSS endpoint returned an empty 202 response, Fitbit because its URL redirected to HTML, and Steam Community because the tested XML was an official announcement feed rather than user discussion. Trading 212, Sonos, Framework, OpenWrt, Home Assistant, Obsidian, and Tailscale were live but already covered; Pentax, Nikonites, and FujiX were live but their current feeds were dominated by photo-sharing threads rather than product or market signals.
 
 Manual run:
 
