@@ -195,6 +195,9 @@ Social inputs are free/public only:
 - Celonis Community's official public RSS for process mining, enterprise automation, data integration, machine learning, and product-adoption sentiment
 - Gainsight Community's official public RSS for customer-success operations, adoption, lifecycle automation, SDK, and product-friction sentiment
 - Gong Visioneers Community's official public RSS for revenue-intelligence adoption, sales workflows, integrations, compliance, and product sentiment
+- Arm Community's official Architectures and Processors forum RSS for CPU architecture, Cortex, AMBA, SoC, FPGA, and embedded-product discussion
+
+The 2026-09-01 expansion added Arm Community's official live, no-auth Architectures and Processors forum RSS. It returned HTTP 200 XML with current public processor and SoC discussions under the collector user agent, including Cortex-M documentation, Agilex 5 AXI throughput, and ADIv5 debug-interface questions. Other live-tested candidates were skipped: Adobe and Roku redirected to HTML; Broadcom and IBM returned HTML rather than feeds; Splunk, NXP, and Infineon returned 403 anti-bot pages; Tableau returned HTTP 500; QuickBooks returned HTTP 502; Xilinx failed TLS validation; and other Arm forum feeds were stale or materially less current.
 
 The 2026-08-31 expansion added Gainsight Community and Gong Visioneers Community official live, no-auth RSS feeds. Each returned 100 public user discussions under the collector user agent. Gainsight had same-day customer-success automation, community-analytics, SDK, AI-lifecycle, and product-support activity; Gong had current adoption measurement, keyword tracking, integrations, recording-consent, and stakeholder-buy-in discussion. Tesla Energy's public forum RSS was also live with 20 entries but skipped because the broader Tesla Motors Club feed is already collected, so adding the category feed would duplicate source evidence.
 
