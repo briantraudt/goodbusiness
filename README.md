@@ -105,6 +105,7 @@ Social inputs are free/public only:
 - Additional GitHub Discussions Atom feeds for Zed, OpenBB, Appwrite, NocoDB, RustDesk, and Immich
 - Additional GitHub Discussions Atom feeds for Google Gemini CLI, Hugging Face Smolagents, Microsoft MarkItDown, Delta Lake, and assistant-ui
 - Additional GitHub Discussions Atom feeds for Ruff, Sentry, and Firebase JS SDK
+- Additional GitHub Discussions Atom feeds for Mem0 and LlamaIndex
 - Head-Fi public RSS for consumer-audio product demand
 - ResetEra and GBAtemp public forum RSS for gaming hardware, software, and launch sentiment
 - Garmin, Zwift, and Peloton public forum RSS feeds for wearables, connected-fitness hardware, subscriptions, and product reliability sentiment
@@ -208,6 +209,8 @@ Social inputs are free/public only:
 - Automation Anywhere Community's official public RSS for enterprise automation, AI agents, process execution, platform operations, and product-friction sentiment
 - MikroTik Community Forum's official public RSS for networking hardware, RouterOS, wireless, routing, and product-reliability sentiment
 - PagerDuty Community's official public RSS for incident response, Rundeck, automation, integrations, and operations-product sentiment
+
+The 2026-09-10 expansion added live, no-auth GitHub Discussions Atom feeds for Mem0 and LlamaIndex. Each returned 25 public discussions under the collector user agent with same-day activity about AI-agent memory, memory lifecycle and observability, retrieval and indexing, embeddings, model integrations, and agentic recovery. Langflow's GitHub Discussions feed was live but last active five days earlier. Tested feeds for OpenAI Agents JS, Vercel AI SDK, Pydantic AI, Astral uv, VS Code Copilot Chat, n8n, OpenAI Skills, OpenAI Cookbook, Ollama, Chroma, Weaviate, LangGraph, Bolt, Continue, OpenHands, Claude Code, and OpenAI Realtime Agents returned 404, so none were added.
 
 The 2026-09-08 expansion added MikroTik Community Forum and PagerDuty Community official live, no-auth RSS feeds. MikroTik returned 30 public topics with same-day RouterOS upgrade, hardware diagnostics, routing, wireless, and network-operations discussion. PagerDuty returned 100 public topics and had resumed same-day Rundeck activity after being four days stale during the prior run. Genesys Developer Forum and Genesys Community returned HTML instead of RSS; Google Developer Forums returned valid JSON but its newest topic was from February; Figma and ElevenLabs returned 404 pages; Railway redirected to HTML; Intuit returned HTTP 502; and tested Framer, Render, OpenRouter, Langflow, and Looker community endpoints failed to fetch, so none were added.
 
