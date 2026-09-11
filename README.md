@@ -106,6 +106,7 @@ Social inputs are free/public only:
 - Additional GitHub Discussions Atom feeds for Google Gemini CLI, Hugging Face Smolagents, Microsoft MarkItDown, Delta Lake, and assistant-ui
 - Additional GitHub Discussions Atom feeds for Ruff, Sentry, and Firebase JS SDK
 - Additional GitHub Discussions Atom feeds for Mem0 and LlamaIndex
+- Microsoft Agent Framework and Microsoft Foundry Local official GitHub Discussions Atom feeds for agent-runtime, orchestration, local-model, accelerator, and on-device AI product sentiment
 - Head-Fi public RSS for consumer-audio product demand
 - ResetEra and GBAtemp public forum RSS for gaming hardware, software, and launch sentiment
 - Garmin, Zwift, and Peloton public forum RSS feeds for wearables, connected-fitness hardware, subscriptions, and product reliability sentiment
@@ -209,6 +210,8 @@ Social inputs are free/public only:
 - Automation Anywhere Community's official public RSS for enterprise automation, AI agents, process execution, platform operations, and product-friction sentiment
 - MikroTik Community Forum's official public RSS for networking hardware, RouterOS, wireless, routing, and product-reliability sentiment
 - PagerDuty Community's official public RSS for incident response, Rundeck, automation, integrations, and operations-product sentiment
+
+The 2026-09-11 expansion added live, no-auth official GitHub Discussions Atom feeds for Microsoft Agent Framework and Microsoft Foundry Local. Each returned 25 public discussions under the collector user agent. Agent Framework had activity within the last day about run replay, persistence, context compaction, request policies, tool approvals, and MCP workflows; Foundry Local had same-day local model execution and NVIDIA CUDA activity alongside recent model-catalog, Gemma, Fara, and Qwen requests. Google ADK Go was live but two days less current; OpenAI Evals and Cloudflare Agents were live but lower cadence; Google ADK JS was stale; GitHub Community was current but broad and noisy; Windsurf and OpenRouter community hosts failed to fetch; Lovable returned 404; and Linear returned HTML instead of a feed, so none were added.
 
 The 2026-09-10 expansion added live, no-auth GitHub Discussions Atom feeds for Mem0 and LlamaIndex. Each returned 25 public discussions under the collector user agent with same-day activity about AI-agent memory, memory lifecycle and observability, retrieval and indexing, embeddings, model integrations, and agentic recovery. Langflow's GitHub Discussions feed was live but last active five days earlier. Tested feeds for OpenAI Agents JS, Vercel AI SDK, Pydantic AI, Astral uv, VS Code Copilot Chat, n8n, OpenAI Skills, OpenAI Cookbook, Ollama, Chroma, Weaviate, LangGraph, Bolt, Continue, OpenHands, Claude Code, and OpenAI Realtime Agents returned 404, so none were added.
 
