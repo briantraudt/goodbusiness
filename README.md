@@ -49,6 +49,9 @@ The Vercel cron checks hourly at `:45` from `17:45-20:45 UTC` on weekdays. The A
 
 Social inputs are free/public only:
 
+- Federal Reserve press-release RSS and Bureau of Labor Statistics indicator RSS for official macro, rates, inflation, and labor catalysts
+- SEC and CFTC press-release RSS for official securities, enforcement, market-structure, derivatives, and crypto-regulatory catalysts
+- U.S. Energy Information Administration Today in Energy RSS for official oil, gas, electricity, production, and demand catalysts
 - Stocktwits public streams
 - Bluesky public search
 - Mastodon public hashtag RSS
