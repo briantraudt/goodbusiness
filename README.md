@@ -50,6 +50,8 @@ The Vercel cron checks hourly at `:45` from `17:45-20:45 UTC` on weekdays. The A
 Social inputs are free/public only:
 
 - Federal Reserve press-release RSS and Bureau of Labor Statistics indicator RSS for official macro, rates, inflation, and labor catalysts
+- U.S. Census Bureau Economic Indicators RSS for official retail sales, housing, construction, trade, inventories, manufacturing, and business-formation catalysts
+- Consumer Financial Protection Bureau newsroom RSS and FDIC press-release RSS for official consumer-finance, lending, banking, supervision, and financial-stability catalysts
 - SEC and CFTC press-release RSS for official securities, enforcement, market-structure, derivatives, and crypto-regulatory catalysts
 - U.S. Energy Information Administration Today in Energy RSS for official oil, gas, electricity, production, and demand catalysts
 - Stocktwits public streams
@@ -213,6 +215,8 @@ Social inputs are free/public only:
 - Automation Anywhere Community's official public RSS for enterprise automation, AI agents, process execution, platform operations, and product-friction sentiment
 - MikroTik Community Forum's official public RSS for networking hardware, RouterOS, wireless, routing, and product-reliability sentiment
 - PagerDuty Community's official public RSS for incident response, Rundeck, automation, integrations, and operations-product sentiment
+
+The 2026-09-13 expansion added three official, live, no-auth RSS sources: U.S. Census Bureau Economic Indicators, the Consumer Financial Protection Bureau newsroom, and FDIC press releases. Under the collector user agent they returned 18, 21, and 25 public items respectively. Census and FDIC had items from September 10-11 and add timely retail sales, housing, construction, trade, inventories, manufacturing, business-formation, banking, supervision, regulatory, and financial-stability catalysts; CFPB is lower cadence, with an August 14 latest item, but adds distinct consumer-finance, credit, lending, payments, and enforcement catalysts. Commerce's advertised RSS returned a 403 challenge, Treasury feed guesses returned 404 pages, and USDA NASS returned valid XML whose leading items were stale, so none were added.
 
 The 2026-09-11 expansion added live, no-auth official GitHub Discussions Atom feeds for Microsoft Agent Framework and Microsoft Foundry Local. Each returned 25 public discussions under the collector user agent. Agent Framework had activity within the last day about run replay, persistence, context compaction, request policies, tool approvals, and MCP workflows; Foundry Local had same-day local model execution and NVIDIA CUDA activity alongside recent model-catalog, Gemma, Fara, and Qwen requests. Google ADK Go was live but two days less current; OpenAI Evals and Cloudflare Agents were live but lower cadence; Google ADK JS was stale; GitHub Community was current but broad and noisy; Windsurf and OpenRouter community hosts failed to fetch; Lovable returned 404; and Linear returned HTML instead of a feed, so none were added.
 
