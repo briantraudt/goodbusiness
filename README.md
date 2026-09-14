@@ -50,10 +50,13 @@ The Vercel cron checks hourly at `:45` from `17:45-20:45 UTC` on weekdays. The A
 Social inputs are free/public only:
 
 - Federal Reserve press-release RSS and Bureau of Labor Statistics indicator RSS for official macro, rates, inflation, and labor catalysts
+- Bureau of Economic Analysis release RSS for official GDP, income, spending, trade, industry, and regional-economic catalysts
 - U.S. Census Bureau Economic Indicators RSS for official retail sales, housing, construction, trade, inventories, manufacturing, and business-formation catalysts
 - Consumer Financial Protection Bureau newsroom RSS and FDIC press-release RSS for official consumer-finance, lending, banking, supervision, and financial-stability catalysts
 - SEC and CFTC press-release RSS for official securities, enforcement, market-structure, derivatives, and crypto-regulatory catalysts
+- Federal Trade Commission press-release RSS for official competition, antitrust, consumer-protection, privacy, and product-market catalysts
 - U.S. Energy Information Administration Today in Energy RSS for official oil, gas, electricity, production, and demand catalysts
+- European Central Bank press-release RSS and Bank of England news RSS for official euro-area and UK rates, monetary-policy, banking, and financial-stability catalysts
 - Stocktwits public streams
 - Bluesky public search
 - Mastodon public hashtag RSS
@@ -215,6 +218,8 @@ Social inputs are free/public only:
 - Automation Anywhere Community's official public RSS for enterprise automation, AI agents, process execution, platform operations, and product-friction sentiment
 - MikroTik Community Forum's official public RSS for networking hardware, RouterOS, wireless, routing, and product-reliability sentiment
 - PagerDuty Community's official public RSS for incident response, Rundeck, automation, integrations, and operations-product sentiment
+
+The 2026-09-14 expansion added four official, live, no-auth RSS sources: Bureau of Economic Analysis releases, Federal Trade Commission press releases, European Central Bank press releases, and Bank of England news. Under the collector user agent they returned 48, 10, 15, and 50 public items respectively. Their latest items were dated September 3, September 10, September 14, and September 10, adding complementary GDP, income, spending, trade, competition, consumer-protection, euro-area and UK monetary-policy, banking, and financial-stability catalysts. The ECB statistical press-release feed was live but skipped because its newest item was September 2 and its coverage overlapped the selected ECB press feed. BIS press releases were live but lower-volume and use RSS 1.0 date fields the collector does not currently normalize. ONS redirected its RSS-formatted release URL to HTML, IMF returned a 403 denial, FCC returned a not-found HTML page, and USDA ERS returned 404, so none were added.
 
 The 2026-09-13 expansion added three official, live, no-auth RSS sources: U.S. Census Bureau Economic Indicators, the Consumer Financial Protection Bureau newsroom, and FDIC press releases. Under the collector user agent they returned 18, 21, and 25 public items respectively. Census and FDIC had items from September 10-11 and add timely retail sales, housing, construction, trade, inventories, manufacturing, business-formation, banking, supervision, regulatory, and financial-stability catalysts; CFPB is lower cadence, with an August 14 latest item, but adds distinct consumer-finance, credit, lending, payments, and enforcement catalysts. Commerce's advertised RSS returned a 403 challenge, Treasury feed guesses returned 404 pages, and USDA NASS returned valid XML whose leading items were stale, so none were added.
 
