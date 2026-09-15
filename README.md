@@ -57,6 +57,8 @@ Social inputs are free/public only:
 - Federal Trade Commission press-release RSS for official competition, antitrust, consumer-protection, privacy, and product-market catalysts
 - U.S. Energy Information Administration Today in Energy RSS for official oil, gas, electricity, production, and demand catalysts
 - European Central Bank press-release RSS and Bank of England news RSS for official euro-area and UK rates, monetary-policy, banking, and financial-stability catalysts
+- Bank of Japan updates RSS for official Japanese monetary-policy, rates, market-operations, financial-system, and economic-data catalysts
+- National Institute of Standards and Technology news RSS for official cybersecurity, AI, semiconductor, manufacturing, standards, and technology-commercialization catalysts
 - Stocktwits public streams
 - Bluesky public search
 - Mastodon public hashtag RSS
@@ -218,6 +220,8 @@ Social inputs are free/public only:
 - Automation Anywhere Community's official public RSS for enterprise automation, AI agents, process execution, platform operations, and product-friction sentiment
 - MikroTik Community Forum's official public RSS for networking hardware, RouterOS, wireless, routing, and product-reliability sentiment
 - PagerDuty Community's official public RSS for incident response, Rundeck, automation, integrations, and operations-product sentiment
+
+The 2026-09-15 expansion added two official, live, no-auth RSS sources: Bank of Japan updates and National Institute of Standards and Technology news. Under the collector user agent they returned 42 and 40 public items respectively, both with September 15 activity, adding complementary Japanese monetary-policy, rates, market-operations, financial-system, economic-data, cybersecurity, AI, semiconductor, manufacturing, standards, and technology-commercialization catalysts. Reserve Bank of Australia feeds were live but used RSS 1.0 date fields the collector does not currently normalize and each exposed only one item; FINRA was live but its newest release was August 3; the Bank of Canada URL redirected to HTML; the New York Fed returned 403; and tested Atlanta Fed, DOJ Antitrust, and Eurostat endpoints returned 404, so none were added.
 
 The 2026-09-14 expansion added four official, live, no-auth RSS sources: Bureau of Economic Analysis releases, Federal Trade Commission press releases, European Central Bank press releases, and Bank of England news. Under the collector user agent they returned 48, 10, 15, and 50 public items respectively. Their latest items were dated September 3, September 10, September 14, and September 10, adding complementary GDP, income, spending, trade, competition, consumer-protection, euro-area and UK monetary-policy, banking, and financial-stability catalysts. The ECB statistical press-release feed was live but skipped because its newest item was September 2 and its coverage overlapped the selected ECB press feed. BIS press releases were live but lower-volume and use RSS 1.0 date fields the collector does not currently normalize. ONS redirected its RSS-formatted release URL to HTML, IMF returned a 403 denial, FCC returned a not-found HTML page, and USDA ERS returned 404, so none were added.
 
