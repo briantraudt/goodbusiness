@@ -49,6 +49,8 @@ The Vercel cron checks hourly at `:45` from `17:45-20:45 UTC` on weekdays. The A
 
 Social inputs are free/public only:
 
+- [AWS News Blog](https://aws.amazon.com/blogs/aws/feed/), [Google Blog](https://blog.google/rss/), [Microsoft Blog](https://blogs.microsoft.com/feed/), and [NVIDIA Newsroom](https://nvidianews.nvidia.com/releases.xml) official RSS for cloud, AI, chips, enterprise software, consumer-product, and corporate catalysts; these are company announcements, not independent customer sentiment
+
 - Federal Reserve press-release RSS and Bureau of Labor Statistics indicator RSS for official macro, rates, inflation, and labor catalysts
 - Bureau of Economic Analysis release RSS for official GDP, income, spending, trade, industry, and regional-economic catalysts
 - U.S. Census Bureau Economic Indicators RSS for official retail sales, housing, construction, trade, inventories, manufacturing, and business-formation catalysts
@@ -220,6 +222,8 @@ Social inputs are free/public only:
 - Automation Anywhere Community's official public RSS for enterprise automation, AI agents, process execution, platform operations, and product-friction sentiment
 - MikroTik Community Forum's official public RSS for networking hardware, RouterOS, wireless, routing, and product-reliability sentiment
 - PagerDuty Community's official public RSS for incident response, Rundeck, automation, integrations, and operations-product sentiment
+
+The 2026-09-29 expansion added four official, free, no-auth RSS sources: AWS News Blog, Google Blog, Microsoft Blog, and NVIDIA Newsroom. Live requests with the collector user agent returned HTTP 200 and 20, 20, 10, and 20 items respectively, with latest publication dates of September 28, 29, 29, and 28. All four supply titles, article links, descriptions, identifiers, and publication dates supported by the existing parser. Each has a conservative 0.70 source weight because corporate announcements provide catalyst context rather than independent retail sentiment. NVIDIA’s separate blog RSS was also live (18 items, newest September 24) but was skipped because the fresher newsroom feed includes overlapping blog coverage. No authentication, paid API, vendor subscription, or article-page scraping was added.
 
 The 2026-09-15 expansion added two official, live, no-auth RSS sources: Bank of Japan updates and National Institute of Standards and Technology news. Under the collector user agent they returned 42 and 40 public items respectively, both with September 15 activity, adding complementary Japanese monetary-policy, rates, market-operations, financial-system, economic-data, cybersecurity, AI, semiconductor, manufacturing, standards, and technology-commercialization catalysts. Reserve Bank of Australia feeds were live but used RSS 1.0 date fields the collector does not currently normalize and each exposed only one item; FINRA was live but its newest release was August 3; the Bank of Canada URL redirected to HTML; the New York Fed returned 403; and tested Atlanta Fed, DOJ Antitrust, and Eurostat endpoints returned 404, so none were added.
 
