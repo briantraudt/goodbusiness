@@ -49,6 +49,7 @@ The Vercel cron checks hourly at `:45` from `17:45-20:45 UTC` on weekdays. The A
 
 Social inputs are free/public only:
 
+- [Ethereum Foundation Blog RSS](https://blog.ethereum.org/en/feed.xml) and [Cloudflare Blog RSS](https://blog.cloudflare.com/rss/) for protocol upgrades, crypto infrastructure, cloud, cybersecurity, and AI-product announcements; both use weight 0.70 and provide official catalyst context rather than independent retail sentiment
 - [NASA news-release RSS](https://www.nasa.gov/news-release/feed/) for official aerospace, commercial-space, launch, and technology catalysts, and [FDA press-release RSS](https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml) for official healthcare, drug/device approval, and regulatory catalysts; these provide agency announcements rather than independent retail sentiment
 
 - [AWS News Blog](https://aws.amazon.com/blogs/aws/feed/), [Google Blog](https://blog.google/rss/), [Microsoft Blog](https://blogs.microsoft.com/feed/), and [NVIDIA Newsroom](https://nvidianews.nvidia.com/releases.xml) official RSS for cloud, AI, chips, enterprise software, consumer-product, and corporate catalysts; these are company announcements, not independent customer sentiment
@@ -224,6 +225,8 @@ Social inputs are free/public only:
 - Automation Anywhere Community's official public RSS for enterprise automation, AI agents, process execution, platform operations, and product-friction sentiment
 - MikroTik Community Forum's official public RSS for networking hardware, RouterOS, wireless, routing, and product-reliability sentiment
 - PagerDuty Community's official public RSS for incident response, Rundeck, automation, integrations, and operations-product sentiment
+
+The 2026-10-01 expansion added Ethereum Foundation Blog and Cloudflare Blog RSS feeds, advertised by their official homepages. Live requests using the collector user agent returned HTTP 200 with 641 and 20 items respectively, both with October 1 publications. The existing parser supports their titles, descriptions, article URLs, original dates, and explicit or generated identifiers. Both are free and require no authentication. The tested Chainlink `/feed/` endpoint returned HTML without feed items, and Circle `/blog/rss.xml` returned 404, so neither was added. No paid API, vendor subscription, or article-page scraping was added.
 
 The 2026-09-30 expansion added two official, free, no-auth RSS sources: NASA news releases (weight 0.70) and FDA press releases (weight 0.85). Live requests using the collector user agent returned HTTP 200 with 10 and 20 items respectively, both with September 30 publications. Titles, descriptions, article links, identifiers, and original publication dates are supported by the existing parser; FDA publishes HTTP article links, which are preserved as supplied. NASA advertises its feed on its [RSS directory](https://www.nasa.gov/rss-feeds/). NASA’s technology feed was also live (10 items, newest September 30) but was skipped to keep agency coverage focused on news releases. The Department of Energy’s advertised Fossil Energy feed redirected to HTML with no RSS items, and its `/feeds/all` endpoint returned 404, so neither was added. No authentication, paid API, vendor subscription, or article-page scraping was added.
 
