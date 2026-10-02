@@ -49,6 +49,7 @@ The Vercel cron checks hourly at `:45` from `17:45-20:45 UTC` on weekdays. The A
 
 Social inputs are free/public only:
 
+- [GitHub Blog RSS](https://github.blog/feed/) and [Stripe Blog RSS](https://stripe.com/blog/feed.rss) for AI-development tools, enterprise software, payments, commerce, and stablecoin announcements; both use weight 0.70 and provide official company catalyst context
 - [Ethereum Foundation Blog RSS](https://blog.ethereum.org/en/feed.xml) and [Cloudflare Blog RSS](https://blog.cloudflare.com/rss/) for protocol upgrades, crypto infrastructure, cloud, cybersecurity, and AI-product announcements; both use weight 0.70 and provide official catalyst context rather than independent retail sentiment
 - [NASA news-release RSS](https://www.nasa.gov/news-release/feed/) for official aerospace, commercial-space, launch, and technology catalysts, and [FDA press-release RSS](https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml) for official healthcare, drug/device approval, and regulatory catalysts; these provide agency announcements rather than independent retail sentiment
 
@@ -225,6 +226,8 @@ Social inputs are free/public only:
 - Automation Anywhere Community's official public RSS for enterprise automation, AI agents, process execution, platform operations, and product-friction sentiment
 - MikroTik Community Forum's official public RSS for networking hardware, RouterOS, wireless, routing, and product-reliability sentiment
 - PagerDuty Community's official public RSS for incident response, Rundeck, automation, integrations, and operations-product sentiment
+
+The 2026-10-02 expansion added official GitHub Blog and Stripe Blog RSS feeds. Live requests using the collector user agent returned HTTP 200 and 10 items each, with latest publications on October 2 and October 1 respectively. Both are free and require no authentication; the existing parser supports their titles, descriptions, article URLs, identifiers, and original dates. GitHub advertises its RSS feed on its homepage. Shopify's tested news feed (`https://www.shopify.com/news/feed`) returned valid XML with 13 items but its newest publication was December 7, 2023, so it was skipped as stale. No paid API, vendor subscription, or article-page scraping was added.
 
 The 2026-10-01 expansion added Ethereum Foundation Blog and Cloudflare Blog RSS feeds, advertised by their official homepages. Live requests using the collector user agent returned HTTP 200 with 641 and 20 items respectively, both with October 1 publications. The existing parser supports their titles, descriptions, article URLs, original dates, and explicit or generated identifiers. Both are free and require no authentication. The tested Chainlink `/feed/` endpoint returned HTML without feed items, and Circle `/blog/rss.xml` returned 404, so neither was added. No paid API, vendor subscription, or article-page scraping was added.
 
