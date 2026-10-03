@@ -49,6 +49,7 @@ The Vercel cron checks hourly at `:45` from `17:45-20:45 UTC` on weekdays. The A
 
 Social inputs are free/public only:
 
+- [Apple Newsroom RSS](https://www.apple.com/newsroom/rss-feed.rss) and [Samsung Global Newsroom RSS](https://news.samsung.com/global/feed/rss) for official consumer-device, AI, software, services, and connected-product announcements; both are publisher-advertised, require no authentication, and use weight 0.70 for company catalyst context
 - [GitHub Blog RSS](https://github.blog/feed/) and [Stripe Blog RSS](https://stripe.com/blog/feed.rss) for AI-development tools, enterprise software, payments, commerce, and stablecoin announcements; both use weight 0.70 and provide official company catalyst context
 - [Ethereum Foundation Blog RSS](https://blog.ethereum.org/en/feed.xml) and [Cloudflare Blog RSS](https://blog.cloudflare.com/rss/) for protocol upgrades, crypto infrastructure, cloud, cybersecurity, and AI-product announcements; both use weight 0.70 and provide official catalyst context rather than independent retail sentiment
 - [NASA news-release RSS](https://www.nasa.gov/news-release/feed/) for official aerospace, commercial-space, launch, and technology catalysts, and [FDA press-release RSS](https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml) for official healthcare, drug/device approval, and regulatory catalysts; these provide agency announcements rather than independent retail sentiment
