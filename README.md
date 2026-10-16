@@ -73,6 +73,7 @@ Social inputs are free/public only:
 - European Central Bank press-release RSS and Bank of England news RSS for official euro-area and UK rates, monetary-policy, banking, and financial-stability catalysts
 - Bank of Japan updates RSS for official Japanese monetary-policy, rates, market-operations, financial-system, and economic-data catalysts
 - National Institute of Standards and Technology news RSS for official cybersecurity, AI, semiconductor, manufacturing, standards, and technology-commercialization catalysts
+- [U.S. Department of Energy news RSS](https://www.energy.gov/articles/rss.xml) for official energy, grid, nuclear, critical-minerals, manufacturing, hydrogen, and clean-technology catalysts (weight 0.80). The feed is free and requires no authentication; collection is limited to supplied headlines, summaries, links, and publication dates, and does not fetch linked articles or media. It provides agency context rather than independent retail sentiment.
 - Stocktwits public streams
 - Bluesky public search
 - Mastodon public hashtag RSS
