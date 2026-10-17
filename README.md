@@ -61,6 +61,8 @@ Social inputs are free/public only:
 
 - [AWS News Blog](https://aws.amazon.com/blogs/aws/feed/), [Google Blog](https://blog.google/rss/), [Microsoft Blog](https://blogs.microsoft.com/feed/), and [NVIDIA Newsroom](https://nvidianews.nvidia.com/releases.xml) official RSS for cloud, AI, chips, enterprise software, consumer-product, and corporate catalysts; these are company announcements, not independent customer sentiment
 
+- [Meta Newsroom](https://about.fb.com/news/feed/), [Salesforce Blog](https://www.salesforce.com/blog/feed/), and [SAP News Center](https://news.sap.com/feed/) official RSS for social-platform, AI, advertising, cloud, CRM, enterprise-software, logistics, and commerce catalysts. Each is free, requires no authentication, and is collected only as feed-supplied titles, summaries, links, and publication dates with publisher credit (weights 0.70, 0.65, and 0.70 respectively); these are official company announcements rather than independent retail sentiment.
+
 - [OpenAI News RSS](https://openai.com/news/rss.xml) for official AI-model, agent, enterprise-adoption, and product catalysts (weight 0.75), and [Solana News RSS](https://solana.com/rss.xml) for official protocol, payments, validator, ecosystem, and crypto-infrastructure catalysts (weight 0.70). Both are current, free, no-auth public RSS feeds. The collector uses only supplied titles, summaries, links, and dates; these are official announcements rather than independent retail sentiment.
 
 - Federal Reserve press-release RSS and Bureau of Labor Statistics indicator RSS for official macro, rates, inflation, and labor catalysts
