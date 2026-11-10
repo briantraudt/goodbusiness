@@ -1251,14 +1251,13 @@ $("fileIn").onchange = async e => {
         if (R + 1 > s.rows) s.rows = Math.min(MAX_ROWS, Math.ceil((R + 1) / 100) * 100);
       }
       if (ws["!cols"]) ws["!cols"].forEach((col, i) => { if (col && col.wpx && i < COLS) s.colW[colName(i)] = Math.round(Math.max(40, Math.min(400, col.wpx))); });
-      const size = JSON.stringify(serialize(s)).length;
-      if (size > 250000) flash(`“${s.name}” is large and will only be saved in this browser.`, true);
+      if (JSON.stringify(s.cells).length > MAX_SHEET_BYTES) flash(`“${s.name}” is too large to save. Split it into smaller sheets.`, true);
       sheets.push(s); markDirty(s); added++; if (!firstId) firstId = s.id;
     }
     if (!added) { flash("That file has no data to import.", true); return; }
     switchSheet(firstId);
     flash(`Imported ${added} sheet${added > 1 ? "s" : ""} from ${file.name}` + (clipped ? ". Columns past Z were left out." : ""), clipped);
-  } catch (err) { flash("Couldn't read that file. Try .xlsx or .csv.", true); }
+  } catch (err) { console.error("Gridbook import failed", err); flash("Couldn't read that file. Try .xlsx or .csv.", true); }
 };
 const exportMenu = $("exportMenu");
 $("exportBtn").onclick = e => { e.stopPropagation(); exportMenu.hidden = !exportMenu.hidden; };
@@ -1317,6 +1316,19 @@ $("helpClose").onclick = () => { $("help").hidden = true; };
 $("help").onclick = e => { if (e.target === $("help")) $("help").hidden = true; };
 $("fnList").innerHTML = Object.keys(FN).sort().map(n => `<code>${n}</code>`).join("");
 window.addEventListener("resize", () => drawSelection());
+
+/* ---------- theme ---------- */
+const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+const currentTheme = () => document.documentElement.dataset.theme || (darkQuery.matches ? "dark" : "light");
+function setThemeColor() { const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = getComputedStyle(document.documentElement).getPropertyValue("--bg").trim() || "#050608"; }
+document.querySelectorAll("[data-theme-toggle]").forEach(b => b.addEventListener("click", () => {
+  const next = currentTheme() === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem("gridbook.theme", next); } catch (e) { }
+  setThemeColor(); drawSelection();
+}));
+darkQuery.addEventListener?.("change", setThemeColor);
+setThemeColor();
 
 /* ---------- boot ---------- */
 { const ex = exampleSheet(); sheets = [ex]; activeId = ex.id; }
