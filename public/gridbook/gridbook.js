@@ -1002,13 +1002,16 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: "implicit", storageKey: "gb-gridbook-auth" },
 });
 const TABLE = "gridbook_sheets";
+const WB_TABLE = "gridbook_workbooks";
+let workbook = null, workbooks = [];
 const MAX_SHEET_BYTES = 4_500_000;
 let user = null, saving = false, saveTimer = null, loaded = false;
 const dirty = new Set(), deleted = new Set(), failedIds = new Set(), failedDeletes = new Set();
-const lsKey = () => "gridbook.cache." + (user ? user.id : "none");
+const lsKey = () => "gridbook.cache." + (user ? user.id : "none") + "." + (workbook ? workbook.id : "none");
+const lastWbKey = () => "gridbook.lastWorkbook." + (user ? user.id : "none");
 const clampRows = n => Math.min(MAX_ROWS, Math.max(DEF_ROWS, +n || DEF_ROWS));
 function toRow(s) {
-  return { id: s.id, user_id: user.id, name: s.name, sort_order: s.order, row_count: s.rows, col_widths: s.colW, cells: s.cells };
+  return { id: s.id, user_id: user.id, workbook_id: workbook.id, name: s.name, sort_order: s.order, row_count: s.rows, col_widths: s.colW, cells: s.cells };
 }
 function fromRow(r) {
   return {
@@ -1025,12 +1028,12 @@ function loadLocal() {
   try { const j = JSON.parse(localStorage.getItem(lsKey()) || "null"); if (j && Array.isArray(j.sheets) && j.sheets.length) return j; } catch (e) { }
   return null;
 }
-function markDirty(s) { if (!loaded) return; dirty.add(s.id); scheduleSave(); }
+function markDirty(s) { if (!loaded || !workbook) return; dirty.add(s.id); scheduleSave(); }
 function scheduleSave() { setSave("pending"); clearTimeout(saveTimer); saveTimer = setTimeout(flush, 700); }
 async function flush() {
   clearTimeout(saveTimer);
   saveLocal();
-  if (!user || !loaded) return;
+  if (!user || !loaded || !workbook) return;
   if (saving) { scheduleSave(); return; }
   saving = true; setSave("saving");
   let failed = false;
@@ -1185,47 +1188,185 @@ async function enter(u) {
   if (user && user.id === u.id) return;
   if (entering) return entering;
   entering = (async () => {
-    user = u; loaded = false;
+    user = u; loaded = false; workbook = null;
     $("who").textContent = u.email || "";
     $("account").hidden = false;
+    $("wbBar").hidden = false;
     authEl.hidden = true;
     setSave("loading");
-    const cache = loadLocal();
-    if (cache) applySheets(cache.sheets, cache.activeId);
-    const { data, error } = await supabase.from(TABLE).select("id,name,sort_order,row_count,col_widths,cells").order("sort_order", { ascending: true });
-    if (error) {
-      console.error(error);
-      loaded = !!cache;
-      setSave("error");
-      flash(cache ? "Couldn't reach the server. Showing the copy saved on this device." : "Couldn't load your sheets. Refresh to try again.", true);
+    const list = await fetchWorkbooks();
+    if (list === null) { setSave("error"); flash("Couldn't load your spreadsheets. Refresh to try again.", true); return; }
+    if (!list.length) {
+      const ex = exampleSheet();
+      await createWorkbook("Example", [ex], { quiet: true });
       return;
     }
-    if (data.length) {
-      let remote = data.map(fromRow);
-      // keep local edits that never reached the server
-      if (cache && (cache.pending || []).length) {
-        const pend = new Set(cache.pending);
-        const localById = new Map(cache.sheets.map(s => [s.id, s]));
-        remote = remote.map(s => pend.has(s.id) && localById.has(s.id) ? localById.get(s.id) : s);
-        for (const id of pend) if (!remote.find(s => s.id === id) && localById.has(id)) remote.push(localById.get(id));
-        pend.forEach(id => dirty.add(id));
-      }
-      if (cache && (cache.deleted || []).length) { const del = new Set(cache.deleted); remote = remote.filter(s => !del.has(s.id)); del.forEach(id => deleted.add(id)); }
-      applySheets(remote, cache && remote.find(s => s.id === cache.activeId) ? cache.activeId : remote[0].id);
-    } else if (cache && cache.sheets.length && (cache.pending || []).length) {
-      applySheets(cache.sheets, cache.activeId);
-      cache.sheets.forEach(s => dirty.add(s.id));
-    } else {
-      const ex = exampleSheet();
-      applySheets([ex], ex.id);
-      dirty.add(ex.id);
-    }
-    loaded = true;
-    saveLocal();
-    if (dirty.size || deleted.size) flush(); else setSave("saved");
+    let lastId = null; try { lastId = localStorage.getItem(lastWbKey()); } catch (e) { }
+    await openWorkbook(list.find(w => w.id === lastId) || list[0]);
   })();
   try { await entering; } finally { entering = null; }
 }
+async function fetchWorkbooks() {
+  const { data, error } = await supabase.from(WB_TABLE).select("id,name,updated_at,created_at").order("updated_at", { ascending: false });
+  if (error) { console.error(error); return null; }
+  workbooks = data;
+  return data;
+}
+function showWorkbookName() {
+  $("wbName").textContent = workbook ? workbook.name : "";
+  document.title = (workbook ? workbook.name + " · " : "") + "Gridbook | Good Business";
+}
+async function openWorkbook(wb) {
+  if (editing) commitEdit();
+  if (loaded && (dirty.size || deleted.size || saving)) await flush();
+  loaded = false; workbook = { id: wb.id, name: wb.name };
+  dirty.clear(); deleted.clear(); failedIds.clear(); failedDeletes.clear();
+  showWorkbookName();
+  try { localStorage.setItem(lastWbKey(), wb.id); } catch (e) { }
+  setSave("loading");
+  const cache = loadLocal();
+  if (cache) applySheets(cache.sheets, cache.activeId);
+  const { data, error } = await supabase.from(TABLE).select("id,name,sort_order,row_count,col_widths,cells").eq("workbook_id", wb.id).order("sort_order", { ascending: true });
+  if (workbook.id !== wb.id) return; // another open started meanwhile
+  if (error) {
+    console.error(error);
+    loaded = !!cache;
+    setSave("error");
+    flash(cache ? "Couldn't reach the server. Showing the copy saved on this device." : "Couldn't load this spreadsheet. Refresh to try again.", true);
+    return;
+  }
+  if (data.length) {
+    let remote = data.map(fromRow);
+    if (cache && (cache.pending || []).length) {
+      const pend = new Set(cache.pending);
+      const localById = new Map(cache.sheets.map(x => [x.id, x]));
+      remote = remote.map(x => pend.has(x.id) && localById.has(x.id) ? localById.get(x.id) : x);
+      for (const id of pend) if (!remote.find(x => x.id === id) && localById.has(id)) remote.push(localById.get(id));
+      pend.forEach(id => dirty.add(id));
+    }
+    if (cache && (cache.deleted || []).length) { const del = new Set(cache.deleted); remote = remote.filter(x => !del.has(x.id)); del.forEach(id => deleted.add(id)); }
+    if (!remote.length) { const blank = newSheet("Sheet1"); blank.order = 1; remote = [blank]; dirty.add(blank.id); }
+    applySheets(remote, cache && remote.find(x => x.id === cache.activeId) ? cache.activeId : remote[0].id);
+  } else if (cache && cache.sheets.length && (cache.pending || []).length) {
+    applySheets(cache.sheets, cache.activeId);
+    cache.sheets.forEach(x => dirty.add(x.id));
+  } else {
+    sheets = [];
+    const blank = newSheet("Sheet1"); blank.order = 1;
+    applySheets([blank], blank.id);
+    dirty.add(blank.id);
+  }
+  loaded = true;
+  saveLocal();
+  wrap.focus({ preventScroll: true });
+  if (dirty.size || deleted.size) flush(); else setSave("saved");
+}
+async function createWorkbook(name, sheetList, opts = {}) {
+  if (editing) commitEdit();
+  if (loaded && (dirty.size || deleted.size || saving)) await flush();
+  const { data, error } = await supabase.from(WB_TABLE).insert({ user_id: user.id, name: name.slice(0, 120) || "Untitled spreadsheet" }).select("id,name,updated_at,created_at").single();
+  if (error) { console.error(error); flash("Couldn't create the spreadsheet. Try again.", true); return null; }
+  workbooks.unshift(data);
+  loaded = false; workbook = { id: data.id, name: data.name };
+  dirty.clear(); deleted.clear(); failedIds.clear(); failedDeletes.clear();
+  showWorkbookName();
+  try { localStorage.setItem(lastWbKey(), data.id); } catch (e) { }
+  const list = sheetList && sheetList.length ? sheetList : [Object.assign(newSheet("Sheet1"), { order: 1 })];
+  list.forEach((x, i) => { x.order = i + 1; });
+  applySheets(list, list[0].id);
+  loaded = true;
+  list.forEach(x => dirty.add(x.id));
+  await flush();
+  if (!opts.quiet) flash(`Created “${data.name}”`);
+  wrap.focus({ preventScroll: true });
+  return data;
+}
+async function renameWorkbook(name) {
+  name = name.trim().slice(0, 120);
+  if (!workbook || !name || name === workbook.name) { showWorkbookName(); return; }
+  const prev = workbook.name;
+  workbook.name = name; showWorkbookName();
+  const { error } = await supabase.from(WB_TABLE).update({ name }).eq("id", workbook.id);
+  if (error) { workbook.name = prev; showWorkbookName(); flash("Couldn't rename. Try again.", true); return; }
+  const w = workbooks.find(x => x.id === workbook.id); if (w) w.name = name;
+}
+async function deleteWorkbook(id) {
+  const { error } = await supabase.from(WB_TABLE).delete().eq("id", id);
+  if (error) { flash("Couldn't delete. Try again.", true); return false; }
+  try { localStorage.removeItem("gridbook.cache." + user.id + "." + id); } catch (e) { }
+  workbooks = workbooks.filter(w => w.id !== id);
+  if (workbook && workbook.id === id) {
+    dirty.clear(); deleted.clear(); loaded = false;
+    if (workbooks.length) await openWorkbook(workbooks[0]);
+    else await createWorkbook("Untitled spreadsheet", null, { quiet: true });
+  }
+  return true;
+}
+
+/* ---------- spreadsheets panel ---------- */
+const filesEl = $("files");
+let confirmWb = null;
+function relTime(iso) {
+  const d = new Date(iso), s = (Date.now() - d) / 1000;
+  if (s < 60) return "just now";
+  if (s < 3600) return Math.floor(s / 60) + " min ago";
+  if (s < 86400) return Math.floor(s / 3600) + " hr ago";
+  if (s < 86400 * 7) return Math.floor(s / 86400) + (Math.floor(s / 86400) === 1 ? " day ago" : " days ago");
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: d.getFullYear() === new Date().getFullYear() ? undefined : "numeric" });
+}
+function renderFiles() {
+  const q = $("fileSearch").value.trim().toLowerCase();
+  const list = workbooks.filter(w => !q || w.name.toLowerCase().includes(q));
+  const box = $("fileList");
+  if (!list.length) { box.innerHTML = `<p class="empty">${q ? "No spreadsheets match that search." : "No spreadsheets yet."}</p>`; return; }
+  box.innerHTML = "";
+  for (const w of list) {
+    const row = document.createElement("div");
+    row.className = "file" + (workbook && w.id === workbook.id ? " on" : "");
+    if (confirmWb === w.id) {
+      row.innerHTML = `<span class="fname">Delete “${esc(w.name)}” and all its sheets?</span><span class="factions"><button class="btn danger" data-del-yes>Delete</button><button class="btn" data-del-no>Keep</button></span>`;
+      row.querySelector("[data-del-yes]").onclick = async () => { confirmWb = null; if (await deleteWorkbook(w.id)) { flash("Deleted."); renderFiles(); } };
+      row.querySelector("[data-del-no]").onclick = () => { confirmWb = null; renderFiles(); };
+    } else {
+      row.innerHTML = `<button class="fopen" data-open><span class="fname"></span><span class="fmeta"></span></button><button class="fdel" data-del title="Delete" aria-label="Delete"><svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button>`;
+      row.querySelector(".fname").textContent = w.name;
+      row.querySelector(".fmeta").textContent = (workbook && w.id === workbook.id ? "Open now · " : "") + "Edited " + relTime(w.updated_at);
+      row.querySelector("[data-open]").onclick = async () => { filesEl.hidden = true; if (!workbook || w.id !== workbook.id) await openWorkbook(w); };
+      row.querySelector("[data-del]").onclick = () => { confirmWb = w.id; renderFiles(); };
+    }
+    box.appendChild(row);
+  }
+}
+async function showFiles() {
+  confirmWb = null; $("fileSearch").value = "";
+  filesEl.hidden = false; renderFiles();
+  if (loaded && (dirty.size || deleted.size)) await flush();
+  await fetchWorkbooks(); renderFiles();
+  setTimeout(() => $("fileSearch").focus(), 0);
+}
+$("openBtn").onclick = showFiles;
+$("filesClose").onclick = () => { filesEl.hidden = true; };
+filesEl.addEventListener("click", e => { if (e.target === filesEl) filesEl.hidden = true; });
+$("fileSearch").addEventListener("input", renderFiles);
+$("fileSearch").addEventListener("keydown", e => { if (e.key === "Escape") filesEl.hidden = true; });
+async function newWorkbook() { filesEl.hidden = true; await createWorkbook("Untitled spreadsheet"); startRename(); }
+$("newBtn").onclick = newWorkbook;
+$("filesNew").onclick = newWorkbook;
+function startRename() {
+  if (!workbook) return;
+  const btn = $("wbName"), inp = $("wbNameIn");
+  inp.value = workbook.name; btn.hidden = true; inp.hidden = false; inp.focus(); inp.select();
+}
+function endRename(save) {
+  const btn = $("wbName"), inp = $("wbNameIn");
+  if (inp.hidden) return;
+  inp.hidden = true; btn.hidden = false;
+  if (save) renameWorkbook(inp.value); else showWorkbookName();
+}
+$("wbName").onclick = startRename;
+$("wbNameIn").addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter") endRename(true); if (e.key === "Escape") endRename(false); });
+$("wbNameIn").addEventListener("blur", () => endRename(true));
+
 function applySheets(list, active) {
   if (editing) cancelEdit();
   sheets = list.map(s => Object.assign({ colW: {}, cells: {}, order: 1 }, s, { rows: clampRows(s.rows) }));
@@ -1236,9 +1377,10 @@ function applySheets(list, active) {
   buildGrid(); render();
 }
 function leave() {
-  user = null; loaded = false;
+  user = null; loaded = false; workbook = null; workbooks = [];
   dirty.clear(); deleted.clear(); failedIds.clear(); failedDeletes.clear();
-  $("account").hidden = true;
+  $("account").hidden = true; $("wbBar").hidden = true; filesEl.hidden = true;
+  showWorkbookName();
   const ex = exampleSheet(); applySheets([ex], ex.id);
   showAuth("signin");
 }
@@ -1270,11 +1412,14 @@ $("fileIn").onchange = async e => {
     const X = await loadXLSX();
     const buf = await file.arrayBuffer();
     const wb = X.read(buf, { type: "array", cellFormula: true, cellDates: false, cellNF: true });
-    let added = 0, clipped = false, firstId = null;
+    let added = 0, clipped = false;
+    const imported = [];
+    const taken = new Set();
+    const uniq = base => { let n = base || "Sheet", i = 2; while (taken.has(n.toLowerCase())) n = base + " " + i++; taken.add(n.toLowerCase()); return n; };
     for (const name of wb.SheetNames) {
       const ws = wb.Sheets[name]; if (!ws || !ws["!ref"]) continue;
-      const base = /\.(csv|tsv)$/i.test(file.name) ? file.name.replace(/\.[^.]+$/, "") : name;
-      const s = newSheet(uniqueName(base.replace(/!/g, "")));
+      const base = /\.(csv|tsv)$/i.test(file.name) ? "Sheet1" : name;
+      const s = { id: uid(), name: uniq(base.replace(/!/g, "").slice(0, 100)), order: imported.length + 1, rows: DEF_ROWS, colW: {}, cells: {} };
       const range = X.utils.decode_range(ws["!ref"]);
       for (let R = range.s.r; R <= range.e.r; R++) for (let C = range.s.c; C <= range.e.c; C++) {
         const addr = X.utils.encode_cell({ r: R, c: C }); const cell = ws[addr]; if (!cell) continue;
@@ -1299,11 +1444,11 @@ $("fileIn").onchange = async e => {
       }
       if (ws["!cols"]) ws["!cols"].forEach((col, i) => { if (col && col.wpx && i < COLS) s.colW[colName(i)] = Math.round(Math.max(40, Math.min(400, col.wpx))); });
       if (JSON.stringify(s.cells).length > MAX_SHEET_BYTES) flash(`“${s.name}” is too large to save. Split it into smaller sheets.`, true);
-      sheets.push(s); markDirty(s); added++; if (!firstId) firstId = s.id;
+      imported.push(s); added++;
     }
     if (!added) { flash("That file has no data to import.", true); return; }
-    switchSheet(firstId);
-    flash(`Imported ${added} sheet${added > 1 ? "s" : ""} from ${file.name}` + (clipped ? ". Columns past Z were left out." : ""), clipped);
+    const made = await createWorkbook(file.name.replace(/\.[^.]+$/, "") || "Imported spreadsheet", imported, { quiet: true });
+    if (made) flash(`Opened ${file.name} as a new spreadsheet` + (clipped ? ". Columns past Z were left out." : ""), clipped);
   } catch (err) { console.error("Gridbook import failed", err); flash("Couldn't read that file. Try .xlsx or .csv.", true); }
 };
 const exportMenu = $("exportMenu");
@@ -1347,7 +1492,7 @@ exportMenu.querySelectorAll("[data-exp]").forEach(b => b.onclick = async () => {
         X.utils.book_append_sheet(wb, ws, s.name.slice(0, 31).replace(/[\\/?*[\]:]/g, "-"));
       }
       const arr = X.write(wb, { type: "array", bookType: "xlsx" });
-      await dl.save({ filename: `Gridbook-${stamp}.xlsx`, data: new Blob([arr], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }) });
+      await dl.save({ filename: `${(workbook ? workbook.name : "Gridbook").replace(/[\\/:*?"<>|]+/g, "-")}-${stamp}.xlsx`, data: new Blob([arr], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }) });
     }
     flash("Downloaded.");
   } catch (err) {
