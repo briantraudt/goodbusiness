@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Gridbook | Good Business</title>
+    <meta name="description" content="Gridbook is a web spreadsheet from Good Business: formulas, multiple sheets, and Excel import and export." />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#050608" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+/* Layout: one-screen app — header, toolbar, formula bar, scrolling grid, status line, sheet tabs */
+:root{
+  --bg:#050608; --panel:#0b0e13; --head:#111620; --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.16);
+  --fg:#f5f7fb; --muted:rgba(235,241,251,.55); --accent:#30d6a3; --accent-soft:rgba(48,214,163,.14); --accent-fg:#03140d;
+  --err:#ff8b80; --ok:#30d6a3;
+  --fill-yellow:#4a4016; --fill-green:#123a2c; --fill-blue:#16294a; --fill-red:#4a1d1f;
+  --font-ui:"Manrope", Inter, system-ui, sans-serif;
+  --font-cell:"DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-word:"Instrument Sans", "Manrope", sans-serif;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-ui);font-size:13px;display:flex;flex-direction:column;overflow:hidden}
+.band{padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+/* header */
+.top{display:flex;align-items:center;gap:12px;padding-block:10px 8px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:8px;color:var(--fg);text-decoration:none}
+.brand .word{font:600 17px/1 var(--font-word);letter-spacing:-.045em}
+.brand .slash{color:var(--muted)}
+.brand .app{font:500 12px/1 var(--font-cell);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.save{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;border:0;background:none;padding:2px 4px;border-radius:4px}
+.save .dot{width:7px;height:7px;border-radius:50%;background:var(--muted)}
+.save[data-s="saved"] .dot{background:var(--ok)}
+.save[data-s="saving"] .dot,.save[data-s="pending"] .dot{background:var(--accent);animation:pulse 1s infinite}
+.save[data-s="error"] .dot{background:var(--err)} .save[data-s="error"]{color:var(--err)}
+@keyframes pulse{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.save .dot{animation:none!important}}
+.spacer{flex:1}
+.btn{border:1px solid var(--line-strong);background:var(--panel);padding:5px 10px;border-radius:5px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.menu{position:relative}
+.menu-list{color:var(--fg);position:absolute;right:0;top:calc(100% + 4px);background:var(--panel);border:1px solid var(--line-strong);border-radius:6px;padding:4px;min-width:200px;z-index:30;box-shadow:0 6px 24px rgba(0,0,0,.14)}
+.menu-list button{display:block;width:100%;text-align:left;border:0;background:none;padding:7px 10px;border-radius:4px}
+.menu-list button:hover{background:var(--accent-soft)}
+.menu-list small{display:block;color:var(--muted);font-size:11px}
+
+/* toolbar */
+.tools{display:flex;align-items:center;gap:4px;padding-block:6px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap}
+.tb{border:1px solid transparent;background:none;min-width:30px;height:28px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;padding:0 6px}
+.tb:hover{background:var(--head)}
+.tb.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.tb svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.sep{width:1px;height:20px;background:var(--line);margin:0 4px}
+.tools select{height:28px;border:1px solid var(--line);background:var(--panel);border-radius:4px;padding:0 6px}
+.swatches{display:inline-flex;gap:3px;align-items:center}
+.sw{width:20px;height:20px;border-radius:4px;border:1px solid var(--line-strong);padding:0}
+.sw[data-fill="none"]{background:linear-gradient(135deg,transparent 45%,var(--err) 45%,var(--err) 55%,transparent 55%),var(--panel)}
+.sw[data-fill="yellow"]{background:var(--fill-yellow)} .sw[data-fill="green"]{background:var(--fill-green)}
+.sw[data-fill="blue"]{background:var(--fill-blue)} .sw[data-fill="red"]{background:var(--fill-red)}
+
+/* formula bar */
+.fbar{display:flex;align-items:stretch;gap:0;background:var(--panel);border-bottom:1px solid var(--line);padding-block:0}
+.namebox{width:64px;flex:none;border:0;border-right:1px solid var(--line);background:transparent;font-family:var(--font-cell);font-size:12px;padding:6px 8px;text-transform:uppercase}
+.fx{flex:none;color:var(--muted);font-style:italic;font-family:Georgia,serif;padding:6px 8px;border-right:1px solid var(--line)}
+.finput{flex:1;min-width:0;border:0;background:transparent;font-family:var(--font-cell);font-size:12.5px;padding:6px 8px}
+.finput:focus,.namebox:focus{outline:none;background:var(--accent-soft)}
+
+/* grid */
+.gridwrap{flex:1;min-height:0;overflow:auto;position:relative;background:var(--panel);outline:none;-webkit-overflow-scrolling:touch}
+table.grid{border-collapse:separate;border-spacing:0;table-layout:fixed;font-family:var(--font-cell);font-size:12.5px;user-select:none;-webkit-user-select:none}
+.grid th,.grid td{height:24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:clip;box-sizing:border-box}
+.grid thead th{position:sticky;top:0;z-index:3;background:var(--head);color:var(--muted);font-weight:500;font-family:var(--font-ui);font-size:11.5px;text-align:center;border-bottom-color:var(--line-strong);cursor:pointer}
+.grid tbody th{position:sticky;left:0;z-index:2;background:var(--head);color:var(--muted);font-weight:400;font-family:var(--font-ui);font-size:11px;text-align:right;padding-right:8px;border-right-color:var(--line-strong);cursor:pointer}
+.grid thead th.corner{left:0;z-index:4}
+.grid th.hl{background:linear-gradient(var(--accent-soft),var(--accent-soft)),var(--head);color:var(--accent)}
+.grid thead th{position:sticky}
+.grid thead th .rz{position:absolute;right:-3px;top:0;width:7px;height:100%;cursor:col-resize;z-index:5}
+.grid td{cursor:cell;font-variant-numeric:tabular-nums}
+.grid td.a-r{text-align:right} .grid td.a-c{text-align:center} .grid td.a-l{text-align:left}
+.grid td.b{font-weight:600} .grid td.i{font-style:italic}
+.grid td.err{color:var(--err)}
+.grid td.f-yellow{background:var(--fill-yellow)} .grid td.f-green{background:var(--fill-green)}
+.grid td.f-blue{background:var(--fill-blue)} .grid td.f-red{background:var(--fill-red)}
+.sel{position:absolute;pointer-events:none;background:var(--accent-soft);border:1px solid var(--accent);z-index:1}
+.cur{position:absolute;pointer-events:none;border:2px solid var(--accent);z-index:1;box-sizing:border-box}
+.refbox{position:absolute;pointer-events:none;border:2px dashed var(--accent);z-index:1;box-sizing:border-box}
+.editor{position:absolute;z-index:6;border:2px solid var(--accent);background:var(--panel);font-family:var(--font-cell);font-size:12.5px;padding:0 5px;box-sizing:border-box;outline:none;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.more{padding:10px;font-family:var(--font-ui)}
+
+/* status + tabs */
+.status{display:flex;gap:16px;justify-content:flex-end;align-items:center;min-height:24px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);background:var(--panel);padding-block:3px;font-variant-numeric:tabular-nums;flex-wrap:wrap}
+.status b{color:var(--fg);font-weight:500}
+.status .msg{margin-right:auto;color:var(--fg)}
+.status .msg.bad{color:var(--err)}
+.tabs{display:flex;align-items:stretch;gap:2px;background:var(--head);border-top:1px solid var(--line);padding-block:0 4px;overflow-x:auto;padding-bottom:max(4px, env(safe-area-inset-bottom, 0px))}
+.tab{border:1px solid transparent;border-top:0;background:none;padding:6px 12px;border-radius:0 0 6px 6px;color:var(--muted);white-space:nowrap;display:flex;align-items:center;gap:6px}
+.tab:hover{color:var(--fg)}
+.tab.on{background:var(--panel);color:var(--fg);border-color:var(--line);font-weight:500;box-shadow:inset 0 2px 0 var(--accent)}
+.tab input{width:110px;border:1px solid var(--accent);border-radius:3px;padding:1px 4px;background:var(--panel)}
+.tab .x{border:0;background:none;color:var(--muted);padding:0 2px;font-size:14px;line-height:1}
+.tab .x:hover{color:var(--err)}
+.addtab{border:0;background:none;color:var(--muted);padding:6px 10px;font-size:16px}
+.addtab:hover{color:var(--accent)}
+.confirm{display:flex;align-items:center;gap:6px;padding:4px 8px;color:var(--fg);white-space:nowrap}
+.confirm button{border:1px solid var(--line-strong);background:var(--panel);border-radius:4px;padding:2px 8px}
+.confirm button.danger{background:var(--err);border-color:var(--err);color:#fff}
+
+/* help */
+.help{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:40;display:flex;align-items:center;justify-content:center;padding:16px}
+.help-card{background:var(--panel);border:1px solid var(--line-strong);border-radius:10px;max-width:640px;width:100%;max-height:85%;overflow:auto;padding:20px 22px}
+.help-card h2{margin:0 0 4px;font-size:17px;text-wrap:balance}
+.help-card h3{margin:16px 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.help-card p{margin:0;color:var(--muted);line-height:1.5}
+.help-card code{font-family:var(--font-cell);font-size:12px;background:var(--head);padding:1px 4px;border-radius:3px}
+.fnlist{display:flex;flex-wrap:wrap;gap:4px}
+.keys{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;line-height:1.5}
+.keys kbd{font-family:var(--font-cell);font-size:11.5px;background:var(--head);border:1px solid var(--line);border-radius:3px;padding:0 5px}
+@media (max-width:640px){
+  .hide-sm{display:none}
+  .tools{gap:2px}
+}
+
+/* account */
+.account{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.account .who{max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.linkbtn{border:0;background:none;color:var(--accent);padding:2px 0;text-decoration:underline;text-underline-offset:3px}
+.editor{box-shadow:0 4px 18px rgba(0,0,0,.5)}
+.menu-list{box-shadow:0 10px 30px rgba(0,0,0,.5)}
+/* sign-in */
+.auth{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px max(16px, env(safe-area-inset-right, 0px)) 24px max(16px, env(safe-area-inset-left, 0px));overflow:auto}
+.auth-card{width:100%;max-width:380px;display:flex;flex-direction:column;gap:18px}
+.auth-card .brand{margin-bottom:10px}
+.auth h1{margin:0;font:600 30px/1.1 var(--font-word);letter-spacing:-.04em;text-wrap:balance}
+.auth p{margin:0;color:var(--muted);line-height:1.5}
+.auth form{display:flex;flex-direction:column;gap:12px}
+.auth label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted);letter-spacing:.02em}
+.auth input{background:var(--panel);border:1px solid var(--line-strong);border-radius:8px;padding:11px 12px;color:var(--fg);font-size:15px}
+.auth input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.auth .btn.primary{justify-content:center;padding:11px 14px;font-weight:600;font-size:14px;border-radius:8px}
+.auth .row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.auth .note{min-height:20px;font-size:13px;color:var(--accent)}
+.auth .note.bad{color:var(--err)}
+.auth .fine{font-size:12px}
+.auth button:disabled{opacity:.55;cursor:wait}
+.grid-preview{font-family:var(--font-cell);font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:grid;grid-template-columns:repeat(4,1fr)}
+.grid-preview span{padding:6px 8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:right}
+.grid-preview span:nth-child(4n){border-right:0}
+.grid-preview span.h{color:var(--accent);text-align:left;background:var(--head)}
+.grid-preview span.t{color:var(--fg)}
+</style>
+  </head>
+  <body>
+<header class="top band">
+  <a class="brand" href="/" title="Good Business home"><span class="word">Good Business</span><span class="slash">/</span><span class="app">Gridbook</span></a>
+  <button class="save" id="save" data-s="local" title="Save status"><span class="dot"></span><span id="saveText">Loading…</span></button>
+  <div class="account" id="account" hidden><span class="who" id="who"></span><button class="linkbtn" id="signOut">Sign out</button></div>
+  <div class="spacer"></div>
+  <button class="btn" id="helpBtn">Formulas &amp; shortcuts</button>
+  <button class="btn" id="importBtn">Import</button>
+  <input type="file" id="fileIn" accept=".xlsx,.xls,.csv,.tsv,.ods" hidden>
+  <div class="menu">
+    <button class="btn primary" id="exportBtn" aria-haspopup="true">Export</button>
+    <div class="menu-list" id="exportMenu" hidden>
+      <button data-exp="xlsx">Excel workbook (.xlsx)<small>All sheets, formulas kept</small></button>
+      <button data-exp="csv">CSV (.csv)<small>Current sheet, values only</small></button>
+    </div>
+  </div>
+</header>
+
+<div class="tools band" role="toolbar" aria-label="Formatting">
+  <button class="tb" id="undoBtn" title="Undo (Ctrl+Z)" aria-label="Undo"><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+  <button class="tb" id="redoBtn" title="Redo (Ctrl+Y)" aria-label="Redo"><svg viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H9.5a5.5 5.5 0 0 0 0 11H13"/></svg></button>
+  <span class="sep"></span>
+  <button class="tb" id="boldBtn" title="Bold (Ctrl+B)" aria-label="Bold"><b>B</b></button>
+  <button class="tb" id="italBtn" title="Italic (Ctrl+I)" aria-label="Italic"><i style="font-family:Georgia,serif">I</i></button>
+  <span class="sep"></span>
+  <button class="tb" data-align="l" title="Align left" aria-label="Align left"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h10M4 18h13"/></svg></button>
+  <button class="tb" data-align="c" title="Align center" aria-label="Align center"><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M5.5 18h13"/></svg></button>
+  <button class="tb" data-align="r" title="Align right" aria-label="Align right"><svg viewBox="0 0 24 24"><path d="M4 6h16M10 12h10M7 18h13"/></svg></button>
+  <span class="sep"></span>
+  <select id="fmtSel" aria-label="Number format" title="Number format">
+    <option value="">General</option>
+    <option value="num">Number 1,234.50</option>
+    <option value="cur">Currency $1,234.50</option>
+    <option value="pct">Percent 12.5%</option>
+    <option value="date">Date 11/10/2026</option>
+  </select>
+  <span class="sep"></span>
+  <span class="swatches" aria-label="Fill color">
+    <button class="sw" data-fill="none" title="No fill" aria-label="No fill"></button>
+    <button class="sw" data-fill="yellow" title="Yellow fill" aria-label="Yellow fill"></button>
+    <button class="sw" data-fill="green" title="Green fill" aria-label="Green fill"></button>
+    <button class="sw" data-fill="blue" title="Blue fill" aria-label="Blue fill"></button>
+    <button class="sw" data-fill="red" title="Red fill" aria-label="Red fill"></button>
+  </span>
+  <span class="sep hide-sm"></span>
+  <button class="tb hide-sm" id="sumBtn" title="AutoSum the cells above or to the left" aria-label="AutoSum">Σ</button>
+  <button class="tb hide-sm" id="sortAsc" title="Sort selected rows A→Z by the active column">A→Z</button>
+  <button class="tb hide-sm" id="sortDesc" title="Sort selected rows Z→A by the active column">Z→A</button>
+</div>
+
+<div class="fbar band">
+  <input class="namebox" id="nameBox" aria-label="Cell address" spellcheck="false" value="A1">
+  <span class="fx">fx</span>
+  <input class="finput" id="fInput" aria-label="Cell contents" spellcheck="false" autocomplete="off">
+</div>
+
+<div class="gridwrap" id="wrap" tabindex="0" aria-label="Spreadsheet grid">
+  <table class="grid" id="grid"></table>
+  <div class="sel" id="selBox" hidden></div>
+  <div class="cur" id="curBox"></div>
+  <div class="refbox" id="refBox" hidden></div>
+  <input class="editor" id="editor" hidden spellcheck="false" autocomplete="off" aria-label="Edit cell">
+  <div class="more"><button class="btn" id="moreRows">Add 100 rows</button></div>
+</div>
+
+<div class="status band">
+  <span class="msg" id="msg"></span>
+  <span id="stats"></span>
+</div>
+<nav class="tabs band" id="tabs" aria-label="Sheets"></nav>
+
+<div class="help" id="help" hidden>
+  <div class="help-card" role="dialog" aria-labelledby="helpTitle">
+    <div style="display:flex;align-items:start;gap:12px"><h2 id="helpTitle" style="flex:1">Formulas &amp; shortcuts</h2><button class="btn" id="helpClose">Close</button></div>
+    <p>Start a cell with <code>=</code>. Reference cells like <code>A1</code>, ranges like <code>B2:B9</code>, other sheets like <code>Sheet2!C4</code>, and lock a reference with <code>$A$1</code>. While typing a formula, click or drag on the grid to insert a reference.</p>
+    <h3>Functions</h3>
+    <div class="fnlist" id="fnList"></div>
+    <h3>Keyboard</h3>
+    <div class="keys">
+      <kbd>Type</kbd><span>Replace the cell. <kbd>F2</kbd> or double-click edits it in place.</span>
+      <kbd>Enter / Tab</kbd><span>Save and move down / right. <kbd>Esc</kbd> cancels.</span>
+      <kbd>Shift + arrows</kbd><span>Extend the selection. Drag works too.</span>
+      <kbd>Ctrl + C / X / V</kbd><span>Copy, cut, paste. Works with Excel and Google Sheets.</span>
+      <kbd>Ctrl + D / R</kbd><span>Fill down / fill right, adjusting references.</span>
+      <kbd>Ctrl + Z / Y</kbd><span>Undo / redo.</span>
+      <kbd>Ctrl + B / I</kbd><span>Bold / italic.</span>
+      <kbd>Delete</kbd><span>Clear contents of the selection.</span>
+    </div>
+  </div>
+</div>
+
+
+<div class="auth" id="auth" hidden>
+  <div class="auth-card">
+    <a class="brand" href="/"><span class="word">Good Business</span><span class="slash">/</span><span class="app">Gridbook</span></a>
+    <div data-view="signin">
+      <h1>Your spreadsheets, on the web.</h1>
+      <p style="margin-top:8px">Sign in with your Good Business account. Sheets save as you type.</p>
+    </div>
+    <div class="grid-preview" aria-hidden="true" data-view="signin">
+      <span class="h">Expense</span><span class="h" style="text-align:right">Jan</span><span class="h" style="text-align:right">Feb</span><span class="h" style="text-align:right">Total</span>
+      <span style="text-align:left">Payroll</span><span>6,200</span><span>6,200</span><span>12,400</span>
+      <span style="text-align:left">Software</span><span>240</span><span>260</span><span>500</span>
+      <span style="text-align:left" class="t">=SUM()</span><span class="t">6,440</span><span class="t">6,460</span><span class="t">12,900</span>
+    </div>
+    <form id="signinForm" data-view="signin" novalidate>
+      <label for="authEmail">Email<input id="authEmail" type="email" autocomplete="email" inputmode="email" required></label>
+      <label for="authPassword">Password<input id="authPassword" type="password" autocomplete="current-password"></label>
+      <button class="btn primary" type="submit">Sign in</button>
+      <div class="row"><button type="button" class="linkbtn" id="linkBtn">Email me a sign-in link</button><button type="button" class="linkbtn" id="forgotBtn">Forgot password?</button></div>
+    </form>
+    <div data-view="sent" hidden>
+      <h1>Check your email.</h1>
+      <div class="row" style="margin-top:14px"><button type="button" class="linkbtn" id="backBtn">Back to sign in</button></div>
+    </div>
+    <form id="resetForm" data-view="reset" hidden novalidate>
+      <h1>Set a new password.</h1>
+      <label for="newPassword">New password<input id="newPassword" type="password" autocomplete="new-password" minlength="8"></label>
+      <button class="btn primary" type="submit">Save password</button>
+    </form>
+    <p class="note" id="authNote" role="status" aria-live="polite"></p>
+  </div>
+</div>
+
+    <script type="module" src="./gridbook.js"></script>
+  </body>
+</html>
