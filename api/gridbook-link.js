@@ -1,0 +1,144 @@
+import { createHash } from "node:crypto";
+
+// Sends a Gridbook sign-in link from hello@goodbusinesshq.com via Resend.
+// New emails get an account automatically. The link carries a one-time token
+// that /gridbook/ exchanges for a session, so Supabase's own mailer is not used.
+
+const RESEND_ENDPOINT = "https://api.resend.com/emails";
+const SENDER = "Good Business <hello@goodbusinesshq.com>";
+const CANONICAL_ORIGIN = "https://goodbusinesshq.com";
+const MAX_PER_EMAIL_PER_HOUR = 5;
+const MAX_PER_IP_PER_HOUR = 20;
+
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
+    return res.status(405).json({ error: "Method not allowed." });
+  }
+
+  const supabaseUrl = (process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "").replace(/\/$/, "");
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
+  if (!supabaseUrl || !serviceKey || !process.env.RESEND_API_KEY) {
+    console.error("Gridbook link: missing SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY or RESEND_API_KEY.");
+    return res.status(503).json({ error: "Sign-in email is temporarily unavailable." });
+  }
+
+  let body;
+  try {
+    body = typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
+  } catch {
+    return res.status(400).json({ error: "Enter a valid email address." });
+  }
+  const email = typeof body.email === "string" ? body.email.trim().toLowerCase().slice(0, 254) : "";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: "Enter a valid email address." });
+  }
+
+  const admin = { apikey: serviceKey, Authorization: `Bearer ${serviceKey}`, "Content-Type": "application/json" };
+  const ip = String(req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "unknown").split(",")[0].trim();
+  const emailHash = sha256(email);
+  const ipHash = sha256(ip);
+
+  try {
+    const since = new Date(Date.now() - 3600_000).toISOString();
+    const [byEmail, byIp] = await Promise.all([
+      countRecent(supabaseUrl, admin, "email_hash", emailHash, since),
+      countRecent(supabaseUrl, admin, "ip_hash", ipHash, since),
+    ]);
+    if (byEmail >= MAX_PER_EMAIL_PER_HOUR || byIp >= MAX_PER_IP_PER_HOUR) {
+      return res.status(429).json({ error: "Too many links requested. Wait a bit and try again." });
+    }
+
+    const token = await createSignInToken(supabaseUrl, admin, email);
+    const link = `${originFor(req)}/gridbook/?token_hash=${encodeURIComponent(token)}&type=magiclink`;
+
+    await fetch(`${supabaseUrl}/rest/v1/gridbook_link_requests`, {
+      method: "POST",
+      headers: { ...admin, Prefer: "return=minimal" },
+      body: JSON.stringify({ email_hash: emailHash, ip_hash: ipHash }),
+    }).catch(() => null);
+
+    const sent = await fetch(RESEND_ENDPOINT, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: SENDER,
+        to: [email],
+        subject: "Your Gridbook sign-in link",
+        html: emailHtml(link),
+        text: `Open this link to sign in to Gridbook:\n\n${link}\n\nIt works once and expires in one hour. If you didn't ask for it, ignore this email.`,
+      }),
+    });
+    if (!sent.ok) {
+      console.error("Gridbook link: Resend rejected the email.", sent.status, (await sent.text()).slice(0, 300));
+      return res.status(502).json({ error: "We couldn't send the email. Try again in a minute." });
+    }
+    return res.status(200).json({ ok: true });
+  } catch (error) {
+    console.error("Gridbook link failed.", error);
+    return res.status(500).json({ error: "We couldn't send the email. Try again in a minute." });
+  }
+}
+
+async function countRecent(base, headers, column, value, since) {
+  const url = `${base}/rest/v1/gridbook_link_requests?select=id&${column}=eq.${value}&created_at=gte.${encodeURIComponent(since)}`;
+  const r = await fetch(url, { headers: { ...headers, Prefer: "count=exact", Range: "0-0" } });
+  if (!r.ok) throw new Error(`rate check ${r.status}`);
+  const total = Number((r.headers.get("content-range") || "").split("/")[1]);
+  return Number.isFinite(total) ? total : 0;
+}
+
+async function generateLink(base, headers, email) {
+  const r = await fetch(`${base}/auth/v1/admin/generate_link`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({ type: "magiclink", email }),
+  });
+  const data = await r.json().catch(() => ({}));
+  return { ok: r.ok, status: r.status, data };
+}
+
+async function createSignInToken(base, headers, email) {
+  let result = await generateLink(base, headers, email);
+  if (!result.ok) {
+    // New email: create the account (already confirmed), then generate the link.
+    const created = await fetch(`${base}/auth/v1/admin/users`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ email, email_confirm: true }),
+    });
+    if (!created.ok && created.status !== 422) {
+      throw new Error(`create user ${created.status}: ${(await created.text()).slice(0, 200)}`);
+    }
+    result = await generateLink(base, headers, email);
+  }
+  const token = result.data?.hashed_token || result.data?.properties?.hashed_token;
+  if (!result.ok || !token) throw new Error(`generate_link ${result.status}: ${JSON.stringify(result.data).slice(0, 200)}`);
+  return token;
+}
+
+function originFor(req) {
+  const host = String(req.headers["x-forwarded-host"] || req.headers.host || "").toLowerCase();
+  if (host === "goodbusinesshq.com" || host === "www.goodbusinesshq.com") return `https://${host}`;
+  if (/^localhost(:\d+)?$/.test(host)) return `http://${host}`;
+  return CANONICAL_ORIGIN;
+}
+
+function sha256(value) {
+  return createHash("sha256").update(value).digest("hex");
+}
+
+function emailHtml(link) {
+  const safe = link.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
+  return `
+    <div style="background:#050608;padding:40px 20px;font-family:Arial,Helvetica,sans-serif;color:#f5f7fb">
+      <div style="max-width:520px;margin:0 auto;background:#0b0e13;padding:36px;border:1px solid #1d232c;border-radius:10px">
+        <p style="margin:0 0 24px;font-size:15px;font-weight:bold;letter-spacing:-.02em">Good Business <span style="color:#6b7380">/</span> <span style="color:#30d6a3;font-family:monospace;font-size:12px;letter-spacing:.12em">GRIDBOOK</span></p>
+        <h1 style="margin:0 0 14px;font-size:26px;line-height:1.2">Sign in to Gridbook</h1>
+        <p style="margin:0 0 28px;font-size:15px;line-height:1.6;color:#aab2bf">Click the button to open your spreadsheets. The link works once and expires in one hour.</p>
+        <a href="${safe}" style="display:inline-block;background:#30d6a3;color:#03140d;text-decoration:none;font-weight:bold;font-size:15px;padding:13px 22px;border-radius:8px">Open Gridbook</a>
+        <p style="margin:28px 0 0;font-size:12px;line-height:1.6;color:#6b7380">If the button doesn't work, paste this into your browser:<br><span style="color:#aab2bf;word-break:break-all">${safe}</span></p>
+        <p style="margin:20px 0 0;padding-top:18px;border-top:1px solid #1d232c;font-size:12px;color:#6b7380">Didn't ask for this? You can ignore it.</p>
+      </div>
+    </div>`;
+}

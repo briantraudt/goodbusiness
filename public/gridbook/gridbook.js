@@ -999,7 +999,7 @@ function switchSheet(id, force) {
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://qiyjzukzhwklkmpdxmfl.supabase.co";
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_wlKLDRgzNPEhy3sD92Htzg_5s7r-_QS";
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
-  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, storageKey: "gb-gridbook-auth" },
+  auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: "implicit", storageKey: "gb-gridbook-auth" },
 });
 const TABLE = "gridbook_sheets";
 const MAX_SHEET_BYTES = 4_500_000;
@@ -1090,6 +1090,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 const authEl = $("auth");
 function showAuth(view, note) {
   authEl.hidden = false;
+  if (view === "signin" && !$("authEmail").value) { try { $("authEmail").value = localStorage.getItem("gridbook.lastEmail") || ""; } catch (e) { } }
   document.querySelectorAll("[data-view]").forEach(v => { v.hidden = v.dataset.view !== view; });
   const n = $("authNote"); n.textContent = note || ""; n.classList.remove("bad");
   const first = authEl.querySelector(`[data-view="${view}"] input`);
@@ -1097,44 +1098,36 @@ function showAuth(view, note) {
 }
 function authError(text) { const n = $("authNote"); n.textContent = text; n.classList.add("bad"); }
 function busy(form, on) { form.querySelectorAll("button, input").forEach(el => { el.disabled = on; }); }
+let lastEmail = "";
+async function sendLink(email) {
+  const form = $("signinForm"); busy(form, true);
+  let error = null;
+  try {
+    const r = await fetch("/api/gridbook-link", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
+    if (!r.ok) { const j = await r.json().catch(() => ({})); error = j.error || "We couldn't send the email. Try again in a minute."; }
+  } catch (e) { error = "No connection. Check your internet and try again."; }
+  busy(form, false);
+  if (error) { authError(error); return false; }
+  lastEmail = email;
+  $("sentTo").textContent = email;
+  showAuth("sent");
+  return true;
+}
 $("signinForm").addEventListener("submit", async e => {
   e.preventDefault();
-  const form = e.currentTarget, email = $("authEmail").value.trim(), password = $("authPassword").value;
-  if (!email || !password) { authError("Enter your email and password."); return; }
-  busy(form, true);
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
-  busy(form, false);
-  if (error) authError(/invalid/i.test(error.message) ? "That email and password don't match. Try again or email yourself a sign-in link." : error.message);
-});
-$("linkBtn").addEventListener("click", async () => {
   const email = $("authEmail").value.trim();
-  if (!email) { authError("Enter your email first, then tap Email me a sign-in link."); $("authEmail").focus(); return; }
-  const form = $("signinForm"); busy(form, true);
-  const { error } = await supabase.auth.signInWithOtp({ email, options: { emailRedirectTo: location.origin + "/gridbook/", shouldCreateUser: false } });
-  busy(form, false);
-  if (error) authError(/not found|signups/i.test(error.message) ? "There's no Gridbook account for that email." : error.message);
-  else showAuth("sent", `We sent a sign-in link to ${email}. Open it on this device.`);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { authError("Enter a valid email address."); $("authEmail").focus(); return; }
+  try { localStorage.setItem("gridbook.lastEmail", email); } catch (err) { }
+  await sendLink(email);
 });
-$("forgotBtn").addEventListener("click", async () => {
-  const email = $("authEmail").value.trim();
-  if (!email) { authError("Enter your email first, then tap Forgot password."); $("authEmail").focus(); return; }
-  const form = $("signinForm"); busy(form, true);
-  const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: location.origin + "/gridbook/" });
-  busy(form, false);
-  if (error) authError(error.message);
-  else showAuth("sent", `If ${email} has an account, a reset link is on its way.`);
+$("resendBtn").addEventListener("click", async () => {
+  if (!lastEmail) { showAuth("signin"); return; }
+  const btn = $("resendBtn"); btn.disabled = true;
+  await sendLink(lastEmail);
+  btn.disabled = false;
+  const n = $("authNote"); if (!n.classList.contains("bad")) n.textContent = "Sent another link.";
 });
 $("backBtn").addEventListener("click", () => showAuth("signin"));
-$("resetForm").addEventListener("submit", async e => {
-  e.preventDefault();
-  const form = e.currentTarget, pw = $("newPassword").value;
-  if (pw.length < 8) { authError("Use at least 8 characters."); return; }
-  busy(form, true);
-  const { error } = await supabase.auth.updateUser({ password: pw });
-  busy(form, false);
-  if (error) authError(error.message);
-  else { authEl.hidden = true; flash("Password updated."); }
-});
 $("signOut").addEventListener("click", async () => {
   if (dirty.size || deleted.size) await flush();
   await supabase.auth.signOut();
@@ -1148,7 +1141,7 @@ async function enter(u) {
     user = u; loaded = false;
     $("who").textContent = u.email || "";
     $("account").hidden = false;
-    if (!authEl.querySelector('[data-view="reset"]:not([hidden])')) authEl.hidden = true;
+    authEl.hidden = true;
     setSave("loading");
     const cache = loadLocal();
     if (cache) applySheets(cache.sheets, cache.activeId);
@@ -1328,9 +1321,26 @@ window.addEventListener("resize", () => drawSelection());
 /* ---------- boot ---------- */
 { const ex = exampleSheet(); sheets = [ex]; activeId = ex.id; }
 buildGrid(); render(); setSave("loading");
+const urlParams = new URLSearchParams(location.search);
+const tokenHash = urlParams.get("token_hash");
+let linkFailed = null;
+if (tokenHash) {
+  history.replaceState(null, "", location.pathname);
+  showAuth("verifying");
+  (async () => {
+    let { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: urlParams.get("type") === "email" ? "email" : "magiclink" });
+    if (error && /type/i.test(error.message || "")) ({ error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: "email" }));
+    if (error) {
+      linkFailed = error;
+      showAuth("signin");
+      authError(/expired|invalid|not found/i.test(error.message || "") ? "That link expired or was already used. Enter your email for a new one." : error.message);
+    }
+  })();
+}
+const linkError = (() => { const h = new URLSearchParams(location.hash.slice(1)); const q = new URLSearchParams(location.search); return h.get("error_description") || q.get("error_description"); })();
+if (linkError) history.replaceState(null, "", location.pathname);
 supabase.auth.onAuthStateChange((event, session) => {
-  if (event === "PASSWORD_RECOVERY") { setTimeout(() => showAuth("reset", "Choose a new password."), 0); return; }
   if (event === "SIGNED_OUT") { setTimeout(leave, 0); return; }
   if (session && session.user) setTimeout(() => enter(session.user), 0);
-  else if (event === "INITIAL_SESSION") showAuth("signin");
+  else if (event === "INITIAL_SESSION" && !tokenHash) { showAuth("signin"); if (linkError) authError(/expired|invalid/i.test(linkError) ? "That link expired or was already used. Enter your email for a new one." : linkError); }
 });
