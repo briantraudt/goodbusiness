@@ -1099,18 +1099,65 @@ function showAuth(view, note) {
 function authError(text) { const n = $("authNote"); n.textContent = text; n.classList.add("bad"); }
 function busy(form, on) { form.querySelectorAll("button, input").forEach(el => { el.disabled = on; }); }
 let lastEmail = "";
+let pollTimer = null, pollUntil = 0;
+const DEVICE_KEY = "gridbook.device";
+function deviceFor(email) {
+  try { const d = JSON.parse(localStorage.getItem(DEVICE_KEY) || "null"); return d && d.email === email ? d.token : null; } catch (e) { return null; }
+}
+async function rememberDevice(session) {
+  const email = (session.user.email || "").toLowerCase();
+  if (!email || deviceFor(email)) return;
+  try {
+    const r = await fetch("/api/gridbook-auth", { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token }, body: JSON.stringify({ action: "remember" }) });
+    const j = await r.json().catch(() => ({}));
+    if (r.ok && j.deviceToken) localStorage.setItem(DEVICE_KEY, JSON.stringify({ email, token: j.deviceToken }));
+  } catch (e) { }
+}
+async function signInWithToken(tokenHash) {
+  let { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: "magiclink" });
+  if (error && /type/i.test(error.message || "")) ({ error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: "email" }));
+  return error;
+}
+function stopPolling() { clearTimeout(pollTimer); pollTimer = null; }
+function startPolling(pending, poll) {
+  stopPolling(); pollUntil = Date.now() + 30 * 60_000;
+  const tick = async () => {
+    if (user || Date.now() > pollUntil || authEl.hidden) { stopPolling(); return; }
+    try {
+      const r = await fetch("/api/gridbook-auth", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "poll", pending, poll }) });
+      const j = await r.json().catch(() => ({}));
+      if (j.status === "approved" && j.token_hash) {
+        stopPolling(); showAuth("verifying");
+        const err = await signInWithToken(j.token_hash);
+        if (err) { showAuth("signin"); authError("Couldn't finish signing in. Tap Sign up / Log in again."); }
+        return;
+      }
+      if (j.status === "expired" || j.status === "used" || j.status === "unknown") { stopPolling(); return; }
+    } catch (e) { }
+    pollTimer = setTimeout(tick, document.visibilityState === "visible" ? 2500 : 6000);
+  };
+  pollTimer = setTimeout(tick, 2500);
+}
 async function sendLink(email) {
   const form = $("signinForm"); busy(form, true);
-  let error = null;
+  let error = null, data = null;
   try {
-    const r = await fetch("/api/gridbook-link", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
-    if (!r.ok) { const j = await r.json().catch(() => ({})); error = j.error || "We couldn't send the email. Try again in a minute."; }
+    const r = await fetch("/api/gridbook-link", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, deviceToken: deviceFor(email) || undefined }) });
+    data = await r.json().catch(() => ({}));
+    if (!r.ok) error = data.error || "We couldn't send the email. Try again in a minute.";
   } catch (e) { error = "No connection. Check your internet and try again."; }
   busy(form, false);
   if (error) { authError(error); return false; }
+  if (data.mode === "device" && data.token_hash) {
+    showAuth("verifying");
+    const err = await signInWithToken(data.token_hash);
+    if (err) { showAuth("signin"); authError("Couldn't sign you in. Try again."); return false; }
+    return true;
+  }
   lastEmail = email;
   $("sentTo").textContent = email;
   showAuth("sent");
+  if (data.pending && data.poll) startPolling(data.pending, data.poll);
   return true;
 }
 $("signinForm").addEventListener("submit", async e => {
@@ -1340,12 +1387,17 @@ if (tokenHash) {
   history.replaceState(null, "", location.pathname);
   showAuth("verifying");
   (async () => {
-    let { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: urlParams.get("type") === "email" ? "email" : "magiclink" });
-    if (error && /type/i.test(error.message || "")) ({ error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: "email" }));
+    const error = await signInWithToken(tokenHash);
     if (error) {
       linkFailed = error;
       showAuth("signin");
       authError(/expired|invalid|not found/i.test(error.message || "") ? "That link expired or was already used. Enter your email for a new one." : error.message);
+      return;
+    }
+    const pendingId = urlParams.get("p");
+    if (pendingId) {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) fetch("/api/gridbook-auth", { method: "POST", headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.access_token }, body: JSON.stringify({ action: "approve", pending: pendingId }) }).catch(() => null);
     }
   })();
 }
@@ -1353,6 +1405,6 @@ const linkError = (() => { const h = new URLSearchParams(location.hash.slice(1))
 if (linkError) history.replaceState(null, "", location.pathname);
 supabase.auth.onAuthStateChange((event, session) => {
   if (event === "SIGNED_OUT") { setTimeout(leave, 0); return; }
-  if (session && session.user) setTimeout(() => enter(session.user), 0);
+  if (session && session.user) { stopPolling(); setTimeout(() => { enter(session.user); rememberDevice(session); }, 0); }
   else if (event === "INITIAL_SESSION" && !tokenHash) { showAuth("signin"); if (linkError) authError(/expired|invalid/i.test(linkError) ? "That link expired or was already used. Enter your email for a new one." : linkError); }
 });

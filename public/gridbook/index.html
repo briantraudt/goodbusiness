@@ -286,7 +286,7 @@ table.grid{border-collapse:separate;border-spacing:0;table-layout:fixed;font-fam
     <a class="brand" href="/"><span class="word">Good Business</span><span class="slash">/</span><span class="app">Gridbook</span></a>
     <div data-view="signin">
       <h1>Your spreadsheets, on the web.</h1>
-      <p style="margin-top:8px">Enter your email and we'll send you a link. Click it and you're in. New here? The same link creates your account.</p>
+      <p style="margin-top:8px">Enter your email. The first time, we'll email you a link to confirm it. After that, this device remembers you and one tap logs you in.</p>
     </div>
     <div class="grid-preview" aria-hidden="true" data-view="signin">
       <span class="h">Expense</span><span class="h" style="text-align:right">Jan</span><span class="h" style="text-align:right">Feb</span><span class="h" style="text-align:right">Total</span>
@@ -296,11 +296,11 @@ table.grid{border-collapse:separate;border-spacing:0;table-layout:fixed;font-fam
     </div>
     <form id="signinForm" data-view="signin" novalidate>
       <label for="authEmail">Email<input id="authEmail" type="email" autocomplete="email" inputmode="email" required></label>
-      <button class="btn primary" type="submit">Email me a link</button>
+      <button class="btn primary" type="submit">Sign up / Log in</button>
     </form>
     <div data-view="sent" hidden>
       <h1>Check your email.</h1>
-      <p style="margin-top:8px">We sent a link to <b id="sentTo" style="color:var(--fg);font-weight:600"></b>. Click it to open Gridbook. The link works once and expires after an hour.</p>
+      <p style="margin-top:8px">We sent a link to <b id="sentTo" style="color:var(--fg);font-weight:600"></b>. Click it and this page signs you in on its own, even if you open the email on your phone. The link works once and expires after an hour.</p>
       <div class="row" style="margin-top:16px"><button type="button" class="linkbtn" id="resendBtn">Send another link</button><button type="button" class="linkbtn" id="backBtn">Use a different email</button></div>
     </div>
     <div data-view="verifying" hidden>

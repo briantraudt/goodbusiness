@@ -1,8 +1,11 @@
-import { createHash } from "node:crypto";
+import { checkDevice, cleanEmail, config, isEmail, randomToken, readBody, rest, sha256, signInToken } from "../lib/gridbook-auth.js";
 
-// Sends a Gridbook sign-in link from hello@goodbusinesshq.com via Resend.
-// New emails get an account automatically. The link carries a one-time token
-// that /gridbook/ exchanges for a session, so Supabase's own mailer is not used.
+// Sign up / Log in for Gridbook.
+// - A remembered device (it completed an email sign-in before) gets a one-time
+//   sign-in token back immediately, with no email.
+// - Otherwise a link is emailed from hello@goodbusinesshq.com via Resend, and
+//   the requesting tab gets a pending id + secret so it can finish signing in
+//   once the link is opened on any device. New emails get an account.
 
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
 const SENDER = "Good Business <hello@goodbusinesshq.com>";
@@ -16,28 +19,30 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: "Method not allowed." });
   }
 
-  const supabaseUrl = (process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || "").replace(/\/$/, "");
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY;
-  if (!supabaseUrl || !serviceKey || !process.env.RESEND_API_KEY) {
+  const cfg = config();
+  if (!cfg || !process.env.RESEND_API_KEY) {
     console.error("Gridbook link: missing SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY or RESEND_API_KEY.");
-    return res.status(503).json({ error: "Sign-in email is temporarily unavailable." });
+    return res.status(503).json({ error: "Sign-in is temporarily unavailable." });
   }
 
-  let body;
-  try {
-    body = typeof req.body === "string" ? JSON.parse(req.body) : req.body || {};
-  } catch {
-    return res.status(400).json({ error: "Enter a valid email address." });
-  }
-  const email = typeof body.email === "string" ? body.email.trim().toLowerCase().slice(0, 254) : "";
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return res.status(400).json({ error: "Enter a valid email address." });
-  }
+  const body = readBody(req);
+  const email = cleanEmail(body.email);
+  if (!isEmail(email)) return res.status(400).json({ error: "Enter a valid email address." });
 
-  const admin = { apikey: serviceKey, Authorization: `Bearer ${serviceKey}`, "Content-Type": "application/json" };
+  const supabaseUrl = cfg.url;
+  const admin = cfg.headers;
   const ip = String(req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "unknown").split(",")[0].trim();
   const emailHash = sha256(email);
   const ipHash = sha256(ip);
+
+  try {
+    if (body.deviceToken && (await checkDevice(cfg, body.deviceToken, email))) {
+      const token = await signInToken(cfg, email);
+      return res.status(200).json({ ok: true, mode: "device", token_hash: token });
+    }
+  } catch (error) {
+    console.error("Gridbook device check failed.", error);
+  }
 
   try {
     const since = new Date(Date.now() - 3600_000).toISOString();
@@ -49,8 +54,10 @@ export default async function handler(req, res) {
       return res.status(429).json({ error: "Too many links requested. Wait a bit and try again." });
     }
 
-    const token = await createSignInToken(supabaseUrl, admin, email);
-    const link = `${originFor(req)}/gridbook/?token_hash=${encodeURIComponent(token)}&type=magiclink`;
+    const token = await signInToken(cfg, email);
+    const pollSecret = randomToken();
+    const [pending] = await rest(cfg, "gridbook_pending_logins", { method: "POST", body: { email, poll_secret_hash: sha256(pollSecret) }, prefer: "return=representation" });
+    const link = `${originFor(req)}/gridbook/?token_hash=${encodeURIComponent(token)}&type=magiclink&p=${pending.id}`;
 
     await fetch(`${supabaseUrl}/rest/v1/gridbook_link_requests`, {
       method: "POST",
@@ -73,7 +80,7 @@ export default async function handler(req, res) {
       console.error("Gridbook link: Resend rejected the email.", sent.status, (await sent.text()).slice(0, 300));
       return res.status(502).json({ error: "We couldn't send the email. Try again in a minute." });
     }
-    return res.status(200).json({ ok: true });
+    return res.status(200).json({ ok: true, mode: "email", pending: pending.id, poll: pollSecret });
   } catch (error) {
     console.error("Gridbook link failed.", error);
     return res.status(500).json({ error: "We couldn't send the email. Try again in a minute." });
@@ -88,44 +95,11 @@ async function countRecent(base, headers, column, value, since) {
   return Number.isFinite(total) ? total : 0;
 }
 
-async function generateLink(base, headers, email) {
-  const r = await fetch(`${base}/auth/v1/admin/generate_link`, {
-    method: "POST",
-    headers,
-    body: JSON.stringify({ type: "magiclink", email }),
-  });
-  const data = await r.json().catch(() => ({}));
-  return { ok: r.ok, status: r.status, data };
-}
-
-async function createSignInToken(base, headers, email) {
-  let result = await generateLink(base, headers, email);
-  if (!result.ok) {
-    // New email: create the account (already confirmed), then generate the link.
-    const created = await fetch(`${base}/auth/v1/admin/users`, {
-      method: "POST",
-      headers,
-      body: JSON.stringify({ email, email_confirm: true }),
-    });
-    if (!created.ok && created.status !== 422) {
-      throw new Error(`create user ${created.status}: ${(await created.text()).slice(0, 200)}`);
-    }
-    result = await generateLink(base, headers, email);
-  }
-  const token = result.data?.hashed_token || result.data?.properties?.hashed_token;
-  if (!result.ok || !token) throw new Error(`generate_link ${result.status}: ${JSON.stringify(result.data).slice(0, 200)}`);
-  return token;
-}
-
 function originFor(req) {
   const host = String(req.headers["x-forwarded-host"] || req.headers.host || "").toLowerCase();
   if (host === "goodbusinesshq.com" || host === "www.goodbusinesshq.com") return `https://${host}`;
   if (/^localhost(:\d+)?$/.test(host)) return `http://${host}`;
   return CANONICAL_ORIGIN;
-}
-
-function sha256(value) {
-  return createHash("sha256").update(value).digest("hex");
 }
 
 function emailHtml(link) {
