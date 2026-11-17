@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HQ | Good Business</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./hq.css" />
+  </head>
+  <body>
+    <main id="gate" class="gate" hidden>
+      <form id="gate-form" class="gate-card" autocomplete="off">
+        <p class="eyebrow">Good Business HQ</p>
+        <h1>Agent activity</h1>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required autofocus />
+        <button type="submit" id="gate-submit">Open</button>
+        <p id="gate-error" class="gate-error" role="alert"></p>
+      </form>
+    </main>
+
+    <div id="app" class="app" hidden>
+      <header class="top">
+        <div>
+          <p class="eyebrow">Good Business HQ</p>
+          <h1>Agent activity</h1>
+          <p id="subtitle" class="subtitle"></p>
+        </div>
+        <div class="top-actions">
+          <button type="button" id="refresh" class="ghost">Refresh</button>
+          <button type="button" id="signout" class="ghost">Sign out</button>
+        </div>
+      </header>
+
+      <section id="stats" class="stats" aria-label="Summary"></section>
+
+      <div class="grid">
+        <section class="panel" aria-labelledby="timeline-title">
+          <div class="panel-head">
+            <div>
+              <h2 id="timeline-title">Last 24 hours</h2>
+              <p id="timeline-sub" class="muted"></p>
+            </div>
+            <ul class="legend" aria-label="Legend">
+              <li><i class="dot ok"></i>Finished</li>
+              <li><i class="dot run"></i>Running</li>
+              <li><i class="dot bad"></i>Failed</li>
+              <li><i class="dot off"></i>Paused</li>
+            </ul>
+          </div>
+          <div id="timeline"></div>
+        </section>
+
+        <aside class="side">
+          <section class="panel" aria-labelledby="needs-title">
+            <h2 id="needs-title">From you</h2>
+            <div id="needs"></div>
+          </section>
+          <section class="panel" aria-labelledby="trouble-title">
+            <h2 id="trouble-title">Failed or late</h2>
+            <div id="trouble"></div>
+          </section>
+        </aside>
+      </div>
+
+      <section class="panel" aria-labelledby="products-title">
+        <h2 id="products-title">By product</h2>
+        <div id="products" class="products"></div>
+      </section>
+
+      <p id="footnote" class="footnote"></p>
+    </div>
+
+    <script type="module" src="./hq.js"></script>
+  </body>
+</html>
