@@ -94,15 +94,15 @@ section { padding: clamp(72px, 11vw, 160px) var(--pad); max-width: var(--max); m
 .site-nav a:hover { color: var(--ink); }
 
 /* ---------- hero ---------- */
-.hero { padding-top: clamp(32px, 6vh, 96px); padding-bottom: clamp(56px, 7vw, 100px); container-type: inline-size; }
+.hero { padding-top: clamp(20px, 4vh, 72px); padding-bottom: clamp(40px, 6vh, 100px); container-type: inline-size; }
 /* Headline is sized to the hero's own width and the screen height, so the three
-   lines always fit side to side and the call to action stays on the first screen. */
+   lines fit side to side and the buttons and outcome boxes stay on the first screen. */
 .hero h1 {
   font-family: var(--serif); font-weight: 400;
   font-size: clamp(40px, 11vw, 150px);
-  font-size: clamp(40px, min(14.4cqi, (100svh - 350px) / 2.7), 260px);
+  font-size: clamp(40px, min(14.4cqi, (100svh - 380px) / 2.7), 260px);
   line-height: 0.9; letter-spacing: -0.04em;
-  margin: 18px 0 clamp(24px, 4vh, 56px) -0.04em;
+  margin: 14px 0 clamp(14px, 2.5vh, 40px) -0.04em;
 }
 .hero h1 .line { display: block; white-space: nowrap; }
 .hero h1 em { font-style: italic; }
@@ -111,9 +111,9 @@ section { padding: clamp(72px, 11vw, 160px) var(--pad); max-width: var(--max); m
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: center; }
 .hero-proof {
   display: grid; grid-template-columns: repeat(3, 1fr);
-  margin-top: clamp(48px, 7vw, 96px); border-top: 1px solid var(--ink);
+  margin-top: clamp(22px, 4vh, 64px); border-top: 1px solid var(--ink);
 }
-.hero-proof li { padding: 22px 24px 0 0; display: grid; gap: 6px; }
+.hero-proof li { padding: 16px 24px 0 0; display: grid; gap: 4px; }
 .hero-proof li + li { padding-left: 24px; border-left: 1px solid var(--rule); }
 .hero-proof b { font-family: var(--serif); font-weight: 400; font-size: clamp(24px, 2.6vw, 34px); letter-spacing: -0.02em; line-height: 1.1; }
 .hero-proof span { color: var(--ink-2); font-size: 15px; max-width: 30ch; }
