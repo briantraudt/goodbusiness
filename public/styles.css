@@ -327,7 +327,74 @@ section { padding: clamp(72px, 11vw, 160px) var(--pad); max-width: var(--max); m
 .ph-tabs svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: square; stroke-linejoin: miter; }
 .ph-tabs::after { content: ""; position: absolute; left: 50%; bottom: 7px; width: 118px; height: 4px; margin-left: -59px; border-radius: 999px; background: #111; }
 
+/* ---- Left side for the dashboard example: three separate systems ---- */
+.sources { flex: 1 1 0; height: 0; min-height: 0; display: flex; flex-direction: column; gap: 12px; }
+.sources[hidden], .sheet-window[hidden] { display: none; }
+.src { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; background: #fff; border: 1px solid #b9b7ad; box-shadow: 0 14px 30px -24px rgba(10, 10, 10, 0.5); font-size: 12.5px; color: #222; }
+.src-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 12px; font-size: 12px; white-space: nowrap; }
+.src-bar b { font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+.src-bar span { opacity: 0.75; }
+.src-rows { flex: 1; display: grid; align-content: start; }
+.src-row { display: flex; justify-content: space-between; gap: 12px; padding: 0 12px; height: 26px; align-items: center; position: relative; }
+.src-row::after { content: ""; position: absolute; inset: 0; border: 2px solid var(--accent); opacity: 0; transition: opacity 0.2s ease; pointer-events: none; }
+.src-row.read::after { opacity: 1; }
+.src-row.done { color: #a3a3a3; }
+.src-pos { font-family: "DM Sans", system-ui, sans-serif; border-radius: 8px; }
+.src-pos .src-bar { background: #1b2a4a; color: #fff; }
+.src-pos .src-row { border-bottom: 1px solid #edf0f4; }
+.src-pos .src-head { font-size: 10.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #76808f; }
+.src-csv { font-family: var(--mono); font-size: 12px; background: #fbfbf8; }
+.src-csv .src-bar { background: #ebebe6; color: #444; border-bottom: 1px solid #d6d6cf; font-family: var(--sans); }
+.src-csv .src-row { justify-content: flex-start; gap: 0; height: 23px; }
+.src-csv .src-head { color: #8a8a80; }
+.src-xls { font-family: Arial, Helvetica, sans-serif; }
+.src-xls .src-bar { background: #1d6f42; color: #fff; }
+.src-xls .src-row { border-bottom: 1px solid #e1e1e1; }
+.src-xls .src-row span:first-child { border-right: 1px solid #e1e1e1; flex: 1; line-height: 26px; }
+.src-xls .src-head { font-weight: 700; background: #fff7c2; }
+
+/* ---- 0. Ember & Oak Kitchens: dark dashboard ---- */
+.k-dash { --bg: #0c1014; --panel: #12181f; --line: #232c37; --text: #e8edf2; --dim: #8b97a5; --labor: #4f6079; --over: #8fa2bb; --profit: #3ddc84; font-family: var(--sans); background: var(--bg); color: var(--text); border-color: #2a2f36; }
+.k-dash .app { display: flex; flex-direction: column; }
+.db-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--line); }
+.db-brand { display: flex; align-items: center; gap: 10px; font-weight: 600; letter-spacing: -0.01em; white-space: nowrap; }
+.db-brand svg { width: 22px; height: 22px; }
+.db-range { font-family: var(--mono); font-size: 11px; color: var(--dim); white-space: nowrap; }
+.db-main { flex: 1; display: flex; flex-direction: column; gap: 16px; padding: 16px 18px 16px; }
+.db-head h4 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
+.db-head small { color: var(--dim); font-size: 12.5px; }
+.k-dash .app-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--line); border-radius: 10px; }
+.k-dash .kpi { padding: 12px 14px; display: grid; gap: 3px; min-width: 0; }
+.k-dash .kpi + .kpi { border-left: 1px solid var(--line); }
+.k-dash .kpi span { font-size: 11.5px; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.k-dash .kpi b { font-family: var(--mono); font-size: 20px; font-weight: 500; letter-spacing: -0.04em; }
+.k-dash .kpi.green b { color: var(--profit); }
+.k-dash .kpi small { font-size: 11.5px; color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.db-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-bottom: 8px; font-size: 12px; color: var(--dim); }
+.db-legend b { color: var(--text); font-weight: 500; margin-right: auto; }
+.db-legend span { display: flex; align-items: center; gap: 6px; }
+.db-legend i { width: 9px; height: 9px; border-radius: 2px; }
+.db-row { display: grid; grid-template-columns: 96px minmax(0, 1fr) 70px 46px; gap: 12px; align-items: center; width: 100%; padding: 10px 8px; margin: 0 -8px; border-radius: 8px; text-align: left; color: inherit; transition: background 0.15s ease, opacity 0.2s ease; }
+.db-row:hover, .db-row.sel { background: var(--panel); }
+.db-row.dim { opacity: 0.38; }
+.db-row > b { font-weight: 500; font-size: 13.5px; white-space: nowrap; }
+.db-track { display: block; height: 22px; }
+.db-fill { display: flex; height: 100%; width: 0; border-radius: 4px; overflow: hidden; transition: width 0.7s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.db-fill i { display: block; height: 100%; }
+.db-val, .db-pct { font-family: var(--mono); font-size: 13px; text-align: right; white-space: nowrap; }
+.db-val { color: var(--profit); }
+.db-pct { color: var(--dim); }
+.db-note { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); font-size: 13px; line-height: 1.5; color: var(--dim); min-height: 3.6em; }
+.db-note b { color: var(--text); font-weight: 500; }
+.k-dash .tool-toast { display: none; }
+
 @container tool (max-width: 600px) {
+  .k-dash .app-kpis { grid-template-columns: 1fr 1fr; }
+  .k-dash .kpi:nth-child(3) { border-left: 0; }
+  .k-dash .kpi:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .db-row { grid-template-columns: 78px minmax(0, 1fr) 62px; gap: 8px; }
+  .db-pct, .db-range { display: none; }
+
   .lg-nav span:not(.on), .lg-user { display: none; }
   .k-ledger .rec-who, .k-ledger .app-th span:nth-child(2) { display: none; }
   .k-ledger .app-th, .k-ledger .rec { grid-template-columns: minmax(0, 1fr) 92px 72px; }
@@ -455,6 +522,8 @@ section { padding: clamp(72px, 11vw, 160px) var(--pad); max-width: var(--max); m
   .demo-arrow { height: 56px; }
   .demo-arrow span { transform: rotate(90deg); }
   .sheet-grid { flex: none; height: 307px; }
+  .sources { flex: none; height: auto; }
+  .src { flex: none; }
   .story, .founder, .contact, .industries, .products { grid-template-columns: 1fr; }
   .story-flip .story-visual { order: 0; }
   .steps { grid-template-columns: 1fr 1fr; }

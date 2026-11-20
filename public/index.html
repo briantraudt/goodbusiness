@@ -59,20 +59,22 @@
       <!-- DEMO -->
       <section class="demo" id="demo" aria-labelledby="demo-title">
         <div class="section-head">
-          <h2 id="demo-title">Start with the spreadsheet you already run on.</h2>
+          <h2 id="demo-title">Start with the data you already have.</h2>
           <p>Your data sits in spreadsheets, inboxes and systems that don't talk to each other. I use AI to turn it into one place that tells you what needs attention. Pick an example.</p>
         </div>
 
-        <div class="demo-tabs" role="tablist" aria-label="Sample spreadsheets">
-          <button role="tab" aria-selected="true" data-form="invoices" id="tab-invoices" aria-controls="demo-stage">Who owes you money</button>
+        <div class="demo-tabs" role="tablist" aria-label="Examples">
+          <button role="tab" aria-selected="true" data-form="locations" id="tab-locations" aria-controls="demo-stage">Three systems, one dashboard</button>
+          <button role="tab" aria-selected="false" data-form="invoices" id="tab-invoices" aria-controls="demo-stage" tabindex="-1">Who owes you money</button>
           <button role="tab" aria-selected="false" data-form="quotes" id="tab-quotes" aria-controls="demo-stage" tabindex="-1">Quotes to follow up</button>
           <button role="tab" aria-selected="false" data-form="hours" id="tab-hours" aria-controls="demo-stage" tabindex="-1">Team hours</button>
         </div>
 
-        <div class="demo-stage" id="demo-stage" role="tabpanel" aria-labelledby="tab-invoices">
+        <div class="demo-stage" id="demo-stage" role="tabpanel" aria-labelledby="tab-locations">
           <figure class="sheet">
-            <figcaption class="cap">Today <span>One file, emailed around</span></figcaption>
-            <div class="sheet-window" aria-label="Sample spreadsheet">
+            <figcaption class="cap">Today <span id="sheet-cap">One file, emailed around</span></figcaption>
+            <div class="sources" id="sources" aria-label="Three separate systems" hidden></div>
+            <div class="sheet-window" id="sheet-window" aria-label="Sample spreadsheet">
               <div class="sheet-bar"><i aria-hidden="true">X</i><b id="sheet-file"></b></div>
               <div class="sheet-fx" aria-hidden="true"><span>fx</span><em id="sheet-fx"></em></div>
               <div class="sheet-grid" id="sheet-grid"></div>
@@ -90,7 +92,7 @@
 
         <div class="demo-meta">
           <button type="button" class="text-link" id="demo-replay">Replay <span aria-hidden="true">↺</span></button>
-          <p>Sample data. The app is live: click a status and the numbers update.</p>
+          <p>Sample data. The apps are live: click a location or a status and the numbers update.</p>
         </div>
       </section>
 

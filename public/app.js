@@ -37,6 +37,8 @@ const ICONS = {
   hpQuiet: '<path d="M19 14.6A8 8 0 0 1 9.4 5 7.3 7.3 0 1 0 19 14.6z"/>',
   hpSent: '<path d="M4 11.5L20 5l-5.5 15.5-2.8-6.2z"/><path d="M11.7 14.3L20 5"/>',
   hpWon: '<path d="M4.5 13l4.8 4.8L19.5 6.5"/><circle cx="19.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>',
+  // Ember & Oak: one flame, cut from a circle
+  eoMark: '<rect width="24" height="24" rx="6" fill="#3ddc84"/><path d="M12 4.5c3.6 3 5.2 5.4 5.2 8.3a5.2 5.2 0 0 1-10.4 0c0-1.6.7-2.9 1.9-4 .2 1.6.9 2.5 1.9 2.9-.4-2.8.1-5.1 1.4-7.2z" fill="#0c1014"/>',
   // Bayline: heavy, square-cut
   blHome: '<path d="M4 11l8-7 8 7"/><path d="M7 10.5V20h10v-9.5"/>',
   blTime: '<circle cx="12" cy="12" r="8"/><path d="M12 7.5V12h4"/>',
@@ -48,7 +50,25 @@ const ICONS = {
 };
 const svg = (name, set = ICONS) => `<svg viewBox="0 0 24 24" aria-hidden="true">${set[name]}</svg>`;
 
+const pct = (part, whole) => (whole ? Math.round((part / whole) * 100) : 0);
+
 const SHEETS = {
+  locations: {
+    kind: 'dash',
+    outcome: 'Every location\'s profit, every morning',
+    leftCap: 'Three systems that don\'t talk to each other',
+    sources: [
+      { type: 'pos', title: 'Point of sale', note: 'Sales by location', head: ['Location', 'Net sales'], key: 'sales' },
+      { type: 'csv', title: 'payroll_export_nov.csv', note: 'Payroll provider', head: ['location', 'gross_pay'], key: 'labor' },
+      { type: 'xls', title: 'Rent and overhead (v4).xlsx', note: 'Spreadsheet', head: ['Location', 'Overhead'], key: 'overhead' },
+    ],
+    rows: [
+      { name: 'Downtown', sales: 184200, labor: 62600, overhead: 71900 },
+      { name: 'Riverside', sales: 156800, labor: 56400, overhead: 66300 },
+      { name: 'Northgate', sales: 131500, labor: 51300, overhead: 61800 },
+      { name: 'Lakeline', sales: 98400, labor: 45300, overhead: 49200 },
+    ],
+  },
   invoices: {
     kind: 'ledger',
     file: 'AR aging - USE THIS ONE.xlsx',
@@ -133,6 +153,19 @@ const browser = (mark, title, host, path) => `
     <div class="br-bar" aria-hidden="true"><span class="br-nav">${svg('back', CHROME)}${svg('forward', CHROME)}${svg('reload', CHROME)}</span><span class="br-url">${svg('lock', CHROME)}<em>${host}<span>${path}</span></em></span>${svg('dots', CHROME)}</div>`;
 
 const SHELLS = {
+  dash: () => `${browser('eoMark', 'Locations · Ember & Oak', 'emberandoak.goodbusinesshq.com', '/locations')}
+    <div class="app">
+      <div class="db-top"><span class="db-brand">${svg('eoMark')}Ember &amp; Oak Kitchens</span><span class="db-range">NOV 1 – 20 · 4 LOCATIONS</span></div>
+      <div class="db-main">
+        <div class="db-head"><h4 data-title>All locations</h4><small>Sales, payroll and overhead in one view</small></div>
+        <div class="app-kpis" data-kpis></div>
+        <div>
+          <div class="db-legend"><b>Where each dollar goes</b><span><i style="background:var(--labor)"></i>Labor</span><span><i style="background:var(--over)"></i>Overhead</span><span><i style="background:var(--profit)"></i>Profit</span></div>
+          <div data-body></div>
+        </div>
+        <p class="db-note" data-note></p>
+      </div>
+    </div>`,
   ledger: (sheet) => `${browser('nsMark', 'Receivables | Northside Mechanical', 'northside.goodbusinesshq.com', '/receivables')}
     <div class="app">
       <div class="lg-top"><span class="lg-brand">${svg('nsMark')}Northside Mechanical</span><span class="lg-nav" aria-hidden="true"><span>Jobs</span><span class="on">Receivables</span><span>Customers</span><span>Reports</span></span><span class="lg-user" aria-hidden="true">Dana Kim</span></div>
@@ -178,11 +211,14 @@ const shell = (sheet) => `${SHELLS[sheet.kind](sheet)}<p class="tool-toast" role
 const sheetGrid = document.querySelector('#sheet-grid');
 const sheetFile = document.querySelector('#sheet-file');
 const sheetFx = document.querySelector('#sheet-fx');
+const sheetWindow = document.querySelector('#sheet-window');
+const sheetCap = document.querySelector('#sheet-cap');
+const sourcesBox = document.querySelector('#sources');
 const toolWindow = document.querySelector('#tool-window');
 const toolOutcome = document.querySelector('#tool-outcome');
 const stage = document.querySelector('#demo-stage');
 const tabs = [...document.querySelectorAll('.demo-tabs [role="tab"]')];
-let current = 'invoices';
+let current = 'locations';
 let runId = 0;
 let playing = false;
 let toastTimer;
@@ -199,6 +235,100 @@ const el = (tag, className, text) => {
   return node;
 };
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+let dashSelected = -1;
+
+function recalcDash() {
+  const sheet = SHEETS[current];
+  const recs = [...toolBody.querySelectorAll('.db-row')];
+  const shown = sheet.rows.filter((_, index) => recs[index].classList.contains('in'));
+  recs.forEach((rec, index) => {
+    rec.classList.toggle('sel', index === dashSelected);
+    rec.classList.toggle('dim', dashSelected >= 0 && index !== dashSelected);
+    rec.setAttribute('aria-pressed', String(index === dashSelected));
+  });
+  const scope = dashSelected >= 0 ? [sheet.rows[dashSelected]] : shown;
+  const total = (key) => scope.reduce((value, row) => value + row[key], 0);
+  const sales = total('sales');
+  const profit = sales - total('labor') - total('overhead');
+  toolWindow.querySelector('[data-title]').textContent = dashSelected >= 0 ? sheet.rows[dashSelected].name : 'All locations';
+  toolKpis.replaceChildren(...[
+    { label: 'Sales', value: cash.format(sales), sub: 'From point of sale' },
+    { label: 'Labor', value: `${pct(total('labor'), sales)}%`, sub: 'Of sales · payroll' },
+    { label: 'Overhead', value: `${pct(total('overhead'), sales)}%`, sub: 'Of sales · sheet' },
+    { label: 'Profit', value: cash.format(profit), sub: `${pct(profit, sales)}% margin`, tone: 'green' },
+  ].map((kpi) => {
+    const card = el('div', `kpi ${kpi.tone || ''}`);
+    card.append(el('span', '', kpi.label), el('b', '', kpi.value), el('small', '', kpi.sub));
+    return card;
+  }));
+
+  const note = toolWindow.querySelector('[data-note]');
+  if (shown.length < sheet.rows.length) {
+    note.textContent = 'Matching each location across the three systems…';
+    return;
+  }
+  const margin = (row) => pct(row.sales - row.labor - row.overhead, row.sales);
+  const groupLabor = pct(sheet.rows.reduce((v, r) => v + r.labor, 0), sheet.rows.reduce((v, r) => v + r.sales, 0));
+  const focus = dashSelected >= 0 ? sheet.rows[dashSelected] : sheet.rows.reduce((low, row) => (margin(row) < margin(low) ? row : low));
+  const labor = pct(focus.labor, focus.sales);
+  const gap = labor - groupLabor;
+  note.replaceChildren(
+    el('b', '', `${focus.name} keeps ${margin(focus)}¢ of every dollar it sells. `),
+    document.createTextNode(gap > 0
+      ? `Labor there runs at ${labor}% of sales, ${plural(gap, 'point', 'points')} above the group.`
+      : `Labor there runs at ${labor}% of sales, ${gap === 0 ? 'level with' : `${plural(-gap, 'point', 'points')} below`} the group.`),
+  );
+}
+
+function buildDash(sheet) {
+  dashSelected = -1;
+  const maxSales = Math.max(...sheet.rows.map((row) => row.sales));
+  const sourceRows = sheet.rows.map(() => []);
+  sourcesBox.replaceChildren(...sheet.sources.map((source) => {
+    const box = el('div', `src src-${source.type}`);
+    const bar = el('div', 'src-bar');
+    bar.append(el('b', '', source.title), el('span', '', source.note));
+    const rows = el('div', 'src-rows');
+    const line = (cells, className) => {
+      const row = el('div', `src-row ${className}`);
+      if (source.type === 'csv') row.textContent = cells.join(',');
+      else cells.forEach((cell) => row.append(el('span', '', cell)));
+      rows.append(row);
+      return row;
+    };
+    line(source.head, 'src-head');
+    sheet.rows.forEach((data, index) => {
+      const value = source.type === 'pos' ? cash.format(data[source.key]) : data[source.key].toFixed(2);
+      sourceRows[index].push(line([data.name, value], ''));
+    });
+    box.append(bar, rows);
+    return box;
+  }));
+
+  return sheet.rows.map((data, index) => {
+    const profit = data.sales - data.labor - data.overhead;
+    const rec = el('button', 'db-row field');
+    rec.type = 'button';
+    const track = el('span', 'db-track');
+    const fill = el('span', 'db-fill');
+    [['labor', data.labor], ['over', data.overhead], ['profit', profit]].forEach(([name, value]) => {
+      const part = el('i');
+      part.style.width = `${(value / data.sales) * 100}%`;
+      part.style.background = `var(--${name})`;
+      fill.append(part);
+    });
+    fill.dataset.width = `${(data.sales / maxSales) * 100}%`;
+    track.append(fill);
+    rec.append(el('b', '', data.name), track, el('span', 'db-val', cash.format(profit)), el('span', 'db-pct', `${pct(profit, data.sales)}%`));
+    rec.addEventListener('click', () => {
+      dashSelected = dashSelected === index ? -1 : index;
+      recalcDash();
+    });
+    toolBody.append(rec);
+    return [sourceRows[index], rec];
+  });
+}
+
 function snapshot() {
   return [...toolBody.querySelectorAll('.rec.in')].map((rec) => ({
     status: rec.querySelector('.badge').dataset.status,
@@ -208,6 +338,7 @@ function snapshot() {
 
 function recalc() {
   const sheet = SHEETS[current];
+  if (sheet.kind === 'dash') { recalcDash(); return; }
   const all = snapshot();
   const ready = all.filter((row) => row.status === sheet.ready);
   toolKpis.replaceChildren(...sheet.kpis(all, ready).map((kpi) => {
@@ -247,9 +378,15 @@ function recalc() {
 function build(key) {
   const sheet = SHEETS[key];
   current = key;
-  sheetFile.textContent = sheet.file;
-  sheetFx.textContent = `=SUMIF(C2:C${sheet.rows.length + 1},"${sheet.ready}",D2:D${sheet.rows.length + 1})`;
+  const isDash = sheet.kind === 'dash';
+  sheetWindow.hidden = isDash;
+  sourcesBox.hidden = !isDash;
+  sheetCap.textContent = sheet.leftCap || 'One file, emailed around';
   toolOutcome.textContent = sheet.outcome;
+  if (!isDash) {
+    sheetFile.textContent = sheet.file;
+    sheetFx.textContent = `=SUMIF(C2:C${sheet.rows.length + 1},"${sheet.ready}",D2:D${sheet.rows.length + 1})`;
+  }
 
   toolWindow.className = `tool-window k-${sheet.kind}${sheet.kind === 'phone' ? ' is-phone' : ''}`;
   toolWindow.innerHTML = shell(sheet);
@@ -258,6 +395,11 @@ function build(key) {
   toolToast = toolWindow.querySelector('[data-toast]');
   toolKpis = toolWindow.querySelector('[data-kpis]');
   toolCount = toolWindow.querySelector('[data-count]');
+  if (isDash) {
+    const dashPairs = buildDash(sheet);
+    recalc();
+    return dashPairs;
+  }
   toolSend.addEventListener('click', () => {
     const count = snapshot().filter((row) => row.status === sheet.ready).length;
     toolToast.textContent = sheet.toast(count);
@@ -316,14 +458,16 @@ async function play(key, instant = false) {
   const pairs = build(key);
   const step = instant || reducedMotion ? 0 : 280;
   if (step) await wait(350);
-  for (const [row, rec] of pairs) {
+  for (const [source, rec] of pairs) {
+    const rows = [].concat(source);
     if (id !== runId) return;
-    row.classList.add('read');
-    if (step) await wait(step);
+    rows.forEach((row) => row.classList.add('read'));
+    if (step) await wait(rows.length > 1 ? step * 1.6 : step);
     if (id !== runId) return;
-    row.classList.remove('read');
-    row.classList.add('done');
+    rows.forEach((row) => { row.classList.remove('read'); row.classList.add('done'); });
     rec.classList.add('in');
+    const fill = rec.querySelector('.db-fill');
+    if (fill) requestAnimationFrame(() => { fill.style.width = fill.dataset.width; });
     recalc();
   }
   playing = false;
