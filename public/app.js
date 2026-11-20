@@ -601,7 +601,7 @@ contactForm?.addEventListener('submit', async (event) => {
     const result = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(result.error || fallback);
     contactForm.reset();
-    formNote.textContent = 'Thanks. I’ll reply within one business day.';
+    formNote.textContent = 'Thanks. I’ll reply within one business day to set up a call.';
   } catch (error) {
     formNote.textContent = error instanceof Error && error.message ? error.message : fallback;
   } finally {
