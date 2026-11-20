@@ -106,7 +106,7 @@ section { padding: clamp(72px, 11vw, 160px) var(--pad); max-width: var(--max); m
 }
 .hero h1 .line { display: block; white-space: nowrap; }
 .hero h1 em { font-style: italic; }
-.hero-foot { display: grid; gap: 28px; justify-items: start; }
+.hero-foot { display: grid; gap: 28px; justify-items: end; }
 .lede { font-size: clamp(19px, 1.9vw, 25px); line-height: 1.4; max-width: 36ch; letter-spacing: -0.01em; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: center; }
 .hero-proof {
@@ -325,6 +325,7 @@ section { padding: clamp(72px, 11vw, 160px) var(--pad); max-width: var(--max); m
 @media (max-width: 900px) {
   .site-nav { display: none; }
   .site-header .btn { margin-left: auto; }
+  .hero-foot { justify-items: start; }
   .hero-proof { grid-template-columns: 1fr; }
   .hero-proof li, .hero-proof li + li { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
   .demo-stage { grid-template-columns: 1fr; gap: 0; }
