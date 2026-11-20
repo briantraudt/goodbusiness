@@ -13,39 +13,60 @@ const cash = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD'
 const sum = (rows) => rows.reduce((total, row) => total + row.amount, 0);
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 
-const ICONS = {
+// Icons are drawn for this page. Each company below has its own set and style.
+const CHROME = {
   back: '<path d="M15 6l-6 6 6 6"/>',
   forward: '<path d="M9 6l6 6-6 6"/>',
   reload: '<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/>',
   lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
-  home: '<path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/>',
-  file: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/>',
-  users: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0M16 5.5a3 3 0 0 1 0 5.5M21 20a5 5 0 0 0-4-4.9"/>',
-  card: '<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/>',
-  chart: '<path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/>',
-  tag: '<path d="M4 4h7l9 9-7 7-9-9z"/><circle cx="8.5" cy="8.5" r="1.2"/>',
-  clock: '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
-  spark: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
-  more: '<circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/>',
+  dots: '<circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/>',
 };
-const svg = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
+const ICONS = {
+  // Northside: solid, square, blunt
+  nsMark: '<rect width="24" height="24" fill="#12233f"/><path d="M7 17.5V6.5l10 11v-11" fill="none" stroke="#fff" stroke-width="2.6" stroke-linejoin="miter"/>',
+  nsOverdue: '<path d="M12 2.5l10.5 19h-21z" fill="currentColor"/><path d="M12 9.5v5.5" stroke="#fff" stroke-width="2.2"/><rect x="10.9" y="17" width="2.2" height="2.2" fill="#fff"/>',
+  nsSent: '<rect x="3" y="3" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 16l8-8M10.5 8H16v5.5" fill="none" stroke="currentColor" stroke-width="2"/>',
+  nsPaid: '<rect x="2.5" y="2.5" width="19" height="19" fill="currentColor"/><path d="M7 12.5l3.5 3.5L17.5 8" fill="none" stroke="#fff" stroke-width="2.4"/>',
+  // Harlow & Pine: fine line, drawn by hand
+  hpMark: '<rect width="24" height="24" rx="12" fill="#20302a"/><path d="M8 6.5v11M16 6.5v11M8 12c3-1.6 5-1.6 8 0" fill="none" stroke="#d9a27f" stroke-width="1.5" stroke-linecap="round"/>',
+  hpOverview: '<path d="M3 18.5h18M6 18.5a6 6 0 0 1 12 0"/><path d="M12 6v2.6M5.6 9l1.9 1.9M18.4 9l-1.9 1.9"/>',
+  hpQuotes: '<path d="M6.5 3.5h8.5l3.5 3.5v13.5h-12z"/><path d="M9.5 11.5h6M9.5 15h3.5"/><circle cx="16" cy="15.6" r="0.9" fill="currentColor" stroke="none"/>',
+  hpClients: '<circle cx="9.2" cy="12" r="5.2"/><circle cx="14.8" cy="12" r="5.2"/>',
+  hpJobs: '<path d="M4 19.5L19.5 4v15.5z"/><path d="M12.5 19.5v-2.8M16 19.5v-4.6"/>',
+  hpReports: '<path d="M4 19.5h4v-4.5h4v-4.5h4V6h4"/>',
+  hpQuiet: '<path d="M19 14.6A8 8 0 0 1 9.4 5 7.3 7.3 0 1 0 19 14.6z"/>',
+  hpSent: '<path d="M4 11.5L20 5l-5.5 15.5-2.8-6.2z"/><path d="M11.7 14.3L20 5"/>',
+  hpWon: '<path d="M4.5 13l4.8 4.8L19.5 6.5"/><circle cx="19.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>',
+  // Bayline: heavy, square-cut
+  blHome: '<path d="M4 11l8-7 8 7"/><path d="M7 10.5V20h10v-9.5"/>',
+  blTime: '<circle cx="12" cy="12" r="8"/><path d="M12 7.5V12h4"/>',
+  blTeam: '<path d="M6 20v-5.5M12 20v-9M18 20v-5.5"/><rect x="4.6" y="8.2" width="2.8" height="2.8" fill="currentColor" stroke="none"/><rect x="10.6" y="3.6" width="2.8" height="2.8" fill="currentColor" stroke="none"/><rect x="16.6" y="8.2" width="2.8" height="2.8" fill="currentColor" stroke="none"/>',
+  blMore: '<path d="M5 7h14M5 12h14M5 17h8"/>',
+  blApproved: '<path d="M4 12.5l5 5L20 6"/>',
+  blSubmitted: '<path d="M12 15V4.5M7 9l5-5 5 5M5 20h14"/>',
+  blMissing: '<path d="M5 12h3M10.5 12h3M16 12h3"/>',
+};
+const svg = (name, set = ICONS) => `<svg viewBox="0 0 24 24" aria-hidden="true">${set[name]}</svg>`;
 
 const SHEETS = {
   invoices: {
+    kind: 'ledger',
     file: 'AR aging - USE THIS ONE.xlsx',
     outcome: 'Every overdue invoice chased, automatically',
     cols: ['Customer', 'Due', 'Status', 'Amount'],
     statuses: ['Sent', 'Overdue', 'Paid'],
     tones: { Sent: 'blue', Overdue: 'red', Paid: 'green' },
+    icons: { Sent: 'nsSent', Overdue: 'nsOverdue', Paid: 'nsPaid' },
     ready: 'Overdue',
-    title: 'Invoices',
-    path: '/invoices',
-    nav: [['home', 'Dashboard'], ['file', 'Invoices'], ['users', 'Customers'], ['card', 'Payments'], ['chart', 'Reports']],
-    search: 'Ask about any invoice or customer',
     kpis: (all, ready) => [
       { label: 'Overdue', value: cash.format(sum(ready)), sub: plural(ready.length, 'invoice', 'invoices'), tone: 'red' },
-      { label: 'Outstanding', value: cash.format(sum(all.filter((row) => row.status !== 'Paid'))), sub: 'Open balance' },
-      { label: 'Collected', value: cash.format(sum(all.filter((row) => row.status === 'Paid'))), sub: 'This month', tone: 'green' },
+      { label: 'Not yet due', value: cash.format(sum(all.filter((row) => row.status === 'Sent'))), sub: 'Inside terms' },
+      { label: 'Collected', value: cash.format(sum(all.filter((row) => row.status === 'Paid'))), sub: 'This month' },
+    ],
+    bar: (all) => [
+      { label: 'Overdue', value: sum(all.filter((row) => row.status === 'Overdue')), color: '#c22a1f' },
+      { label: 'Not yet due', value: sum(all.filter((row) => row.status === 'Sent')), color: '#12233f' },
+      { label: 'Collected', value: sum(all.filter((row) => row.status === 'Paid')), color: '#aab2bd' },
     ],
     action: (n) => (n ? `Send ${plural(n, 'reminder', 'reminders')}` : 'No reminders due'),
     toast: (n) => `${plural(n, 'reminder', 'reminders')} sent, each with a pay link.`,
@@ -58,58 +79,101 @@ const SHEETS = {
     ],
   },
   quotes: {
+    kind: 'studio',
     file: 'Quotes 2026 (edited).xlsx',
     outcome: 'No quote goes quiet',
-    cols: ['Customer', 'Rep', 'Status', 'Value'],
+    cols: ['Client', 'Designer', 'Status', 'Value'],
     statuses: ['Sent', 'No reply', 'Won'],
-    tones: { Sent: 'blue', 'No reply': 'amber', Won: 'green' },
+    tones: { Sent: '', 'No reply': 'amber', Won: 'green' },
+    icons: { Sent: 'hpSent', 'No reply': 'hpQuiet', Won: 'hpWon' },
     ready: 'No reply',
-    title: 'Quotes',
-    path: '/quotes',
-    accent: '#0f766e',
-    nav: [['home', 'Dashboard'], ['tag', 'Quotes'], ['users', 'Customers'], ['file', 'Jobs'], ['chart', 'Reports']],
-    search: 'Ask about any quote or customer',
     kpis: (all, ready) => [
-      { label: 'Gone quiet', value: cash.format(sum(ready)), sub: `${ready.length} to follow up`, tone: 'amber' },
-      { label: 'Open pipeline', value: cash.format(sum(all.filter((row) => row.status !== 'Won'))), sub: 'Not yet decided' },
-      { label: 'Won', value: cash.format(sum(all.filter((row) => row.status === 'Won'))), sub: 'This month', tone: 'green' },
+      { label: `gone quiet across ${plural(ready.length, 'quote', 'quotes')}`, value: cash.format(sum(ready)) },
+      { label: 'still open', value: cash.format(sum(all.filter((row) => row.status !== 'Won'))) },
+      { label: 'won this month', value: cash.format(sum(all.filter((row) => row.status === 'Won'))) },
     ],
-    action: (n) => (n ? `Follow up on ${n}` : 'No follow-ups due'),
-    toast: (n) => `${plural(n, 'follow-up', 'follow-ups')} sent. Replies go straight to the rep.`,
+    action: (n) => (n ? `Follow up on ${n}` : 'Nothing to chase'),
+    toast: (n) => `${plural(n, 'follow-up', 'follow-ups')} sent. Replies go straight to the designer.`,
     rows: [
-      ['Kessler Steel', 'Tina', 'No reply', 18400],
-      ['Pecan Row Cafe', 'Marcus', 'Won', 6250],
-      ['Gulfline Plastics', 'Tina', 'No reply', 31200],
-      ['Red Fork Lumber', 'Dev', 'Sent', 9800],
-      ['Lonehill Supply', 'Marcus', 'No reply', 12750],
+      ['The Marsh kitchen', 'Tina', 'No reply', 18400],
+      ['Pecan Row Cafe bar', 'Marcus', 'Won', 6250],
+      ['Ellery library wall', 'Tina', 'No reply', 31200],
+      ['Fenn mudroom', 'Dev', 'Sent', 9800],
+      ['Okoro primary bath', 'Marcus', 'No reply', 12750],
     ],
   },
   hours: {
+    kind: 'phone',
     file: 'Timesheets wk 47 FINAL.xlsx',
     outcome: 'Payroll ready by Friday noon',
-    device: 'phone',
     cols: ['Employee', 'Role', 'Status', 'Hours'],
     statuses: ['Missing', 'Submitted', 'Approved'],
-    tones: { Missing: 'red', Submitted: 'amber', Approved: 'green' },
+    tones: { Missing: 'red', Submitted: '', Approved: 'green' },
+    icons: { Missing: 'blMissing', Submitted: 'blSubmitted', Approved: 'blApproved' },
     ready: 'Approved',
-    title: 'Timesheets',
-    sub: 'Week of Nov 16',
     hours: true,
     kpis: (all, ready) => [
-      { label: 'Approved hours', value: `${Math.round(sum(ready) * 10) / 10}`, sub: 'Ready for payroll', tone: 'green' },
-      { label: 'Timesheets', value: `${ready.length} of ${all.length}`, sub: 'Approved' },
+      { label: 'hours approved this week', value: `${Math.round(sum(ready) * 10) / 10}` },
     ],
     action: (n) => (n ? `Send ${n} to payroll` : 'Nothing approved yet'),
     toast: (n) => `${plural(n, 'timesheet', 'timesheets')} sent to payroll. No re-keying.`,
     rows: [
-      ['Jenna M.', 'Front desk', 'Approved', 40],
-      ['Marco D.', 'Technician', 'Approved', 44.5],
-      ['Priya S.', 'Office', 'Submitted', 38],
-      ['Sam T.', 'Technician', 'Missing', 0],
+      ['Jenna M.', 'Dispatch', 'Approved', 40],
+      ['Marco D.', 'Driver', 'Approved', 44.5],
+      ['Priya S.', 'Dock lead', 'Submitted', 38],
+      ['Sam T.', 'Driver', 'Missing', 0],
       ['Dana K.', 'Driver', 'Approved', 41],
     ],
   },
 };
+
+// Shell markup is built from the fixed config above, never from visitor input.
+const browser = (mark, title, host, path) => `
+    <div class="br-top" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="br-tab">${svg(mark)}<span>${title}</span><b>×</b></span><span class="br-plus">+</span></div>
+    <div class="br-bar" aria-hidden="true"><span class="br-nav">${svg('back', CHROME)}${svg('forward', CHROME)}${svg('reload', CHROME)}</span><span class="br-url">${svg('lock', CHROME)}<em>${host}<span>${path}</span></em></span>${svg('dots', CHROME)}</div>`;
+
+const SHELLS = {
+  ledger: (sheet) => `${browser('nsMark', 'Receivables | Northside Mechanical', 'northside.goodbusinesshq.com', '/receivables')}
+    <div class="app">
+      <div class="lg-top"><span class="lg-brand">${svg('nsMark')}Northside Mechanical</span><span class="lg-nav" aria-hidden="true"><span>Jobs</span><span class="on">Receivables</span><span>Customers</span><span>Reports</span></span><span class="lg-user" aria-hidden="true">Dana Kim</span></div>
+      <div class="lg-main">
+        <div class="lg-head"><div><h4>Receivables</h4><small>All open invoices, as of today</small></div><button type="button" class="app-primary" data-send></button></div>
+        <div class="app-kpis" data-kpis></div>
+        <div class="app-bar" data-bar></div>
+        <div>
+          <div class="app-th">${sheet.cols.map((col) => `<span>${col}</span>`).join('')}</div>
+          <div data-body></div>
+        </div>
+        <div class="lg-foot"><span data-count></span><span>Synced from accounting 2 min ago</span></div>
+      </div>
+    </div>`,
+  studio: (sheet) => `${browser('hpMark', 'Quotes · Harlow & Pine', 'harlowpine.goodbusinesshq.com', '/quotes')}
+    <div class="app">
+      <aside class="st-side" aria-hidden="true">
+        <div class="st-word">Harlow <em>&amp;</em> Pine</div>
+        <nav><span>${svg('hpOverview')}Overview</span><span class="on">${svg('hpQuotes')}Quotes</span><span>${svg('hpClients')}Clients</span><span>${svg('hpJobs')}Shop jobs</span><span>${svg('hpReports')}Reports</span></nav>
+        <div class="st-user"><b>Tina Okafor</b>Lead designer</div>
+      </aside>
+      <div class="st-main">
+        <div class="st-head"><div><h4>Quotes</h4><small>Custom cabinetry and millwork</small></div><button type="button" class="app-primary" data-send></button></div>
+        <div class="app-kpis" data-kpis></div>
+        <div data-body></div>
+        <div class="st-foot" data-count></div>
+      </div>
+    </div>`,
+  phone: () => `
+    <div class="ph-status" aria-hidden="true"><b>9:41</b><i></i><em></em></div>
+    <div class="app">
+      <div class="ph-head">Bayline Freight<span>Week of Nov 16</span></div>
+      <div class="app-kpis" data-kpis></div>
+      <div class="ph-prog" data-prog aria-hidden="true"></div>
+      <div class="ph-progtext" data-count></div>
+      <div class="ph-list" data-body></div>
+      <div class="ph-cta"><button type="button" class="app-primary" data-send></button></div>
+      <nav class="ph-tabs" aria-hidden="true"><span>${svg('blHome')}Home</span><span class="on">${svg('blTime')}Hours</span><span>${svg('blTeam')}Crew</span><span>${svg('blMore')}More</span></nav>
+    </div>`,
+};
+const shell = (sheet) => `${SHELLS[sheet.kind](sheet)}<p class="tool-toast" role="status" aria-live="polite" data-toast></p>`;
 
 const sheetGrid = document.querySelector('#sheet-grid');
 const sheetFile = document.querySelector('#sheet-file');
@@ -135,49 +199,9 @@ const el = (tag, className, text) => {
   return node;
 };
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const initials = (name) => name.replace(/[^A-Za-z ]/g, '').split(/\s+/).filter(Boolean).slice(0, 2).map((word) => word[0]).join('').toUpperCase();
-
-// Shell markup is built from the fixed config above, never from visitor input.
-function shell(sheet) {
-  if (sheet.device === 'phone') {
-    return `
-      <div class="ph-status" aria-hidden="true"><b>9:41</b><i></i><em></em></div>
-      <div class="app ph">
-        <header class="ph-head"><div><small>${sheet.sub}</small><h4>${sheet.title}</h4></div><i class="ph-avatar" aria-hidden="true">DK</i></header>
-        <div class="ph-seg" aria-hidden="true"><span class="on">All</span><span>To review</span><span>Missing</span></div>
-        <div class="app-kpis" data-kpis></div>
-        <div class="ph-list" data-body></div>
-        <div class="ph-cta"><button type="button" class="app-primary" data-send></button></div>
-        <nav class="ph-tabs" aria-hidden="true"><span>${svg('home')}Home</span><span class="on">${svg('clock')}Time</span><span>${svg('users')}Team</span><span>${svg('more')}More</span></nav>
-      </div>
-      <p class="tool-toast" role="status" aria-live="polite" data-toast></p>`;
-  }
-  const nav = sheet.nav.map(([icon, label]) => `<span${label === sheet.title ? ' class="on"' : ''}>${svg(icon)}${label}</span>`).join('');
-  return `
-    <div class="br-top" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="br-tab"><i>N</i><span>${sheet.title} · Northside Mechanical</span><b>×</b></span><span class="br-plus">+</span></div>
-    <div class="br-bar" aria-hidden="true"><span class="br-nav">${svg('back')}${svg('forward')}${svg('reload')}</span><span class="br-url">${svg('lock')}<em>northside.goodbusinesshq.com<span>${sheet.path}</span></em></span>${svg('more')}</div>
-    <div class="app">
-      <aside class="app-side" aria-hidden="true">
-        <div class="app-brand"><i>N</i><b>Northside Mechanical</b></div>
-        <nav>${nav}</nav>
-        <div class="app-user"><i>DK</i><span><b>Dana Kim</b><small>Office manager</small></span></div>
-      </aside>
-      <div class="app-main">
-        <header class="app-top"><h4>${sheet.title}</h4><span class="app-search" aria-hidden="true">${svg('spark')}<span>${sheet.search}</span></span><button type="button" class="app-primary" data-send></button></header>
-        <div class="app-kpis" data-kpis></div>
-        <div class="app-table">
-          <div class="app-th">${sheet.cols.map((col) => `<span>${col}</span>`).join('')}</div>
-          <div data-body></div>
-          <div class="app-tf"><span data-count></span><span>Updated just now</span></div>
-        </div>
-      </div>
-    </div>
-    <p class="tool-toast" role="status" aria-live="polite" data-toast></p>`;
-}
-
 function snapshot() {
   return [...toolBody.querySelectorAll('.rec.in')].map((rec) => ({
-    status: rec.querySelector('.badge').textContent,
+    status: rec.querySelector('.badge').dataset.status,
     amount: Number(rec.dataset.amount),
   }));
 }
@@ -191,7 +215,31 @@ function recalc() {
     card.append(el('span', '', kpi.label), el('b', '', kpi.value), el('small', '', kpi.sub));
     return card;
   }));
-  if (toolCount) toolCount.textContent = `Showing ${all.length} of ${sheet.rows.length}`;
+  if (toolCount) {
+    toolCount.textContent = sheet.kind === 'phone'
+      ? `${ready.length} of ${all.length} timesheets approved`
+      : `${plural(all.length, sheet.kind === 'studio' ? 'quote' : 'invoice', sheet.kind === 'studio' ? 'quotes' : 'invoices')} shown`;
+  }
+  const bar = toolWindow.querySelector('[data-bar]');
+  if (bar && sheet.bar) {
+    const parts = sheet.bar(all);
+    const track = el('div');
+    const legend = el('p');
+    parts.forEach((part) => {
+      const segment = el('i');
+      segment.style.flexGrow = String(part.value);
+      segment.style.background = part.color;
+      track.append(segment);
+      const item = el('span');
+      const swatch = el('i');
+      swatch.style.background = part.color;
+      item.append(swatch, document.createTextNode(`${part.label} ${cash.format(part.value)}`));
+      legend.append(item);
+    });
+    bar.replaceChildren(track, legend);
+  }
+  const prog = toolWindow.querySelector('[data-prog]');
+  if (prog) prog.replaceChildren(...sheet.rows.map((_, index) => el('i', index < ready.length ? 'on' : '')));
   toolSend.textContent = sheet.action(ready.length);
   toolSend.disabled = playing || ready.length === 0;
 }
@@ -203,9 +251,7 @@ function build(key) {
   sheetFx.textContent = `=SUMIF(C2:C${sheet.rows.length + 1},"${sheet.ready}",D2:D${sheet.rows.length + 1})`;
   toolOutcome.textContent = sheet.outcome;
 
-  toolWindow.classList.toggle('is-phone', sheet.device === 'phone');
-  toolWindow.style.setProperty('--accent', sheet.accent || '');
-  if (!sheet.accent) toolWindow.style.removeProperty('--accent');
+  toolWindow.className = `tool-window k-${sheet.kind}${sheet.kind === 'phone' ? ' is-phone' : ''}`;
   toolWindow.innerHTML = shell(sheet);
   toolBody = toolWindow.querySelector('[data-body]');
   toolSend = toolWindow.querySelector('[data-send]');
@@ -234,17 +280,19 @@ function build(key) {
     const rec = el('div', 'rec field');
     rec.dataset.amount = amount;
     const label = el('div', 'rec-name');
-    const text = el('span');
-    text.append(el('b', '', name), el('small', '', who));
-    label.append(el('i', `av c${index % 5}`, initials(name)), text);
-    const badge = el('button', `badge ${sheet.tones[status] || ''}`, status);
+    label.append(el('b', '', name), el('small', '', who));
+    const badge = el('button', `badge ${sheet.tones[status] || ''}`);
     badge.type = 'button';
-    badge.setAttribute('aria-label', `${name}: ${status}. Click to change.`);
+    const paint = (value) => {
+      badge.className = `badge ${sheet.tones[value] || ''}`;
+      badge.dataset.status = value;
+      badge.innerHTML = svg(sheet.icons[value]);
+      badge.append(el('span', '', value));
+      badge.setAttribute('aria-label', `${name}: ${value}. Click to change.`);
+    };
+    paint(status);
     badge.addEventListener('click', () => {
-      const next = sheet.statuses[(sheet.statuses.indexOf(badge.textContent) + 1) % sheet.statuses.length];
-      badge.textContent = next;
-      badge.className = `badge ${sheet.tones[next] || ''}`;
-      badge.setAttribute('aria-label', `${name}: ${next}. Click to change.`);
+      paint(sheet.statuses[(sheet.statuses.indexOf(badge.dataset.status) + 1) % sheet.statuses.length]);
       recalc();
     });
     rec.append(label, el('span', 'rec-who', who), badge, el('span', 'rec-amt', sheet.hours ? String(amount) : cash.format(amount)));
