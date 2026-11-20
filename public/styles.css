@@ -15,7 +15,7 @@
   --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --hand: "Caveat", "Bradley Hand", cursive;
   --pad: clamp(20px, 5vw, 72px);
-  --max: 1320px;
+  --max: 1560px;
 }
 
 * { box-sizing: border-box; }
@@ -94,13 +94,17 @@ section { padding: clamp(72px, 11vw, 160px) var(--pad); max-width: var(--max); m
 .site-nav a:hover { color: var(--ink); }
 
 /* ---------- hero ---------- */
-.hero { padding-top: clamp(48px, 8vw, 110px); padding-bottom: clamp(56px, 7vw, 100px); }
+.hero { padding-top: clamp(32px, 6vh, 96px); padding-bottom: clamp(56px, 7vw, 100px); container-type: inline-size; }
+/* Headline is sized to the hero's own width and the screen height, so the three
+   lines always fit side to side and the call to action stays on the first screen. */
 .hero h1 {
   font-family: var(--serif); font-weight: 400;
-  font-size: clamp(52px, 11.2vw, 188px); line-height: 0.9; letter-spacing: -0.04em;
-  margin: 22px 0 clamp(32px, 5vw, 64px) -0.04em;
+  font-size: clamp(40px, 11vw, 150px);
+  font-size: clamp(40px, min(14.4cqi, (100svh - 350px) / 2.7), 260px);
+  line-height: 0.9; letter-spacing: -0.04em;
+  margin: 18px 0 clamp(24px, 4vh, 56px) -0.04em;
 }
-.hero h1 .line { display: block; }
+.hero h1 .line { display: block; white-space: nowrap; }
 .hero h1 em { font-style: italic; }
 .hero-foot { display: grid; gap: 28px; grid-template-columns: minmax(0, 1fr) auto; align-items: end; }
 .lede { font-size: clamp(19px, 1.9vw, 25px); line-height: 1.4; max-width: 36ch; letter-spacing: -0.01em; }
