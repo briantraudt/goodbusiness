@@ -1,5 +1,4 @@
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 
 requestAnimationFrame(() => document.documentElement.classList.add('loaded'));
 
@@ -10,109 +9,124 @@ window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
 /* ---------- Spreadsheet-to-app demo (sample data, runs in the browser) ---------- */
+const cash = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 2 });
+const sum = (rows) => rows.reduce((total, row) => total + row.amount, 0);
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+
+const ICONS = {
+  back: '<path d="M15 6l-6 6 6 6"/>',
+  forward: '<path d="M9 6l6 6-6 6"/>',
+  reload: '<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v5h-5"/>',
+  lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  home: '<path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/>',
+  file: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/>',
+  users: '<circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0M16 5.5a3 3 0 0 1 0 5.5M21 20a5 5 0 0 0-4-4.9"/>',
+  card: '<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/>',
+  chart: '<path d="M4 20V10M10 20V4M16 20v-7M21 20H3"/>',
+  tag: '<path d="M4 4h7l9 9-7 7-9-9z"/><circle cx="8.5" cy="8.5" r="1.2"/>',
+  clock: '<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
+  spark: '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+  more: '<circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/>',
+};
+const svg = (name) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[name]}</svg>`;
+
 const SHEETS = {
   invoices: {
     file: 'AR aging - USE THIS ONE.xlsx',
-    title: 'Invoices',
-    url: 'app.yourbusiness.com/invoices',
-    insight: (ready, all) => (ready.length
-      ? `${ready.length} invoice${ready.length === 1 ? ' is' : 's are'} overdue, ${money.format(sum(ready))} in total. Start with ${top(ready).name}: ${money.format(top(ready).amount)}, due ${top(ready).who}.`
-      : 'Nothing is overdue. Every invoice is paid or still inside its terms.'),
     outcome: 'Every overdue invoice chased, automatically',
     cols: ['Customer', 'Due', 'Status', 'Amount'],
     statuses: ['Sent', 'Overdue', 'Paid'],
+    tones: { Sent: 'blue', Overdue: 'red', Paid: 'green' },
     ready: 'Overdue',
-    statLabel: 'Overdue right now',
-    countLabel: 'Invoices overdue',
-    action: (n) => (n === 1 ? 'Send 1 payment reminder' : `Send ${n} payment reminders`),
-    toast: (n) => `${n} reminder${n === 1 ? '' : 's'} sent, each with a pay link.`,
+    title: 'Invoices',
+    path: '/invoices',
+    nav: [['home', 'Dashboard'], ['file', 'Invoices'], ['users', 'Customers'], ['card', 'Payments'], ['chart', 'Reports']],
+    search: 'Ask about any invoice or customer',
+    kpis: (all, ready) => [
+      { label: 'Overdue', value: cash.format(sum(ready)), sub: plural(ready.length, 'invoice', 'invoices'), tone: 'red' },
+      { label: 'Outstanding', value: cash.format(sum(all.filter((row) => row.status !== 'Paid'))), sub: 'Open balance' },
+      { label: 'Collected', value: cash.format(sum(all.filter((row) => row.status === 'Paid'))), sub: 'This month', tone: 'green' },
+    ],
+    action: (n) => (n ? `Send ${plural(n, 'reminder', 'reminders')}` : 'No reminders due'),
+    toast: (n) => `${plural(n, 'reminder', 'reminders')} sent, each with a pay link.`,
     rows: [
-      ['Hill Country Dental', 'Oct 28', 'Overdue', 4280],
-      ['Alvarez Roofing', 'Nov 3', 'Overdue', 1950],
-      ['Oak Ridge HOA', 'Nov 24', 'Sent', 6400],
-      ['Whitfield & Sons', 'Nov 10', 'Overdue', 2715],
-      ['Lakeside Pediatrics', 'Nov 14', 'Paid', 3120],
+      ['Calloway Dental', 'Oct 28', 'Overdue', 4280],
+      ['Tesoro Roofing', 'Nov 3', 'Overdue', 1950],
+      ['Oakmont HOA', 'Nov 24', 'Sent', 6400],
+      ['Whitlow Supply', 'Nov 10', 'Overdue', 2715],
+      ['Lakemere Pediatrics', 'Nov 14', 'Paid', 3120],
     ],
   },
   quotes: {
     file: 'Quotes 2026 (edited).xlsx',
-    title: 'Quotes',
-    url: 'app.yourbusiness.com/quotes',
-    insight: (ready, all) => (ready.length
-      ? `${ready.length} quote${ready.length === 1 ? ' has' : 's have'} gone quiet, worth ${money.format(sum(ready))}. The biggest is ${top(ready).name} at ${money.format(top(ready).amount)}. ${top(ready).who} owns it.`
-      : 'No quote is waiting on a follow-up.'),
     outcome: 'No quote goes quiet',
     cols: ['Customer', 'Rep', 'Status', 'Value'],
     statuses: ['Sent', 'No reply', 'Won'],
+    tones: { Sent: 'blue', 'No reply': 'amber', Won: 'green' },
     ready: 'No reply',
-    statLabel: 'Waiting on a follow-up',
-    countLabel: 'Gone quiet',
-    action: (n) => (n === 1 ? 'Follow up on 1 quiet quote' : `Follow up on ${n} quiet quotes`),
-    toast: (n) => `${n} follow-up${n === 1 ? '' : 's'} sent. Replies go straight to the rep.`,
+    title: 'Quotes',
+    path: '/quotes',
+    accent: '#0f766e',
+    nav: [['home', 'Dashboard'], ['tag', 'Quotes'], ['users', 'Customers'], ['file', 'Jobs'], ['chart', 'Reports']],
+    search: 'Ask about any quote or customer',
+    kpis: (all, ready) => [
+      { label: 'Gone quiet', value: cash.format(sum(ready)), sub: `${ready.length} to follow up`, tone: 'amber' },
+      { label: 'Open pipeline', value: cash.format(sum(all.filter((row) => row.status !== 'Won'))), sub: 'Not yet decided' },
+      { label: 'Won', value: cash.format(sum(all.filter((row) => row.status === 'Won'))), sub: 'This month', tone: 'green' },
+    ],
+    action: (n) => (n ? `Follow up on ${n}` : 'No follow-ups due'),
+    toast: (n) => `${plural(n, 'follow-up', 'follow-ups')} sent. Replies go straight to the rep.`,
     rows: [
-      ['Brazos Steel', 'Tina', 'No reply', 18400],
-      ['Pecan Street Cafe', 'Marcus', 'Won', 6250],
-      ['Gulf Plastics', 'Tina', 'No reply', 31200],
-      ['Red River Lumber', 'Dev', 'Sent', 9800],
-      ['Lone Star Supply', 'Marcus', 'No reply', 12750],
+      ['Kessler Steel', 'Tina', 'No reply', 18400],
+      ['Pecan Row Cafe', 'Marcus', 'Won', 6250],
+      ['Gulfline Plastics', 'Tina', 'No reply', 31200],
+      ['Red Fork Lumber', 'Dev', 'Sent', 9800],
+      ['Lonehill Supply', 'Marcus', 'No reply', 12750],
     ],
   },
   hours: {
     file: 'Timesheets wk 47 FINAL.xlsx',
-    title: 'Timesheets',
-    device: 'phone',
-    insight: (ready, all) => {
-      const missing = all.filter((row) => row.status === 'Missing').map((row) => row.name);
-      const waiting = all.filter((row) => row.status === 'Submitted').map((row) => row.name);
-      const parts = [`${ready.length} of ${all.length} timesheets are approved.`];
-      if (waiting.length) parts.push(`${waiting.join(' and ')} ${waiting.length === 1 ? 'is' : 'are'} waiting on you.`);
-      if (missing.length) parts.push(`${missing.join(' and ')} ${missing.length === 1 ? 'has' : 'have'} not turned one in.`);
-      if (!waiting.length && !missing.length) parts.push('Payroll is ready to run.');
-      return parts.join(' ');
-    },
     outcome: 'Payroll ready by Friday noon',
-    unit: 'hrs',
+    device: 'phone',
     cols: ['Employee', 'Role', 'Status', 'Hours'],
     statuses: ['Missing', 'Submitted', 'Approved'],
+    tones: { Missing: 'red', Submitted: 'amber', Approved: 'green' },
     ready: 'Approved',
-    statLabel: 'Hours approved',
-    countLabel: 'Timesheets approved',
-    action: (n) => (n === 1 ? 'Send 1 timesheet to payroll' : `Send ${n} timesheets to payroll`),
-    toast: (n) => `${n} timesheet${n === 1 ? '' : 's'} sent to payroll. No re-keying.`,
+    title: 'Timesheets',
+    sub: 'Week of Nov 16',
+    hours: true,
+    kpis: (all, ready) => [
+      { label: 'Approved hours', value: `${Math.round(sum(ready) * 10) / 10}`, sub: 'Ready for payroll', tone: 'green' },
+      { label: 'Timesheets', value: `${ready.length} of ${all.length}`, sub: 'Approved' },
+    ],
+    action: (n) => (n ? `Send ${n} to payroll` : 'Nothing approved yet'),
+    toast: (n) => `${plural(n, 'timesheet', 'timesheets')} sent to payroll. No re-keying.`,
     rows: [
       ['Jenna M.', 'Front desk', 'Approved', 40],
       ['Marco D.', 'Technician', 'Approved', 44.5],
-      ['Priya S.', 'Office manager', 'Submitted', 38],
+      ['Priya S.', 'Office', 'Submitted', 38],
       ['Sam T.', 'Technician', 'Missing', 0],
       ['Dana K.', 'Driver', 'Approved', 41],
     ],
   },
 };
 
-const sum = (rows) => rows.reduce((total, row) => total + row.amount, 0);
-const top = (rows) => rows.reduce((best, row) => (row.amount > best.amount ? row : best), rows[0]);
-
 const sheetGrid = document.querySelector('#sheet-grid');
-const toolWindow = document.querySelector('#tool-window');
-const toolUrl = document.querySelector('#tool-url');
-const toolInsight = document.querySelector('#tool-insight');
 const sheetFile = document.querySelector('#sheet-file');
 const sheetFx = document.querySelector('#sheet-fx');
-const toolBody = document.querySelector('#tool-body');
-const toolTitle = document.querySelector('#tool-title');
+const toolWindow = document.querySelector('#tool-window');
 const toolOutcome = document.querySelector('#tool-outcome');
-const statLabel = document.querySelector('#stat-label');
-const statTotal = document.querySelector('#stat-total');
-const statCountLabel = document.querySelector('#stat-count-label');
-const statCount = document.querySelector('#stat-count');
-const toolSend = document.querySelector('#tool-send');
-const toolToast = document.querySelector('#tool-toast');
 const stage = document.querySelector('#demo-stage');
 const tabs = [...document.querySelectorAll('.demo-tabs [role="tab"]')];
 let current = 'invoices';
 let runId = 0;
 let playing = false;
 let toastTimer;
+let toolBody;
+let toolSend;
+let toolToast;
+let toolKpis;
+let toolCount;
 
 const el = (tag, className, text) => {
   const node = document.createElement(tag);
@@ -121,24 +135,63 @@ const el = (tag, className, text) => {
   return node;
 };
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const initials = (name) => name.replace(/[^A-Za-z ]/g, '').split(/\s+/).filter(Boolean).slice(0, 2).map((word) => word[0]).join('').toUpperCase();
 
-function readyCount() {
-  return toolBody.querySelectorAll('.rec.in .status.ready').length;
+// Shell markup is built from the fixed config above, never from visitor input.
+function shell(sheet) {
+  if (sheet.device === 'phone') {
+    return `
+      <div class="ph-status" aria-hidden="true"><b>9:41</b><i></i><em></em></div>
+      <div class="app ph">
+        <header class="ph-head"><div><small>${sheet.sub}</small><h4>${sheet.title}</h4></div><i class="ph-avatar" aria-hidden="true">DK</i></header>
+        <div class="ph-seg" aria-hidden="true"><span class="on">All</span><span>To review</span><span>Missing</span></div>
+        <div class="app-kpis" data-kpis></div>
+        <div class="ph-list" data-body></div>
+        <div class="ph-cta"><button type="button" class="app-primary" data-send></button></div>
+        <nav class="ph-tabs" aria-hidden="true"><span>${svg('home')}Home</span><span class="on">${svg('clock')}Time</span><span>${svg('users')}Team</span><span>${svg('more')}More</span></nav>
+      </div>
+      <p class="tool-toast" role="status" aria-live="polite" data-toast></p>`;
+  }
+  const nav = sheet.nav.map(([icon, label]) => `<span${label === sheet.title ? ' class="on"' : ''}>${svg(icon)}${label}</span>`).join('');
+  return `
+    <div class="br-top" aria-hidden="true"><span class="lights"><i></i><i></i><i></i></span><span class="br-tab"><i>N</i><span>${sheet.title} · Northside Mechanical</span><b>×</b></span><span class="br-plus">+</span></div>
+    <div class="br-bar" aria-hidden="true"><span class="br-nav">${svg('back')}${svg('forward')}${svg('reload')}</span><span class="br-url">${svg('lock')}<em>northside.goodbusinesshq.com<span>${sheet.path}</span></em></span>${svg('more')}</div>
+    <div class="app">
+      <aside class="app-side" aria-hidden="true">
+        <div class="app-brand"><i>N</i><b>Northside Mechanical</b></div>
+        <nav>${nav}</nav>
+        <div class="app-user"><i>DK</i><span><b>Dana Kim</b><small>Office manager</small></span></div>
+      </aside>
+      <div class="app-main">
+        <header class="app-top"><h4>${sheet.title}</h4><span class="app-search" aria-hidden="true">${svg('spark')}<span>${sheet.search}</span></span><button type="button" class="app-primary" data-send></button></header>
+        <div class="app-kpis" data-kpis></div>
+        <div class="app-table">
+          <div class="app-th">${sheet.cols.map((col) => `<span>${col}</span>`).join('')}</div>
+          <div data-body></div>
+          <div class="app-tf"><span data-count></span><span>Updated just now</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="tool-toast" role="status" aria-live="polite" data-toast></p>`;
+}
+
+function snapshot() {
+  return [...toolBody.querySelectorAll('.rec.in')].map((rec) => ({
+    status: rec.querySelector('.badge').textContent,
+    amount: Number(rec.dataset.amount),
+  }));
 }
 
 function recalc() {
   const sheet = SHEETS[current];
-  const all = [...toolBody.querySelectorAll('.rec.in')].map((rec) => ({
-    name: rec.querySelector('.rec-name b').textContent,
-    who: rec.querySelector('.rec-name small').textContent,
-    status: rec.querySelector('.status').textContent,
-    amount: parseFloat(rec.querySelector('input').value) || 0,
-  }));
+  const all = snapshot();
   const ready = all.filter((row) => row.status === sheet.ready);
-  const total = sum(ready);
-  statTotal.textContent = sheet.unit ? `${Math.round(total * 10) / 10} ${sheet.unit}` : money.format(total);
-  statCount.textContent = `${ready.length} of ${all.length}`;
-  toolInsight.textContent = all.length ? sheet.insight(ready, all) : 'Reading your spreadsheet…';
+  toolKpis.replaceChildren(...sheet.kpis(all, ready).map((kpi) => {
+    const card = el('div', `kpi ${kpi.tone || ''}`);
+    card.append(el('span', '', kpi.label), el('b', '', kpi.value), el('small', '', kpi.sub));
+    return card;
+  }));
+  if (toolCount) toolCount.textContent = `Showing ${all.length} of ${sheet.rows.length}`;
   toolSend.textContent = sheet.action(ready.length);
   toolSend.disabled = playing || ready.length === 0;
 }
@@ -148,58 +201,60 @@ function build(key) {
   current = key;
   sheetFile.textContent = sheet.file;
   sheetFx.textContent = `=SUMIF(C2:C${sheet.rows.length + 1},"${sheet.ready}",D2:D${sheet.rows.length + 1})`;
-  toolTitle.textContent = sheet.title;
-  toolUrl.textContent = sheet.url || '';
-  toolWindow.classList.toggle('is-phone', sheet.device === 'phone');
   toolOutcome.textContent = sheet.outcome;
-  statLabel.textContent = sheet.statLabel;
-  statCountLabel.textContent = sheet.countLabel;
-  toolToast.classList.remove('show');
-  toolToast.textContent = '';
+
+  toolWindow.classList.toggle('is-phone', sheet.device === 'phone');
+  toolWindow.style.setProperty('--accent', sheet.accent || '');
+  if (!sheet.accent) toolWindow.style.removeProperty('--accent');
+  toolWindow.innerHTML = shell(sheet);
+  toolBody = toolWindow.querySelector('[data-body]');
+  toolSend = toolWindow.querySelector('[data-send]');
+  toolToast = toolWindow.querySelector('[data-toast]');
+  toolKpis = toolWindow.querySelector('[data-kpis]');
+  toolCount = toolWindow.querySelector('[data-count]');
+  toolSend.addEventListener('click', () => {
+    const count = snapshot().filter((row) => row.status === sheet.ready).length;
+    toolToast.textContent = sheet.toast(count);
+    toolToast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toolToast.classList.remove('show'), 3800);
+  });
 
   const letters = el('div', 'sheet-row sheet-letters');
   ['', 'A', 'B', 'C', 'D'].forEach((text) => letters.append(el('span', '', text)));
   const head = el('div', 'sheet-row sheet-head');
   ['1', ...sheet.cols].forEach((text) => head.append(el('span', '', text)));
   sheetGrid.replaceChildren(letters, head);
-  toolBody.replaceChildren();
 
   const pairs = sheet.rows.map(([name, who, status, amount], index) => {
     const row = el('div', 'sheet-row');
-    [String(index + 2), name, who, status, sheet.unit ? String(amount) : amount.toFixed(2)].forEach((text) => row.append(el('span', '', text)));
+    [String(index + 2), name, who, status, sheet.hours ? String(amount) : amount.toFixed(2)].forEach((text) => row.append(el('span', '', text)));
     sheetGrid.append(row);
 
     const rec = el('div', 'rec field');
+    rec.dataset.amount = amount;
     const label = el('div', 'rec-name');
-    label.append(el('b', '', name), el('small', '', who));
-    const statusButton = el('button', 'status', status);
-    statusButton.type = 'button';
-    statusButton.classList.toggle('ready', status === sheet.ready);
-    statusButton.setAttribute('aria-label', `${name} status: ${status}. Tap to change.`);
-    statusButton.addEventListener('click', () => {
-      const next = sheet.statuses[(sheet.statuses.indexOf(statusButton.textContent) + 1) % sheet.statuses.length];
-      statusButton.textContent = next;
-      statusButton.classList.toggle('ready', next === sheet.ready);
-      statusButton.setAttribute('aria-label', `${name} status: ${next}. Tap to change.`);
+    const text = el('span');
+    text.append(el('b', '', name), el('small', '', who));
+    label.append(el('i', `av c${index % 5}`, initials(name)), text);
+    const badge = el('button', `badge ${sheet.tones[status] || ''}`, status);
+    badge.type = 'button';
+    badge.setAttribute('aria-label', `${name}: ${status}. Click to change.`);
+    badge.addEventListener('click', () => {
+      const next = sheet.statuses[(sheet.statuses.indexOf(badge.textContent) + 1) % sheet.statuses.length];
+      badge.textContent = next;
+      badge.className = `badge ${sheet.tones[next] || ''}`;
+      badge.setAttribute('aria-label', `${name}: ${next}. Click to change.`);
       recalc();
     });
-    const input = el('input');
-    input.type = 'number';
-    input.inputMode = 'decimal';
-    input.step = 'any';
-    input.min = '0';
-    input.value = amount;
-    input.name = `amount-${index}`;
-    input.setAttribute('aria-label', `${name} ${sheet.cols[3].toLowerCase()}`);
-    input.addEventListener('input', recalc);
-    rec.append(label, statusButton, input);
+    rec.append(label, el('span', 'rec-who', who), badge, el('span', 'rec-amt', sheet.hours ? String(amount) : cash.format(amount)));
     toolBody.append(rec);
     return [row, rec];
   });
 
-  for (let n = sheet.rows.length + 2; n <= 9; n += 1) {
+  for (let n = sheet.rows.length + 2; n <= 26; n += 1) {
     const blank = el('div', 'sheet-row');
-    [String(n), '', '', '', ''].forEach((text) => blank.append(el('span', '', text)));
+    [String(n), '', '', '', ''].forEach((cell) => blank.append(el('span', '', cell)));
     sheetGrid.append(blank);
   }
 
@@ -238,7 +293,7 @@ function selectTab(tab, focus = false) {
   play(tab.dataset.form);
 }
 
-if (sheetGrid && toolBody) {
+if (sheetGrid && toolWindow) {
   tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => selectTab(tab));
     tab.addEventListener('keydown', (event) => {
@@ -251,13 +306,6 @@ if (sheetGrid && toolBody) {
 
   document.querySelector('#demo-replay')?.addEventListener('click', () => play(current));
 
-  toolSend.addEventListener('click', () => {
-    toolToast.textContent = SHEETS[current].toast(readyCount());
-    toolToast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toolToast.classList.remove('show'), 4200);
-  });
-
   // Show the spreadsheet first; convert it the first time the demo is on screen.
   build(current);
   if ('IntersectionObserver' in window) {
@@ -266,7 +314,7 @@ if (sheetGrid && toolBody) {
         demoObserver.disconnect();
         play(current);
       }
-    }, { threshold: 0.35 });
+    }, { threshold: 0.3 });
     demoObserver.observe(stage);
   } else {
     play(current, true);
