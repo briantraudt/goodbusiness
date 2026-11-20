@@ -9,75 +9,84 @@ const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 12)
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
-/* ---------- Paper-to-tool demo (sample data, runs in the browser) ---------- */
-const FORMS = {
-  workorder: {
-    paper: 'Work order',
-    title: 'Work order #1042',
-    outcome: 'Invoiced before the truck leaves',
-    send: 'Send invoice',
-    toast: 'Invoice sent to the customer. Same day, no re-typing.',
-    fields: [
-      ['Customer', 'R. Alvarez'],
-      ['Address', '412 Pecan St'],
-      ['Job', 'AC not cooling'],
-      ['Tech', 'Marcus'],
-    ],
-    items: [
-      ['Labor (hrs)', 3.5, 95],
-      ['Capacitor', 1, 48],
-      ['Trip charge', 1, 65],
+/* ---------- Spreadsheet-to-app demo (sample data, runs in the browser) ---------- */
+const SHEETS = {
+  jobs: {
+    file: 'Jobs_FINAL_v3 (2).xlsx',
+    title: 'Jobs',
+    outcome: 'Every finished job invoiced the same day',
+    cols: ['Customer', 'Tech', 'Status', 'Amount'],
+    statuses: ['Scheduled', 'In progress', 'Done'],
+    ready: 'Done',
+    statLabel: 'Ready to invoice',
+    countLabel: 'Jobs done',
+    action: (n) => (n === 1 ? 'Invoice 1 finished job' : `Invoice ${n} finished jobs`),
+    toast: (n) => `${n} invoice${n === 1 ? '' : 's'} sent. Nobody opened the spreadsheet.`,
+    rows: [
+      ['R. Alvarez', 'Marcus', 'Done', 445.5],
+      ['Hill Country Dental', 'Tina', 'Done', 1280],
+      ['J. Whitfield', 'Marcus', 'Scheduled', 310],
+      ['Oak Ridge HOA', 'Dev', 'Done', 2150],
+      ['S. Nguyen', 'Tina', 'In progress', 675],
     ],
   },
-  load: {
-    paper: 'Load sheet',
-    title: 'Load #88213',
+  loads: {
+    file: 'Loads Nov - Copy.xlsx',
+    title: 'Loads',
     outcome: 'Billed the hour it delivers',
-    send: 'Bill this load',
-    toast: 'Load billed and paperwork attached. Nothing to chase.',
-    fields: [
-      ['Shipper', 'Lone Star Supply'],
-      ['Lane', 'Austin to El Paso'],
-      ['Driver', 'D. Whitaker'],
-      ['Delivered', 'Thu 2:10 PM'],
-    ],
-    items: [
-      ['Line haul (mi)', 576, 2.85],
-      ['Fuel surcharge', 576, 0.42],
-      ['Detention (hrs)', 2, 60],
+    cols: ['Shipper', 'Driver', 'Status', 'Amount'],
+    statuses: ['Booked', 'In transit', 'Delivered'],
+    ready: 'Delivered',
+    statLabel: 'Ready to bill',
+    countLabel: 'Delivered',
+    action: (n) => (n === 1 ? 'Bill 1 delivered load' : `Bill ${n} delivered loads`),
+    toast: (n) => `${n} load${n === 1 ? '' : 's'} billed with paperwork attached.`,
+    rows: [
+      ['Lone Star Supply', 'Whitaker', 'Delivered', 2003.5],
+      ['Brazos Steel', 'Okafor', 'In transit', 1640],
+      ['Pecos Feed Co', 'Ramirez', 'Delivered', 1185],
+      ['Gulf Plastics', 'Whitaker', 'Booked', 2420],
+      ['Red River Lumber', 'Tran', 'Delivered', 1760],
     ],
   },
-  daysheet: {
-    paper: 'Day sheet',
-    title: 'Front desk · Today',
-    outcome: 'Closed out before the lights go off',
-    send: 'Close the day',
-    toast: 'Day closed. The owner already has the numbers.',
-    fields: [
-      ['Location', 'North clinic'],
-      ['Date', 'Thursday'],
-      ['Front desk', 'Jenna'],
-      ['Providers in', '4'],
-    ],
-    items: [
-      ['Sessions', 22, 120],
-      ['Co-pays collected', 14, 30],
-      ['Late cancel fees', 2, 45],
+  locations: {
+    file: 'Locations weekly (old).xlsx',
+    title: 'Locations · Today',
+    outcome: 'The owner sees every location before dinner',
+    cols: ['Location', 'Manager', 'Status', 'Collected'],
+    statuses: ['Open', 'Closed'],
+    ready: 'Closed',
+    statLabel: 'Collected today',
+    countLabel: 'Closed out',
+    action: (n) => (n === 1 ? 'Send 1 location to the owner' : `Send ${n} locations to the owner`),
+    toast: (n) => `Numbers for ${n} location${n === 1 ? '' : 's'} sent to the owner.`,
+    rows: [
+      ['North', 'Jenna', 'Closed', 3060],
+      ['Downtown', 'Priya', 'Closed', 4215],
+      ['Lakeside', 'Marco', 'Open', 2380],
+      ['West', 'Dana', 'Closed', 1975],
+      ['Round Rock', 'Sam', 'Open', 2840],
     ],
   },
 };
 
-const paperSheet = document.querySelector('#paper-sheet');
+const sheetGrid = document.querySelector('#sheet-grid');
+const sheetFile = document.querySelector('#sheet-file');
+const sheetFx = document.querySelector('#sheet-fx');
 const toolBody = document.querySelector('#tool-body');
 const toolTitle = document.querySelector('#tool-title');
 const toolOutcome = document.querySelector('#tool-outcome');
-const toolTotal = document.querySelector('#tool-total');
+const statLabel = document.querySelector('#stat-label');
+const statTotal = document.querySelector('#stat-total');
+const statCountLabel = document.querySelector('#stat-count-label');
+const statCount = document.querySelector('#stat-count');
 const toolSend = document.querySelector('#tool-send');
 const toolToast = document.querySelector('#tool-toast');
 const stage = document.querySelector('#demo-stage');
 const tabs = [...document.querySelectorAll('.demo-tabs [role="tab"]')];
-let current = 'workorder';
+let current = 'jobs';
 let runId = 0;
+let playing = false;
 let toastTimer;
 
 const el = (tag, className, text) => {
@@ -88,73 +97,83 @@ const el = (tag, className, text) => {
 };
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+function readyCount() {
+  return toolBody.querySelectorAll('.rec.in .status.ready').length;
+}
+
 function recalc() {
+  const sheet = SHEETS[current];
+  const shown = toolBody.querySelectorAll('.rec.in');
   let total = 0;
-  toolBody.querySelectorAll('.item').forEach((row) => {
-    const [qty, rate] = row.querySelectorAll('input');
-    const line = (parseFloat(qty.value) || 0) * (parseFloat(rate.value) || 0);
-    row.querySelector('output').textContent = money.format(line);
-    if (row.classList.contains('in')) total += line;
+  shown.forEach((rec) => {
+    if (rec.querySelector('.status').classList.contains('ready')) {
+      total += parseFloat(rec.querySelector('input').value) || 0;
+    }
   });
-  toolTotal.textContent = money.format(total);
+  const count = readyCount();
+  statTotal.textContent = money.format(total);
+  statCount.textContent = `${count} of ${shown.length}`;
+  toolSend.textContent = sheet.action(count);
+  toolSend.disabled = playing || count === 0;
 }
 
 function build(key) {
-  const form = FORMS[key];
-  paperSheet.replaceChildren(el('p', 'paper-title', form.paper));
-  toolBody.replaceChildren();
-  toolTitle.textContent = form.title;
-  toolOutcome.textContent = form.outcome;
-  toolSend.textContent = form.send;
-  toolSend.disabled = true;
+  const sheet = SHEETS[key];
+  current = key;
+  sheetFile.textContent = sheet.file;
+  sheetFx.textContent = `=SUMIF(C2:C${sheet.rows.length + 1},"${sheet.ready}",D2:D${sheet.rows.length + 1})`;
+  toolTitle.textContent = sheet.title;
+  toolOutcome.textContent = sheet.outcome;
+  statLabel.textContent = sheet.statLabel;
+  statCountLabel.textContent = sheet.countLabel;
   toolToast.classList.remove('show');
   toolToast.textContent = '';
 
-  const grid = el('div', 'tool-grid');
-  const pairs = [];
+  const letters = el('div', 'sheet-row sheet-letters');
+  ['', 'A', 'B', 'C', 'D'].forEach((text) => letters.append(el('span', '', text)));
+  const head = el('div', 'sheet-row sheet-head');
+  ['1', ...sheet.cols].forEach((text) => head.append(el('span', '', text)));
+  sheetGrid.replaceChildren(letters, head);
+  toolBody.replaceChildren();
 
-  form.fields.forEach(([label, value], index) => {
-    const line = el('p', 'paper-line');
-    line.append(el('small', '', label), document.createTextNode(value));
-    paperSheet.append(line);
+  const pairs = sheet.rows.map(([name, who, status, amount], index) => {
+    const row = el('div', 'sheet-row');
+    [String(index + 2), name, who, status, amount.toFixed(2)].forEach((text) => row.append(el('span', '', text)));
+    sheetGrid.append(row);
 
-    const field = el('label', 'field');
-    const input = el('input');
-    input.type = 'text';
-    input.value = value;
-    input.name = `field-${index}`;
-    field.append(el('span', '', label), input);
-    grid.append(field);
-    pairs.push([line, field]);
-  });
-  toolBody.append(grid);
-
-  const head = el('div', 'item-head');
-  ['Item', 'Qty', 'Rate', 'Amount'].forEach((text) => head.append(el('span', '', text)));
-  toolBody.append(head);
-
-  form.items.forEach(([label, qty, rate], index) => {
-    const line = el('p', 'paper-line');
-    line.append(el('small', '', label), document.createTextNode(`${qty} x ${rate}`));
-    paperSheet.append(line);
-
-    const row = el('div', 'item field');
-    const qtyInput = el('input');
-    const rateInput = el('input');
-    [[qtyInput, qty, 'Quantity'], [rateInput, rate, 'Rate']].forEach(([input, value, name]) => {
-      input.type = 'number';
-      input.inputMode = 'decimal';
-      input.step = 'any';
-      input.min = '0';
-      input.value = value;
-      input.setAttribute('aria-label', `${label} ${name.toLowerCase()}`);
-      input.name = `${name.toLowerCase()}-${index}`;
-      input.addEventListener('input', recalc);
+    const rec = el('div', 'rec field');
+    const label = el('div', 'rec-name');
+    label.append(el('b', '', name), el('small', '', who));
+    const statusButton = el('button', 'status', status);
+    statusButton.type = 'button';
+    statusButton.classList.toggle('ready', status === sheet.ready);
+    statusButton.setAttribute('aria-label', `${name} status: ${status}. Tap to change.`);
+    statusButton.addEventListener('click', () => {
+      const next = sheet.statuses[(sheet.statuses.indexOf(statusButton.textContent) + 1) % sheet.statuses.length];
+      statusButton.textContent = next;
+      statusButton.classList.toggle('ready', next === sheet.ready);
+      statusButton.setAttribute('aria-label', `${name} status: ${next}. Tap to change.`);
+      recalc();
     });
-    row.append(el('span', '', label), qtyInput, rateInput, el('output', '', '$0.00'));
-    toolBody.append(row);
-    pairs.push([line, row]);
+    const input = el('input');
+    input.type = 'number';
+    input.inputMode = 'decimal';
+    input.step = 'any';
+    input.min = '0';
+    input.value = amount;
+    input.name = `amount-${index}`;
+    input.setAttribute('aria-label', `${name} ${sheet.cols[3].toLowerCase()}`);
+    input.addEventListener('input', recalc);
+    rec.append(label, statusButton, input);
+    toolBody.append(rec);
+    return [row, rec];
   });
+
+  for (let n = sheet.rows.length + 2; n <= 9; n += 1) {
+    const blank = el('div', 'sheet-row');
+    [String(n), '', '', '', ''].forEach((text) => blank.append(el('span', '', text)));
+    sheetGrid.append(blank);
+  }
 
   recalc();
   return pairs;
@@ -162,20 +181,22 @@ function build(key) {
 
 async function play(key, instant = false) {
   const id = ++runId;
-  current = key;
+  playing = true;
   const pairs = build(key);
-  const step = instant || reducedMotion ? 0 : 230;
+  const step = instant || reducedMotion ? 0 : 280;
   if (step) await wait(350);
-  for (const [line, field] of pairs) {
+  for (const [row, rec] of pairs) {
     if (id !== runId) return;
-    line.classList.add('read');
+    row.classList.add('read');
     if (step) await wait(step);
     if (id !== runId) return;
-    line.classList.add('done');
-    field.classList.add('in');
+    row.classList.remove('read');
+    row.classList.add('done');
+    rec.classList.add('in');
     recalc();
   }
-  toolSend.disabled = false;
+  playing = false;
+  recalc();
 }
 
 function selectTab(tab, focus = false) {
@@ -189,7 +210,7 @@ function selectTab(tab, focus = false) {
   play(tab.dataset.form);
 }
 
-if (paperSheet && toolBody) {
+if (sheetGrid && toolBody) {
   tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => selectTab(tab));
     tab.addEventListener('keydown', (event) => {
@@ -203,13 +224,13 @@ if (paperSheet && toolBody) {
   document.querySelector('#demo-replay')?.addEventListener('click', () => play(current));
 
   toolSend.addEventListener('click', () => {
-    toolToast.textContent = FORMS[current].toast;
+    toolToast.textContent = SHEETS[current].toast(readyCount());
     toolToast.classList.add('show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toolToast.classList.remove('show'), 4200);
   });
 
-  // Show the paper first; convert it the first time the demo is on screen.
+  // Show the spreadsheet first; convert it the first time the demo is on screen.
   build(current);
   if ('IntersectionObserver' in window) {
     const demoObserver = new IntersectionObserver((entries) => {

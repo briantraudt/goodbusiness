@@ -57,31 +57,39 @@
       <!-- DEMO -->
       <section class="demo" id="demo" aria-labelledby="demo-title">
         <div class="section-head">
-          <h2 id="demo-title">Start with the paperwork you already use.</h2>
-          <p>Pick a form. Watch it become a tool your team can use today. On a call, I do this with yours.</p>
+          <h2 id="demo-title">Start with the spreadsheet you already run on.</h2>
+          <p>Pick one. Watch it become an app your team can use today. On a call, I do this with yours.</p>
         </div>
 
-        <div class="demo-tabs" role="tablist" aria-label="Sample forms">
-          <button role="tab" aria-selected="true" data-form="workorder" id="tab-workorder" aria-controls="demo-stage">Work order</button>
-          <button role="tab" aria-selected="false" data-form="load" id="tab-load" aria-controls="demo-stage" tabindex="-1">Load sheet</button>
-          <button role="tab" aria-selected="false" data-form="daysheet" id="tab-daysheet" aria-controls="demo-stage" tabindex="-1">Front desk day sheet</button>
+        <div class="demo-tabs" role="tablist" aria-label="Sample spreadsheets">
+          <button role="tab" aria-selected="true" data-form="jobs" id="tab-jobs" aria-controls="demo-stage">Job tracker</button>
+          <button role="tab" aria-selected="false" data-form="loads" id="tab-loads" aria-controls="demo-stage" tabindex="-1">Load tracker</button>
+          <button role="tab" aria-selected="false" data-form="locations" id="tab-locations" aria-controls="demo-stage" tabindex="-1">Location close-out</button>
         </div>
 
-        <div class="demo-stage" id="demo-stage" role="tabpanel" aria-labelledby="tab-workorder">
-          <figure class="paper" aria-label="Handwritten paper form">
-            <figcaption class="cap">Today <span>Paper, re-typed later</span></figcaption>
-            <div class="paper-sheet" id="paper-sheet"></div>
+        <div class="demo-stage" id="demo-stage" role="tabpanel" aria-labelledby="tab-jobs">
+          <figure class="sheet">
+            <figcaption class="cap">Today <span>One file, emailed around</span></figcaption>
+            <div class="sheet-window" aria-label="Sample spreadsheet">
+              <div class="sheet-bar"><i aria-hidden="true">X</i><b id="sheet-file"></b></div>
+              <div class="sheet-fx" aria-hidden="true"><span>fx</span><em id="sheet-fx"></em></div>
+              <div class="sheet-grid" id="sheet-grid"></div>
+              <div class="sheet-tabs" aria-hidden="true"><span class="on">Sheet1</span><span>OLD</span><span>Copy of Sheet1</span></div>
+            </div>
           </figure>
 
           <div class="demo-arrow" aria-hidden="true"><span></span></div>
 
-          <figure class="tool" aria-label="The same form as working software">
+          <figure class="tool">
             <figcaption class="cap">Reimagined <span id="tool-outcome"></span></figcaption>
-            <div class="tool-window">
+            <div class="tool-window" aria-label="The same spreadsheet as a working app">
               <div class="tool-bar"><i></i><i></i><i></i><b id="tool-title"></b></div>
+              <div class="tool-stats">
+                <div><span id="stat-label"></span><output id="stat-total">$0</output></div>
+                <div><span id="stat-count-label"></span><output id="stat-count">0</output></div>
+              </div>
               <form class="tool-body" id="tool-body" onsubmit="return false"></form>
               <div class="tool-foot">
-                <div class="tool-total"><span>Total</span><output id="tool-total">$0.00</output></div>
                 <button type="button" class="btn btn-dark" id="tool-send"></button>
               </div>
               <p class="tool-toast" id="tool-toast" role="status" aria-live="polite"></p>
@@ -91,7 +99,7 @@
 
         <div class="demo-meta">
           <button type="button" class="text-link" id="demo-replay">Replay <span aria-hidden="true">↺</span></button>
-          <p>Sample forms and sample figures. The tool is live. Change a number.</p>
+          <p>Sample spreadsheets and sample figures. The app is live. Tap a status or change an amount.</p>
         </div>
       </section>
 
