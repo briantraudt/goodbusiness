@@ -13,7 +13,11 @@ onScroll();
 const SHEETS = {
   invoices: {
     file: 'AR aging - USE THIS ONE.xlsx',
-    title: 'Money owed',
+    title: 'Invoices',
+    url: 'app.yourbusiness.com/invoices',
+    insight: (ready, all) => (ready.length
+      ? `${ready.length} invoice${ready.length === 1 ? ' is' : 's are'} overdue, ${money.format(sum(ready))} in total. Start with ${top(ready).name}: ${money.format(top(ready).amount)}, due ${top(ready).who}.`
+      : 'Nothing is overdue. Every invoice is paid or still inside its terms.'),
     outcome: 'Every overdue invoice chased, automatically',
     cols: ['Customer', 'Due', 'Status', 'Amount'],
     statuses: ['Sent', 'Overdue', 'Paid'],
@@ -33,6 +37,10 @@ const SHEETS = {
   quotes: {
     file: 'Quotes 2026 (edited).xlsx',
     title: 'Quotes',
+    url: 'app.yourbusiness.com/quotes',
+    insight: (ready, all) => (ready.length
+      ? `${ready.length} quote${ready.length === 1 ? ' has' : 's have'} gone quiet, worth ${money.format(sum(ready))}. The biggest is ${top(ready).name} at ${money.format(top(ready).amount)}. ${top(ready).who} owns it.`
+      : 'No quote is waiting on a follow-up.'),
     outcome: 'No quote goes quiet',
     cols: ['Customer', 'Rep', 'Status', 'Value'],
     statuses: ['Sent', 'No reply', 'Won'],
@@ -51,7 +59,17 @@ const SHEETS = {
   },
   hours: {
     file: 'Timesheets wk 47 FINAL.xlsx',
-    title: 'Team hours · This week',
+    title: 'Timesheets',
+    device: 'phone',
+    insight: (ready, all) => {
+      const missing = all.filter((row) => row.status === 'Missing').map((row) => row.name);
+      const waiting = all.filter((row) => row.status === 'Submitted').map((row) => row.name);
+      const parts = [`${ready.length} of ${all.length} timesheets are approved.`];
+      if (waiting.length) parts.push(`${waiting.join(' and ')} ${waiting.length === 1 ? 'is' : 'are'} waiting on you.`);
+      if (missing.length) parts.push(`${missing.join(' and ')} ${missing.length === 1 ? 'has' : 'have'} not turned one in.`);
+      if (!waiting.length && !missing.length) parts.push('Payroll is ready to run.');
+      return parts.join(' ');
+    },
     outcome: 'Payroll ready by Friday noon',
     unit: 'hrs',
     cols: ['Employee', 'Role', 'Status', 'Hours'],
@@ -71,7 +89,13 @@ const SHEETS = {
   },
 };
 
+const sum = (rows) => rows.reduce((total, row) => total + row.amount, 0);
+const top = (rows) => rows.reduce((best, row) => (row.amount > best.amount ? row : best), rows[0]);
+
 const sheetGrid = document.querySelector('#sheet-grid');
+const toolWindow = document.querySelector('#tool-window');
+const toolUrl = document.querySelector('#tool-url');
+const toolInsight = document.querySelector('#tool-insight');
 const sheetFile = document.querySelector('#sheet-file');
 const sheetFx = document.querySelector('#sheet-fx');
 const toolBody = document.querySelector('#tool-body');
@@ -104,18 +128,19 @@ function readyCount() {
 
 function recalc() {
   const sheet = SHEETS[current];
-  const shown = toolBody.querySelectorAll('.rec.in');
-  let total = 0;
-  shown.forEach((rec) => {
-    if (rec.querySelector('.status').classList.contains('ready')) {
-      total += parseFloat(rec.querySelector('input').value) || 0;
-    }
-  });
-  const count = readyCount();
+  const all = [...toolBody.querySelectorAll('.rec.in')].map((rec) => ({
+    name: rec.querySelector('.rec-name b').textContent,
+    who: rec.querySelector('.rec-name small').textContent,
+    status: rec.querySelector('.status').textContent,
+    amount: parseFloat(rec.querySelector('input').value) || 0,
+  }));
+  const ready = all.filter((row) => row.status === sheet.ready);
+  const total = sum(ready);
   statTotal.textContent = sheet.unit ? `${Math.round(total * 10) / 10} ${sheet.unit}` : money.format(total);
-  statCount.textContent = `${count} of ${shown.length}`;
-  toolSend.textContent = sheet.action(count);
-  toolSend.disabled = playing || count === 0;
+  statCount.textContent = `${ready.length} of ${all.length}`;
+  toolInsight.textContent = all.length ? sheet.insight(ready, all) : 'Reading your spreadsheet…';
+  toolSend.textContent = sheet.action(ready.length);
+  toolSend.disabled = playing || ready.length === 0;
 }
 
 function build(key) {
@@ -124,6 +149,8 @@ function build(key) {
   sheetFile.textContent = sheet.file;
   sheetFx.textContent = `=SUMIF(C2:C${sheet.rows.length + 1},"${sheet.ready}",D2:D${sheet.rows.length + 1})`;
   toolTitle.textContent = sheet.title;
+  toolUrl.textContent = sheet.url || '';
+  toolWindow.classList.toggle('is-phone', sheet.device === 'phone');
   toolOutcome.textContent = sheet.outcome;
   statLabel.textContent = sheet.statLabel;
   statCountLabel.textContent = sheet.countLabel;
