@@ -71,7 +71,8 @@ const SHEETS = {
   },
   invoices: {
     kind: 'ledger',
-    file: 'AR aging - USE THIS ONE.xlsx',
+    source: 'db',
+    leftCap: 'A database query someone runs every Monday',
     outcome: 'Every overdue invoice chased, automatically',
     cols: ['Customer', 'Due', 'Status', 'Amount'],
     statuses: ['Sent', 'Overdue', 'Paid'],
@@ -100,7 +101,9 @@ const SHEETS = {
   },
   quotes: {
     kind: 'studio',
-    file: 'Quotes 2026 (edited).xlsx',
+    source: 'mail',
+    leftCap: 'Follow-ups tracked by scrolling the Sent folder',
+    mail: ['Sent Nov 6 · no reply', 'Nov 12 · "Let\'s go ahead"', 'Sent Oct 30 · no reply', 'Sent yesterday', 'Sent Nov 3 · no reply'],
     outcome: 'No quote goes quiet',
     cols: ['Client', 'Designer', 'Status', 'Value'],
     statuses: ['Sent', 'No reply', 'Won'],
@@ -124,7 +127,9 @@ const SHEETS = {
   },
   hours: {
     kind: 'phone',
-    file: 'Timesheets wk 47 FINAL.xlsx',
+    source: 'chat',
+    leftCap: 'Hours texted in to a group chat',
+    chat: ['40 this week', '44.5. Had the Laredo run Thursday', '38 I think? Will confirm', null, '41'],
     outcome: 'Payroll ready by Friday noon',
     cols: ['Employee', 'Role', 'Status', 'Hours'],
     statuses: ['Missing', 'Submitted', 'Approved'],
@@ -208,10 +213,6 @@ const SHELLS = {
 };
 const shell = (sheet) => `${SHELLS[sheet.kind](sheet)}<p class="tool-toast" role="status" aria-live="polite" data-toast></p>`;
 
-const sheetGrid = document.querySelector('#sheet-grid');
-const sheetFile = document.querySelector('#sheet-file');
-const sheetFx = document.querySelector('#sheet-fx');
-const sheetWindow = document.querySelector('#sheet-window');
 const sheetCap = document.querySelector('#sheet-cap');
 const sourcesBox = document.querySelector('#sources');
 const toolWindow = document.querySelector('#tool-window');
@@ -329,6 +330,60 @@ function buildDash(sheet) {
   });
 }
 
+// Left side: where this data lives today. One renderer per kind of source.
+function renderSource(sheet) {
+  const box = el('div', `src src-${sheet.source}`);
+  const rows = [];
+  if (sheet.source === 'db') {
+    const bar = el('div', 'src-bar');
+    bar.append(el('b', '', 'office_db · Query1'), el('span', '', 'Database'));
+    const sql = el('pre', 'db-sql');
+    sql.innerHTML = '<i>SELECT</i> customer, due_date, status, balance\n<i>FROM</i> invoices\n<i>WHERE</i> balance &gt; 0 <i>OR</i> paid_on &gt;= \'2026-11-01\'\n<i>ORDER BY</i> invoice_id;';
+    const grid = el('div', 'db-grid');
+    const line = (cells, className) => {
+      const row = el('div', `src-row ${className}`);
+      cells.forEach((cell) => row.append(el('span', '', cell)));
+      grid.append(row);
+      return row;
+    };
+    line(['customer', 'due_date', 'status', 'balance'], 'src-head');
+    sheet.rows.forEach(([name, due, status, amount]) => {
+      const month = due.startsWith('Oct') ? '10' : '11';
+      rows.push(line([name.toUpperCase(), `2026-${month}-${due.split(' ')[1].padStart(2, '0')}`, status.toUpperCase().slice(0, 4), amount.toFixed(2)], ''));
+    });
+    box.append(bar, sql, grid, el('div', 'db-foot', `${sheet.rows.length} rows returned · 0.02 sec`));
+  } else if (sheet.source === 'mail') {
+    const bar = el('div', 'src-bar');
+    bar.append(el('b', '', 'Sent'), el('span', '', 'Email'));
+    const list = el('div', 'mail-list');
+    sheet.rows.forEach(([name, who, , amount], index) => {
+      const row = el('div', 'src-row');
+      const text = el('div');
+      text.append(el('b', '', `Quote: ${name}`), el('small', '', `${who} sent a quote for ${cash.format(amount)}. "Let me know if you have any questions…"`));
+      row.append(text, el('span', '', sheet.mail[index]));
+      list.append(row);
+      rows.push(row);
+    });
+    box.append(bar, list);
+  } else {
+    const bar = el('div', 'src-bar');
+    bar.append(el('b', '', 'Crew hours'), el('span', '', 'Group text · 6 people'));
+    const thread = el('div', 'chat-thread');
+    thread.append(el('p', 'chat-me', 'Need everyone\'s hours by noon for payroll'));
+    sheet.rows.forEach(([name], index) => {
+      const said = sheet.chat[index];
+      const row = el('div', `src-row ${said ? '' : 'chat-mine'}`);
+      if (said) row.append(el('small', '', name), el('p', '', said));
+      else row.append(el('p', 'chat-me', `${name.split(' ')[0]}, still need yours`));
+      thread.append(row);
+      rows.push(row);
+    });
+    box.append(bar, thread);
+  }
+  sourcesBox.replaceChildren(box);
+  return rows;
+}
+
 function snapshot() {
   return [...toolBody.querySelectorAll('.rec.in')].map((rec) => ({
     status: rec.querySelector('.badge').dataset.status,
@@ -379,14 +434,8 @@ function build(key) {
   const sheet = SHEETS[key];
   current = key;
   const isDash = sheet.kind === 'dash';
-  sheetWindow.hidden = isDash;
-  sourcesBox.hidden = !isDash;
-  sheetCap.textContent = sheet.leftCap || 'One file, emailed around';
+  sheetCap.textContent = sheet.leftCap;
   toolOutcome.textContent = sheet.outcome;
-  if (!isDash) {
-    sheetFile.textContent = sheet.file;
-    sheetFx.textContent = `=SUMIF(C2:C${sheet.rows.length + 1},"${sheet.ready}",D2:D${sheet.rows.length + 1})`;
-  }
 
   toolWindow.className = `tool-window k-${sheet.kind}${sheet.kind === 'phone' ? ' is-phone' : ''}`;
   toolWindow.innerHTML = shell(sheet);
@@ -408,16 +457,10 @@ function build(key) {
     toastTimer = setTimeout(() => toolToast.classList.remove('show'), 3800);
   });
 
-  const letters = el('div', 'sheet-row sheet-letters');
-  ['', 'A', 'B', 'C', 'D'].forEach((text) => letters.append(el('span', '', text)));
-  const head = el('div', 'sheet-row sheet-head');
-  ['1', ...sheet.cols].forEach((text) => head.append(el('span', '', text)));
-  sheetGrid.replaceChildren(letters, head);
+  const sourceRows = renderSource(sheet);
 
   const pairs = sheet.rows.map(([name, who, status, amount], index) => {
-    const row = el('div', 'sheet-row');
-    [String(index + 2), name, who, status, sheet.hours ? String(amount) : amount.toFixed(2)].forEach((text) => row.append(el('span', '', text)));
-    sheetGrid.append(row);
+    const row = sourceRows[index];
 
     const rec = el('div', 'rec field');
     rec.dataset.amount = amount;
@@ -441,12 +484,6 @@ function build(key) {
     toolBody.append(rec);
     return [row, rec];
   });
-
-  for (let n = sheet.rows.length + 2; n <= 26; n += 1) {
-    const blank = el('div', 'sheet-row');
-    [String(n), '', '', '', ''].forEach((cell) => blank.append(el('span', '', cell)));
-    sheetGrid.append(blank);
-  }
 
   recalc();
   return pairs;
@@ -485,7 +522,7 @@ function selectTab(tab, focus = false) {
   play(tab.dataset.form);
 }
 
-if (sheetGrid && toolWindow) {
+if (sourcesBox && toolWindow) {
   tabs.forEach((tab, index) => {
     tab.addEventListener('click', () => selectTab(tab));
     tab.addEventListener('keydown', (event) => {
@@ -498,7 +535,7 @@ if (sheetGrid && toolWindow) {
 
   document.querySelector('#demo-replay')?.addEventListener('click', () => play(current));
 
-  // Show the spreadsheet first; convert it the first time the demo is on screen.
+  // Show the source first; convert it the first time the demo is on screen.
   build(current);
   if ('IntersectionObserver' in window) {
     const demoObserver = new IntersectionObserver((entries) => {
