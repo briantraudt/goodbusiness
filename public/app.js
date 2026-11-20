@@ -11,61 +11,62 @@ onScroll();
 
 /* ---------- Spreadsheet-to-app demo (sample data, runs in the browser) ---------- */
 const SHEETS = {
-  jobs: {
-    file: 'Jobs_FINAL_v3 (2).xlsx',
-    title: 'Jobs',
-    outcome: 'Every finished job invoiced the same day',
-    cols: ['Customer', 'Tech', 'Status', 'Amount'],
-    statuses: ['Scheduled', 'In progress', 'Done'],
-    ready: 'Done',
-    statLabel: 'Ready to invoice',
-    countLabel: 'Jobs done',
-    action: (n) => (n === 1 ? 'Invoice 1 finished job' : `Invoice ${n} finished jobs`),
-    toast: (n) => `${n} invoice${n === 1 ? '' : 's'} sent. Nobody opened the spreadsheet.`,
+  invoices: {
+    file: 'AR aging - USE THIS ONE.xlsx',
+    title: 'Money owed',
+    outcome: 'Every overdue invoice chased, automatically',
+    cols: ['Customer', 'Due', 'Status', 'Amount'],
+    statuses: ['Sent', 'Overdue', 'Paid'],
+    ready: 'Overdue',
+    statLabel: 'Overdue right now',
+    countLabel: 'Invoices overdue',
+    action: (n) => (n === 1 ? 'Send 1 payment reminder' : `Send ${n} payment reminders`),
+    toast: (n) => `${n} reminder${n === 1 ? '' : 's'} sent, each with a pay link.`,
     rows: [
-      ['R. Alvarez', 'Marcus', 'Done', 445.5],
-      ['Hill Country Dental', 'Tina', 'Done', 1280],
-      ['J. Whitfield', 'Marcus', 'Scheduled', 310],
-      ['Oak Ridge HOA', 'Dev', 'Done', 2150],
-      ['S. Nguyen', 'Tina', 'In progress', 675],
+      ['Hill Country Dental', 'Oct 28', 'Overdue', 4280],
+      ['Alvarez Roofing', 'Nov 3', 'Overdue', 1950],
+      ['Oak Ridge HOA', 'Nov 24', 'Sent', 6400],
+      ['Whitfield & Sons', 'Nov 10', 'Overdue', 2715],
+      ['Lakeside Pediatrics', 'Nov 14', 'Paid', 3120],
     ],
   },
-  loads: {
-    file: 'Loads Nov - Copy.xlsx',
-    title: 'Loads',
-    outcome: 'Billed the hour it delivers',
-    cols: ['Shipper', 'Driver', 'Status', 'Amount'],
-    statuses: ['Booked', 'In transit', 'Delivered'],
-    ready: 'Delivered',
-    statLabel: 'Ready to bill',
-    countLabel: 'Delivered',
-    action: (n) => (n === 1 ? 'Bill 1 delivered load' : `Bill ${n} delivered loads`),
-    toast: (n) => `${n} load${n === 1 ? '' : 's'} billed with paperwork attached.`,
+  quotes: {
+    file: 'Quotes 2026 (edited).xlsx',
+    title: 'Quotes',
+    outcome: 'No quote goes quiet',
+    cols: ['Customer', 'Rep', 'Status', 'Value'],
+    statuses: ['Sent', 'No reply', 'Won'],
+    ready: 'No reply',
+    statLabel: 'Waiting on a follow-up',
+    countLabel: 'Gone quiet',
+    action: (n) => (n === 1 ? 'Follow up on 1 quiet quote' : `Follow up on ${n} quiet quotes`),
+    toast: (n) => `${n} follow-up${n === 1 ? '' : 's'} sent. Replies go straight to the rep.`,
     rows: [
-      ['Lone Star Supply', 'Whitaker', 'Delivered', 2003.5],
-      ['Brazos Steel', 'Okafor', 'In transit', 1640],
-      ['Pecos Feed Co', 'Ramirez', 'Delivered', 1185],
-      ['Gulf Plastics', 'Whitaker', 'Booked', 2420],
-      ['Red River Lumber', 'Tran', 'Delivered', 1760],
+      ['Brazos Steel', 'Tina', 'No reply', 18400],
+      ['Pecan Street Cafe', 'Marcus', 'Won', 6250],
+      ['Gulf Plastics', 'Tina', 'No reply', 31200],
+      ['Red River Lumber', 'Dev', 'Sent', 9800],
+      ['Lone Star Supply', 'Marcus', 'No reply', 12750],
     ],
   },
-  locations: {
-    file: 'Locations weekly (old).xlsx',
-    title: 'Locations · Today',
-    outcome: 'The owner sees every location before dinner',
-    cols: ['Location', 'Manager', 'Status', 'Collected'],
-    statuses: ['Open', 'Closed'],
-    ready: 'Closed',
-    statLabel: 'Collected today',
-    countLabel: 'Closed out',
-    action: (n) => (n === 1 ? 'Send 1 location to the owner' : `Send ${n} locations to the owner`),
-    toast: (n) => `Numbers for ${n} location${n === 1 ? '' : 's'} sent to the owner.`,
+  hours: {
+    file: 'Timesheets wk 47 FINAL.xlsx',
+    title: 'Team hours · This week',
+    outcome: 'Payroll ready by Friday noon',
+    unit: 'hrs',
+    cols: ['Employee', 'Role', 'Status', 'Hours'],
+    statuses: ['Missing', 'Submitted', 'Approved'],
+    ready: 'Approved',
+    statLabel: 'Hours approved',
+    countLabel: 'Timesheets approved',
+    action: (n) => (n === 1 ? 'Send 1 timesheet to payroll' : `Send ${n} timesheets to payroll`),
+    toast: (n) => `${n} timesheet${n === 1 ? '' : 's'} sent to payroll. No re-keying.`,
     rows: [
-      ['North', 'Jenna', 'Closed', 3060],
-      ['Downtown', 'Priya', 'Closed', 4215],
-      ['Lakeside', 'Marco', 'Open', 2380],
-      ['West', 'Dana', 'Closed', 1975],
-      ['Round Rock', 'Sam', 'Open', 2840],
+      ['Jenna M.', 'Front desk', 'Approved', 40],
+      ['Marco D.', 'Technician', 'Approved', 44.5],
+      ['Priya S.', 'Office manager', 'Submitted', 38],
+      ['Sam T.', 'Technician', 'Missing', 0],
+      ['Dana K.', 'Driver', 'Approved', 41],
     ],
   },
 };
@@ -84,7 +85,7 @@ const toolSend = document.querySelector('#tool-send');
 const toolToast = document.querySelector('#tool-toast');
 const stage = document.querySelector('#demo-stage');
 const tabs = [...document.querySelectorAll('.demo-tabs [role="tab"]')];
-let current = 'jobs';
+let current = 'invoices';
 let runId = 0;
 let playing = false;
 let toastTimer;
@@ -111,7 +112,7 @@ function recalc() {
     }
   });
   const count = readyCount();
-  statTotal.textContent = money.format(total);
+  statTotal.textContent = sheet.unit ? `${Math.round(total * 10) / 10} ${sheet.unit}` : money.format(total);
   statCount.textContent = `${count} of ${shown.length}`;
   toolSend.textContent = sheet.action(count);
   toolSend.disabled = playing || count === 0;
@@ -138,7 +139,7 @@ function build(key) {
 
   const pairs = sheet.rows.map(([name, who, status, amount], index) => {
     const row = el('div', 'sheet-row');
-    [String(index + 2), name, who, status, amount.toFixed(2)].forEach((text) => row.append(el('span', '', text)));
+    [String(index + 2), name, who, status, sheet.unit ? String(amount) : amount.toFixed(2)].forEach((text) => row.append(el('span', '', text)));
     sheetGrid.append(row);
 
     const rec = el('div', 'rec field');
