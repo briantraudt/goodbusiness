@@ -92,6 +92,12 @@ section { padding: clamp(72px, 11vw, 160px) var(--pad); max-width: var(--max); m
 .site-nav { display: flex; gap: 26px; margin-left: auto; font-size: 15px; }
 .site-nav a { text-decoration: none; color: var(--ink-2); padding: 10px 0; }
 .site-nav a:hover { color: var(--ink); }
+.header-contact { display: none; align-items: center; min-height: 42px; padding: 0 18px; border: 1px solid var(--ink); border-radius: 2px; font-size: 15px; font-weight: 500; text-decoration: none; }
+.header-contact:hover { background: var(--ink); color: var(--paper); }
+.header-home { display: inline-flex; margin-left: 0; }
+.m-only { display: none; }
+.contact-page { min-height: calc(100svh - 150px); align-content: center; }
+.contact-page h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(40px, 6vw, 84px); line-height: 1; letter-spacing: -0.03em; }
 
 /* ---------- hero ---------- */
 .hero { padding-top: clamp(20px, 4vh, 72px); padding-bottom: clamp(40px, 6vh, 100px); container-type: inline-size; }
@@ -441,8 +447,8 @@ section { padding: clamp(72px, 11vw, 160px) var(--pad); max-width: var(--max); m
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
   .site-nav { display: none; }
-  .site-header .btn { margin-left: auto; }
-  .hero-foot { justify-items: start; }
+  .site-header .header-cta { display: none; }
+  .header-contact { display: inline-flex; margin-left: auto; }
   .hero-proof { grid-template-columns: 1fr; }
   .hero-proof li, .hero-proof li + li { padding: 18px 0; border-left: 0; border-bottom: 1px solid var(--rule); }
   .demo-stage { grid-template-columns: 1fr; gap: 0; }
@@ -467,6 +473,18 @@ section { padding: clamp(72px, 11vw, 160px) var(--pad); max-width: var(--max); m
   .sheet-row { grid-template-columns: 24px 1.5fr 0.9fr 1fr 0.8fr; }
   .sheet-row > span { padding: 0 5px; }
   .figures dt { font-size: 28px; }
+}
+
+/* Phones: the headline fills the first screen and the buttons sit at its bottom edge */
+@media (max-width: 700px) {
+  .m-only { display: inline; }
+  .hero { padding-top: 20px; padding-bottom: 48px; }
+  .hero-first { display: flex; flex-direction: column; min-height: calc(100svh - 71px - 40px); }
+  .hero h1 { font-size: clamp(44px, min(21.6cqi, (100svh - 250px) / 4.8), 150px); line-height: 0.95; margin: auto 0 auto -0.04em; padding-block: 16px; }
+  .hero-foot { justify-items: stretch; }
+  .hero-actions { display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: center; }
+  .hero-actions .btn { min-height: 56px; }
+  .hero-proof { margin-top: 36px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
