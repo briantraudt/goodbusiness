@@ -16,6 +16,7 @@ export default defineConfig({
         j5: resolve(publicRoot, "j5/index.html"),
         gridbook: resolve(publicRoot, "gridbook/index.html"),
         contact: resolve(publicRoot, "contact/index.html"),
+        invoice: resolve(publicRoot, "invoice/index.html"),
       },
     },
   },
