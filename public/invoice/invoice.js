@@ -1,4 +1,3 @@
-import {invoiceMarkup} from './invoice-template.js';
 const $=id=>document.getElementById(id),form=$('invoiceForm'),f=form.elements;
 let token='',invoices=[],editing=null,busy=false,remitTo='',pendingSend=null;
 const money=c=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(c/100),number=i=>'GB-'+String(i.number).padStart(5,'0');
@@ -34,6 +33,8 @@ function openSend(i){
  $('sendClient').textContent=i.client;
  $('sendNumber').textContent=number(i);
  $('sendAmount').textContent=money(i.total_cents);
+ $('sendSubject').textContent='Good Business Invoice #'+number(i);
+ $('sendAttachment').textContent='Good-Business-Invoice-'+number(i)+'.pdf';
  $('sendError').hidden=true;
  sendDialog.showModal();
 }
@@ -51,5 +52,12 @@ $('sendForm').onsubmit=e=>{
  try{await refresh()}catch(err){notice('Refresh the page to update invoice history.')}
  });
 };
-function print(i){const p=$('print');p.innerHTML=invoiceMarkup(i,i.remit_to??remitTo);window.print();p.replaceChildren()}
-async function refresh(){invoices=await api();$('outstanding').textContent=money(invoices.filter(i=>i.status==='sent').reduce((s,i)=>s+i.total_cents,0));$('paid').textContent=money(invoices.filter(i=>i.status==='paid').reduce((s,i)=>s+i.total_cents,0));$('drafts').textContent=invoices.filter(i=>i.status==='draft').length;$('clients').replaceChildren(...[...new Set(invoices.map(i=>i.client))].map(x=>{const o=el('option');o.value=x;return o}));const rows=invoices.map(i=>{const tr=el('tr');const status=i.status==='sent'&&i.due<today()?'Overdue':i.status;[number(i),i.client,i.due,money(i.total_cents),status].forEach(x=>tr.append(el('td',x)));const sentCell=el('td'),sent=el('span');const wasSent=Boolean(i.sent_at)||i.status==='sent'||i.status==='paid';sent.className='sent-indicator'+(wasSent?'':' pending');const check=el('input');check.type='checkbox';check.checked=wasSent;check.disabled=true;check.setAttribute('aria-label',wasSent?'Invoice sent':'Invoice not sent');sent.append(check,el('span',wasSent?'Sent':'Not sent'));if(i.sent_at)sent.title='Sent '+new Date(i.sent_at).toLocaleString();sentCell.append(sent);tr.append(sentCell);const td=el('td');td.className='row';if(i.status==='draft')td.append(action('Edit',()=>open(i)));td.append(action('PDF',()=>run(async()=>{if(i.remit_to==null)await loadRemit();print(i)})));if(i.status!=='paid')td.append(action(i.status==='draft'?'Send':'Resend',()=>openSend(i)));if(i.status==='sent')td.append(action('Mark paid',()=>{if(confirm('Mark '+number(i)+' paid?'))run(async()=>{await api({action:'paid',id:i.id});await refresh()})}));tr.append(td);return tr});$('history').replaceChildren(...rows);if(!rows.length){const tr=el('tr'),td=el('td','No invoices yet. Create your first invoice.');td.colSpan=7;tr.append(td);$('history').append(tr)}}
+async function downloadPDF(i){
+ const response=await fetch('/api/invoices',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token},body:JSON.stringify({action:'pdf',id:i.id})});
+ if(response.status===401)logout();
+ if(!response.ok){const error=await response.json().catch(()=>({}));throw Error(error.error||'Could not create PDF.')}
+ if(!response.headers.get('Content-Type')?.includes('application/pdf'))throw Error('Invalid PDF response.');
+ const url=URL.createObjectURL(await response.blob()),a=el('a');
+ a.href=url;a.download='Good-Business-Invoice-'+number(i)+'.pdf';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
+}
+async function refresh(){invoices=await api();$('outstanding').textContent=money(invoices.filter(i=>i.status==='sent').reduce((s,i)=>s+i.total_cents,0));$('paid').textContent=money(invoices.filter(i=>i.status==='paid').reduce((s,i)=>s+i.total_cents,0));$('drafts').textContent=invoices.filter(i=>i.status==='draft').length;$('clients').replaceChildren(...[...new Set(invoices.map(i=>i.client))].map(x=>{const o=el('option');o.value=x;return o}));const rows=invoices.map(i=>{const tr=el('tr');const status=i.status==='sent'&&i.due<today()?'Overdue':i.status;[number(i),i.client,i.due,money(i.total_cents),status].forEach(x=>tr.append(el('td',x)));const sentCell=el('td'),sent=el('span');const wasSent=Boolean(i.sent_at)||i.status==='sent'||i.status==='paid';sent.className='sent-indicator'+(wasSent?'':' pending');const check=el('input');check.type='checkbox';check.checked=wasSent;check.disabled=true;check.setAttribute('aria-label',wasSent?'Invoice sent':'Invoice not sent');sent.append(check,el('span',wasSent?'Sent':'Not sent'));if(i.sent_at)sent.title='Sent '+new Date(i.sent_at).toLocaleString();sentCell.append(sent);tr.append(sentCell);const td=el('td');td.className='row';if(i.status==='draft')td.append(action('Edit',()=>open(i)));td.append(action('PDF',()=>run(()=>downloadPDF(i))));if(i.status!=='paid')td.append(action(i.status==='draft'?'Send':'Resend',()=>openSend(i)));if(i.status==='sent')td.append(action('Mark paid',()=>{if(confirm('Mark '+number(i)+' paid?'))run(async()=>{await api({action:'paid',id:i.id});await refresh()})}));tr.append(td);return tr});$('history').replaceChildren(...rows);if(!rows.length){const tr=el('tr'),td=el('td','No invoices yet. Create your first invoice.');td.colSpan=7;tr.append(td);$('history').append(tr)}}

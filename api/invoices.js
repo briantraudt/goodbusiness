@@ -1,5 +1,6 @@
 import {createClient} from '@supabase/supabase-js';
-import {invoiceMarkup} from '../public/invoice/invoice-template.js';
+import {createInvoicePDF} from '../lib/invoice-pdf.js';
+import {invoiceEmail} from '../lib/invoice-email.js';
 const owner='b8edeee8-06f8-4a93-be63-03f4fb5a7f56';
 const money=c=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(c/100);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -53,10 +54,16 @@ export default async function handler(req,res){
  const q=b.id?await table().update(value).eq('id',b.id).eq('owner_id',owner).eq('status','draft').select().single():await table().insert({...value,owner_id:owner}).select().single();
  if(q.error)throw q.error;return res.status(200).json(q.data);
  }
- if(!['send','paid'].includes(b.action))return res.status(400).json({error:'Unknown action.'});
+ if(!['send','paid','pdf'].includes(b.action))return res.status(400).json({error:'Unknown action.'});
  const q=await table().select('*').eq('id',b.id).eq('owner_id',owner).single();
  if(q.error)return res.status(404).json({error:'Invoice not found.'});
  const i=q.data;
+ if(b.action==='pdf'){
+ const pdf=createInvoicePDF(i,i.remit_to??await getRemit());
+ res.setHeader('Content-Type','application/pdf');
+ res.setHeader('Content-Disposition','attachment; filename="Good-Business-Invoice-'+num(i)+'.pdf"');
+ return res.status(200).send(pdf);
+ }
  if(b.action==='paid'){
  if(i.status==='draft')return res.status(409).json({error:'Send invoice first.'});
  const p=await table().update({status:'paid'}).eq('id',i.id).eq('owner_id',owner).select().single();if(p.error)throw p.error;return res.status(200).json(p.data);
@@ -66,8 +73,9 @@ export default async function handler(req,res){
  const from=process.env.RESEND_FROM_EMAIL||process.env.SOCIAL_ARB_FROM_EMAIL;
  if(!from||!process.env.RESEND_API_KEY)return res.status(503).json({error:'Email service not configured.'});
  const remit=i.remit_to??await getRemit();
- const html=invoiceMarkup(i,remit);
- const sent=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+process.env.RESEND_API_KEY,'Content-Type':'application/json','Idempotency-Key':'invoice/'+i.id+'/'+(i.sent_at||'initial')},body:JSON.stringify({from,to:[i.email],...(i.email.toLowerCase()==='brian@goodbusinesshq.com'?{}:{bcc:['brian@goodbusinesshq.com']}),subject:'Good Business invoice '+num(i),html})});
+ const pdf=createInvoicePDF(i,remit);
+ const email=invoiceEmail(i);
+ const sent=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+process.env.RESEND_API_KEY,'Content-Type':'application/json','Idempotency-Key':'invoice/'+i.id+'/'+(i.sent_at||'initial')},body:JSON.stringify({from,to:[i.email],...(i.email.toLowerCase()==='brian@goodbusinesshq.com'?{}:{bcc:['brian@goodbusinesshq.com']}),...email,attachments:[{filename:'Good-Business-Invoice-'+num(i)+'.pdf',content:pdf.toString('base64')}]})});
  if(!sent.ok)return res.status(502).json({error:'Email could not be sent.'});
  const result=await sent.json();
  const p=await table().update({status:'sent',remit_to:remit,sent_at:new Date().toISOString(),email_id:result.id}).eq('id',i.id).eq('owner_id',owner).neq('status','paid').select().single();
