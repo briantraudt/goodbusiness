@@ -1,12 +1,12 @@
 import {invoiceMarkup} from './invoice-template.js';
 const $=id=>document.getElementById(id),form=$('invoiceForm'),f=form.elements;
-let token='',invoices=[],editing=null,busy=false,remitTo='';
+let token='',invoices=[],editing=null,busy=false,remitTo='',pendingSend=null;
 const money=c=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(c/100),number=i=>'GB-'+String(i.number).padStart(5,'0');
 const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:'America/Chicago'});
 const el=(tag,text)=>{const x=document.createElement(tag);if(text!==undefined)x.textContent=text;return x};
 const notice=t=>$('notice').textContent=t;
 async function api(body){const response=await fetch('/api/invoices',{method:body?'POST':'GET',headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},...(body?{body:JSON.stringify(body)}:{})});const result=await response.json();if(response.status===401&&token)logout();if(!response.ok)throw Error(result.error||'Request failed');return result}
-function logout(){remitTo='';$('remitText').value='';$('remitPanel').hidden=true;token='';invoices=[];editing=null;form.reset();$('lines').replaceChildren();$('history').replaceChildren();$('clients').replaceChildren();$('print').replaceChildren();$('workspace').hidden=true;$('editor').hidden=true;$('logout').hidden=true;$('login').hidden=false}
+function logout(){pendingSend=null;if($('sendDialog').open)$('sendDialog').close();remitTo='';$('remitText').value='';$('remitPanel').hidden=true;token='';invoices=[];editing=null;form.reset();$('lines').replaceChildren();$('history').replaceChildren();$('clients').replaceChildren();$('print').replaceChildren();$('workspace').hidden=true;$('editor').hidden=true;$('logout').hidden=true;$('login').hidden=false}
 async function run(fn){if(busy)return;busy=true;notice('');const buttons=[...document.querySelectorAll('button')];buttons.forEach(x=>x.disabled=true);try{await fn()}catch(e){notice(e.message)}finally{busy=false;buttons.forEach(x=>x.disabled=false)}}
 $('loginForm').onsubmit=e=>{e.preventDefault();run(async()=>{const d=Object.fromEntries(new FormData(e.target));const result=await api({action:'login',...d});token=result.token;e.target.reset();await refresh();$('login').hidden=true;$('workspace').hidden=false;$('logout').hidden=false})};
 $('logout').onclick=logout;
@@ -23,5 +23,33 @@ function open(i){editing=i?.id||null;form.reset();$('lines').replaceChildren();$
 $('new').onclick=()=>open();$('cancel').onclick=()=>{$('editor').hidden=true;editing=null};$('add').onclick=()=>add();
 form.onsubmit=e=>{e.preventDefault();run(async()=>{const d=Object.fromEntries(new FormData(form));await api({...d,action:'save',id:editing,items:items()});$('editor').hidden=true;editing=null;await refresh();notice('Draft saved.')})};
 function action(label,fn){const b=el('button',label);b.className='secondary';b.onclick=fn;return b}
+const sendDialog=$('sendDialog');
+function openSend(i){
+ if(busy||sendDialog.open)return;
+ pendingSend=i;
+ $('sendTitle').textContent=i.status==='draft'?'Send invoice':'Resend invoice';
+ $('sendConfirm').textContent=$('sendTitle').textContent;
+ $('sendRecipient').textContent=i.email;
+ $('sendBcc').textContent=i.email.toLowerCase()==='brian@goodbusinesshq.com'?'Same as recipient — no duplicate copy':'brian@goodbusinesshq.com';
+ $('sendClient').textContent=i.client;
+ $('sendNumber').textContent=number(i);
+ $('sendAmount').textContent=money(i.total_cents);
+ $('sendError').hidden=true;
+ sendDialog.showModal();
+}
+$('sendCancel').onclick=()=>{if(!busy)sendDialog.close()};
+sendDialog.addEventListener('cancel',e=>{if(busy)e.preventDefault()});
+sendDialog.addEventListener('close',()=>{pendingSend=null;$('sendError').hidden=true});
+$('sendForm').onsubmit=e=>{
+ e.preventDefault();if(!pendingSend||busy)return;
+ const i=pendingSend;
+ run(async()=>{
+ $('sendError').hidden=true;$('sendConfirm').textContent='Sending…';
+ try{await api({action:'send',id:i.id,confirmed_email:i.email})}
+ catch(err){if(sendDialog.open){$('sendError').textContent=err.message;$('sendError').hidden=false;$('sendConfirm').textContent=$('sendTitle').textContent;return}throw err}
+ sendDialog.close();
+ try{await refresh();notice('Email accepted for delivery.')}catch(err){notice('Email accepted for delivery. Refresh the page to update invoice history.')}
+ });
+};
 function print(i){const p=$('print');p.innerHTML=invoiceMarkup(i,i.remit_to??remitTo);window.print();p.replaceChildren()}
-async function refresh(){invoices=await api();$('outstanding').textContent=money(invoices.filter(i=>i.status==='sent').reduce((s,i)=>s+i.total_cents,0));$('paid').textContent=money(invoices.filter(i=>i.status==='paid').reduce((s,i)=>s+i.total_cents,0));$('drafts').textContent=invoices.filter(i=>i.status==='draft').length;$('clients').replaceChildren(...[...new Set(invoices.map(i=>i.client))].map(x=>{const o=el('option');o.value=x;return o}));const rows=invoices.map(i=>{const tr=el('tr');const status=i.status==='sent'&&i.due<today()?'Overdue':i.status;[number(i),i.client,i.due,money(i.total_cents),status].forEach(x=>tr.append(el('td',x)));const td=el('td');td.className='row';if(i.status==='draft')td.append(action('Edit',()=>open(i)));td.append(action('PDF',()=>run(async()=>{if(i.remit_to==null)await loadRemit();print(i)})));if(i.status!=='paid')td.append(action(i.status==='draft'?'Send':'Resend',()=>{if(confirm('Email '+number(i)+' to '+i.email+'?'))run(async()=>{await api({action:'send',id:i.id});await refresh();notice('Email accepted for delivery.')})}));if(i.status==='sent')td.append(action('Mark paid',()=>{if(confirm('Mark '+number(i)+' paid?'))run(async()=>{await api({action:'paid',id:i.id});await refresh()})}));tr.append(td);return tr});$('history').replaceChildren(...rows);if(!rows.length){const tr=el('tr'),td=el('td','No invoices yet. Create your first invoice.');td.colSpan=6;tr.append(td);$('history').append(tr)}}
+async function refresh(){invoices=await api();$('outstanding').textContent=money(invoices.filter(i=>i.status==='sent').reduce((s,i)=>s+i.total_cents,0));$('paid').textContent=money(invoices.filter(i=>i.status==='paid').reduce((s,i)=>s+i.total_cents,0));$('drafts').textContent=invoices.filter(i=>i.status==='draft').length;$('clients').replaceChildren(...[...new Set(invoices.map(i=>i.client))].map(x=>{const o=el('option');o.value=x;return o}));const rows=invoices.map(i=>{const tr=el('tr');const status=i.status==='sent'&&i.due<today()?'Overdue':i.status;[number(i),i.client,i.due,money(i.total_cents),status].forEach(x=>tr.append(el('td',x)));const td=el('td');td.className='row';if(i.status==='draft')td.append(action('Edit',()=>open(i)));td.append(action('PDF',()=>run(async()=>{if(i.remit_to==null)await loadRemit();print(i)})));if(i.status!=='paid')td.append(action(i.status==='draft'?'Send':'Resend',()=>openSend(i)));if(i.status==='sent')td.append(action('Mark paid',()=>{if(confirm('Mark '+number(i)+' paid?'))run(async()=>{await api({action:'paid',id:i.id});await refresh()})}));tr.append(td);return tr});$('history').replaceChildren(...rows);if(!rows.length){const tr=el('tr'),td=el('td','No invoices yet. Create your first invoice.');td.colSpan=6;tr.append(td);$('history').append(tr)}}

@@ -62,11 +62,12 @@ export default async function handler(req,res){
  const p=await table().update({status:'paid'}).eq('id',i.id).eq('owner_id',owner).select().single();if(p.error)throw p.error;return res.status(200).json(p.data);
  }
  if(i.status==='paid')return res.status(409).json({error:'Invoice already paid.'});
+ if(b.confirmed_email!==undefined&&b.confirmed_email!==i.email)return res.status(409).json({error:'Recipient has changed. Refresh the invoice and confirm the new email address.'});
  const from=process.env.RESEND_FROM_EMAIL||process.env.SOCIAL_ARB_FROM_EMAIL;
  if(!from||!process.env.RESEND_API_KEY)return res.status(503).json({error:'Email service not configured.'});
  const remit=i.remit_to??await getRemit();
  const html=invoiceMarkup(i,remit);
- const sent=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+process.env.RESEND_API_KEY,'Content-Type':'application/json','Idempotency-Key':'invoice/'+i.id+'/'+(i.sent_at||'initial')},body:JSON.stringify({from,to:[i.email],subject:'Good Business invoice '+num(i),html})});
+ const sent=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+process.env.RESEND_API_KEY,'Content-Type':'application/json','Idempotency-Key':'invoice/'+i.id+'/'+(i.sent_at||'initial')},body:JSON.stringify({from,to:[i.email],...(i.email.toLowerCase()==='brian@goodbusinesshq.com'?{}:{bcc:['brian@goodbusinesshq.com']}),subject:'Good Business invoice '+num(i),html})});
  if(!sent.ok)return res.status(502).json({error:'Email could not be sent.'});
  const result=await sent.json();
  const p=await table().update({status:'sent',remit_to:remit,sent_at:new Date().toISOString(),email_id:result.id}).eq('id',i.id).eq('owner_id',owner).neq('status','paid').select().single();
