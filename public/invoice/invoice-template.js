@@ -1,0 +1,22 @@
+// Shared invoice markup for print and email. All customer content is escaped.
+const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const lines=value=>esc(value).replace(/\r\n|\r|\n/g,'<br>');
+const money=c=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(c)/100);
+const date=value=>new Intl.DateTimeFormat('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'}).format(new Date(value+'T00:00:00Z'));
+export function invoiceMarkup(i,remit=''){
+ const number='GB-'+String(i.number).padStart(5,'0');
+ const label='font-size:11px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;color:#52685b;';
+ const detail='font-size:13px;line-height:1.6;color:#26382e;overflow-wrap:anywhere;';
+ const cell='padding:13px 8px;border-bottom:1px solid #dce4dd;vertical-align:top;';
+ const right='text-align:right;white-space:nowrap;';
+ const paid=i.status==='paid';
+ const rows=i.items.map(x=>'<tr><td style="'+cell+'overflow-wrap:anywhere;">'+lines(x.description)+'</td><td style="'+cell+right+'">'+esc(x.quantity)+'</td><td style="'+cell+right+'">'+money(x.rate_cents)+'</td><td style="'+cell+right+'font-weight:600;">'+money(x.amount_cents)+'</td></tr>').join('');
+ return `<div class="gb-invoice" style="max-width:720px;margin:0 auto;color:#182a20;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.45;">
+ <table role="presentation" style="width:100%;border-collapse:collapse;border-bottom:3px solid #234735;"><tr><td style="padding:0 0 20px;vertical-align:top;"><div style="font-size:29px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;">Good Business.</div></td><td style="text-align:right;vertical-align:top;padding:0 0 20px;"><div style="font-size:27px;font-weight:400;letter-spacing:2px;">INVOICE</div><div style="color:#52685b;font-size:13px;">${number}</div></td></tr></table>
+ <table role="presentation" style="width:100%;border-collapse:collapse;margin:28px 0;"><tr><td style="width:55%;vertical-align:top;padding-right:18px;"><div style="${label}">Bill to</div><div style="font-size:16px;font-weight:700;margin:6px 0;">${esc(i.client)}</div><div style="${detail}">${lines(i.address)}${i.address&&i.email?'<br>':''}${esc(i.email)}</div></td><td style="vertical-align:top;text-align:right;"><div style="${label}">Invoice date</div><div style="margin:4px 0 12px;">${date(i.issued)}</div><div style="${label}">Payment due</div><div style="margin-top:4px;font-weight:700;">${date(i.due)}</div></td></tr></table>
+ <table class="gb-items" style="width:100%;border-collapse:collapse;table-layout:auto;font-size:13px;"><thead><tr style="background:#e9efe9;color:#234735;"><th scope="col" style="padding:12px 8px;text-align:left;width:50%;">Description</th><th scope="col" style="padding:12px 8px;text-align:right;">Qty</th><th scope="col" style="padding:12px 8px;text-align:right;">Rate</th><th scope="col" style="padding:12px 8px;text-align:right;">Amount</th></tr></thead><tbody>${rows}</tbody></table>
+ <table class="gb-totals" role="presentation" style="width:100%;border-collapse:collapse;margin:20px 0 28px;"><tr><td style="width:45%;"></td><td style="padding:5px 8px;color:#52685b;">Subtotal</td><td style="padding:5px 8px;text-align:right;white-space:nowrap;">${money(i.total_cents-i.tax_cents)}</td></tr><tr><td></td><td style="padding:5px 8px;color:#52685b;">Tax</td><td style="padding:5px 8px;text-align:right;white-space:nowrap;">${money(i.tax_cents)}</td></tr><tr><td></td><td style="padding:13px 8px;border-top:2px solid #234735;font-weight:700;font-size:15px;">Invoice total</td><td style="padding:13px 8px;text-align:right;border-top:2px solid #234735;font-weight:700;white-space:nowrap;">${money(i.total_cents)}</td></tr><tr><td></td><td style="padding:14px 8px;background:#234735;color:white;font-weight:700;">Amount due</td><td style="padding:14px 8px;background:#234735;color:white;text-align:right;font-size:20px;font-weight:700;white-space:nowrap;">${money(paid?0:i.total_cents)}</td></tr></table>
+ ${remit?`<div style="border-top:1px solid #dce4dd;padding-top:17px;margin:0 0 20px;"><div style="${label}">Remit to</div><div style="${detail}margin-top:7px;">${lines(remit)}</div></div>`:''}
+ ${i.notes?`<div style="margin:0 0 20px;"><div style="${label}">Notes / payment instructions</div><div style="${detail}margin-top:7px;">${lines(i.notes)}</div></div>`:''}
+ <div style="border-top:1px solid #dce4dd;padding-top:14px;color:#52685b;font-size:12px;">Thank you for your business.</div></div>`;
+}

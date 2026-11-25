@@ -1,4 +1,5 @@
 import {createClient} from '@supabase/supabase-js';
+import {invoiceMarkup} from '../public/invoice/invoice-template.js';
 const owner='b8edeee8-06f8-4a93-be63-03f4fb5a7f56';
 const money=c=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(c/100);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -64,8 +65,7 @@ export default async function handler(req,res){
  const from=process.env.RESEND_FROM_EMAIL||process.env.SOCIAL_ARB_FROM_EMAIL;
  if(!from||!process.env.RESEND_API_KEY)return res.status(503).json({error:'Email service not configured.'});
  const remit=i.remit_to??await getRemit();
- const remitHtml=remit?'<h3>Remit To</h3><p>'+esc(remit).replace(/\n/g,'<br>')+'</p>':'';
- const html='<h1>Good Business.</h1><h2>Invoice '+num(i)+'</h2><p>Bill to: '+esc(i.client)+'<br>'+esc(i.address).replace(/\n/g,'<br>')+'</p><p>Issued: '+i.issued+' | Due: '+i.due+'</p><table cellpadding="8" style="border-collapse:collapse;width:100%;text-align:left"><thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody>'+i.items.map(x=>'<tr><td>'+esc(x.description)+'</td><td>'+x.quantity+'</td><td>'+money(x.rate_cents)+'</td><td>'+money(x.amount_cents)+'</td></tr>').join('')+'</tbody></table><p>Subtotal: '+money(i.total_cents-i.tax_cents)+'<br>Tax: '+money(i.tax_cents)+'</p><h2>Total due: '+money(i.total_cents)+'</h2><p>'+esc(i.notes).replace(/\n/g,'<br>')+'</p>'+remitHtml+'<p>Thank you for your business.</p>';
+ const html=invoiceMarkup(i,remit);
  const sent=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+process.env.RESEND_API_KEY,'Content-Type':'application/json','Idempotency-Key':'invoice/'+i.id+'/'+(i.sent_at||'initial')},body:JSON.stringify({from,to:[i.email],subject:'Good Business invoice '+num(i),html})});
  if(!sent.ok)return res.status(502).json({error:'Email could not be sent.'});
  const result=await sent.json();
