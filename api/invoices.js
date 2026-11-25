@@ -45,19 +45,24 @@ export default async function handler(req,res){
  if(q.error)throw q.error;return res.status(200).json(q.data);
  }
  if(req.method==='GET'){
- const q=await table().select('*').eq('owner_id',owner).order('number',{ascending:false}).limit(500);
+ const q=await table().select('*').eq('owner_id',owner).is('deleted_at',null).order('number',{ascending:false}).limit(500);
  if(q.error)throw q.error;return res.status(200).json(q.data);
  }
  if(req.method!=='POST')return res.status(405).json({error:'Method not allowed.'});
  if(b.action==='save'){
  let value;try{value=validate(b)}catch(e){return res.status(400).json({error:e.message})}
- const q=b.id?await table().update(value).eq('id',b.id).eq('owner_id',owner).eq('status','draft').select().single():await table().insert({...value,owner_id:owner}).select().single();
+ const q=b.id?await table().update(value).eq('id',b.id).eq('owner_id',owner).is('deleted_at',null).eq('status','draft').select().single():await table().insert({...value,owner_id:owner}).select().single();
  if(q.error)throw q.error;return res.status(200).json(q.data);
  }
- if(!['send','paid','pdf'].includes(b.action))return res.status(400).json({error:'Unknown action.'});
- const q=await table().select('*').eq('id',b.id).eq('owner_id',owner).single();
+ if(!['send','paid','pdf','delete'].includes(b.action))return res.status(400).json({error:'Unknown action.'});
+ const q=await table().select('*').eq('id',b.id).eq('owner_id',owner).is('deleted_at',null).single();
  if(q.error)return res.status(404).json({error:'Invoice not found.'});
  const i=q.data;
+ if(b.action==='delete'){
+ const result=await table().update({deleted_at:new Date().toISOString()}).eq('id',i.id).eq('owner_id',owner).is('deleted_at',null).select('id').single();
+ if(result.error)throw result.error;
+ return res.status(200).json({deleted:true,id:result.data.id});
+ }
  if(b.action==='pdf'){
  const pdf=createInvoicePDF(i,i.remit_to??await getRemit());
  res.setHeader('Content-Type','application/pdf');
@@ -66,7 +71,7 @@ export default async function handler(req,res){
  }
  if(b.action==='paid'){
  if(i.status==='draft')return res.status(409).json({error:'Send invoice first.'});
- const p=await table().update({status:'paid'}).eq('id',i.id).eq('owner_id',owner).select().single();if(p.error)throw p.error;return res.status(200).json(p.data);
+ const p=await table().update({status:'paid'}).eq('id',i.id).eq('owner_id',owner).is('deleted_at',null).select().single();if(p.error)throw p.error;return res.status(200).json(p.data);
  }
  if(i.status==='paid')return res.status(409).json({error:'Invoice already paid.'});
  if(b.confirmed_email!==undefined&&b.confirmed_email!==i.email)return res.status(409).json({error:'Recipient has changed. Refresh the invoice and confirm the new email address.'});
@@ -78,7 +83,7 @@ export default async function handler(req,res){
  const sent=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+process.env.RESEND_API_KEY,'Content-Type':'application/json','Idempotency-Key':'invoice/'+i.id+'/'+(i.sent_at||'initial')},body:JSON.stringify({from,to:[i.email],...(i.email.toLowerCase()==='brian@goodbusinesshq.com'?{}:{bcc:['brian@goodbusinesshq.com']}),...email,attachments:[{filename:'Good-Business-Invoice-'+num(i)+'.pdf',content:pdf.toString('base64')}]})});
  if(!sent.ok)return res.status(502).json({error:'Email could not be sent.'});
  const result=await sent.json();
- const p=await table().update({status:'sent',remit_to:remit,sent_at:new Date().toISOString(),email_id:result.id}).eq('id',i.id).eq('owner_id',owner).neq('status','paid').select().single();
+ const p=await table().update({status:'sent',remit_to:remit,sent_at:new Date().toISOString(),email_id:result.id}).eq('id',i.id).eq('owner_id',owner).is('deleted_at',null).neq('status','paid').select().single();
  if(p.error)return res.status(500).json({error:'Email accepted but invoice status could not be updated.'});
  return res.status(200).json(p.data);
  }catch{return res.status(500).json({error:'Invoice operation failed.'})}

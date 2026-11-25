@@ -1,11 +1,11 @@
 const $=id=>document.getElementById(id),form=$('invoiceForm'),f=form.elements;
-let token='',invoices=[],editing=null,busy=false,remitTo='',pendingSend=null;
+let token='',invoices=[],editing=null,busy=false,remitTo='',pendingSend=null,pendingDelete=null;
 const money=c=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(c/100),number=i=>'GB-'+String(i.number).padStart(5,'0');
 const today=()=>new Date().toLocaleDateString('en-CA',{timeZone:'America/Chicago'});
 const el=(tag,text)=>{const x=document.createElement(tag);if(text!==undefined)x.textContent=text;return x};
 const notice=t=>$('notice').textContent=t;
 async function api(body){const response=await fetch('/api/invoices',{method:body?'POST':'GET',headers:{'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},...(body?{body:JSON.stringify(body)}:{})});const result=await response.json();if(response.status===401&&token)logout();if(!response.ok)throw Error(result.error||'Request failed');return result}
-function logout(){pendingSend=null;if($('sendDialog').open)$('sendDialog').close();remitTo='';$('remitText').value='';$('remitPanel').hidden=true;token='';invoices=[];editing=null;form.reset();$('lines').replaceChildren();$('history').replaceChildren();$('clients').replaceChildren();$('print').replaceChildren();$('workspace').hidden=true;$('editor').hidden=true;$('logout').hidden=true;$('login').hidden=false}
+function logout(){pendingDelete=null;if($('deleteDialog').open)$('deleteDialog').close();pendingSend=null;if($('sendDialog').open)$('sendDialog').close();remitTo='';$('remitText').value='';$('remitPanel').hidden=true;token='';invoices=[];editing=null;form.reset();$('lines').replaceChildren();$('history').replaceChildren();$('clients').replaceChildren();$('print').replaceChildren();$('workspace').hidden=true;$('editor').hidden=true;$('logout').hidden=true;$('login').hidden=false}
 async function run(fn){if(busy)return;busy=true;notice('');const buttons=[...document.querySelectorAll('button')];buttons.forEach(x=>x.disabled=true);try{await fn()}catch(e){notice(e.message)}finally{busy=false;buttons.forEach(x=>x.disabled=false)}}
 $('loginForm').onsubmit=e=>{e.preventDefault();run(async()=>{const d=Object.fromEntries(new FormData(e.target));const result=await api({action:'login',...d});token=result.token;e.target.reset();await refresh();$('login').hidden=true;$('workspace').hidden=false;$('logout').hidden=false})};
 $('logout').onclick=logout;
@@ -22,6 +22,31 @@ function open(i){editing=i?.id||null;form.reset();$('lines').replaceChildren();$
 $('new').onclick=()=>open();$('cancel').onclick=()=>{$('editor').hidden=true;editing=null};$('add').onclick=()=>add();
 form.onsubmit=e=>{e.preventDefault();run(async()=>{const d=Object.fromEntries(new FormData(form));await api({...d,action:'save',id:editing,items:items()});$('editor').hidden=true;editing=null;await refresh();notice('Draft saved.')})};
 function action(label,fn){const b=el('button',label);b.className='secondary';b.onclick=fn;return b}
+const deleteDialog=$('deleteDialog');
+function openDelete(i){
+ if(busy||deleteDialog.open)return;
+ pendingDelete=i;
+ $('deleteNumber').textContent=number(i);
+ $('deleteClient').textContent=i.client;
+ $('deleteAmount').textContent=money(i.total_cents);
+ $('deleteError').hidden=true;
+ $('deleteConfirm').textContent='Delete invoice';
+ deleteDialog.showModal();
+}
+$('deleteCancel').onclick=()=>{if(!busy)deleteDialog.close()};
+deleteDialog.addEventListener('cancel',e=>{if(busy)e.preventDefault()});
+deleteDialog.addEventListener('close',()=>{pendingDelete=null;$('deleteError').hidden=true});
+$('deleteForm').onsubmit=e=>{
+ e.preventDefault();if(busy||!pendingDelete)return;
+ const i=pendingDelete;
+ run(async()=>{
+ $('deleteConfirm').textContent='Deleting…';$('deleteError').hidden=true;
+ try{await api({action:'delete',id:i.id})}catch(err){if(deleteDialog.open){$('deleteError').textContent=err.message;$('deleteError').hidden=false;$('deleteConfirm').textContent='Delete invoice';return}throw err}
+ if(editing===i.id){editing=null;form.reset();$('editor').hidden=true}
+ deleteDialog.close();
+ try{await refresh()}catch(err){notice('Invoice removed. Refresh the page to update invoice history.')}
+ });
+};
 const sendDialog=$('sendDialog');
 function openSend(i){
  if(busy||sendDialog.open)return;
@@ -60,4 +85,4 @@ async function downloadPDF(i){
  const url=URL.createObjectURL(await response.blob()),a=el('a');
  a.href=url;a.download='Good-Business-Invoice-'+number(i)+'.pdf';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000);
 }
-async function refresh(){invoices=await api();$('outstanding').textContent=money(invoices.filter(i=>i.status==='sent').reduce((s,i)=>s+i.total_cents,0));$('paid').textContent=money(invoices.filter(i=>i.status==='paid').reduce((s,i)=>s+i.total_cents,0));$('drafts').textContent=invoices.filter(i=>i.status==='draft').length;$('clients').replaceChildren(...[...new Set(invoices.map(i=>i.client))].map(x=>{const o=el('option');o.value=x;return o}));const rows=invoices.map(i=>{const tr=el('tr');const status=i.status==='sent'&&i.due<today()?'Overdue':i.status;[number(i),i.client,i.due,money(i.total_cents),status].forEach(x=>tr.append(el('td',x)));const sentCell=el('td'),sent=el('span');const wasSent=Boolean(i.sent_at)||i.status==='sent'||i.status==='paid';sent.className='sent-indicator'+(wasSent?'':' pending');const check=el('input');check.type='checkbox';check.checked=wasSent;check.disabled=true;check.setAttribute('aria-label',wasSent?'Invoice sent':'Invoice not sent');sent.append(check,el('span',wasSent?'Sent':'Not sent'));if(i.sent_at)sent.title='Sent '+new Date(i.sent_at).toLocaleString();sentCell.append(sent);tr.append(sentCell);const td=el('td');td.className='row';if(i.status==='draft')td.append(action('Edit',()=>open(i)));td.append(action('PDF',()=>run(()=>downloadPDF(i))));if(i.status!=='paid')td.append(action(i.status==='draft'?'Send':'Resend',()=>openSend(i)));if(i.status==='sent')td.append(action('Mark paid',()=>{if(confirm('Mark '+number(i)+' paid?'))run(async()=>{await api({action:'paid',id:i.id});await refresh()})}));tr.append(td);return tr});$('history').replaceChildren(...rows);if(!rows.length){const tr=el('tr'),td=el('td','No invoices yet. Create your first invoice.');td.colSpan=7;tr.append(td);$('history').append(tr)}}
+async function refresh(){invoices=await api();$('outstanding').textContent=money(invoices.filter(i=>i.status==='sent').reduce((s,i)=>s+i.total_cents,0));$('paid').textContent=money(invoices.filter(i=>i.status==='paid').reduce((s,i)=>s+i.total_cents,0));$('drafts').textContent=invoices.filter(i=>i.status==='draft').length;$('clients').replaceChildren(...[...new Set(invoices.map(i=>i.client))].map(x=>{const o=el('option');o.value=x;return o}));const rows=invoices.map(i=>{const tr=el('tr');const status=i.status==='sent'&&i.due<today()?'Overdue':i.status;[number(i),i.client,i.due,money(i.total_cents),status].forEach(x=>tr.append(el('td',x)));const sentCell=el('td'),sent=el('span');const wasSent=Boolean(i.sent_at)||i.status==='sent'||i.status==='paid';sent.className='sent-indicator'+(wasSent?'':' pending');const check=el('input');check.type='checkbox';check.checked=wasSent;check.disabled=true;check.setAttribute('aria-label',wasSent?'Invoice sent':'Invoice not sent');sent.append(check,el('span',wasSent?'Sent':'Not sent'));if(i.sent_at)sent.title='Sent '+new Date(i.sent_at).toLocaleString();sentCell.append(sent);tr.append(sentCell);const td=el('td');td.className='row';if(i.status==='draft')td.append(action('Edit',()=>open(i)));td.append(action('PDF',()=>run(()=>downloadPDF(i))));if(i.status!=='paid')td.append(action(i.status==='draft'?'Send':'Resend',()=>openSend(i)));if(i.status==='sent')td.append(action('Mark paid',()=>{if(confirm('Mark '+number(i)+' paid?'))run(async()=>{await api({action:'paid',id:i.id});await refresh()})}));const del=action('Delete',()=>openDelete(i));del.className='delete-action';td.append(del);tr.append(td);return tr});$('history').replaceChildren(...rows);if(!rows.length){const tr=el('tr'),td=el('td','No invoices yet. Create your first invoice.');td.colSpan=7;tr.append(td);$('history').append(tr)}}
