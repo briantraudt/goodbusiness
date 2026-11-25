@@ -34,6 +34,14 @@ export default async function handler(req,res){
  const {data,error}=await db.auth.getUser(token);
  if(error||data.user?.id!==owner)return res.status(401).json({error:'Sign in required.'});
  const table=()=>db.from('gb_invoices');
+ const settings=()=>db.from('gb_invoice_settings');
+ async function getRemit(){const q=await settings().select('remit_to').eq('owner_id',owner).maybeSingle();if(q.error)throw q.error;return q.data?.remit_to||''}
+ if(req.method==='POST'&&b.action==='get_remit')return res.status(200).json({remit_to:await getRemit()});
+ if(req.method==='POST'&&b.action==='save_remit'){
+ if(typeof b.remit_to!=='string'||b.remit_to.length>3000)return res.status(400).json({error:'Remit To must be 3,000 characters or fewer.'});
+ const q=await settings().upsert({owner_id:owner,remit_to:b.remit_to.trim()}).select('remit_to').single();
+ if(q.error)throw q.error;return res.status(200).json(q.data);
+ }
  if(req.method==='GET'){
  const q=await table().select('*').eq('owner_id',owner).order('number',{ascending:false}).limit(500);
  if(q.error)throw q.error;return res.status(200).json(q.data);
@@ -55,11 +63,13 @@ export default async function handler(req,res){
  if(i.status==='paid')return res.status(409).json({error:'Invoice already paid.'});
  const from=process.env.RESEND_FROM_EMAIL||process.env.SOCIAL_ARB_FROM_EMAIL;
  if(!from||!process.env.RESEND_API_KEY)return res.status(503).json({error:'Email service not configured.'});
- const html='<h1>Good Business.</h1><h2>Invoice '+num(i)+'</h2><p>Bill to: '+esc(i.client)+'<br>'+esc(i.address).replace(/\n/g,'<br>')+'</p><p>Issued: '+i.issued+' | Due: '+i.due+'</p><table cellpadding="8" style="border-collapse:collapse;width:100%;text-align:left"><thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody>'+i.items.map(x=>'<tr><td>'+esc(x.description)+'</td><td>'+x.quantity+'</td><td>'+money(x.rate_cents)+'</td><td>'+money(x.amount_cents)+'</td></tr>').join('')+'</tbody></table><p>Subtotal: '+money(i.total_cents-i.tax_cents)+'<br>Tax: '+money(i.tax_cents)+'</p><h2>Total due: '+money(i.total_cents)+'</h2><p>'+esc(i.notes).replace(/\n/g,'<br>')+'</p><p>Thank you for your business.</p>';
+ const remit=i.remit_to??await getRemit();
+ const remitHtml=remit?'<h3>Remit To</h3><p>'+esc(remit).replace(/\n/g,'<br>')+'</p>':'';
+ const html='<h1>Good Business.</h1><h2>Invoice '+num(i)+'</h2><p>Bill to: '+esc(i.client)+'<br>'+esc(i.address).replace(/\n/g,'<br>')+'</p><p>Issued: '+i.issued+' | Due: '+i.due+'</p><table cellpadding="8" style="border-collapse:collapse;width:100%;text-align:left"><thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Amount</th></tr></thead><tbody>'+i.items.map(x=>'<tr><td>'+esc(x.description)+'</td><td>'+x.quantity+'</td><td>'+money(x.rate_cents)+'</td><td>'+money(x.amount_cents)+'</td></tr>').join('')+'</tbody></table><p>Subtotal: '+money(i.total_cents-i.tax_cents)+'<br>Tax: '+money(i.tax_cents)+'</p><h2>Total due: '+money(i.total_cents)+'</h2><p>'+esc(i.notes).replace(/\n/g,'<br>')+'</p>'+remitHtml+'<p>Thank you for your business.</p>';
  const sent=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:'Bearer '+process.env.RESEND_API_KEY,'Content-Type':'application/json','Idempotency-Key':'invoice/'+i.id+'/'+(i.sent_at||'initial')},body:JSON.stringify({from,to:[i.email],subject:'Good Business invoice '+num(i),html})});
  if(!sent.ok)return res.status(502).json({error:'Email could not be sent.'});
  const result=await sent.json();
- const p=await table().update({status:'sent',sent_at:new Date().toISOString(),email_id:result.id}).eq('id',i.id).eq('owner_id',owner).neq('status','paid').select().single();
+ const p=await table().update({status:'sent',remit_to:remit,sent_at:new Date().toISOString(),email_id:result.id}).eq('id',i.id).eq('owner_id',owner).neq('status','paid').select().single();
  if(p.error)return res.status(500).json({error:'Email accepted but invoice status could not be updated.'});
  return res.status(200).json(p.data);
  }catch{return res.status(500).json({error:'Invoice operation failed.'})}
