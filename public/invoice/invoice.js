@@ -20,7 +20,7 @@ form.oninput=calculate;
 f.client.onchange=()=>{const c=invoices.find(i=>i.client===f.client.value);if(c&&!editing){f.email.value=c.email;f.address.value=c.address}};
 function open(i){editing=i?.id||null;form.reset();$('lines').replaceChildren();$('editorTitle').textContent=i?'Edit '+number(i):'New invoice';f.issued.value=i?.issued||today();const d=new Date();d.setDate(d.getDate()+30);f.due.value=i?.due||d.toLocaleDateString('en-CA',{timeZone:'America/Chicago'});if(i){for(const k of ['client','email','address','notes'])f[k].value=i[k];const sub=i.total_cents-i.tax_cents;f.tax.value=sub?Math.round(i.tax_cents/sub*10000)/100:0;i.items.forEach(add)}else add();$('editor').hidden=false;calculate();$('editor').scrollIntoView({behavior:'smooth'})}
 $('new').onclick=()=>open();$('cancel').onclick=()=>{$('editor').hidden=true;editing=null};$('add').onclick=()=>add();
-form.onsubmit=e=>{e.preventDefault();run(async()=>{const d=Object.fromEntries(new FormData(form));await api({...d,action:'save',id:editing,items:items()});$('editor').hidden=true;editing=null;await refresh();notice('Draft saved.')})};
+form.onsubmit=e=>{e.preventDefault();run(async()=>{const d=Object.fromEntries(new FormData(form));await api({...d,action:'save',id:editing,items:items()});$('editor').hidden=true;$('remitPanel').hidden=true;editing=null;form.reset();$('lines').replaceChildren();window.scrollTo({top:0,behavior:'instant'});try{await refresh()}catch(err){notice('Draft saved. Refresh the page to update invoice history.')}})};
 function action(label,fn){const b=el('button',label);b.className='secondary';b.onclick=fn;return b}
 const deleteDialog=$('deleteDialog');
 function openDelete(i){
